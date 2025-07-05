@@ -1,55 +1,53 @@
-#:kivy 2.1.0
-#:import dp kivy.metrics.dp
+#:kivy 2.0.0
 
 <HomeScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(10)
-        spacing: dp(10)
+        padding: dp(20)
+        spacing: dp(20)
+        size_hint: 1, 1  # Full size of the parent, will use available space
 
         Label:
-            text: 'Trimix Analyzer'
+            text: 'Main Menu'
             font_size: '32sp'
-            size_hint_y: None
-            height: dp(50)
-            color: 1,1,1,1
+            size_hint_y: None  # Fixed height for navbar
+            height: dp(60)
+            color: 1, 1, 1, 1
+            halign: 'center'
+            valign: 'middle'
 
+        # GridLayout takes the remaining space below the navbar
         GridLayout:
             cols: 2
-            rows: 3
-            spacing: dp(10)
-            padding: dp(5)
+            rows: 2
+            spacing: dp(15)
+            padding: dp(10)
+            size_hint: 1, None  # Set width to full, height to be controlled
+            height: dp(400)  # Fixed height for the grid (adjust as needed)
 
-            SensorCard:
-                id: o2_card
-                title: 'O2'
-                value: '--%'
-                on_press: app.open_detail('o2', 'sensor_detail')
 
-            SensorCard:
-                id: temp_card
-                title: 'Temp'
-                value: '--°C'
-                on_press: app.open_detail('temp', 'sensor_detail')
 
-            SensorCard:
-                id: pres_card
-                title: 'Pressure'
-                value: '-- Bar'
-                on_press: app.open_detail('press', 'sensor_detail')
 
-            SensorCard:
-                id: hum_card
-                title: 'Humidity'
-                value: '--%'
-                on_press: app.open_detail('hum', 'sensor_detail')
+            # Analyzer Card
+            MenuCard:
+                id: analyzer_card
+                title: 'Analyzer'
+                on_press: root.navigate_to_screen('analyze')  # Navigate to 'analyze' screen
 
-            SensorCard:
-                id: mix_card
-                title: 'He'
-                value: '— %'
+            # Dive Planner Card
+            MenuCard:
+                id: planner_card
+                title: 'Dive Planner'
+                on_press: root.navigate_to_screen('dive_planner')  # Navigate to 'dive_planner' screen
 
-            SensorCard:
-                id: depth_card
-                title: 'CO2'
-                value: '— %'
+            # History Card
+            MenuCard:
+                id: history_card
+                title: 'History'
+                on_press: root.navigate_to_screen('history')  # Navigate to 'history' screen
+
+            # Settings Card
+            MenuCard:
+                id: settings_card
+                title: 'Settings'
+                on_press: root.navigate_to_screen('settings')  # Navigate to 'settings' screen

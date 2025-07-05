@@ -1,0 +1,69 @@
+#:kivy 2.1.0
+#:import dp kivy.metrics.dp
+
+<AnalyzeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+
+        # ─── Navbar ────────────────────────────────────────────────────────
+        BoxLayout:
+            size_hint_y: None
+            height: dp(100)
+            spacing: dp(10)
+
+            Button:
+                text: 'Back'
+                size_hint_x: None
+                width: dp(60)
+                on_release: root.manager.current = 'home'
+
+            Label:
+                text: 'Trimix Analyzer'
+                font_size: '32sp'
+                size_hint_y: None
+                height: dp(50)
+                color: 1,1,1,1
+                halign: 'center'
+                valign: 'middle'
+
+        GridLayout:
+            cols: 2
+            rows: 3
+            spacing: dp(10)
+            padding: dp(5)
+
+            SensorCard:
+                id: o2_card
+                title: 'O2'
+                value: '--%'
+                on_press: app.open_detail('o2', 'sensor_detail')
+
+            SensorCard:
+                id: temp_card
+                title: 'Temp'
+                value: '--°C'
+                on_press: app.open_detail('temp', 'sensor_detail')
+
+            SensorCard:
+                id: pres_card
+                title: 'Pressure'
+                value: '-- Bar'
+                on_press: app.open_detail('press', 'sensor_detail')
+
+            SensorCard:
+                id: hum_card
+                title: 'Humidity'
+                value: '--%'
+                on_press: app.open_detail('hum', 'sensor_detail')
+
+            SensorCard:
+                id: mix_card
+                title: 'He'
+                value: '— %'
+
+            SensorCard:
+                id: depth_card
+                title: 'CO2'
+                value: '— %'
