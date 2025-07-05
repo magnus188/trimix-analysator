@@ -3,7 +3,7 @@ import os
 from kivy.uix.screenmanager import Screen
 from kivy.properties import NumericProperty
 from kivy.clock import Clock
-from utils.settings_manager import settings_manager
+from utils.settings_adapter import settings_manager
 
 class DisplaySettingsScreen(Screen):
     brightness = NumericProperty(50)  # Default brightness percentage

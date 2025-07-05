@@ -3,7 +3,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-from utils.settings_manager import settings_manager
+from utils.settings_adapter import settings_manager
 
 class SettingsScreen(Screen):
     def on_enter(self):

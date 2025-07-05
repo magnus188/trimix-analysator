@@ -1,23 +1,24 @@
 import os
 import subprocess
 import json
+import glob
 
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, FadeTransition
+from kivy.uix.screenmanager import ScreenManager, FadeTransition, ScreenManagerException
 from kivy.core.window import Window
 from kivy.core.text import LabelBase
 from kivy.uix.label import Label
 from kivy.clock import Clock
+from kivy.logger import Logger
 
-# Import database manager and settings adapter
+# Import database manager directly - no need for adapter
 from utils.database_manager import db_manager
-from utils.settings_adapter import settings_manager
 from utils.calibration_reminder import calibration_reminder
+from utils.kv_loader import create_kv_loader
 
-# Ensure your screen classes are imported so Builder knows about them
+# Import screen classes so they're available for KV files
 from screens.analyze import AnalyzeScreen
-from widgets.sensor_card import SensorCard
 from screens.sensor_detail import SensorDetail
 from screens.home import HomeScreen
 from screens.settings.settings import SettingsScreen
@@ -26,10 +27,12 @@ from screens.settings.wifi_settings import WiFiSettingsScreen
 from screens.settings.display_settings import DisplaySettingsScreen
 from screens.settings.safety_settings import SafetySettingsScreen
 from screens.settings.sensor_settings import SensorSettingsScreen
+
+# Import widget classes so they're available for KV files
+from widgets.sensor_card import SensorCard
 from widgets.menu_card import MenuCard
 from widgets.settings_button import SettingsButton
 from widgets.navbar import NavBar
-# etc.
 
 Window.fullscreen = 'auto'
 Window.rotation = 270
@@ -38,48 +41,65 @@ Window.rotation = 270
 KV_DIR = os.path.dirname(__file__)
 
 class TrimixScreenManager(ScreenManager):
-    pass
+    """Enhanced screen manager with better navigation tracking"""
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.previous_screen = 'home'  # Track previous screen for back navigation
+    
+    def transition_to(self, screen_name: str):
+        """Navigate to screen while tracking history"""
+        if hasattr(self, 'current') and self.current:
+            self.previous_screen = self.current
+        
+        self.current = screen_name
+        Logger.info(f"TrimixApp: Navigated to {screen_name}")
 
 class TrimixApp(App):
     def build(self):
-
-        LabelBase.register(name="LightFont", fn_regular="assets/fonts/light.ttf")
-        LabelBase.register(name="NormalFont", fn_regular="assets/fonts/normal.ttf")
-        LabelBase.register(name="BoldFont", fn_regular="assets/fonts/bold.ttf")
-       
-        Label.font_name = "BoldFont"
-
-        Builder.load_file(os.path.join(KV_DIR, 'widgets', 'sensor_card.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'widgets', 'menu_card.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'widgets', 'settings_button.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'widgets', 'navbar.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'home.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'analyze.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'sensor_detail.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'settings.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'calibrate_o2.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'wifi_settings.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'display_settings.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'safety_settings.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'sensor_settings.kv'))
-        Builder.load_file(os.path.join(KV_DIR, 'app.kv'))
-        # 4) Instantiate and return the manager
+        # Register fonts
+        self._register_fonts()
+        
+        # Load all KV files automatically
+        self._load_kv_files()
+        
+        # Create screen manager
         screen_manager = TrimixScreenManager(transition=FadeTransition())
-        screen_manager.current = 'home'  # Set the initial screen
+        screen_manager.current = 'home'
         
-        # Handle first run setup
-        Clock.schedule_once(self.handle_first_run, 2)  # Delay to ensure UI is loaded
+        # Schedule initialization tasks
+        self._schedule_initialization_tasks()
         
-        # Run migration from JSON to database if needed
+        return screen_manager
+    
+    def _register_fonts(self):
+        """Register custom fonts"""
+        try:
+            LabelBase.register(name="LightFont", fn_regular="assets/fonts/light.ttf")
+            LabelBase.register(name="NormalFont", fn_regular="assets/fonts/normal.ttf")
+            LabelBase.register(name="BoldFont", fn_regular="assets/fonts/bold.ttf")
+            Label.font_name = "BoldFont"
+        except Exception as e:
+            Logger.warning(f"TrimixApp: Failed to register fonts: {e}")
+    
+    def _load_kv_files(self):
+        """Automatically load all KV files using the KV loader"""
+        kv_loader = create_kv_loader(KV_DIR)
+        results = kv_loader.load_all_kv_files()
+        
+        # Log summary
+        successful_count = sum(1 for success in results.values() if success)
+        total_count = len(results)
+        Logger.info(f"TrimixApp: KV loading complete - {successful_count}/{total_count} files loaded")
+    
+    def _schedule_initialization_tasks(self):
+        """Schedule initialization tasks"""
+        Clock.schedule_once(self.handle_first_run, 2)
         Clock.schedule_once(self.migrate_json_settings, 1)
         
         # Start calibration reminder system
         calibration_reminder.schedule_periodic_check()
-        
-        # Check for immediate calibration reminders
         Clock.schedule_once(lambda dt: calibration_reminder.show_calibration_reminder(), 5)
-        
-        return screen_manager
     
     def open_detail(self, sensor_key: str, screen_name: str):
             detail = self.root.get_screen(screen_name)
@@ -109,12 +129,16 @@ class TrimixApp(App):
                                       capture_output=True, text=True, timeout=30)
                 
                 if result.returncode != 0:
-                    pass  # Script failed, but we continue
+                    Logger.warning(f"TrimixApp: Brightness setup script failed: {result.stderr}")
+                else:
+                    Logger.info("TrimixApp: Brightness permissions setup completed")
             else:
-                pass  # Script not found, but we continue
+                Logger.warning(f"TrimixApp: Brightness setup script not found at {script_path}")
                 
+        except subprocess.TimeoutExpired:
+            Logger.error("TrimixApp: Brightness setup script timed out")
         except Exception as e:
-            pass  # Any error, but we continue without breaking the app
+            Logger.error(f"TrimixApp: Error in brightness setup: {e}")
     
     def migrate_json_settings(self, dt):
         """Migrate JSON settings to database if they exist"""
@@ -126,10 +150,16 @@ class TrimixApp(App):
                 from utils.migrate_to_database import migrate_json_to_database
                 
                 # Run migration
-                migrate_json_to_database()
+                success = migrate_json_to_database()
+                if success:
+                    Logger.info("TrimixApp: JSON settings migration completed successfully")
+                else:
+                    Logger.warning("TrimixApp: JSON settings migration failed")
+            else:
+                Logger.info("TrimixApp: No JSON settings file found, starting with clean database")
                 
         except Exception as e:
-            pass  # Migration failed, but continue with app startup
+            Logger.error(f"TrimixApp: Migration failed: {e}")
 
 if __name__ == '__main__':
     TrimixApp().run()

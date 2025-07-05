@@ -8,7 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
-from utils.settings_manager import settings_manager
+from utils.settings_adapter import settings_manager
 import re
 
 class WiFiNetwork(BoxLayout):
