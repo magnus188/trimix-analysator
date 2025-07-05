@@ -1,0 +1,51 @@
+#:kivy 2.1.0
+#:import dp kivy.metrics.dp
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+
+        Label:
+            text: 'Trimix Analyzer'
+            font_size: '32sp'
+            size_hint_y: None
+            height: dp(50)
+            color: 1,1,1,1
+
+        GridLayout:
+            cols: 2
+            rows: 3
+            spacing: dp(10)
+            padding: dp(5)
+
+            SensorCard:
+                id: o2_card
+                title: 'O2'
+                value: '-- %'
+
+            SensorCard:
+                id: temp_card
+                title: 'Temp'
+                value: '-- °C'
+
+            SensorCard:
+                id: pres_card
+                title: 'Press'
+                value: '-- hPa'
+
+            SensorCard:
+                id: hum_card
+                title: 'Hum'
+                value: '-- %'
+
+            SensorCard:
+                id: mix_card
+                title: 'Gas Mix'
+                value: '—'
+
+            SensorCard:
+                id: depth_card
+                title: 'Depth'
+                value: '— m'

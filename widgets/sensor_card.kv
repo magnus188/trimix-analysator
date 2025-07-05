@@ -1,0 +1,25 @@
+#:kivy 1.0
+#:import dp kivy.metrics.dp
+
+<SensorCard>:
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(5)
+    canvas.before:
+        Color:
+            rgba: 0.15, 0.15, 0.15, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(8),]
+    Label:
+        text: root.title
+        font_size: '18sp'
+        size_hint_y: None
+        height: self.texture_size[1]
+        color: 1,1,1,1
+    Label:
+        text: root.value
+        font_size: '24sp'
+        bold: True
+        color: 1,1,1,1
