@@ -1,0 +1,93 @@
+#:kivy 2.0.0
+
+<SettingsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(20)
+
+        # Header with back button and title
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(20)
+
+            Button:
+                text: '← Back'
+                font_size: '20sp'
+                size_hint_x: None
+                width: dp(120)
+                background_color: 0.2, 0.2, 0.2, 1
+                color: 1, 1, 1, 1
+                on_press: root.navigate_back()
+
+            Label:
+                text: 'Settings'
+                font_size: '32sp'
+                color: 1, 1, 1, 1
+                halign: 'center'
+                valign: 'middle'
+
+            # Spacer to balance the layout
+            Widget:
+                size_hint_x: None
+                width: dp(120)
+
+        # Scrollable settings list
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(10)
+
+                # WiFi Settings
+                SettingsButton:
+                    title: 'WiFi Settings'
+                    on_press: root.on_setting_press('wifi_settings')
+
+                # Date and Time
+                SettingsButton:
+                    title: 'Set Date and Time'
+                    on_press: root.on_setting_press('date_time')
+
+                # Calibrate O2 Sensor
+                SettingsButton:
+                    title: 'Calibrate O2 Sensor'
+                    on_press: root.on_setting_press('calibrate_o2')
+
+                # Calibrate He Sensor
+                SettingsButton:
+                    title: 'Calibrate He Sensor'
+                    on_press: root.on_setting_press('calibrate_he')
+
+                # Display Settings
+                SettingsButton:
+                    title: 'Display Settings'
+                    on_press: root.on_setting_press('display_settings')
+
+                # Units Settings
+                SettingsButton:
+                    title: 'Units Settings'
+                    on_press: root.on_setting_press('units_settings')
+
+                # Backup & Restore
+                SettingsButton:
+                    title: 'Backup & Restore'
+                    on_press: root.on_setting_press('backup_restore')
+
+                # Factory Reset
+                SettingsButton:
+                    title: 'Factory Reset'
+                    background_color_custom: [0.8, 0.2, 0.2, 1]  # Red background for warning
+                    on_press: root.on_setting_press('factory_reset')
+
+                # About
+                SettingsButton:
+                    title: 'About'
+                    on_press: root.on_setting_press('about')

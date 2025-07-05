@@ -12,8 +12,9 @@ from screens.analyze import AnalyzeScreen
 from widgets.sensor_card import SensorCard
 from screens.sensor_detail import SensorDetail
 from screens.home import HomeScreen
+from screens.settings import SettingsScreen
 from widgets.menu_card import MenuCard
-# from screens.settings import SettingsScreen
+from widgets.settings_button import SettingsButton
 # etc.
 
 Window.fullscreen = 'auto'
@@ -36,9 +37,11 @@ class TrimixApp(App):
 
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'sensor_card.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'menu_card.kv'))
+        Builder.load_file(os.path.join(KV_DIR, 'widgets', 'settings_button.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'home.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'analyze.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'sensor_detail.kv'))
+        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'app.kv'))
         # 4) Instantiate and return the manager
         return TrimixScreenManager(transition=FadeTransition())
