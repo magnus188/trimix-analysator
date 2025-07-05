@@ -3,6 +3,7 @@ import os
 from kivy.uix.screenmanager import Screen
 from kivy.properties import NumericProperty
 from kivy.clock import Clock
+from utils.settings_manager import settings_manager
 
 class DisplaySettingsScreen(Screen):
     brightness = NumericProperty(50)  # Default brightness percentage
@@ -10,9 +11,22 @@ class DisplaySettingsScreen(Screen):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # Bind to settings changes
+        settings_manager.bind(settings=self.on_settings_changed)
+        
+    def on_settings_changed(self, instance, settings):
+        """Called when settings are updated externally"""
+        # Update UI when settings change from other sources
+        self.brightness = settings_manager.get('display.brightness', 50)
+        self.sleep_timeout = settings_manager.get('display.sleep_timeout', 5)
         
     def on_enter(self):
         """Called when entering the screen"""
+        # Load settings from the settings manager first
+        self.brightness = settings_manager.get('display.brightness', 50)
+        self.sleep_timeout = settings_manager.get('display.sleep_timeout', 5)
+        
+        # Also try to read current system state for verification
         self.load_current_brightness()
         self.load_current_sleep_timeout()
         
@@ -55,7 +69,6 @@ class DisplaySettingsScreen(Screen):
                 self.brightness = 50
                 
         except Exception as e:
-            print(f"Error loading brightness: {e}")
             self.brightness = 50
     
     def load_current_sleep_timeout(self):
@@ -81,12 +94,14 @@ class DisplaySettingsScreen(Screen):
             self.sleep_timeout = 5
             
         except Exception as e:
-            print(f"Error loading sleep timeout: {e}")
             self.sleep_timeout = 5
     
     def on_brightness_change(self, value):
         """Called when brightness slider changes"""
         self.brightness = int(value)
+        
+        # Save to settings manager
+        settings_manager.set('display.brightness', self.brightness)
         
         # Apply brightness change with a small delay to avoid too many rapid changes
         Clock.unschedule(self._apply_brightness)
@@ -95,6 +110,10 @@ class DisplaySettingsScreen(Screen):
     def on_sleep_timeout_change(self, minutes):
         """Called when sleep timeout changes"""
         self.sleep_timeout = int(minutes)
+        
+        # Save to settings manager
+        settings_manager.set('display.sleep_timeout', self.sleep_timeout)
+        
         self._apply_sleep_timeout()
     
     def _apply_sleep_timeout(self):
@@ -118,10 +137,10 @@ class DisplaySettingsScreen(Screen):
                         'xset', 'dpms', str(timeout_seconds), str(timeout_seconds + 60), str(timeout_seconds + 120)
                     ], capture_output=True, text=True, timeout=5)
                 else:
-                    print(f"Failed to set sleep timeout: {result.stderr}")
+                    pass
                 
         except Exception as e:
-            print(f"Error setting sleep timeout: {e}")
+            pass
     
     def _apply_brightness(self):
         """Apply the brightness change to the system"""
@@ -164,10 +183,9 @@ class DisplaySettingsScreen(Screen):
                             if result.returncode == 0:
                                 return
                             else:
-                                print(f"Failed to set brightness via sudo: {result.stderr}")
+                                pass
                                 
                     except (IOError, ValueError, subprocess.TimeoutExpired) as e:
-                        print(f"Error setting brightness for {brightness_path}: {e}")
                         continue
             
             # If all backlight methods fail, try xrandr (for X11 displays)
@@ -191,14 +209,14 @@ class DisplaySettingsScreen(Screen):
             except (subprocess.TimeoutExpired, FileNotFoundError):
                 pass
             
-            print("Could not set brightness - no supported method found")
-            
         except Exception as e:
-            print(f"Error applying brightness: {e}")
+            pass
     
     def reset_brightness(self):
-        """Reset brightness to 50%"""
-        self.brightness = 50
+        """Reset brightness to default value from settings manager"""
+        default_brightness = settings_manager.default_settings['display']['brightness']
+        self.brightness = default_brightness
+        settings_manager.set('display.brightness', default_brightness)
         self._apply_brightness()
     
     def navigate_back(self):

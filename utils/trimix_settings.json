@@ -1,0 +1,39 @@
+{
+  "display": {
+    "brightness": 50,
+    "sleep_timeout": 5,
+    "auto_brightness": false
+  },
+  "wifi": {
+    "auto_connect": true,
+    "remember_networks": true,
+    "scan_interval": 30
+  },
+  "sensors": {
+    "o2_calibration_date": null,
+    "he_calibration_date": null,
+    "auto_calibration_reminder": true,
+    "calibration_interval_days": 30
+  },
+  "app": {
+    "first_run": true,
+    "theme": "dark",
+    "language": "en",
+    "debug_mode": false,
+    "last_screen": "home"
+  },
+  "units": {
+    "pressure": "bar",
+    "temperature": "celsius",
+    "depth": "meters"
+  },
+  "safety": {
+    "max_o2_percentage": 100,
+    "max_he_percentage": 100,
+    "warning_thresholds": {
+      "high_o2": 23.0,
+      "low_o2": 19.0,
+      "high_he": 50.0
+    }
+  }
+}

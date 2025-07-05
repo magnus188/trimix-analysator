@@ -8,6 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from utils.settings_manager import settings_manager
 import re
 
 class WiFiNetwork(BoxLayout):
@@ -43,6 +44,13 @@ class WiFiSettingsScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.scanning = False
+        # Bind to settings changes
+        settings_manager.bind(settings=self.on_settings_changed)
+        
+    def on_settings_changed(self, instance, settings):
+        """Called when settings are updated externally"""
+        # Update WiFi preferences when settings change
+        pass
         
     def on_enter(self):
         """Called when entering the screen"""
@@ -55,7 +63,6 @@ class WiFiSettingsScreen(Screen):
             return
             
         self.scanning = True
-        print("Scanning for WiFi networks...")
         
         # Run network scan in a separate thread to avoid blocking UI
         thread = threading.Thread(target=self._scan_networks_thread)
@@ -175,14 +182,11 @@ class WiFiSettingsScreen(Screen):
             
             if result.returncode == 0:
                 self.connected_network = ssid
-                print(f"Successfully connected to {ssid}")
                 self._show_connection_result(f"Connected to {ssid}", success=True)
             else:
-                print(f"Failed to connect to {ssid}: {result.stderr}")
                 self._show_connection_result(f"Failed to connect to {ssid}", success=False)
                 
         except Exception as e:
-            print(f"Error connecting to {ssid}: {e}")
             self._show_connection_result(f"Error connecting to {ssid}", success=False)
             
     def _show_password_popup(self, ssid):
@@ -252,14 +256,16 @@ class WiFiSettingsScreen(Screen):
     def _connection_success(self, ssid):
         """Handle successful connection on main thread"""
         self.connected_network = ssid
-        print(f"Successfully connected to {ssid}")
+        
+        # Save last connected network to settings
+        settings_manager.set('wifi.last_network', ssid)
+        
         self._show_connection_result(f"Connected to {ssid}", success=True)
         # Refresh the network list to update connection status
         self._refresh_network_widgets()
         
     def _connection_failed(self, ssid, error):
         """Handle failed connection on main thread"""
-        print(f"Failed to connect to {ssid}: {error}")
         self._show_connection_result(f"Failed to connect to {ssid}", success=False)
         
     def _show_connection_result(self, message, success=True):

@@ -7,6 +7,9 @@ from kivy.core.window import Window
 from kivy.core.text import LabelBase
 from kivy.uix.label import Label
 
+# Import settings manager
+from utils.settings_manager import settings_manager
+
 # Ensure your screen classes are imported so Builder knows about them
 from screens.analyze import AnalyzeScreen
 from widgets.sensor_card import SensorCard
