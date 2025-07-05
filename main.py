@@ -14,6 +14,7 @@ from screens.sensor_detail import SensorDetail
 from screens.home import HomeScreen
 from screens.settings import SettingsScreen
 from screens.calibrate_o2 import CalibrateO2Screen
+from screens.wifi_settings import WiFiSettingsScreen
 from widgets.menu_card import MenuCard
 from widgets.settings_button import SettingsButton
 # etc.
@@ -44,6 +45,7 @@ class TrimixApp(App):
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'sensor_detail.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'calibrate_o2.kv'))
+        Builder.load_file(os.path.join(KV_DIR, 'screens', 'wifi_settings.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'app.kv'))
         # 4) Instantiate and return the manager
         return TrimixScreenManager(transition=FadeTransition())
