@@ -28,6 +28,7 @@ from screens.settings.safety_settings import SafetySettingsScreen
 from screens.settings.sensor_settings import SensorSettingsScreen
 from widgets.menu_card import MenuCard
 from widgets.settings_button import SettingsButton
+from widgets.navbar import NavBar
 # etc.
 
 Window.fullscreen = 'auto'
@@ -51,6 +52,7 @@ class TrimixApp(App):
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'sensor_card.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'menu_card.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'settings_button.kv'))
+        Builder.load_file(os.path.join(KV_DIR, 'widgets', 'navbar.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'home.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'analyze.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'sensor_detail.kv'))

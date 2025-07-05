@@ -10,3 +10,8 @@ class HomeScreen(Screen):
         # Function to navigate to another screen
         self.manager.current = screen_name
         print(f"Navigating to {screen_name}")
+    
+    def show_power_options(self):
+        """Show power off/restart options"""
+        # TODO: Implement power options popup
+        print("Power options requested")

@@ -3,48 +3,28 @@
 <SettingsScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(20)
-        spacing: dp(20)
-
-        # Header with back button and title
-        BoxLayout:
-            orientation: 'horizontal'
-            size_hint_y: None
-            height: dp(60)
-            spacing: dp(20)
-
-            Button:
-                text: '← Back'
-                font_size: '20sp'
-                size_hint_x: None
-                width: dp(120)
-                background_color: 0.2, 0.2, 0.2, 1
-                color: 1, 1, 1, 1
-                on_press: root.navigate_back()
-
-            Label:
-                text: 'Settings'
-                font_size: '32sp'
-                color: 1, 1, 1, 1
-                halign: 'center'
-                valign: 'middle'
-
-            # Spacer to balance the layout
-            Widget:
-                size_hint_x: None
-                width: dp(120)
+        
+        # Navigation bar
+        NavBar:
+            title: 'Settings'
+            show_left_button: True
+            left_button_text: '← Back'
+            show_right_button: False
+            left_button_callback: root.navigate_back
+            navbar_height: 75
+            title_font_size: 24
 
         # Scrollable settings list
         ScrollView:
             do_scroll_x: False
             do_scroll_y: True
-
+            
             BoxLayout:
                 orientation: 'vertical'
                 spacing: dp(15)
                 size_hint_y: None
                 height: self.minimum_height
-                padding: dp(10)
+                padding: dp(20)
 
                 # Calibrate O2 Sensor
                 SettingsButton:

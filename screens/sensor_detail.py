@@ -20,6 +20,10 @@ class SensorDetail(Screen):
         super().__init__(**kwargs)
         self.plot = None
         self._refresh_event = None
+    
+    def navigate_back(self):
+        """Navigate back to analyze screen"""
+        self.manager.current = 'analyze'
 
     def set_sensor(self, key: str):
         meta = _SENSOR_META.get(key, {})

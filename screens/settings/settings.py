@@ -9,6 +9,10 @@ class SettingsScreen(Screen):
     def on_enter(self):
         # Initialization when entering the screen
         pass
+    
+    def navigate_back(self):
+        """Navigate back to home screen"""
+        self.manager.current = 'home'
 
     def on_setting_press(self, setting_name):
         # Function to handle setting button presses

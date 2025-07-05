@@ -24,6 +24,10 @@ class CalibrateO2Screen(Screen):
         self.voltage_readings = []
         self.clock_event = None
     
+    def navigate_back(self):
+        """Navigate back to settings screen"""
+        self.manager.current = 'settings'
+    
     def on_enter(self):
         # Reset state when entering the screen
         self.reset_calibration()

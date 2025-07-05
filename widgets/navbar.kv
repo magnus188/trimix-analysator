@@ -1,0 +1,21 @@
+#:kivy 2.0.0
+
+<NavBar>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # Dark background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 0.3, 0.3, 0.3, 1  # Border color
+        Line:
+            points: self.x, self.y, self.x + self.width, self.y
+            width: 1
+
+<NavBar@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: '100dp'
+    spacing: '8dp'
+    padding: ['16dp', '8dp', '16dp', '8dp']

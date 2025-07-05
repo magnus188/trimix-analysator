@@ -19,6 +19,10 @@ class AnalyzeScreen(Screen):
     def on_leave(self):
         if self._update_ev:
             Clock.unschedule(self._update_ev)
+    
+    def navigate_back(self):
+        """Navigate back to home screen"""
+        self.manager.current = 'home'
 
     def _deferred_update(self, dt):
         self._update_sensors(dt)

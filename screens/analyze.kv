@@ -4,29 +4,20 @@
 <AnalyzeScreen>:
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(10)
-        spacing: dp(10)
-
-        # ─── Navbar ────────────────────────────────────────────────────────
+        
+        # Navigation bar
+        NavBar:
+            title: 'Trimix Analyzer'
+            show_left_button: True
+            left_button_text: '← Back'
+            show_right_button: False
+            left_button_callback: root.navigate_back
+        
+        # Content area
         BoxLayout:
-            size_hint_y: None
-            height: dp(100)
+            orientation: 'vertical'
+            padding: dp(10)
             spacing: dp(10)
-
-            Button:
-                text: 'Back'
-                size_hint_x: None
-                width: dp(60)
-                on_release: root.manager.current = 'home'
-
-            Label:
-                text: 'Trimix Analyzer'
-                font_size: '32sp'
-                size_hint_y: None
-                height: dp(50)
-                color: 1,1,1,1
-                halign: 'center'
-                valign: 'middle'
 
         GridLayout:
             cols: 2

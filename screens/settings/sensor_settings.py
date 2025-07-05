@@ -19,6 +19,10 @@ class SensorSettingsScreen(Screen):
         super().__init__(**kwargs)
         # Bind to settings changes
         settings_manager.bind(settings=self.on_settings_changed)
+    
+    def navigate_back(self):
+        """Navigate back to settings screen"""
+        self.manager.current = 'settings'
         
     def on_settings_changed(self, instance, settings):
         """Called when settings are updated externally"""
