@@ -4,6 +4,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, FadeTransition
 from kivy.core.window import Window
+from kivy.core.text import LabelBase
+from kivy.uix.label import Label
 
 # Ensure your screen classes are imported so Builder knows about them
 from screens.analyze import AnalyzeScreen
@@ -25,6 +27,13 @@ class TrimixScreenManager(ScreenManager):
 
 class TrimixApp(App):
     def build(self):
+
+        LabelBase.register(name="LightFont", fn_regular="assets/fonts/light.ttf")
+        LabelBase.register(name="NormalFont", fn_regular="assets/fonts/normal.ttf")
+        LabelBase.register(name="BoldFont", fn_regular="assets/fonts/bold.ttf")
+       
+        Label.font_name = "BoldFont"
+
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'sensor_card.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'widgets', 'menu_card.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'home.kv'))
