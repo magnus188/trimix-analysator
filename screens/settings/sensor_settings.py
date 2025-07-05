@@ -7,6 +7,7 @@ from kivy.uix.button import Button
 from utils.settings_adapter import settings_manager
 from utils.calibration_reminder import calibration_reminder
 from datetime import datetime
+from kivy.logger import Logger
 
 class SensorSettingsScreen(Screen):
     calibration_interval_days = NumericProperty(30)
@@ -42,8 +43,16 @@ class SensorSettingsScreen(Screen):
     
     def on_calibration_interval_change(self, value):
         """Called when calibration interval changes"""
-        self.calibration_interval_days = int(value)
-        settings_manager.set('sensors.calibration_interval_days', self.calibration_interval_days)
+        try:
+            int_value = int(value)
+            if not (7 <= int_value <= 365):
+                self.show_error("Invalid Value", "Calibration interval must be between 7-365 days")
+                return
+            
+            self.calibration_interval_days = int_value
+            settings_manager.set('sensors.calibration_interval_days', self.calibration_interval_days)
+        except ValueError:
+            self.show_error("Invalid Value", "Calibration interval must be a number")
     
     def on_auto_reminder_change(self, active):
         """Called when auto reminder toggle changes"""
@@ -52,13 +61,29 @@ class SensorSettingsScreen(Screen):
     
     def on_o2_offset_change(self, value):
         """Called when O2 calibration offset changes"""
-        self.o2_calibration_offset = round(float(value), 2)
-        settings_manager.set('sensors.o2_calibration_offset', self.o2_calibration_offset)
+        try:
+            float_value = float(value)
+            if not (-5.0 <= float_value <= 5.0):
+                self.show_error("Invalid Value", "O2 offset must be between -5.0 and 5.0")
+                return
+            
+            self.o2_calibration_offset = round(float_value, 2)
+            settings_manager.set('sensors.o2_calibration_offset', self.o2_calibration_offset)
+        except ValueError:
+            self.show_error("Invalid Value", "O2 offset must be a number")
     
     def on_he_offset_change(self, value):
         """Called when He calibration offset changes"""
-        self.he_calibration_offset = round(float(value), 2)
-        settings_manager.set('sensors.he_calibration_offset', self.he_calibration_offset)
+        try:
+            float_value = float(value)
+            if not (-5.0 <= float_value <= 5.0):
+                self.show_error("Invalid Value", "He offset must be between -5.0 and 5.0")
+                return
+            
+            self.he_calibration_offset = round(float_value, 2)
+            settings_manager.set('sensors.he_calibration_offset', self.he_calibration_offset)
+        except ValueError:
+            self.show_error("Invalid Value", "He offset must be a number")
     
     def on_auto_calibrate_change(self, active):
         """Called when auto calibrate toggle changes"""
@@ -238,3 +263,33 @@ class SensorSettingsScreen(Screen):
     def navigate_back(self):
         """Navigate back to settings screen"""
         self.manager.current = 'settings'
+    
+    def show_error(self, title: str, message: str):
+        """Show error popup to user"""
+        content = BoxLayout(orientation='vertical', spacing='10dp', padding='20dp')
+        
+        content.add_widget(Label(
+            text=message,
+            text_size=(400, None),
+            halign='center',
+            valign='middle'
+        ))
+        
+        close_btn = Button(
+            text='OK',
+            size_hint_y=None,
+            height='40dp'
+        )
+        
+        popup = Popup(
+            title=title,
+            content=content,
+            size_hint=(0.8, 0.4),
+            auto_dismiss=False
+        )
+        
+        close_btn.bind(on_press=popup.dismiss)
+        content.add_widget(close_btn)
+        
+        popup.open()
+        Logger.warning(f"SensorSettings: {title} - {message}")

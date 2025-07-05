@@ -79,49 +79,9 @@ class SettingsAdapter(EventDispatcher):
     
     @property
     def default_settings(self):
-        """Default settings for backwards compatibility"""
-        return {
-            'app': {
-                'first_run': True,
-                'app_version': '1.0.0',
-                'theme': 'dark',
-                'language': 'en',
-                'debug_mode': False,
-                'last_screen': 'home'
-            },
-            'display': {
-                'brightness': 50,
-                'sleep_timeout': 5,
-                'auto_brightness': False
-            },
-            'wifi': {
-                'auto_connect': True,
-                'remember_networks': True,
-                'scan_interval': 30,
-                'last_network': None
-            },
-            'sensors': {
-                'calibration_interval_days': 30,
-                'auto_calibration_reminder': True,
-                'o2_calibration_offset': 0.0,
-                'he_calibration_offset': 0.0,
-                'auto_calibrate': True
-            },
-            'safety': {
-                'max_o2_percentage': 100,
-                'max_he_percentage': 100,
-                'warning_thresholds': {
-                    'high_o2': 23.0,
-                    'low_o2': 19.0,
-                    'high_he': 50.0
-                }
-            },
-            'units': {
-                'pressure': 'bar',
-                'temperature': 'celsius',
-                'depth': 'meters'
-            }
-        }
+        """Default settings - delegates to database manager to avoid duplication"""
+        # Get defaults from database manager to maintain single source of truth
+        return db_manager.get_default_settings()
 
 
 # Global instance for backwards compatibility

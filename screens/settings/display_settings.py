@@ -3,6 +3,11 @@ import os
 from kivy.uix.screenmanager import Screen
 from kivy.properties import NumericProperty
 from kivy.clock import Clock
+from kivy.logger import Logger
+from kivy.uix.popup import Popup
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 from utils.settings_adapter import settings_manager
 
 class DisplaySettingsScreen(Screen):
@@ -102,17 +107,50 @@ class DisplaySettingsScreen(Screen):
     
     def on_brightness_change(self, value):
         """Called when brightness slider changes"""
-        self.brightness = int(value)
-        
-        # Save to settings manager
-        settings_manager.set('display.brightness', self.brightness)
-        
-        # Apply brightness change with a small delay to avoid too many rapid changes
-        Clock.unschedule(self._apply_brightness)
-        Clock.schedule_once(lambda dt: self._apply_brightness(), 0.2)
+        try:
+            int_value = int(value)
+            if not (10 <= int_value <= 100):
+                self.show_error("Invalid Value", "Brightness must be between 10-100%")
+                return
+            
+            self.brightness = int_value
+            
+            # Save to settings manager
+            success = settings_manager.set('display.brightness', self.brightness)
+            if not success:
+                Logger.error("DisplaySettings: Failed to save brightness setting")
+                self.show_error("Save Error", "Failed to save brightness setting")
+                return
+            
+            # Apply brightness change with a small delay to avoid too many rapid changes
+            Clock.unschedule(self._apply_brightness)
+            Clock.schedule_once(lambda dt: self._apply_brightness(), 0.2)
+            
+        except (ValueError, TypeError):
+            self.show_error("Invalid Input", "Please enter a valid brightness value")
     
     def on_sleep_timeout_change(self, minutes):
         """Called when sleep timeout changes"""
+        try:
+            int_minutes = int(minutes)
+            if int_minutes != 0 and not (1 <= int_minutes <= 60):
+                self.show_error("Invalid Value", "Sleep timeout must be 0 (never) or 1-60 minutes")
+                return
+            
+            self.sleep_timeout = int_minutes
+            
+            # Save to settings manager
+            success = settings_manager.set('display.sleep_timeout', self.sleep_timeout)
+            if not success:
+                Logger.error("DisplaySettings: Failed to save sleep timeout setting")
+                self.show_error("Save Error", "Failed to save sleep timeout setting")
+                return
+            
+            # Apply the timeout setting
+            self._apply_sleep_timeout()
+            
+        except (ValueError, TypeError):
+            self.show_error("Invalid Input", "Please enter a valid timeout value")
         self.sleep_timeout = int(minutes)
         
         # Save to settings manager
@@ -226,3 +264,33 @@ class DisplaySettingsScreen(Screen):
     def navigate_back(self):
         """Navigate back to settings screen"""
         self.manager.current = 'settings'
+    
+    def show_error(self, title: str, message: str):
+        """Show error popup to user"""
+        content = BoxLayout(orientation='vertical', spacing='10dp', padding='20dp')
+        
+        content.add_widget(Label(
+            text=message,
+            text_size=(400, None),
+            halign='center',
+            valign='middle'
+        ))
+        
+        close_btn = Button(
+            text='OK',
+            size_hint_y=None,
+            height='40dp'
+        )
+        
+        popup = Popup(
+            title=title,
+            content=content,
+            size_hint=(0.8, 0.4),
+            auto_dismiss=False
+        )
+        
+        close_btn.bind(on_press=popup.dismiss)
+        content.add_widget(close_btn)
+        
+        popup.open()
+        Logger.warning(f"DisplaySettings: {title} - {message}")
