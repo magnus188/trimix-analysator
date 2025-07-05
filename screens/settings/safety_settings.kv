@@ -1,0 +1,285 @@
+#:kivy 2.0.0
+
+<SafetySettingsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(20)
+
+        # Header with back button and title
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(20)
+
+            Button:
+                text: '← Back'
+                font_size: '20sp'
+                size_hint_x: None
+                width: dp(120)
+                background_color: 0.2, 0.2, 0.2, 1
+                color: 1, 1, 1, 1
+                on_press: root.navigate_back()
+
+            Label:
+                text: 'Safety Settings'
+                font_size: '32sp'
+                color: 1, 1, 1, 1
+                halign: 'center'
+                valign: 'middle'
+
+            # Spacer to balance the layout
+            Widget:
+                size_hint_x: None
+                width: dp(120)
+
+        # Scrollable settings list
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(25)
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(10)
+
+                # Maximum Gas Percentages Section
+                Label:
+                    text: 'Maximum Gas Percentages'
+                    font_size: '24sp'
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(40)
+                    halign: 'left'
+                    text_size: self.size
+
+                # Max O2 Percentage
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'Maximum O2 Percentage'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.7
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{int(root.max_o2_percentage)}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.3
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: 10
+                        max: 100
+                        step: 1
+                        value: root.max_o2_percentage
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_max_o2_change(self.value)
+
+                # Max He Percentage
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'Maximum He Percentage'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.7
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{int(root.max_he_percentage)}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.3
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: 0
+                        max: 100
+                        step: 1
+                        value: root.max_he_percentage
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_max_he_change(self.value)
+
+                # Warning Thresholds Section
+                Widget:
+                    size_hint_y: None
+                    height: dp(20)
+
+                Label:
+                    text: 'Warning Thresholds'
+                    font_size: '24sp'
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(40)
+                    halign: 'left'
+                    text_size: self.size
+
+                # High O2 Warning
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'High O2 Warning'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.7
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{root.high_o2_threshold:.1f}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.3
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: 20.0
+                        max: 30.0
+                        step: 0.1
+                        value: root.high_o2_threshold
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_high_o2_threshold_change(self.value)
+
+                # Low O2 Warning
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'Low O2 Warning'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.7
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{root.low_o2_threshold:.1f}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.3
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: 15.0
+                        max: 25.0
+                        step: 0.1
+                        value: root.low_o2_threshold
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_low_o2_threshold_change(self.value)
+
+                # High He Warning
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'High He Warning'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.7
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{root.high_he_threshold:.1f}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.3
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: 30.0
+                        max: 80.0
+                        step: 0.1
+                        value: root.high_he_threshold
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_high_he_threshold_change(self.value)
+
+                # Reset Button
+                Widget:
+                    size_hint_y: None
+                    height: dp(30)
+
+                Button:
+                    text: 'Reset to Defaults'
+                    font_size: '20sp'
+                    size_hint_y: None
+                    height: dp(60)
+                    background_color: 0.8, 0.6, 0.2, 1
+                    color: 1, 1, 1, 1
+                    on_press: root.reset_to_defaults()
+
+                # Bottom spacer
+                Widget:
+                    size_hint_y: None
+                    height: dp(50)

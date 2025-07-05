@@ -13,10 +13,13 @@
     "o2_calibration_date": null,
     "he_calibration_date": null,
     "auto_calibration_reminder": true,
-    "calibration_interval_days": 30
+    "calibration_interval_days": 30,
+    "o2_calibration_offset": 0.0,
+    "he_calibration_offset": 0.0,
+    "auto_calibrate": true
   },
   "app": {
-    "first_run": true,
+    "first_run": false,
     "theme": "dark",
     "language": "en",
     "debug_mode": false,

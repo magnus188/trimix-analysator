@@ -6,6 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from utils.sensors import read_oxygen_voltage, update_v_air_calibration
+from utils.calibration_reminder import calibration_reminder
 import time
 
 class CalibrateO2Screen(Screen):
@@ -89,6 +90,9 @@ class CalibrateO2Screen(Screen):
             
             # Update the calibration in the sensors module
             update_v_air_calibration(average_voltage)
+            
+            # Record calibration date
+            calibration_reminder.record_calibration('o2')
             
             # Show completion message
             self.countdown_text = "✓"

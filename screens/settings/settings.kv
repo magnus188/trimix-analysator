@@ -46,16 +46,6 @@
                 height: self.minimum_height
                 padding: dp(10)
 
-                # WiFi Settings
-                SettingsButton:
-                    title: 'WiFi Settings'
-                    on_press: root.on_setting_press('wifi_settings')
-
-                # Date and Time
-                SettingsButton:
-                    title: 'Set Date and Time'
-                    on_press: root.on_setting_press('date_time')
-
                 # Calibrate O2 Sensor
                 SettingsButton:
                     title: 'Calibrate O2 Sensor'
@@ -66,15 +56,25 @@
                     title: 'Calibrate He Sensor'
                     on_press: root.on_setting_press('calibrate_he')
 
-                # Display Settings
+                # WiFi Settings
+                SettingsButton:
+                    title: 'WiFi Settings'
+                    on_press: root.on_setting_press('wifi_settings')
+
+
                 SettingsButton:
                     title: 'Display Settings'
                     on_press: root.on_setting_press('display_settings')
 
-                # Units Settings
+                # Safety Settings
                 SettingsButton:
-                    title: 'Units Settings'
-                    on_press: root.on_setting_press('units_settings')
+                    title: 'Safety Settings'
+                    on_press: root.on_setting_press('safety_settings')
+
+                # Sensor Settings
+                SettingsButton:
+                    title: 'Sensor Settings'
+                    on_press: root.on_setting_press('sensor_settings')
 
                 # Backup & Restore
                 SettingsButton:
@@ -87,7 +87,3 @@
                     background_color_custom: [0.8, 0.2, 0.2, 1]  # Red background for warning
                     on_press: root.on_setting_press('factory_reset')
 
-                # About
-                SettingsButton:
-                    title: 'About'
-                    on_press: root.on_setting_press('about')

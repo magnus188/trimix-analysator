@@ -1,0 +1,283 @@
+#:kivy 2.0.0
+
+<SensorSettingsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(20)
+
+        # Header with back button and title
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(20)
+
+            Button:
+                text: '← Back'
+                font_size: '20sp'
+                size_hint_x: None
+                width: dp(120)
+                background_color: 0.2, 0.2, 0.2, 1
+                color: 1, 1, 1, 1
+                on_press: root.navigate_back()
+
+            Label:
+                text: 'Sensor Settings'
+                font_size: '32sp'
+                color: 1, 1, 1, 1
+                halign: 'center'
+                valign: 'middle'
+
+            # Spacer to balance the layout
+            Widget:
+                size_hint_x: None
+                width: dp(120)
+
+        # Scrollable settings list
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(25)
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(10)
+
+                # Calibration Status Section
+                Label:
+                    text: 'Calibration Status'
+                    font_size: '24sp'
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(40)
+                    halign: 'left'
+                    text_size: self.size
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    Label:
+                        text: root.get_calibration_status_text()
+                        font_size: '16sp'
+                        color: 1, 1, 1, 1
+                        text_size: self.size
+                        halign: 'left'
+                        valign: 'middle'
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(10)
+                        size_hint_y: None
+                        height: dp(50)
+
+                        Button:
+                            text: 'Test Reminder'
+                            font_size: '16sp'
+                            size_hint_x: 0.5
+                            background_color: 0.2, 0.6, 0.8, 1
+                            on_press: root.test_calibration_reminder()
+
+                        Button:
+                            text: 'Reset History'
+                            font_size: '16sp'
+                            size_hint_x: 0.5
+                            background_color: 0.8, 0.6, 0.2, 1
+                            on_press: root.reset_calibration_dates()
+
+                # Calibration Interval
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'Calibration Interval'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.6
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{int(root.calibration_interval_days)} days'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.4
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: 7
+                        max: 90
+                        step: 1
+                        value: root.calibration_interval_days
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_calibration_interval_change(self.value)
+
+                # Auto Calibration Reminder Toggle
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(60)
+                    spacing: dp(15)
+
+                    Label:
+                        text: 'Auto Calibration Reminders'
+                        font_size: '18sp'
+                        color: 1, 1, 1, 1
+                        size_hint_x: 0.7
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    Switch:
+                        size_hint_x: 0.3
+                        active: root.auto_calibration_reminder
+                        on_active: root.on_auto_reminder_change(self.active)
+
+                # Calibration Offsets Section
+                Widget:
+                    size_hint_y: None
+                    height: dp(20)
+
+                Label:
+                    text: 'Calibration Offsets'
+                    font_size: '24sp'
+                    color: 1, 1, 1, 1
+                    size_hint_y: None
+                    height: dp(40)
+                    halign: 'left'
+                    text_size: self.size
+
+                # O2 Calibration Offset
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'O2 Calibration Offset'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.6
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{root.o2_calibration_offset:.2f}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.4
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: -5.0
+                        max: 5.0
+                        step: 0.01
+                        value: root.o2_calibration_offset
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_o2_offset_change(self.value)
+
+                # He Calibration Offset
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(100)
+
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(40)
+
+                        Label:
+                            text: 'He Calibration Offset'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.6
+                            halign: 'left'
+                            valign: 'middle'
+                            text_size: self.size
+
+                        Label:
+                            text: f'{root.he_calibration_offset:.2f}%'
+                            font_size: '18sp'
+                            color: 1, 1, 1, 1
+                            size_hint_x: 0.4
+                            halign: 'right'
+                            valign: 'middle'
+                            text_size: self.size
+
+                    Slider:
+                        min: -5.0
+                        max: 5.0
+                        step: 0.01
+                        value: root.he_calibration_offset
+                        size_hint_y: None
+                        height: dp(50)
+                        on_value: root.on_he_offset_change(self.value)
+
+                # Auto Calibrate Toggle
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(60)
+                    spacing: dp(15)
+
+                    Label:
+                        text: 'Auto Calibrate'
+                        font_size: '18sp'
+                        color: 1, 1, 1, 1
+                        size_hint_x: 0.7
+                        halign: 'left'
+                        valign: 'middle'
+                        text_size: self.size
+
+                    Switch:
+                        size_hint_x: 0.3
+                        active: root.auto_calibrate
+                        on_active: root.on_auto_calibrate_change(self.active)
+
+                # Reset Button
+                Widget:
+                    size_hint_y: None
+                    height: dp(30)
+
+                Button:
+                    text: 'Reset to Defaults'
+                    font_size: '20sp'
+                    size_hint_y: None
+                    height: dp(60)
+                    background_color: 0.8, 0.6, 0.2, 1
+                    color: 1, 1, 1, 1
+                    on_press: root.reset_to_defaults()
+
+                # Bottom spacer
+                Widget:
+                    size_hint_y: None
+                    height: dp(50)
