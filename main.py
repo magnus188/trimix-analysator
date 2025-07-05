@@ -1,5 +1,6 @@
 import os
 import subprocess
+import json
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -9,8 +10,9 @@ from kivy.core.text import LabelBase
 from kivy.uix.label import Label
 from kivy.clock import Clock
 
-# Import settings manager
-from utils.settings_manager import settings_manager
+# Import database manager and settings adapter
+from utils.database_manager import db_manager
+from utils.settings_adapter import settings_manager
 from utils.calibration_reminder import calibration_reminder
 
 # Ensure your screen classes are imported so Builder knows about them
@@ -66,6 +68,9 @@ class TrimixApp(App):
         # Handle first run setup
         Clock.schedule_once(self.handle_first_run, 2)  # Delay to ensure UI is loaded
         
+        # Run migration from JSON to database if needed
+        Clock.schedule_once(self.migrate_json_settings, 1)
+        
         # Start calibration reminder system
         calibration_reminder.schedule_periodic_check()
         
@@ -81,12 +86,12 @@ class TrimixApp(App):
     
     def handle_first_run(self, dt):
         """Handle first run setup tasks"""
-        if settings_manager.get('app.first_run', True):
+        if db_manager.get_setting('app', 'first_run', True):
             # Run the brightness permissions setup script
             self.setup_brightness_permissions()
             
             # Mark first run as complete
-            settings_manager.set('app.first_run', False)
+            db_manager.set_setting('app', 'first_run', False)
     
     def setup_brightness_permissions(self):
         """Run the brightness permissions setup script"""
@@ -108,6 +113,21 @@ class TrimixApp(App):
                 
         except Exception as e:
             pass  # Any error, but we continue without breaking the app
+    
+    def migrate_json_settings(self, dt):
+        """Migrate JSON settings to database if they exist"""
+        try:
+            json_path = os.path.join(os.path.dirname(__file__), 'utils', 'trimix_settings.json')
+            
+            if os.path.exists(json_path):
+                # Import migration utility
+                from utils.migrate_to_database import migrate_json_to_database
+                
+                # Run migration
+                migrate_json_to_database()
+                
+        except Exception as e:
+            pass  # Migration failed, but continue with app startup
 
 if __name__ == '__main__':
     TrimixApp().run()

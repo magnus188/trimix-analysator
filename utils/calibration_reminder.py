@@ -11,7 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.clock import Clock
-from utils.settings_manager import settings_manager
+from utils.database_manager import db_manager
 
 class CalibrationReminder:
     """
@@ -36,46 +36,36 @@ class CalibrationReminder:
             'he_days_overdue': 0,
             'o2_last_calibration': None,
             'he_last_calibration': None,
-            'interval_days': settings_manager.get('sensors.calibration_interval_days', 30)
+            'interval_days': db_manager.get_setting('sensors', 'calibration_interval_days', 30)
         }
         
-        # Get calibration dates
-        o2_date_str = settings_manager.get('sensors.o2_calibration_date')
-        he_date_str = settings_manager.get('sensors.he_calibration_date')
+        # Get calibration dates from database
+        o2_last_cal = db_manager.get_last_calibration('o2')
+        he_last_cal = db_manager.get_last_calibration('he')
         
         current_date = datetime.now()
         interval_days = result['interval_days']
         
         # Check O2 calibration
-        if o2_date_str:
-            try:
-                o2_date = datetime.fromisoformat(o2_date_str)
-                result['o2_last_calibration'] = o2_date
-                days_since_o2 = (current_date - o2_date).days
-                
-                if days_since_o2 >= interval_days:
-                    result['o2_due'] = True
-                    result['o2_days_overdue'] = days_since_o2 - interval_days
-            except ValueError:
-                # Invalid date format, treat as never calibrated
+        if o2_last_cal:
+            result['o2_last_calibration'] = o2_last_cal
+            days_since_o2 = (current_date - o2_last_cal).days
+            
+            if days_since_o2 >= interval_days:
                 result['o2_due'] = True
+                result['o2_days_overdue'] = days_since_o2 - interval_days
         else:
             # Never calibrated
             result['o2_due'] = True
         
         # Check He calibration
-        if he_date_str:
-            try:
-                he_date = datetime.fromisoformat(he_date_str)
-                result['he_last_calibration'] = he_date
-                days_since_he = (current_date - he_date).days
-                
-                if days_since_he >= interval_days:
-                    result['he_due'] = True
-                    result['he_days_overdue'] = days_since_he - interval_days
-            except ValueError:
-                # Invalid date format, treat as never calibrated
+        if he_last_cal:
+            result['he_last_calibration'] = he_last_cal
+            days_since_he = (current_date - he_last_cal).days
+            
+            if days_since_he >= interval_days:
                 result['he_due'] = True
+                result['he_days_overdue'] = days_since_he - interval_days
         else:
             # Never calibrated
             result['he_due'] = True
@@ -84,7 +74,7 @@ class CalibrationReminder:
     
     def show_calibration_reminder(self, calibration_status: Dict[str, Any] = None):
         """Show calibration reminder popup if needed"""
-        if not settings_manager.get('sensors.auto_calibration_reminder', True):
+        if not db_manager.get_setting('sensors', 'auto_calibration_reminder', True):
             return
             
         if calibration_status is None:
@@ -203,7 +193,7 @@ class CalibrationReminder:
     
     def _disable_reminders(self, button):
         """Disable calibration reminders"""
-        settings_manager.set('sensors.auto_calibration_reminder', False)
+        db_manager.set_setting('sensors', 'auto_calibration_reminder', False)
         if self.popup:
             self.popup.dismiss()
             self.popup = None
@@ -229,12 +219,7 @@ class CalibrationReminder:
         Args:
             sensor_type: 'o2' or 'he'
         """
-        current_date = datetime.now().isoformat()
-        
-        if sensor_type.lower() == 'o2':
-            settings_manager.set('sensors.o2_calibration_date', current_date)
-        elif sensor_type.lower() == 'he':
-            settings_manager.set('sensors.he_calibration_date', current_date)
+        return db_manager.record_calibration(sensor_type)
     
     def get_next_calibration_date(self, sensor_type: str) -> Optional[datetime]:
         """
@@ -246,17 +231,15 @@ class CalibrationReminder:
         Returns:
             Next calibration date or None if never calibrated
         """
-        date_key = f'sensors.{sensor_type.lower()}_calibration_date'
-        date_str = settings_manager.get(date_key)
+        last_cal = db_manager.get_last_calibration(sensor_type.lower())
         
-        if not date_str:
+        if not last_cal:
             return None
             
         try:
-            last_calibration = datetime.fromisoformat(date_str)
-            interval_days = settings_manager.get('sensors.calibration_interval_days', 30)
-            return last_calibration + timedelta(days=interval_days)
-        except ValueError:
+            interval_days = db_manager.get_setting('sensors', 'calibration_interval_days', 30)
+            return last_cal + timedelta(days=interval_days)
+        except:
             return None
     
     def schedule_periodic_check(self):
