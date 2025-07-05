@@ -5,7 +5,6 @@
         orientation: 'vertical'
         padding: dp(20)
         spacing: dp(20)
-        size_hint: 1, 1  # Full size of the parent, will use available space
 
         Label:
             text: 'Main Menu'
@@ -16,17 +15,14 @@
             halign: 'center'
             valign: 'middle'
 
-        # GridLayout takes the remaining space below the navbar
+        # GridLayout positioned at the top
         GridLayout:
             cols: 2
             rows: 2
             spacing: dp(15)
             padding: dp(10)
-            size_hint: 1, None  # Set width to full, height to be controlled
-            height: dp(400)  # Fixed height for the grid (adjust as needed)
-
-
-
+            size_hint: 1, None  # Set width to full, height fixed
+            height: dp(400)  # Fixed height for the grid
 
             # Analyzer Card
             MenuCard:
@@ -51,3 +47,6 @@
                 id: settings_card
                 title: 'Settings'
                 on_press: root.navigate_to_screen('settings')  # Navigate to 'settings' screen
+
+        # Empty widget to fill remaining space and push grid to top
+        Widget:
