@@ -14,6 +14,8 @@ class SettingsScreen(Screen):
             self.manager.current = 'calibrate_o2'
         elif setting_name == 'wifi_settings':
             self.manager.current = 'wifi_settings'
+        elif setting_name == 'display_settings':
+            self.manager.current = 'display_settings'
         else:
             # TODO: Implement functionality for other settings
             pass

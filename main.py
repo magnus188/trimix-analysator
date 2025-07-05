@@ -15,6 +15,7 @@ from screens.home import HomeScreen
 from screens.settings.settings import SettingsScreen
 from screens.settings.calibrate_o2 import CalibrateO2Screen
 from screens.settings.wifi_settings import WiFiSettingsScreen
+from screens.settings.display_settings import DisplaySettingsScreen
 from widgets.menu_card import MenuCard
 from widgets.settings_button import SettingsButton
 # etc.
@@ -46,9 +47,12 @@ class TrimixApp(App):
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'settings.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'calibrate_o2.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'wifi_settings.kv'))
+        Builder.load_file(os.path.join(KV_DIR, 'screens', 'settings', 'display_settings.kv'))
         Builder.load_file(os.path.join(KV_DIR, 'app.kv'))
         # 4) Instantiate and return the manager
-        return TrimixScreenManager(transition=FadeTransition())
+        screen_manager = TrimixScreenManager(transition=FadeTransition())
+        screen_manager.current = 'home'  # Set the initial screen
+        return screen_manager
     
     def open_detail(self, sensor_key: str, screen_name: str):
             detail = self.root.get_screen(screen_name)
