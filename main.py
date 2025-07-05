@@ -98,7 +98,7 @@ class TrimixApp(App):
     def setup_brightness_permissions(self):
         """Run the brightness permissions setup script"""
         try:
-            script_path = os.path.join(os.path.dirname(__file__), 'setup_brightness_permissions.sh')
+            script_path = os.path.join(os.path.dirname(__file__), 'utils', 'setup_brightness_permissions.sh')
             
             if os.path.exists(script_path):
                 # Make script executable
