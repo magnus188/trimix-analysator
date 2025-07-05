@@ -34,12 +34,19 @@ except ValueError:
 
 # ——— Public API ———
 
+def read_oxygen_voltage() -> float:
+    """
+    Read raw O2 voltage from ADS1115 channel 0.
+    """
+    chan = AnalogIn(_ads, 0)
+    return chan.voltage
+
+
 def read_oxygen_percent() -> float:
     """
     Read O2 voltage from ADS1115 channel 0, convert to percent.
     """
-    chan = AnalogIn(_ads, 0)
-    volt = chan.voltage
+    volt = read_oxygen_voltage()
     return (volt / _V_AIR) * 20.9
 
 
@@ -92,3 +99,26 @@ def record_readings():
 def get_history(key: str):
     now = time.time()
     return [(now - ts, val) for ts, val in _history[key]]
+
+
+def update_v_air_calibration(new_v_air: float):
+    """
+    Update the V_AIR calibration value.
+    
+    Args:
+        new_v_air: The new voltage reading in air (should be around 20.9% O2)
+    """
+    global _V_AIR
+    old_v_air = _V_AIR
+    _V_AIR = new_v_air
+    print(f"O2 calibration updated: {old_v_air:.6f}V -> {new_v_air:.6f}V")
+    
+    # TODO: Save to persistent storage (config file, etc.)
+    # For now, this will reset on restart
+
+
+def get_v_air_calibration() -> float:
+    """
+    Get the current V_AIR calibration value.
+    """
+    return _V_AIR

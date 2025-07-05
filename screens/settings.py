@@ -8,7 +8,13 @@ class SettingsScreen(Screen):
     def on_setting_press(self, setting_name):
         # Function to handle setting button presses
         print(f"Setting pressed: {setting_name}")
-        # TODO: Implement functionality for each setting
+        
+        # Handle specific settings
+        if setting_name == 'calibrate_o2':
+            self.manager.current = 'calibrate_o2'
+        else:
+            # TODO: Implement functionality for other settings
+            pass
 
     def navigate_back(self):
         # Function to navigate back to home screen

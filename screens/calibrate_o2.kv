@@ -1,0 +1,117 @@
+#:kivy 2.0.0
+
+<CalibrateO2Screen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(20)
+
+        # Header with back button and title
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(20)
+
+            Button:
+                text: '← Back'
+                font_size: '20sp'
+                size_hint_x: None
+                width: dp(120)
+                background_color: 0.2, 0.2, 0.2, 1
+                color: 1, 1, 1, 1
+                on_press: root.navigate_back()
+
+            Label:
+                text: 'Calibrate O2 Sensor'
+                font_size: '28sp'
+                color: 1, 1, 1, 1
+                halign: 'center'
+                valign: 'middle'
+
+            # Spacer to balance the layout
+            Widget:
+                size_hint_x: None
+                width: dp(120)
+
+        # Main content area
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: dp(30)
+            padding: dp(20)
+
+            # Instructions
+            Label:
+                text: 'To calibrate the O2 sensor, place the device in normal fresh air for 30 seconds.\n\nMake sure there is good air circulation and no contamination from exhaled breath or other gases.'
+                font_size: '20sp'
+                color: 1, 1, 1, 1
+                text_size: self.width, None
+                halign: 'center'
+                valign: 'middle'
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            # Progress circle and countdown
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: dp(300)
+                spacing: dp(20)
+
+                # Progress circle container
+                FloatLayout:
+                    size_hint_y: None
+                    height: dp(250)
+
+                    # Progress bar (circular)
+                    Widget:
+                        size_hint: None, None
+                        size: dp(200), dp(200)
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        canvas:
+                            # Background circle
+                            Color:
+                                rgba: 0.3, 0.3, 0.3, 1
+                            Line:
+                                circle: (self.center_x, self.center_y, dp(90))
+                                width: dp(8)
+                            # Progress circle
+                            Color:
+                                rgba: root.progress_color
+                            Line:
+                                circle: (self.center_x, self.center_y, dp(90), 0, root.progress * 3.6)
+                                width: dp(8)
+
+                    # Countdown text in center
+                    Label:
+                        text: root.countdown_text
+                        font_size: '48sp'
+                        color: 1, 1, 1, 1
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        halign: 'center'
+                        valign: 'middle'
+
+            # Control button (centered)
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(80)
+                padding: dp(100), 0  # Add horizontal padding to center the button
+
+                # Single button that changes function
+                Button:
+                    text: root.calibrate_button_text
+                    font_size: '24sp'
+                    background_color: 0, 0, 0, 0  # Transparent, we'll use canvas
+                    color: 1, 1, 1, 1
+                    on_press: root.on_button_press()
+                    canvas.before:
+                        Color:
+                            rgba: root.calibrate_button_color
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(8),]
+
+            # Spacer
+            Widget:
