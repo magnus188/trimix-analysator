@@ -13,17 +13,12 @@
             show_right_button: False
             left_button_callback: root.navigate_back
         
-        # Content area
-        BoxLayout:
-            orientation: 'vertical'
-            padding: dp(10)
-            spacing: dp(10)
-
+        # Content area - GridLayout for sensor cards
         GridLayout:
             cols: 2
             rows: 3
             spacing: dp(10)
-            padding: dp(5)
+            padding: dp(10)
 
             SensorCard:
                 id: o2_card

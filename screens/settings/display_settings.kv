@@ -14,34 +14,17 @@
             navbar_height: 75
             title_font_size: 24
         
-        # Content area
-        BoxLayout:
-            orientation: 'vertical'
-            padding: dp(20)
-            spacing: dp(30)
+        # Scrollable settings list
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
 
-            # Spacer to balance the layout
-            Widget:
-                size_hint_x: None
-                width: dp(120)
-
-        # Add extra spacer after header
-        Widget:
-            size_hint_y: None
-            height: dp(40)  # Increased from 20dp to push content further down
-
-        # Main content area
-        BoxLayout:
-            orientation: 'vertical'
-            spacing: dp(30)
-            padding: [dp(20), dp(30), dp(20), dp(20)]  # left, top, right, bottom - added more top padding
-
-            # Brightness section
             BoxLayout:
                 orientation: 'vertical'
                 spacing: dp(25)
                 size_hint_y: None
-                height: dp(200)  # Reduced height since we removed labels
+                height: self.minimum_height
+                padding: dp(20)
 
                 Label:
                     text: 'Screen Brightness'
@@ -125,126 +108,118 @@
                         halign: 'center'
                         valign: 'center'
 
-            # Quick preset buttons
-            BoxLayout:
-                orientation: 'vertical'
-                spacing: dp(15)
-                size_hint_y: None
-                height: dp(120)
-
-                Label:
-                    text: 'Quick Presets'
-                    font_size: '24sp'
-                    color: 1, 1, 1, 1
-                    halign: 'center'
-                    valign: 'center'
-                    size_hint_y: None
-                    height: dp(40)
-
+                # Quick preset buttons
                 BoxLayout:
-                    orientation: 'horizontal'
+                    orientation: 'vertical'
                     spacing: dp(15)
                     size_hint_y: None
-                    height: dp(60)
+                    height: self.minimum_height
 
-                    Button:
-                        text: '25%'
-                        font_size: '18sp'
-                        background_color: 0.3, 0.3, 0.3, 1
+                    Label:
+                        text: 'Quick Presets'
+                        font_size: '24sp'
                         color: 1, 1, 1, 1
-                        on_press: root.brightness = 25; root._apply_brightness()
+                        halign: 'center'
+                        valign: 'center'
+                        size_hint_y: None
+                        height: dp(40)
 
-                    Button:
-                        text: '50%'
-                        font_size: '18sp'
-                        background_color: 0.3, 0.3, 0.3, 1
-                        color: 1, 1, 1, 1
-                        on_press: root.brightness = 50; root._apply_brightness()
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(15)
+                        size_hint_y: None
+                        height: dp(60)
 
-                    Button:
-                        text: '75%'
-                        font_size: '18sp'
-                        background_color: 0.3, 0.3, 0.3, 1
-                        color: 1, 1, 1, 1
-                        on_press: root.brightness = 75; root._apply_brightness()
+                        Button:
+                            text: '25%'
+                            font_size: '18sp'
+                            background_color: 0.3, 0.3, 0.3, 1
+                            color: 1, 1, 1, 1
+                            on_press: root.brightness = 25; root._apply_brightness()
 
-                    Button:
-                        text: '100%'
-                        font_size: '18sp'
-                        background_color: 0.3, 0.3, 0.3, 1
-                        color: 1, 1, 1, 1
-                        on_press: root.brightness = 100; root._apply_brightness()
+                        Button:
+                            text: '50%'
+                            font_size: '18sp'
+                            background_color: 0.3, 0.3, 0.3, 1
+                            color: 1, 1, 1, 1
+                            on_press: root.brightness = 50; root._apply_brightness()
 
-            # Sleep Timeout section
-            BoxLayout:
-                orientation: 'vertical'
-                spacing: dp(15)
-                size_hint_y: None
-                height: dp(120)
+                        Button:
+                            text: '75%'
+                            font_size: '18sp'
+                            background_color: 0.3, 0.3, 0.3, 1
+                            color: 1, 1, 1, 1
+                            on_press: root.brightness = 75; root._apply_brightness()
 
-                Label:
-                    text: 'Screen Sleep Timeout'
-                    font_size: '24sp'
-                    color: 1, 1, 1, 1
-                    halign: 'center'
-                    valign: 'center'
-                    size_hint_y: None
-                    height: dp(30)
+                        Button:
+                            text: '100%'
+                            font_size: '18sp'
+                            background_color: 0.3, 0.3, 0.3, 1
+                            color: 1, 1, 1, 1
+                            on_press: root.brightness = 100; root._apply_brightness()
 
-                Label:
-                    text: 'Never' if root.sleep_timeout == 0 else f'{int(root.sleep_timeout)} min'
-                    font_size: '20sp'
-                    color: 0.2, 0.6, 0.8, 1
-                    halign: 'center'
-                    valign: 'center'
-                    size_hint_y: None
-                    height: dp(30)
-
+                # Sleep Timeout section
                 BoxLayout:
-                    orientation: 'horizontal'
-                    spacing: dp(10)
+                    orientation: 'vertical'
+                    spacing: dp(15)
                     size_hint_y: None
-                    height: dp(50)
+                    height: self.minimum_height
 
-                    Button:
-                        text: '1 min'
-                        font_size: '16sp'
-                        background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 1 else (0.3, 0.3, 0.3, 1)
+                    Label:
+                        text: 'Screen Sleep Timeout'
+                        font_size: '24sp'
                         color: 1, 1, 1, 1
-                        on_press: root.on_sleep_timeout_change(1)
+                        halign: 'center'
+                        valign: 'center'
+                        size_hint_y: None
+                        height: dp(30)
 
-                    Button:
-                        text: '2 min'
-                        font_size: '16sp'
-                        background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 2 else (0.3, 0.3, 0.3, 1)
-                        color: 1, 1, 1, 1
-                        on_press: root.on_sleep_timeout_change(2)
+                    Label:
+                        text: 'Never' if root.sleep_timeout == 0 else f'{int(root.sleep_timeout)} min'
+                        font_size: '20sp'
+                        color: 0.2, 0.6, 0.8, 1
+                        halign: 'center'
+                        valign: 'center'
+                        size_hint_y: None
+                        height: dp(30)
 
-                    Button:
-                        text: '5 min'
-                        font_size: '16sp'
-                        background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 5 else (0.3, 0.3, 0.3, 1)
-                        color: 1, 1, 1, 1
-                        on_press: root.on_sleep_timeout_change(5)
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(10)
+                        size_hint_y: None
+                        height: dp(50)
 
-                    Button:
-                        text: '10 min'
-                        font_size: '16sp'
-                        background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 10 else (0.3, 0.3, 0.3, 1)
-                        color: 1, 1, 1, 1
-                        on_press: root.on_sleep_timeout_change(10)
+                        Button:
+                            text: '1 min'
+                            font_size: '16sp'
+                            background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 1 else (0.3, 0.3, 0.3, 1)
+                            color: 1, 1, 1, 1
+                            on_press: root.on_sleep_timeout_change(1)
 
-                    Button:
-                        text: 'Never'
-                        font_size: '16sp'
-                        background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 0 else (0.3, 0.3, 0.3, 1)
-                        color: 1, 1, 1, 1
-                        on_press: root.on_sleep_timeout_change(0)
+                        Button:
+                            text: '2 min'
+                            font_size: '16sp'
+                            background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 2 else (0.3, 0.3, 0.3, 1)
+                            color: 1, 1, 1, 1
+                            on_press: root.on_sleep_timeout_change(2)
 
-            # Additional display info
-            BoxLayout:
-                orientation: 'vertical'
-                spacing: dp(10)
+                        Button:
+                            text: '5 min'
+                            font_size: '16sp'
+                            background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 5 else (0.3, 0.3, 0.3, 1)
+                            color: 1, 1, 1, 1
+                            on_press: root.on_sleep_timeout_change(5)
 
-        # Bottom spacer
-        Widget:
+                        Button:
+                            text: '10 min'
+                            font_size: '16sp'
+                            background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 10 else (0.3, 0.3, 0.3, 1)
+                            color: 1, 1, 1, 1
+                            on_press: root.on_sleep_timeout_change(10)
+
+                        Button:
+                            text: 'Never'
+                            font_size: '16sp'
+                            background_color: (0.2, 0.6, 0.8, 1) if root.sleep_timeout == 0 else (0.3, 0.3, 0.3, 1)
+                            color: 1, 1, 1, 1
+                            on_press: root.on_sleep_timeout_change(0)

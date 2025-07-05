@@ -62,13 +62,14 @@
             right_button_callback: root.scan_networks
             navbar_height: 75
             title_font_size: 24
-        
-        # Content area
+         # Connection status section
         BoxLayout:
             orientation: 'vertical'
+            size_hint_y: None
+            height: dp(90)
             padding: dp(20)
-            spacing: dp(20)
-
+            spacing: dp(10)
+            
             # Connection status
             BoxLayout:
                 orientation: 'horizontal'
@@ -98,6 +99,7 @@
             size_hint_y: None
             height: dp(40)
             spacing: dp(10)
+            padding: dp(20), dp(5)
             
             Label:
                 text: 'Available Networks'
