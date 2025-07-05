@@ -13,6 +13,8 @@ class SensorDetail(Screen):
     theme_color  = ListProperty([1,1,1,1])
     live_value   = StringProperty('--')
     sign       = StringProperty('')
+    y_axis_label = StringProperty('Value')
+    y_label_format = StringProperty('%.1f')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -25,13 +27,48 @@ class SensorDetail(Screen):
         self.sensor_label = meta.get('label', '')
         self.theme_color  = meta.get('color', [1, 1, 1, 1])  # Default to white if not found
         self.sign = meta.get('sign', '')
+        self.y_axis_label = meta.get('y_label', 'Value')
+        # Keep simple numeric format for graph widget compatibility
+        self.y_label_format = '%.1f'
 
 
     def on_pre_enter(self):
         graph = self.ids.graph
-        graph.xmin, graph.xmax = 0, 60
-        graph.ymin, graph.ymax = 0, 1
+        graph.xmin, graph.xmax = -60, 0  # X-axis from -60 to 0 (right to left: 0, -15, -30, -45, -60)
+        
+        # Set initial Y range based on sensor type
+        meta = _SENSOR_META.get(self.sensor_key, {})
+        if self.sensor_key == 'o2':
+            graph.ymin, graph.ymax = 5, 55  # Wide O2 range for trimix (5-55%)
+            graph.y_ticks_major = 10  # Ticks at 10, 20, 30, 40, 50
+            graph.y_ticks_minor = 5   # Minor ticks at 5, 15, 25, etc.
+        elif self.sensor_key == 'temp':
+            graph.ymin, graph.ymax = 15, 35  # Initial temp range (20 unit range)
+            graph.y_ticks_major = 5
+            graph.y_ticks_minor = 1
+        elif self.sensor_key == 'press':
+            graph.ymin, graph.ymax = 0, 2  # 0-2 Bar range with 1 Bar in middle
+            graph.y_ticks_major = 0.5  # Major ticks at 0, 0.5, 1.0, 1.5, 2.0 
+            graph.y_ticks_minor = 0.25  # Minor ticks for finer graduation
+            # This should ensure we see labels at 0, 0.5, 1, 1.5, and 2 Bar
+            print(f"Pressure sensor: ymin={graph.ymin}, ymax={graph.ymax}, major={graph.y_ticks_major}, minor={graph.y_ticks_minor}")
+        elif self.sensor_key == 'hum':
+            graph.ymin, graph.ymax = 30, 80  # Initial humidity range (50 unit range)
+            graph.y_ticks_major = 10
+            graph.y_ticks_minor = 2
+        else:
+            graph.ymin, graph.ymax = 0, 100  # Default range (100 unit range)
+            graph.y_ticks_major = 20
+            graph.y_ticks_minor = 5
 
+        # Ensure tick labels are enabled and visible
+        graph.precision = '%.1f'  # Simple numeric format for compatibility
+        graph.label_options = {'color': [1, 1, 1, 1], 'bold': True}
+        graph.x_grid_label = True
+        graph.y_grid_label = True
+        
+        print(f"Graph configured for {self.sensor_key}: Y-range {graph.ymin}-{graph.ymax}, ticks major={graph.y_ticks_major}, minor={graph.y_ticks_minor}")
+        
         self.refresh_plot()
 
         if not self.plot:
@@ -42,7 +79,6 @@ class SensorDetail(Screen):
             print('Added new plot:', self.plot)
         else:
             print('Using existing plot:', self.plot)
-
 
         # Ensure at least one sample, then start the timed updates
         record_readings()
@@ -85,16 +121,10 @@ class SensorDetail(Screen):
         else:
             self.live_value = "--"
 
-        # feed points into the LinePlot
-        self.plot.points = [(60 - s, v) for s, v in pts]
+        # feed points into the LinePlot with corrected X-axis (negative time values)
+        self.plot.points = [(-s, v) for s, v in pts]
 
-        # gentle autoscale Y each tick
-        values = [v for _, v in pts]
-        if values:
-            mn, mx = min(values), max(values)
-            margin = (mx - mn) * 0.1 if mx > mn else mx * 0.1
-            self.ids.graph.ymin = mn - margin
-            self.ids.graph.ymax = mx + margin
-        else:
-            self.ids.graph.ymin, self.ids.graph.ymax = 0, 1
+        # TEMPORARILY DISABLE AUTOSCALING to prevent crashes
+        # The kivy_garden.graph widget has issues with dynamic Y-axis changes
+        # We'll use fixed ranges for now to ensure stability
 
