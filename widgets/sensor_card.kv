@@ -1,10 +1,14 @@
 #:kivy 1.0
 #:import dp kivy.metrics.dp
 
-<SensorCard>:
+<SensorCard@ButtonBehavior+BoxLayout>:
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(5)
+    # simply dim the card when state is 'down'
+    opacity: 0.6 if self.state=='down' else 1
+
+    # background
     canvas.before:
         Color:
             rgba: 0.15, 0.15, 0.15, 1
@@ -14,12 +18,12 @@
             radius: [dp(8),]
     Label:
         text: root.title
-        font_size: '18sp'
+        font_size: '32sp'
         size_hint_y: None
         height: self.texture_size[1]
         color: 1,1,1,1
     Label:
         text: root.value
-        font_size: '24sp'
+        font_size: '48sp'
         bold: True
         color: 1,1,1,1

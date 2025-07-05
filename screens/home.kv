@@ -23,29 +23,33 @@
             SensorCard:
                 id: o2_card
                 title: 'O2'
-                value: '-- %'
+                value: '--%'
+                on_press: app.open_detail('o2', 'sensor_detail')
 
             SensorCard:
                 id: temp_card
                 title: 'Temp'
-                value: '-- °C'
+                value: '--°C'
+                on_press: app.open_detail('temp', 'sensor_detail')
 
             SensorCard:
                 id: pres_card
-                title: 'Press'
-                value: '-- hPa'
+                title: 'Pressure'
+                value: '-- Bar'
+                on_press: app.open_detail('press', 'sensor_detail')
 
             SensorCard:
                 id: hum_card
-                title: 'Hum'
-                value: '-- %'
+                title: 'Humidity'
+                value: '--%'
+                on_press: app.open_detail('hum', 'sensor_detail')
 
             SensorCard:
                 id: mix_card
-                title: 'Gas Mix'
-                value: '—'
+                title: 'He'
+                value: '— %'
 
             SensorCard:
                 id: depth_card
-                title: 'Depth'
-                value: '— m'
+                title: 'CO2'
+                value: '— %'
