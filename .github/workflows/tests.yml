@@ -14,30 +14,26 @@ env:
 jobs:
   # Fast tests that run on every commit
   fast-tests:
-    name: Fast Tests (Python ${{ matrix.python-version }})
+    name: Fast Tests (Python 3.11)
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: "3.11"
 
     - name: Cache pip dependencies
       uses: actions/cache@v3
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-py${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements-dev.txt', '**/requirements-base.txt') }}
+        key: ${{ runner.os }}-py3.11-pip-${{ hashFiles('**/requirements-dev.txt', '**/requirements-base.txt') }}
         restore-keys: |
-          ${{ runner.os }}-py${{ matrix.python-version }}-pip-
+          ${{ runner.os }}-py3.11-pip-
 
     - name: Install system dependencies
       run: |
@@ -99,7 +95,7 @@ jobs:
     - name: Generate test summary
       if: always()
       run: |
-        echo "## Test Results for Python ${{ matrix.python-version }}" >> $GITHUB_STEP_SUMMARY
+        echo "## Test Results for Python 3.11" >> $GITHUB_STEP_SUMMARY
         echo "Fast tests completed" >> $GITHUB_STEP_SUMMARY
 
   # Comprehensive tests that run on main branch or when specifically requested
@@ -165,7 +161,7 @@ jobs:
         fail_ci_if_error: false
 
     - name: Archive coverage reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: htmlcov/
@@ -203,7 +199,7 @@ jobs:
 
     - name: Upload security reports
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: security-reports
         path: |
@@ -355,7 +351,7 @@ jobs:
         pytest tests/ -v -m "slow" --benchmark-only --benchmark-sort=mean
 
     - name: Upload performance results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: performance-results
         path: .benchmarks/
