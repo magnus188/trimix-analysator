@@ -27,12 +27,34 @@ services:
       - TRIMIX_ENVIRONMENT=production
       - TRIMIX_MOCK_SENSORS=0
       - TRIMIX_AUTO_UPDATE=false   # Control auto-updates
-      # Graphics environment variables to reduce warnings and improve performance
-      - LIBGL_ALWAYS_SOFTWARE=1
-      - MESA_GL_VERSION_OVERRIDE=3.3
-      - GALLIUM_DRIVER=softpipe
+      # Performance-optimized graphics environment variables
       - KIVY_WINDOW=sdl2
       - KIVY_GL_BACKEND=gl
+      - KIVY_DPI=96
+      - KIVY_METRICS_DENSITY=1
+      # Try hardware acceleration first
+      - LIBGL_ALWAYS_INDIRECT=0
+      - MESA_GL_VERSION_OVERRIDE=3.3
+      - GALLIUM_DRIVER=llvmpipe  # Better software fallback than softpipe
+      # Memory and I/O optimizations
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      # Disable unnecessary graphics warnings
+      - KIVY_NO_CONSOLELOG=1
+    # Resource limits for consistent performance
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '2.0'
+        reservations:
+          memory: 256M
+          cpus: '1.0'
+    # Performance optimizations
+    shm_size: 128mb  # Increased shared memory for graphics
+    tmpfs:
+      - /tmp:size=100m,noatime
+      - /var/tmp:size=50m,noatime
     working_dir: /app
     command: python main.py
     labels:

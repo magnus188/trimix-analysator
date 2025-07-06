@@ -23,6 +23,27 @@ services:
     environment:
       - TRIMIX_ENVIRONMENT=development
       - TRIMIX_MOCK_SENSORS=1
+      # Performance optimizations for development
+      - KIVY_WINDOW=sdl2
+      - KIVY_GL_BACKEND=gl
+      - KIVY_DPI=96
+      - KIVY_METRICS_DENSITY=1
+      - LIBGL_ALWAYS_INDIRECT=0
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    # Resource limits to prevent resource starvation
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2.0'
+        reservations:
+          memory: 256M
+          cpus: '0.5'
+    # Performance optimizations
+    shm_size: 128mb
+    tmpfs:
+      - /tmp:size=100m,noatime
     working_dir: /app
     command: python main.py
     stdin_open: true

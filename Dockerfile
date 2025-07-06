@@ -1,8 +1,8 @@
-# Simple Dockerfile for Trimix Analyzer with GUI support
+# Optimized Dockerfile for Trimix Analyzer with GUI support
 FROM python:3.11-slim
 
-# Install system dependencies including minimal GUI libraries
-RUN apt-get update && apt-get install -y \
+# Install system dependencies in optimized order (most stable packages first)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     libi2c-dev \
@@ -12,23 +12,25 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     libssl-dev \
-    libatlas-base-dev \
+    # Graphics libraries for hardware acceleration
+    libgl1-mesa-dri \
     libgl1-mesa-glx \
+    libgles2-mesa \
     libsdl2-dev \
     libsdl2-image-dev \
     libsdl2-mixer-dev \
     libsdl2-ttf-dev \
-    libmtdev1 \
-    libmtdev-dev \
+    # Minimal X11 dependencies
+    libx11-6 \
+    libxext6 \
+    libxi6 \
     libxrandr2 \
     libxss1 \
-    libxi6 \
-    xvfb \
-    x11-utils \
-    libx11-dev \
-    libxext-dev \
-    libxtst6 \
+    # Input/touch support
+    libmtdev1 \
+    # Cleanup in same layer to reduce image size
     && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
     && pip install --no-cache-dir --upgrade pip
 
 # Set labels for better image management
@@ -38,14 +40,27 @@ LABEL org.opencontainers.image.licenses="MIT"
 
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
+# Copy requirements and install Python dependencies with cache optimization
 COPY requirements*.txt ./
-RUN pip install -r requirements-rpi.txt
-RUN pip install https://github.com/kivy-garden/graph/archive/master.zip
+RUN pip install --no-cache-dir -r requirements-rpi.txt \
+    && pip install --no-cache-dir https://github.com/kivy-garden/graph/archive/master.zip
 
-# Set environment variables (can be overridden by docker-compose)
-ENV TRIMIX_ENVIRONMENT=production
-ENV TRIMIX_MOCK_SENSORS=0
+# Performance and graphics environment variables
+ENV TRIMIX_ENVIRONMENT=production \
+    TRIMIX_MOCK_SENSORS=0 \
+    # Kivy optimizations
+    KIVY_WINDOW=sdl2 \
+    KIVY_GL_BACKEND=gl \
+    KIVY_DPI=96 \
+    KIVY_METRICS_DENSITY=1 \
+    # Graphics optimizations - try hardware first, fallback to software
+    LIBGL_ALWAYS_INDIRECT=0 \
+    MESA_GL_VERSION_OVERRIDE=3.3 \
+    # Memory and performance
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    # Disable unnecessary services
+    DEBIAN_FRONTEND=noninteractive
 
 # Copy application code
 COPY . .

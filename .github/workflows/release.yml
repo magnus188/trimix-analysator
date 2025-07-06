@@ -7,68 +7,8 @@ on:
   release:
     types: [published]
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Log in to Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-          type=raw,value=latest,enable={{is_default_branch}}
-
-    - name: Build and push multi-architecture image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        platforms: linux/arm64,linux/arm/v7
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-
-    - name: Generate release notes
-      if: github.event_name == 'release'
-      run: |
-        echo "## 🚀 Docker Images" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Multi-architecture images published to:" >> $GITHUB_STEP_SUMMARY
-        echo "- \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
-        echo "- \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest\`" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Supported architectures: ARM64, ARMv7 (Raspberry Pi)" >> $GITHUB_STEP_SUMMARY
-
-  create-update-package:
-    needs: build-and-push
+  build-source-package:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -77,63 +17,80 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Create update package
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Validate requirements files
       run: |
-        mkdir -p update-package
+        echo "📦 Validating Python requirements..."
+        python -m pip install --upgrade pip
+        pip install -r requirements-rpi.txt --dry-run
+        echo "✅ Requirements validation passed"
+
+    - name: Create source package
+      run: |
+        echo "📦 Creating source package..."
         
-        # Copy essential files for update
-        cp docker-compose.yml update-package/
-        cp scripts/trimix-analyzer.service update-package/
+        # Create package directory
+        mkdir -p trimix-analyzer-${{ github.ref_name }}
         
-        # Create update script
-        cat > update-package/update.sh << 'EOF'
-        #!/bin/bash
-        set -e
+        # Copy all application files except development stuff
+        rsync -av \
+          --exclude='.git*' \
+          --exclude='__pycache__' \
+          --exclude='*.pyc' \
+          --exclude='.pytest_cache' \
+          --exclude='htmlcov' \
+          --exclude='.coverage' \
+          --exclude='dist' \
+          --exclude='build' \
+          --exclude='.venv' \
+          --exclude='data' \
+          . trimix-analyzer-${{ github.ref_name }}/
         
-        echo "🔄 Starting Trimix Analyzer update..."
-        
-        # Stop current service
-        sudo systemctl stop trimix-analyzer || true
-        
-        # Pull new image
-        docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-        
-        # Update docker-compose.yml if needed
-        if [ -f docker-compose.yml ]; then
-          cp docker-compose.yml /opt/trimix-analyzer/
-        fi
-        
-        # Restart service
-        cd /opt/trimix-analyzer
-        docker-compose down || true
-        docker-compose up -d
-        sudo systemctl start trimix-analyzer
-        
-        echo "✅ Update complete!"
-        EOF
-        
-        chmod +x update-package/update.sh
-        
-        # Create info file
-        cat > update-package/update-info.json << EOF
+        # Create version info for the application's built-in updater
+        cat > trimix-analyzer-${{ github.ref_name }}/release-info.json << EOF
         {
           "version": "${{ github.ref_name }}",
-          "image": "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}",
           "release_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-          "changelog_url": "${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+          "platform": "raspberry-pi-native",
+          "python_version": "3.11+",
+          "changelog_url": "${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}",
+          "download_url": "${{ github.server_url }}/${{ github.repository }}/releases/download/${{ github.ref_name }}/trimix-analyzer-${{ github.ref_name }}.tar.gz"
         }
         EOF
         
         # Create archive
-        tar -czf trimix-analyzer-update-${{ github.ref_name }}.tar.gz -C update-package .
+        tar -czf trimix-analyzer-${{ github.ref_name }}.tar.gz trimix-analyzer-${{ github.ref_name }}/
 
-    - name: Upload update package to release
+    - name: Upload source package to release
       if: github.event_name == 'release'
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: trimix-analyzer-update-${{ github.ref_name }}.tar.gz
-        asset_name: trimix-analyzer-update-${{ github.ref_name }}.tar.gz
+        asset_path: trimix-analyzer-${{ github.ref_name }}.tar.gz
+        asset_name: trimix-analyzer-${{ github.ref_name }}.tar.gz
         asset_content_type: application/gzip
+
+    - name: Generate release summary
+      if: github.event_name == 'release'
+      run: |
+        echo "## 🥧 Trimix Analyzer Release" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Source Package" >> $GITHUB_STEP_SUMMARY
+        echo "- Download: \`trimix-analyzer-${{ github.ref_name }}.tar.gz\`" >> $GITHUB_STEP_SUMMARY
+        echo "- Contains \`release-info.json\` for built-in updater" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Development Setup" >> $GITHUB_STEP_SUMMARY
+        echo "- RPi: \`make install && make run\`" >> $GITHUB_STEP_SUMMARY
+        echo "- Mac/Linux: \`make install && make dev\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Features" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Native performance (no containers)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Built-in update system" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Cross-platform development" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Optimized for Raspberry Pi Zero 2W" >> $GITHUB_STEP_SUMMARY
