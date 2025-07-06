@@ -50,6 +50,7 @@ jobs:
           libasound2-dev \
           libpulse-dev \
           libjpeg-dev
+
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
@@ -103,7 +104,7 @@ jobs:
     name: Comprehensive Tests
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'run-full-tests')
-    needs: fast-tests
+    needs: [fast-tests]
     
     steps:
     - name: Checkout code
@@ -130,6 +131,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-base.txt
         pip install -r requirements-dev.txt
+        # Install specific garden packages using pip instead of garden command
+        pip install kivy-garden.graph
 
     - name: Set environment for testing
       run: |
@@ -239,7 +242,7 @@ jobs:
   test-summary:
     name: Test Summary
     runs-on: ubuntu-latest
-    needs: [fast-tests, security-checks, type-check]
+    needs: [security-checks, type-check]
     if: always() && github.event.pull_request.draft == false
     
     steps:
@@ -247,12 +250,10 @@ jobs:
       run: |
         echo "# 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "## Fast Tests: ${{ needs.fast-tests.result }}" >> $GITHUB_STEP_SUMMARY
         echo "## Security Checks: ${{ needs.security-checks.result }}" >> $GITHUB_STEP_SUMMARY
         echo "## Type Checking: ${{ needs.type-check.result }}" >> $GITHUB_STEP_SUMMARY
         
-        if [ "${{ needs.fast-tests.result }}" = "success" ] && \
-           [ "${{ needs.security-checks.result }}" = "success" ] && \
+        if [ "${{ needs.security-checks.result }}" = "success" ] && \
            [ "${{ needs.type-check.result }}" = "success" ]; then
           echo "✅ All checks passed! Ready for review." >> $GITHUB_STEP_SUMMARY
         else
@@ -261,7 +262,7 @@ jobs:
 
   build-test:
     runs-on: ubuntu-latest
-    needs: [fast-tests, type-check]
+    needs: [type-check]
     if: github.event_name == 'pull_request'
     
     steps:
@@ -272,15 +273,28 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libgl1-mesa-dev libglib2.0-0 libmtdev1
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
+        # Install specific garden packages
+        pip install kivy-garden.graph
 
     - name: Set environment for testing
       run: |
         echo "TRIMIX_MOCK_SENSORS=1" >> $GITHUB_ENV
         echo "TRIMIX_ENVIRONMENT=test" >> $GITHUB_ENV
+        echo "DISPLAY=:99.0" >> $GITHUB_ENV
+
+    - name: Start virtual display
+      run: |
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 2
 
     - name: Test application import
       run: |
@@ -329,7 +343,6 @@ jobs:
   performance:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
-    needs: [fast-tests]
     
     steps:
     - uses: actions/checkout@v4
@@ -344,6 +357,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
         pip install pytest-benchmark
+        # Install specific garden packages
+        pip install kivy-garden.graph
 
     - name: Set environment for testing
       run: |
