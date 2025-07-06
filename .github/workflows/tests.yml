@@ -43,8 +43,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-base.txt
         pip install -r requirements-dev.txt
-        # Install specific garden packages
-        garden install graph
+        # Install specific garden packages using pip instead of garden command
+        pip install kivy-garden.graph
 
     - name: Set environment for testing
       run: |
@@ -190,7 +190,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
         # Install specific garden packages
-        garden install graph
+        pip install kivy-garden.graph
 
     - name: Set environment for testing
       run: |
@@ -259,7 +259,7 @@ jobs:
         pip install -r requirements-dev.txt
         pip install pytest-benchmark
         # Install specific garden packages
-        garden install graph
+        pip install kivy-garden.graph
 
     - name: Set environment for testing
       run: |
