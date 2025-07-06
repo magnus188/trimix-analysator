@@ -319,6 +319,73 @@ class UpdateSettingsScreen(BaseScreen):
         """
         return VERSION_HISTORY
     
+    def on_update_error(self, update_manager, error_message):
+        """
+        Handles update errors by dismissing any progress popup and displaying an error message to the user.
+        
+        Parameters:
+            update_manager: The update manager instance that triggered the error.
+            error_message (str): Description of the error that occurred.
+        """
+        Logger.error(f"UpdateSettingsScreen: Update error - {error_message}")
+        
+        # Dismiss progress popup if open
+        if self.progress_popup:
+            self.progress_popup.dismiss()
+            self.progress_popup = None
+        
+        # Re-enable check button if it was disabled
+        if hasattr(self.ids, 'check_button'):
+            self.ids.check_button.disabled = False
+            self.ids.check_button.text = "Check for Updates"
+        
+        # Show error to user
+        self.show_error_popup(error_message)
+    
+    def show_error_popup(self, error_message):
+        """
+        Displays an error popup with the specified error message.
+        
+        Parameters:
+            error_message (str): The error message to display to the user.
+        """
+        self.show_error("Update Error", error_message)
+    
+    def show_info_popup(self, title, message):
+        """
+        Displays an informational popup with the specified title and message.
+        
+        Parameters:
+            title (str): The title of the popup.
+            message (str): The message to display.
+        """
+        content = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        
+        content.add_widget(Label(
+            text=message,
+            text_size=(400, None),
+            halign='center',
+            valign='middle'
+        ))
+        
+        ok_button = Button(
+            text="OK",
+            size_hint_y=None,
+            height='50dp'
+        )
+        
+        popup = Popup(
+            title=title,
+            content=content,
+            size_hint=(0.8, 0.4),
+            auto_dismiss=False
+        )
+        
+        ok_button.bind(on_press=popup.dismiss)
+        content.add_widget(ok_button)
+        
+        popup.open()
+
     def go_back(self):
         """
         Navigates back to the previous settings screen.

@@ -50,14 +50,19 @@ def is_development_environment() -> bool:
     env = os.getenv('TRIMIX_ENVIRONMENT', '').lower()
     mock_sensors = os.getenv('TRIMIX_MOCK_SENSORS', '').lower()
     
-    # Check if hardware modules are available
-    hardware_available = _check_hardware_modules_available()
+    # Explicit environment variables take priority
+    if env == 'development':
+        return True
+    if env == 'production':
+        return False
+    if mock_sensors in ('1', 'true', 'yes'):
+        return True
+    if mock_sensors in ('0', 'false', 'no'):
+        return False
     
-    return (
-        env == 'development' or 
-        mock_sensors in ('1', 'true', 'yes') or
-        (not is_raspberry_pi() and not hardware_available)
-    )
+    # Fall back to hardware detection only if no explicit environment is set
+    hardware_available = _check_hardware_modules_available()
+    return not is_raspberry_pi() and not hardware_available
 
 
 def get_platform_info() -> dict:

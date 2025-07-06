@@ -33,7 +33,6 @@ class UpdateManager(EventDispatcher):
         # Try to detect repository from git remote if not provided
         if not repo_owner or not repo_name:
             try:
-                import subprocess
                 result = subprocess.run(['git', 'remote', 'get-url', 'origin'], 
                                       capture_output=True, text=True)
                 if result.returncode == 0:
@@ -55,7 +54,7 @@ class UpdateManager(EventDispatcher):
         
         # GitHub API settings
         self.api_base = "https://api.github.com"
-        self.timeout = 30
+        self.timeout = 10  # Reduced from 30 to 10 seconds to prevent UI hangs
         
         # Update settings
         self.check_prereleases = False
@@ -72,16 +71,8 @@ class UpdateManager(EventDispatcher):
             int: -1 if version1 is less than version2, 0 if they are equal, 1 if version1 is greater than version2.
         """
         def normalize_version(v):
+            """Converts a version string into a list of integers for comparison."""
             # Remove 'v' prefix if present
-            """
-            Converts a version string into a list of integers for comparison, handling optional 'v' prefix and pre-release suffixes.
-            
-            Parameters:
-            	v (str): The version string to normalize (e.g., 'v1.2.3', '1.2.3-alpha').
-            
-            Returns:
-            	List[int]: A list of integers representing the major, minor, and patch components of the version.
-            """
             v = v.lstrip('v')
             # Split into parts and convert to integers
             parts = []
@@ -305,7 +296,6 @@ class UpdateManager(EventDispatcher):
         
         This method downloads a tar.gz update package for the specified version, extracts it, pulls the corresponding Docker image, runs an update script if present, and updates the Docker Compose configuration to use the new version. Progress and completion events are dispatched throughout the process. Returns True if the update is successfully applied, or False if any step fails.
         """
-        
         try:
             Logger.info(f"UpdateManager: Starting Docker update to version {version}")
             self.dispatch('on_update_progress', 10, "Downloading update package...")
@@ -354,7 +344,7 @@ class UpdateManager(EventDispatcher):
                     raise Exception(f"Update script failed: {result.stderr}")
             
             # Update docker-compose.yml to use new version
-            self._update_compose_version(version)
+            self._update_docker_compose(version)
             
             self.dispatch('on_update_progress', 100, "Update complete!")
             self.dispatch('on_update_complete', version)
@@ -411,7 +401,7 @@ class UpdateManager(EventDispatcher):
         
         time_since_check = (datetime.now() - self.last_check_time).total_seconds()
         return time_since_check >= self.auto_check_interval
-    
+
     # Event methods
     def on_update_available(self, update_info):
         """
@@ -464,8 +454,7 @@ class UpdateManager(EventDispatcher):
 # Global update manager instance
 _update_manager = None
 
-
-def get_update_manager():
+def get_update_manager() -> UpdateManager:
     """
     Returns the singleton instance of the UpdateManager, creating it if it does not already exist.
     """

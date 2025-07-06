@@ -89,9 +89,9 @@ class SensorDetail(Screen):
         # Do initial plot refresh
         self.refresh_plot()
 
-        # Delay the first call to refresh_plot
+        # Delay the first call to refresh_plot and reduce frequency
         if not self._refresh_event:
-            self._refresh_event = Clock.schedule_interval(self._tick, 1)
+            self._refresh_event = Clock.schedule_interval(self._tick, 2)  # Reduced frequency to 2 seconds
 
 
     def on_leave(self):
