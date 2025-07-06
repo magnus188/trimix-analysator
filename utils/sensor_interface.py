@@ -121,6 +121,10 @@ class RealSensors(SensorInterface):
         from adafruit_ads1x15.analog_in import AnalogIn
         from adafruit_bme280.basic import Adafruit_BME280_I2C
         
+        # Store imported classes for use in methods
+        self._AnalogIn = AnalogIn
+        self._digitalio = digitalio
+        
         # I2C setup
         self._i2c = busio.I2C(board.SCL, board.SDA)
         
@@ -136,8 +140,8 @@ class RealSensors(SensorInterface):
         
         # Power button GPIO setup
         self._power_button = digitalio.DigitalInOut(board.D18)  # GPIO 18
-        self._power_button.direction = digitalio.Direction.INPUT
-        self._power_button.pull = digitalio.Pull.UP
+        self._power_button.direction = self._digitalio.Direction.INPUT
+        self._power_button.pull = self._digitalio.Pull.UP
         
         # Calibration values
         self._v_air = 0.0095  # O2 voltage in air
@@ -145,7 +149,7 @@ class RealSensors(SensorInterface):
         self._co2_span_voltage = 3.3  # CO2 sensor span
     
     def read_oxygen_voltage(self) -> float:
-        chan = AnalogIn(self._ads, 0)  # O2 on channel 0
+        chan = self._AnalogIn(self._ads, 0)  # O2 on channel 0
         return chan.voltage
     
     def read_oxygen_percent(self) -> float:
@@ -153,7 +157,7 @@ class RealSensors(SensorInterface):
         return (voltage / self._v_air) * 20.9
     
     def read_co2_voltage(self) -> float:
-        chan = AnalogIn(self._ads, 1)  # CO2 on channel 1
+        chan = self._AnalogIn(self._ads, 1)  # CO2 on channel 1
         return chan.voltage
     
     def read_co2_ppm(self) -> float:
@@ -202,8 +206,16 @@ def get_sensors() -> SensorInterface:
             print("🔧 Using mock sensors for development")
             _sensor_instance = MockSensors()
         else:
-            print("🔌 Using real hardware sensors")
-            _sensor_instance = RealSensors()
+            # Try to use real sensors, but fall back to mock if hardware isn't available
+            try:
+                print("🔌 Using real hardware sensors")
+                _sensor_instance = RealSensors()
+            except ImportError as e:
+                print(f"⚠️  Hardware modules not available ({e}), falling back to mock sensors")
+                _sensor_instance = MockSensors()
+            except Exception as e:
+                print(f"⚠️  Hardware initialization failed ({e}), falling back to mock sensors")
+                _sensor_instance = MockSensors()
     
     return _sensor_instance
 

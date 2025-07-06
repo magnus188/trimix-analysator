@@ -1,7 +1,5 @@
 import os
 import subprocess
-import json
-import glob
 
 # Configure Kivy before any imports
 from kivy.config import Config
@@ -9,26 +7,15 @@ from kivy.config import Config
 # Set display configuration based on environment
 environment = os.environ.get('TRIMIX_ENVIRONMENT', 'production')
 
-if environment == 'production':
-    # Check if running in container (Docker)
-    if os.path.exists('/.dockerenv'):
-        # Container environment: configure for framebuffer access
-        Config.set('graphics', 'fbo', 'hardware')
-        Config.set('graphics', 'window', 'sdl2')
-    else:
-        # RPi production: use framebuffer for direct display
-        Config.set('graphics', 'fbo', 'hardware')
-        # Try different window providers for RPi
-        for provider in ['sdl2', 'x11', 'egl_rpi']:
-            try:
-                Config.set('graphics', 'window', provider)
-                break
-            except:
-                continue
+# Configure for RPi display - portrait mode (rotate landscape to portrait)
+Config.set('graphics', 'resizable', '0') 
+Config.set('graphics', 'width', '480')   # Portrait width
+Config.set('graphics', 'height', '800')  # Portrait height
+Config.set('graphics', 'rotation', '270') # Rotate 90 degrees to get portrait from landscape
 
-Config.set('graphics', 'resizable', '0')     # Use string instead of boolean
-Config.set('graphics', 'width', '480')      # RPi display width
-Config.set('graphics', 'height', '800')     # RPi display height
+if environment == 'production':
+    Config.set('graphics', 'fbo', 'hardware')
+    Config.set('graphics', 'window', 'sdl2')  # Simplified - just use sdl2
 
 from kivy.app import App
 from kivy.lang import Builder
