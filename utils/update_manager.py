@@ -305,7 +305,6 @@ class UpdateManager(EventDispatcher):
         
         This method downloads a tar.gz update package for the specified version, extracts it, pulls the corresponding Docker image, runs an update script if present, and updates the Docker Compose configuration to use the new version. Progress and completion events are dispatched throughout the process. Returns True if the update is successfully applied, or False if any step fails.
         """
-        
         try:
             Logger.info(f"UpdateManager: Starting Docker update to version {version}")
             self.dispatch('on_update_progress', 10, "Downloading update package...")
@@ -464,8 +463,7 @@ class UpdateManager(EventDispatcher):
 # Global update manager instance
 _update_manager = None
 
-
-def get_update_manager():
+def get_update_manager() -> UpdateManager:
     """
     Returns the singleton instance of the UpdateManager, creating it if it does not already exist.
     """
