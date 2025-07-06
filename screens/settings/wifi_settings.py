@@ -53,12 +53,16 @@ class WiFiSettingsScreen(Screen):
         self.manager.current = 'settings'
         
     def on_settings_changed(self, instance, settings):
-        """Called when settings are updated externally"""
+        """
+        Handles external updates to settings by logging that WiFi preferences are being updated.
+        """
         # Update WiFi preferences when settings change
         Logger.info("WiFiSettingsScreen: Settings changed, updating WiFi preferences")
         
     def on_enter(self):
-        """Called when entering the screen"""
+        """
+        Triggers a scan for available WiFi networks and checks the current connection status when the screen is entered.
+        """
         self.scan_networks()
         self.check_connection_status()
         
@@ -180,7 +184,11 @@ class WiFiSettingsScreen(Screen):
             self._show_password_popup(ssid)
             
     def _connect_open_network(self, ssid):
-        """Connect to an open WiFi network"""
+        """
+        Attempts to connect to an open WiFi network using the provided SSID.
+        
+        If the connection is successful, updates the connected network and displays a success message. On failure or error, displays an appropriate failure message.
+        """
         try:
             result = subprocess.run(['nmcli', 'dev', 'wifi', 'connect', ssid], 
                                   capture_output=True, text=True, timeout=30)
@@ -195,7 +203,12 @@ class WiFiSettingsScreen(Screen):
             self._show_connection_result(f"Error connecting to {ssid}", success=False)
             
     def _show_password_popup(self, ssid):
-        """Show popup to enter WiFi password"""
+        """
+        Display a popup dialog prompting the user to enter a WiFi password for the specified SSID.
+        
+        Parameters:
+            ssid (str): The SSID of the WiFi network to connect to.
+        """
         content = BoxLayout(orientation='vertical', spacing='10dp', padding='10dp')
         
         content.add_widget(Label(text=f'Enter password for {ssid}:', size_hint_y=None, height='40dp'))

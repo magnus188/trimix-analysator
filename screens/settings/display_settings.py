@@ -15,22 +15,33 @@ class DisplaySettingsScreen(Screen):
     sleep_timeout = NumericProperty(5)  # Default sleep timeout in minutes
     
     def __init__(self, **kwargs):
+        """
+        Initializes the DisplaySettingsScreen and binds to external database setting changes to keep the UI in sync.
+        """
         super().__init__(**kwargs)
         # Bind to database changes
         settings_manager.bind(settings=self.on_settings_changed)
     
     def navigate_back(self):
-        """Navigate back to settings screen"""
+        """
+        Switches the current screen to the main settings screen.
+        """
         self.manager.current = 'settings'
         
     def on_settings_changed(self, instance, settings):
-        """Called when database settings are updated externally"""
+        """
+        Update the brightness and sleep timeout properties when database settings change externally.
+        """
         # Update UI when settings change from other sources
         self.brightness = settings_manager.get('display.brightness', 50)
         self.sleep_timeout = settings_manager.get('display.sleep_timeout', 5)
         
     def on_enter(self):
-        """Called when entering the screen"""
+        """
+        Loads brightness and sleep timeout settings from the database and updates the screen state when entered.
+        
+        Also attempts to read the current system brightness and sleep timeout values for verification and synchronization.
+        """
         # Load settings from the database first
         self.brightness = settings_manager.get('display.brightness', 50)
         self.sleep_timeout = settings_manager.get('display.sleep_timeout', 5)

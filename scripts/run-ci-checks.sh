@@ -22,13 +22,13 @@ if [ ! -f "main.py" ] || [ ! -f "requirements-base.txt" ]; then
     exit 1
 fi
 
-# Function to print step headers
+# print_step prints a formatted step header with a blue icon and separator for CI/CD output.
 print_step() {
     echo -e "\n${BLUE}🔍 $1${NC}"
     echo "----------------------------------------"
 }
 
-# Function to print success/failure
+# print_result prints a colored success or failure message based on the exit code and exits on failure.
 print_result() {
     if [ $1 -eq 0 ]; then
         echo -e "${GREEN}✅ $2${NC}"
