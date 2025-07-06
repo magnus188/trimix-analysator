@@ -211,3 +211,5 @@ __marimo__/
 *.bak
 trimix_settings.json.backup
 settings_manager.py.backup
+
+.lgd-nfy0

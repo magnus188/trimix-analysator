@@ -1,7 +1,7 @@
 # Trimix Analyzer - Development Commands
 # Usage: make <command>
 
-.PHONY: dev run run-docker stop install clean test help
+.PHONY: dev run run-docker stop install clean test test-fast test-slow test-coverage help
 
 # Default target
 help:
@@ -17,7 +17,10 @@ help:
 	@echo "  stop          🛑 Stop Docker containers"
 	@echo "  install       📦 Install dependencies in virtual environment"
 	@echo "  clean         🧹 Clean up virtual environment and cache"
-	@echo "  test          🧪 Run tests"
+	@echo "  test          🧪 Run all tests"
+	@echo "  test-fast     🚀 Run fast tests (excluding slow tests)"
+	@echo "  test-slow     ⏳ Run slow tests only"
+	@echo "  test-coverage 📊 Run tests with coverage report"
 	@echo "  help          ❓ Show this help message"
 
 # Development server with full setup (native Python)
@@ -67,3 +70,18 @@ clean:
 test:
 	@echo "🧪 Running tests..."
 	@python -m pytest tests/ -v
+
+# Run tests excluding slow tests
+test-fast:
+	@echo "🚀 Running fast tests..."
+	@python -m pytest tests/ -v -m "not slow"
+
+# Run only slow tests
+test-slow:
+	@echo "⏳ Running slow tests..."
+	@python -m pytest tests/ -v -m "slow"
+
+# Run tests with coverage
+test-coverage:
+	@echo "🧪 Running tests with coverage..."
+	@python -m pytest tests/ -v --cov=. --cov-report=html:htmlcov --cov-report=term-missing
