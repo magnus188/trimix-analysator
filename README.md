@@ -2,6 +2,29 @@
 
 A Raspberry Pi-based gas analyzer for trimix diving gas mixtures, featuring real-time O2, CO2, temperature, pressure, and humidity monitoring with a touch-friendly Kivy interface.
 
+## 🔄 Auto-Release System
+
+This project features **automatic release creation** when Pull Requests are merged into `main`:
+
+- **Smart Version Bumping**: Analyzes commit messages and PR labels to determine version bump type
+- **Automated Testing**: Runs comprehensive tests before release creation  
+- **GitHub Releases**: Automatically creates releases with changelogs
+- **Built-in Updates**: Applications can auto-update from GitHub releases
+
+See [docs/AUTO_RELEASE.md](docs/AUTO_RELEASE.md) for detailed information.
+
+### Quick Examples
+```bash
+# Patch release (1.0.0 → 1.0.1)
+git commit -m "fix: resolve sensor calibration issue"
+
+# Minor release (1.0.0 → 1.1.0)
+git commit -m "feat: add new temperature sensor support" 
+
+# Major release (1.0.0 → 2.0.0)
+git commit -m "BREAKING CHANGE: new sensor interface API"
+```
+
 ## 🏗️ Architecture
 
 - **UI Framework**: Kivy (touch-friendly interface)

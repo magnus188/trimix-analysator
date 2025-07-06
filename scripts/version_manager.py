@@ -173,6 +173,8 @@ def main():
         print("Commands:")
         print("  current                    - Show current version")
         print("  bump <major|minor|patch>   - Bump version and create tag")
+        print("    Options: --ci            - Non-interactive mode for CI/CD")
+        print("             --description='text' - Set description without prompt")
         print("  set <version>              - Set specific version")
         print("  tag                        - Create git tag for current version")
         return
@@ -186,19 +188,39 @@ def main():
         
         elif command == 'bump':
             if len(sys.argv) < 3:
-                print("Usage: python version_manager.py bump <major|minor|patch>")
+                print("Usage: python version_manager.py bump <major|minor|patch> [--ci] [--description='desc']")
                 return
             
             part = sys.argv[2]
             current = get_current_version()
             new_version = increment_version(current, part)
             
-            description = input(f"Description for v{new_version}: ").strip()
+            # Check for CI mode (non-interactive)
+            ci_mode = '--ci' in sys.argv
+            
+            # Get description from command line or prompt
+            description = None
+            for arg in sys.argv:
+                if arg.startswith('--description='):
+                    description = arg.split('=', 1)[1]
+                    break
+            
             if not description:
-                description = f"Version {new_version} release"
+                if ci_mode:
+                    description = f"Automated {part} version bump to {new_version}"
+                else:
+                    description = input(f"Description for v{new_version}: ").strip()
+                    if not description:
+                        description = f"Version {new_version} release"
             
             update_version_file(new_version, description)
-            create_git_tag(new_version)
+            
+            # Only create git tag in interactive mode
+            if not ci_mode:
+                create_git_tag(new_version)
+            
+            # Print new version for CI to capture
+            print(new_version)
         
         elif command == 'set':
             if len(sys.argv) < 3:
