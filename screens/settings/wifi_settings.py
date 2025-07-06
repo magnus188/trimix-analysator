@@ -191,7 +191,7 @@ class WiFiSettingsScreen(Screen):
             else:
                 self._show_connection_result(f"Failed to connect to {ssid}", success=False)
                 
-        except Exception as e:
+        except Exception:
             self._show_connection_result(f"Error connecting to {ssid}", success=False)
             
     def _show_password_popup(self, ssid):

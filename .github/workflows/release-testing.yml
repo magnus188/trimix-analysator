@@ -1,0 +1,76 @@
+name: Release Testing
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  comprehensive-release-tests:
+    name: Comprehensive Release Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libgl1-mesa-glx libglib2.0-0
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-base.txt
+        pip install -r requirements-dev.txt
+
+    - name: Set environment for testing
+      run: |
+        echo "TRIMIX_ENVIRONMENT=test" >> $GITHUB_ENV
+        echo "TRIMIX_MOCK_SENSORS=true" >> $GITHUB_ENV
+        echo "DISPLAY=:99.0" >> $GITHUB_ENV
+
+    - name: Start virtual display
+      run: |
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 2
+
+    - name: Run all tests (including slow tests)
+      run: |
+        python -m pytest tests/ -v --tb=short --cov=. --cov-report=xml --cov-report=html
+      env:
+        PYTHONPATH: .
+
+    - name: Run security checks
+      run: |
+        bandit -r . --severity-level medium
+        safety check
+
+    - name: Test Docker build
+      run: |
+        docker build -t trimix-analyzer-test .
+
+    - name: Generate release test report
+      run: |
+        echo "# 🚀 Release Test Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "✅ All tests passed successfully" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Security checks passed" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Docker build successful" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Release is ready for deployment!** 🎉" >> $GITHUB_STEP_SUMMARY
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-coverage-report
+        path: htmlcov/

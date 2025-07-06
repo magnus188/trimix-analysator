@@ -1,0 +1,55 @@
+name: Draft PR Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # Light checks for draft PRs
+  basic-checks:
+    name: Basic Syntax & Import Checks
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == true
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install minimal dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-base.txt
+
+    - name: Check Python syntax
+      run: |
+        python -m py_compile main.py
+        python -m py_compile version.py
+        find utils/ -name "*.py" -exec python -m py_compile {} \;
+        find screens/ -name "*.py" -exec python -m py_compile {} \;
+        find widgets/ -name "*.py" -exec python -m py_compile {} \;
+        find tests/ -name "*.py" -exec python -m py_compile {} \;
+
+    - name: Check imports
+      run: |
+        python -c "import main; print('✅ Main module imports successfully')"
+        python -c "import version; print('✅ Version module imports successfully')"
+        python -c "from utils.platform_detector import is_development_environment; print('✅ Platform detector imports successfully')"
+        python -c "from utils.database_manager import DatabaseManager; print('✅ Database manager imports successfully')"
+
+    - name: Draft PR Notice
+      run: |
+        echo "## 📝 Draft PR - Basic Checks Only" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "This is a draft PR, so only basic syntax and import checks are running." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "When ready for review:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Mark the PR as 'Ready for review' to trigger full test suite" >> $GITHUB_STEP_SUMMARY
+        echo "2. Add the label 'run-full-tests' to run comprehensive tests" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Basic checks passed!" >> $GITHUB_STEP_SUMMARY

@@ -1,7 +1,7 @@
 # Trimix Analyzer - Development Commands
 # Usage: make <command>
 
-.PHONY: dev run run-docker stop install clean test test-fast test-slow test-coverage help
+.PHONY: dev run run-docker stop install clean test test-fast test-slow test-coverage ci-check help ci-check
 
 # Default target
 help:
@@ -21,6 +21,7 @@ help:
 	@echo "  test-fast     🚀 Run fast tests (excluding slow tests)"
 	@echo "  test-slow     ⏳ Run slow tests only"
 	@echo "  test-coverage 📊 Run tests with coverage report"
+	@echo "  ci-check      🔍 Run local CI/CD checks"
 	@echo "  help          ❓ Show this help message"
 
 # Development server with full setup (native Python)
@@ -85,3 +86,8 @@ test-slow:
 test-coverage:
 	@echo "🧪 Running tests with coverage..."
 	@python -m pytest tests/ -v --cov=. --cov-report=html:htmlcov --cov-report=term-missing
+
+# CI/CD simulation
+ci-check:
+	@echo "🔍 Running local CI/CD checks..."
+	@./scripts/run-ci-checks.sh
