@@ -8,7 +8,8 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
-from utils.settings_adapter import settings_manager
+from kivy.logger import Logger
+from utils.simple_settings import settings_manager
 import re
 
 class WiFiNetwork(BoxLayout):
@@ -54,7 +55,7 @@ class WiFiSettingsScreen(Screen):
     def on_settings_changed(self, instance, settings):
         """Called when settings are updated externally"""
         # Update WiFi preferences when settings change
-        pass
+        Logger.info("WiFiSettingsScreen: Settings changed, updating WiFi preferences")
         
     def on_enter(self):
         """Called when entering the screen"""

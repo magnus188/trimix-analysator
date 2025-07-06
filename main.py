@@ -3,6 +3,12 @@ import subprocess
 import json
 import glob
 
+# Configure Kivy before any imports
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)  # Lock window size to match RPi display exactly
+Config.set('graphics', 'width', '480')      # RPi display width
+Config.set('graphics', 'height', '800')     # RPi display height
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, FadeTransition, ScreenManagerException
@@ -11,6 +17,12 @@ from kivy.core.text import LabelBase
 from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.logger import Logger
+
+# Set window properties for development
+Window.fullscreen = False
+if os.environ.get('TRIMIX_ENVIRONMENT') == 'development':
+    from version import __version__
+    Window.set_title(f'Trimix Analyzer v{__version__} - RPi Display Emulation (480x800)')
 
 # Import version information
 from version import __version__, get_build_info
@@ -37,23 +49,6 @@ from widgets.sensor_card import SensorCard
 from widgets.menu_card import MenuCard
 from widgets.settings_button import SettingsButton
 from widgets.navbar import NavBar
-
-# Configure window for development - exact RPi display emulation
-# 4.3 inch 480x800 portrait mode display (matches physical hardware)
-# This ensures the development UI exactly matches what users see on the device
-Window.fullscreen = False  # Disable fullscreen for development
-Window.size = (480, 800)   # Exact RPi display resolution
-Window.minimum_width = 480  # Lock to exact display width
-Window.minimum_height = 800  # Lock to exact display height
-# Keep portrait orientation for RPi display matching
-
-# Set window title and properties for development
-from kivy.config import Config
-Config.set('graphics', 'resizable', False)  # Lock window size to match RPi display exactly
-if os.environ.get('TRIMIX_ENVIRONMENT') == 'development':
-    from version import __version__
-    Window.set_title(f'Trimix Analyzer v{__version__} - RPi Display Emulation (480x800)')
-
 
 KV_DIR = os.path.dirname(__file__)
 
@@ -123,6 +118,9 @@ class TrimixApp(App):
         # Start calibration reminder system
         calibration_reminder.schedule_periodic_check()
         Clock.schedule_once(lambda dt: calibration_reminder.show_calibration_reminder(), 5)
+        
+        # Check for updates on startup (if auto-updates enabled)
+        Clock.schedule_once(self.startup_update_check, 3)
     
     def open_detail(self, sensor_key: str, screen_name: str):
             detail = self.root.get_screen(screen_name)
@@ -183,6 +181,55 @@ class TrimixApp(App):
                 
         except Exception as e:
             Logger.error(f"TrimixApp: Migration failed: {e}")
+    
+    def startup_update_check(self, dt):
+        """Check for updates on startup if auto-updates are enabled"""
+        try:
+            # Check if auto-updates are enabled
+            auto_check_enabled = db_manager.get_setting('updates', 'auto_check', True)
+            
+            if auto_check_enabled:
+                Logger.info("TrimixApp: Auto-updates enabled, checking for updates on startup")
+                
+                # Import and initialize update manager
+                from utils.update_manager import get_update_manager
+                update_manager = get_update_manager()
+                
+                # Bind to update events to handle results
+                update_manager.bind(on_update_available=self.on_startup_update_available)
+                update_manager.bind(on_update_check_complete=self.on_startup_update_check_complete)
+                
+                # Perform the update check
+                update_manager.check_for_updates()
+            else:
+                Logger.info("TrimixApp: Auto-updates disabled, skipping startup update check")
+                
+        except Exception as e:
+            Logger.error(f"TrimixApp: Startup update check failed: {e}")
+    
+    def on_startup_update_available(self, update_manager, update_info):
+        """Handle update available on startup"""
+        version = update_info.get('version', 'Unknown')
+        Logger.info(f"TrimixApp: Update available on startup: {version}")
+        
+        # Show a notification in the logs - the user can check updates manually in settings
+        # We don't want to interrupt the startup flow with popups
+        Logger.info("TrimixApp: Update available! Check Settings → Update Settings for details")
+    
+    def on_startup_update_check_complete(self, update_manager, update_available, update_info):
+        """Handle update check completion on startup"""
+        if update_available:
+            Logger.info("TrimixApp: Startup update check found new version available")
+        else:
+            Logger.info("TrimixApp: Startup update check - no updates available")
+        
+        # Unbind the temporary event handlers to avoid memory leaks
+        try:
+            update_manager.unbind(on_update_available=self.on_startup_update_available)
+            update_manager.unbind(on_update_check_complete=self.on_startup_update_check_complete)
+        except:
+            pass  # In case unbind fails, just continue
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     TrimixApp().run()

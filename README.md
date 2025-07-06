@@ -18,8 +18,16 @@ A Raspberry Pi-based gas analyzer for trimix diving gas mixtures, featuring real
 git clone https://github.com/magnustrandokken/trimix-analysator.git
 cd trimix-analysator
 
+# NPM-style commands using Make
+make dev           # 🎮 Start development server (RPi emulation)
+make run           # 🏃 Quick run without env setup
+make install       # 📦 Install dependencies
+make clean         # 🧹 Clean up virtual environment
+make test          # 🧪 Run tests
+make help          # ❓ Show all available commands
+
 # Simple one-command startup (emulates 4.3" 480x800 RPi display)
-./dev.sh
+make dev
 
 # Or manually:
 python3 -m venv .venv
@@ -53,14 +61,17 @@ git clone https://github.com/magnustrandokken/trimix-analysator.git
 cd trimix-analysator
 docker-compose up
 
-# Or deploy from Mac
-./scripts/deploy-dev.sh rpi5
+# Or deploy from Mac using Make
+make deploy-dev    # 🚢 Deploy to RPi 5 (staging)
 ```
 
 ### Production on Raspberry Pi Zero 2W
 
 ```bash
 # One-time setup
+make setup-rpi     # ⚙️ Setup production environment
+
+# Or manually
 sudo bash scripts/setup-production.sh
 sudo reboot
 
@@ -119,10 +130,29 @@ The project uses environment-specific requirements:
 
 ## 🛠️ Development Workflow
 
+### Available Commands
+
+Use the new Makefile commands for streamlined development:
+
+```bash
+make help          # Show all available commands
+make dev           # Start development environment (RPi emulation)
+make run           # Quick run without environment setup
+make install       # Install dependencies in virtual environment
+make clean         # Clean up virtual environment and cache
+make test          # Run tests
+make deploy-dev    # Deploy to RPi 5 (staging)
+make deploy-prod   # Deploy to RPi Zero (production)
+make setup-rpi     # Setup production environment on RPi
+```
+
 ### 1. Local Development (Mac)
 
 ```bash
 # Start development environment
+make dev
+
+# Or with Docker
 docker-compose -f docker-compose.dev.yml up
 
 # Features:
@@ -136,7 +166,7 @@ docker-compose -f docker-compose.dev.yml up
 
 ```bash
 # Deploy from Mac
-./scripts/deploy-dev.sh rpi5
+make deploy-dev
 
 # Or manually on RPi 5
 git pull origin develop
@@ -152,7 +182,7 @@ docker-compose up
 
 ```bash
 # One-time setup
-sudo bash scripts/setup-production.sh
+make setup-rpi
 
 # Creates:
 # ✅ Boot-to-app functionality
@@ -213,6 +243,7 @@ Mock sensors simulate:
 trimix-analysator/
 ├── main.py                     # Application entry point
 ├── app.kv                      # Main UI layout
+├── Makefile                    # Development commands (make dev, make test, etc.)
 ├── Dockerfile                  # Multi-stage container build
 ├── docker-compose.yml          # Production deployment
 ├── docker-compose.dev.yml      # Development environment
@@ -228,7 +259,8 @@ trimix-analysator/
 │   ├── sensors.py             # Legacy sensor code
 │   └── database_manager.py    # Settings storage
 ├── widgets/                    # Custom UI components
-├── scripts/                    # Deployment and setup
+├── scripts/                    # Deployment and setup scripts
+│   ├── dev.sh                 # Development launcher
 │   ├── healthcheck.py         # Container health monitoring
 │   ├── setup-production.sh    # Production RPi setup
 │   └── deploy-dev.sh          # Development deployment
@@ -240,6 +272,9 @@ trimix-analysator/
 ### Run Tests
 
 ```bash
+# Using Make (recommended)
+make test
+
 # With Docker
 docker-compose -f docker-compose.dev.yml exec trimix-dev pytest
 
@@ -360,10 +395,10 @@ The project includes automated CI/CD with GitHub Actions:
 
 ```bash
 # Deploy to staging
-./scripts/deploy-dev.sh rpi5
+make deploy-dev
 
 # Deploy to production
-./scripts/deploy-dev.sh rpi-zero
+make deploy-prod
 
 # Create production release
 git tag v1.0.0

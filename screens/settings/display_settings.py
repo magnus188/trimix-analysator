@@ -8,7 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-from utils.settings_adapter import settings_manager
+from utils.simple_settings import settings_manager
 
 class DisplaySettingsScreen(Screen):
     brightness = NumericProperty(50)  # Default brightness percentage
@@ -16,7 +16,7 @@ class DisplaySettingsScreen(Screen):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Bind to settings changes
+        # Bind to database changes
         settings_manager.bind(settings=self.on_settings_changed)
     
     def navigate_back(self):
@@ -24,14 +24,14 @@ class DisplaySettingsScreen(Screen):
         self.manager.current = 'settings'
         
     def on_settings_changed(self, instance, settings):
-        """Called when settings are updated externally"""
+        """Called when database settings are updated externally"""
         # Update UI when settings change from other sources
         self.brightness = settings_manager.get('display.brightness', 50)
         self.sleep_timeout = settings_manager.get('display.sleep_timeout', 5)
         
     def on_enter(self):
         """Called when entering the screen"""
-        # Load settings from the settings manager first
+        # Load settings from the database first
         self.brightness = settings_manager.get('display.brightness', 50)
         self.sleep_timeout = settings_manager.get('display.sleep_timeout', 5)
         

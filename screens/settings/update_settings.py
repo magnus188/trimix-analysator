@@ -236,3 +236,7 @@ class UpdateSettingsScreen(BaseScreen):
     def get_version_history(self):
         """Get version history for display."""
         return VERSION_HISTORY
+    
+    def go_back(self):
+        """Navigate back to settings screen (called by KV file)"""
+        self.navigate_back()
