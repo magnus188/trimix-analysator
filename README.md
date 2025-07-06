@@ -18,8 +18,16 @@ A Raspberry Pi-based gas analyzer for trimix diving gas mixtures, featuring real
 git clone https://github.com/magnustrandokken/trimix-analysator.git
 cd trimix-analysator
 
+# NPM-style commands using Make
+make dev           # 🎮 Start development server (RPi emulation)
+make run           # 🏃 Quick run without env setup
+make install       # 📦 Install dependencies
+make clean         # 🧹 Clean up virtual environment
+make test          # 🧪 Run tests
+make help          # ❓ Show all available commands
+
 # Simple one-command startup (emulates 4.3" 480x800 RPi display)
-./dev.sh
+make dev
 
 # Or manually:
 python3 -m venv .venv
@@ -53,14 +61,17 @@ git clone https://github.com/magnustrandokken/trimix-analysator.git
 cd trimix-analysator
 docker-compose up
 
-# Or deploy from Mac
-./scripts/deploy-dev.sh rpi5
+# Or deploy from Mac using Make
+make deploy-dev    # 🚢 Deploy to RPi 5 (staging)
 ```
 
 ### Production on Raspberry Pi Zero 2W
 
 ```bash
 # One-time setup
+make setup-rpi     # ⚙️ Setup production environment
+
+# Or manually
 sudo bash scripts/setup-production.sh
 sudo reboot
 
@@ -119,10 +130,29 @@ The project uses environment-specific requirements:
 
 ## 🛠️ Development Workflow
 
+### Available Commands
+
+Use the new Makefile commands for streamlined development:
+
+```bash
+make help          # Show all available commands
+make dev           # Start development environment (RPi emulation)
+make run           # Quick run without environment setup
+make install       # Install dependencies in virtual environment
+make clean         # Clean up virtual environment and cache
+make test          # Run tests
+make deploy-dev    # Deploy to RPi 5 (staging)
+make deploy-prod   # Deploy to RPi Zero (production)
+make setup-rpi     # Setup production environment on RPi
+```
+
 ### 1. Local Development (Mac)
 
 ```bash
 # Start development environment
+make dev
+
+# Or with Docker
 docker-compose -f docker-compose.dev.yml up
 
 # Features:
@@ -136,7 +166,7 @@ docker-compose -f docker-compose.dev.yml up
 
 ```bash
 # Deploy from Mac
-./scripts/deploy-dev.sh rpi5
+make deploy-dev
 
 # Or manually on RPi 5
 git pull origin develop
@@ -152,7 +182,7 @@ docker-compose up
 
 ```bash
 # One-time setup
-sudo bash scripts/setup-production.sh
+make setup-rpi
 
 # Creates:
 # ✅ Boot-to-app functionality
@@ -213,6 +243,7 @@ Mock sensors simulate:
 trimix-analysator/
 ├── main.py                     # Application entry point
 ├── app.kv                      # Main UI layout
+├── Makefile                    # Development commands (make dev, make test, etc.)
 ├── Dockerfile                  # Multi-stage container build
 ├── docker-compose.yml          # Production deployment
 ├── docker-compose.dev.yml      # Development environment
@@ -228,7 +259,8 @@ trimix-analysator/
 │   ├── sensors.py             # Legacy sensor code
 │   └── database_manager.py    # Settings storage
 ├── widgets/                    # Custom UI components
-├── scripts/                    # Deployment and setup
+├── scripts/                    # Deployment and setup scripts
+│   ├── dev.sh                 # Development launcher
 │   ├── healthcheck.py         # Container health monitoring
 │   ├── setup-production.sh    # Production RPi setup
 │   └── deploy-dev.sh          # Development deployment
@@ -240,6 +272,9 @@ trimix-analysator/
 ### Run Tests
 
 ```bash
+# Using Make (recommended)
+make test
+
 # With Docker
 docker-compose -f docker-compose.dev.yml exec trimix-dev pytest
 
@@ -258,6 +293,93 @@ Tests include:
 - Import validation
 - Basic UI components
 
+## 🏷️ Automated Versioning & Releases
+
+This project uses **fully automated** version management and releases through GitHub CI/CD.
+
+### 🤖 **How It Works**
+
+1. **Development**: Work on feature branches, create PRs to `main`
+2. **Automatic Version Bumping**: When PR is merged to `main`, CI/CD automatically:
+   - Detects version bump type from commit message
+   - Bumps version in `version.py`
+   - Creates git tag
+   - Builds and pushes Docker images
+   - Creates GitHub release with PR description
+
+### 📝 **Version Bump Types**
+
+Control version bumping through your **commit messages** or **PR titles**:
+
+```bash
+# Patch version (0.1.0 → 0.1.1) - DEFAULT
+git commit -m "fix: resolve sensor reading issue"
+git commit -m "docs: update README"
+
+# Minor version (0.1.0 → 0.2.0)
+git commit -m "feat: add new calibration feature"
+git commit -m "feature: implement WiFi setup wizard"
+
+# Major version (0.1.0 → 1.0.0)
+git commit -m "BREAKING CHANGE: redesign sensor interface"
+git commit -m "major: complete API overhaul"
+```
+
+### 🔄 **Development Workflow**
+
+```bash
+# 1. Create feature branch
+git checkout -b feature/awesome-feature
+
+# 2. Make changes and commit
+git commit -m "feat: add awesome feature"
+
+# 3. Push and create PR
+git push origin feature/awesome-feature
+# Create PR on GitHub with descriptive title/description
+
+# 4. Merge PR to main
+# ✅ CI/CD automatically handles versioning and release!
+```
+
+### 📦 **What Happens Automatically**
+
+When you merge to `main`:
+
+1. **Tests Run**: Full test suite on multiple platforms
+2. **Version Detection**: Analyzes commit message for bump type
+3. **Version Bump**: Updates `version.py` automatically
+4. **Docker Build**: Multi-platform images (ARM64, ARMv7, x86_64)
+5. **Image Push**: To GitHub Container Registry
+6. **Git Tag**: Creates `v0.1.1`, `v0.2.0`, etc.
+7. **GitHub Release**: With your PR description as release notes
+8. **Deployment**: (Optional) Auto-deploy to your Raspberry Pi
+
+### 🎯 **Current Version**: `v0.1.0`
+
+Check current version:
+```bash
+python -c "from version import __version__; print(__version__)"
+```
+
+### 🔄 **Automatic Updates**
+
+The app includes an update manager that:
+- ✅ Automatically checks GitHub releases
+- ✅ Compares semantic versions correctly  
+- ✅ Downloads new Docker images
+- ✅ Restarts the application
+- ✅ Shows update progress to users
+
+Access via: **Settings → Update Settings**
+
+### 🧹 **Workspace Stays Clean**
+
+- ❌ No manual version bumping
+- ❌ No manual tagging
+- ❌ No manual release creation
+- ✅ Just commit, PR, and merge!
+
 ## 🚀 CI/CD Pipeline
 
 The project includes automated CI/CD with GitHub Actions:
@@ -273,10 +395,10 @@ The project includes automated CI/CD with GitHub Actions:
 
 ```bash
 # Deploy to staging
-./scripts/deploy-dev.sh rpi5
+make deploy-dev
 
 # Deploy to production
-./scripts/deploy-dev.sh rpi-zero
+make deploy-prod
 
 # Create production release
 git tag v1.0.0

@@ -3,12 +3,13 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-from utils.settings_adapter import settings_manager
+from kivy.logger import Logger
+from utils.simple_settings import settings_manager
 
 class SettingsScreen(Screen):
     def on_enter(self):
-        # Initialization when entering the screen
-        pass
+        """Called when entering the settings screen"""
+        Logger.info("SettingsScreen: Entered settings screen")
     
     def navigate_back(self):
         """Navigate back to home screen"""
@@ -28,11 +29,13 @@ class SettingsScreen(Screen):
             self.manager.current = 'safety_settings'
         elif setting_name == 'sensor_settings':
             self.manager.current = 'sensor_settings'
+        elif setting_name == 'update_settings':
+            self.manager.current = 'update_settings'
         elif setting_name == 'factory_reset':
             self.show_factory_reset_confirmation()
         else:
+            Logger.warning(f"SettingsScreen: Unknown setting requested: {setting_name}")
             # TODO: Implement functionality for other settings
-            pass
     
     def navigate_back(self):
         # Function to navigate back to home screen

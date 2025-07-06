@@ -4,7 +4,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-from utils.settings_adapter import settings_manager
+from utils.simple_settings import settings_manager
 from utils.calibration_reminder import calibration_reminder
 from datetime import datetime
 from kivy.logger import Logger

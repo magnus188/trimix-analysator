@@ -205,3 +205,15 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project specific backup files
+*.backup
+*.bak
+trimix_settings.json.backup
+settings_manager.py.backup
+
+# Auto-generated folders
+.benchmarks/          # pytest-benchmark results
+data/                 # Docker persistent data storage
+
+.lgd-nfy0

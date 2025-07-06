@@ -24,6 +24,22 @@ def is_raspberry_pi() -> bool:
         return False
 
 
+def _check_hardware_modules_available() -> bool:
+    """
+    Check if required hardware modules are available.
+    
+    Returns:
+        bool: True if hardware modules can be imported
+    """
+    try:
+        import board
+        import busio
+        import digitalio
+        return True
+    except ImportError:
+        return False
+
+
 def is_development_environment() -> bool:
     """
     Check if running in development mode.
@@ -34,10 +50,13 @@ def is_development_environment() -> bool:
     env = os.getenv('TRIMIX_ENVIRONMENT', '').lower()
     mock_sensors = os.getenv('TRIMIX_MOCK_SENSORS', '').lower()
     
+    # Check if hardware modules are available
+    hardware_available = _check_hardware_modules_available()
+    
     return (
         env == 'development' or 
         mock_sensors in ('1', 'true', 'yes') or
-        not is_raspberry_pi()
+        (not is_raspberry_pi() and not hardware_available)
     )
 
 

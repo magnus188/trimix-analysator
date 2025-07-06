@@ -5,7 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.logger import Logger
-from utils.settings_adapter import settings_manager
+from utils.simple_settings import settings_manager
 
 class SafetySettingsScreen(Screen):
     max_o2_percentage = NumericProperty(100)
@@ -32,12 +32,12 @@ class SafetySettingsScreen(Screen):
         self.load_settings_from_manager()
         
     def load_settings_from_manager(self):
-        """Load current safety settings from the settings manager"""
+        """Load current safety settings from the database"""
         self.max_o2_percentage = settings_manager.get('safety.max_o2_percentage', 100)
         self.max_he_percentage = settings_manager.get('safety.max_he_percentage', 100)
-        self.high_o2_threshold = settings_manager.get('safety.warning_thresholds.high_o2', 23.0)
-        self.low_o2_threshold = settings_manager.get('safety.warning_thresholds.low_o2', 19.0)
-        self.high_he_threshold = settings_manager.get('safety.warning_thresholds.high_he', 50.0)
+        self.high_o2_threshold = settings_manager.get('safety.warning_thresholds_high_o2', 23.0)
+        self.low_o2_threshold = settings_manager.get('safety.warning_thresholds_low_o2', 19.0)
+        self.high_he_threshold = settings_manager.get('safety.warning_thresholds_high_he', 50.0)
     
     def on_max_o2_change(self, value):
         """Called when max O2 percentage changes"""
@@ -87,7 +87,7 @@ class SafetySettingsScreen(Screen):
                 return
             
             self.high_o2_threshold = float_value
-            success = settings_manager.set('safety.warning_thresholds.high_o2', self.high_o2_threshold)
+            success = settings_manager.set('safety.warning_thresholds_high_o2', self.high_o2_threshold)
             if not success:
                 Logger.error("SafetySettings: Failed to save high O2 threshold")
                 self.show_error("Save Error", "Failed to save setting")
@@ -109,7 +109,7 @@ class SafetySettingsScreen(Screen):
                 return
             
             self.low_o2_threshold = float_value
-            success = settings_manager.set('safety.warning_thresholds.low_o2', self.low_o2_threshold)
+            success = settings_manager.set('safety.warning_thresholds_low_o2', self.low_o2_threshold)
             if not success:
                 Logger.error("SafetySettings: Failed to save low O2 threshold")
                 self.show_error("Save Error", "Failed to save setting")
@@ -126,7 +126,7 @@ class SafetySettingsScreen(Screen):
                 return
             
             self.high_he_threshold = float_value
-            success = settings_manager.set('safety.warning_thresholds.high_he', self.high_he_threshold)
+            success = settings_manager.set('safety.warning_thresholds_high_he', self.high_he_threshold)
             if not success:
                 Logger.error("SafetySettings: Failed to save high He threshold")
                 self.show_error("Save Error", "Failed to save setting")
@@ -184,17 +184,16 @@ class SafetySettingsScreen(Screen):
         """Perform the actual safety settings reset"""
         popup.dismiss()
         
-        # Reset to default values from database manager
-        from utils.database_manager import db_manager
-        defaults = db_manager.get_default_settings()['safety']
+        # Reset to default values
+        defaults = settings_manager.default_settings['safety']
         
         settings_manager.set('safety.max_o2_percentage', defaults['max_o2_percentage'])
         settings_manager.set('safety.max_he_percentage', defaults['max_he_percentage'])
-        settings_manager.set('safety.warning_thresholds.high_o2', defaults['warning_thresholds']['high_o2'])
-        settings_manager.set('safety.warning_thresholds.low_o2', defaults['warning_thresholds']['low_o2'])
-        settings_manager.set('safety.warning_thresholds.high_he', defaults['warning_thresholds']['high_he'])
+        settings_manager.set('safety.warning_thresholds_high_o2', defaults['warning_thresholds']['high_o2'])
+        settings_manager.set('safety.warning_thresholds_low_o2', defaults['warning_thresholds']['low_o2'])
+        settings_manager.set('safety.warning_thresholds_high_he', defaults['warning_thresholds']['high_he'])
         
-        # Reload from settings manager to update UI
+        # Reload to update UI
         self.load_settings_from_manager()
     
     def show_error(self, title: str, message: str):

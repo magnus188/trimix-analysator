@@ -12,6 +12,8 @@ from typing import Any, Dict, Optional, List, Tuple
 from kivy.event import EventDispatcher
 from kivy.logger import Logger
 
+from version import __version__
+
 
 class DatabaseManager(EventDispatcher):
     """
@@ -122,7 +124,7 @@ class DatabaseManager(EventDispatcher):
             default_settings = {
                 'app': {
                     'first_run': True,
-                    'app_version': '1.0.0',
+                    'app_version': __version__,
                     'theme': 'dark',
                     'language': 'en',
                     'debug_mode': False,
@@ -448,7 +450,7 @@ class DatabaseManager(EventDispatcher):
         return {
             'app': {
                 'first_run': True,
-                'app_version': '1.0.0',
+                'app_version': __version__,
                 'theme': 'dark',
                 'language': 'en',
                 'debug_mode': False,
