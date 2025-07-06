@@ -268,15 +268,3 @@ jobs:
         echo "wget https://github.com/${{ github.repository }}/releases/download/v${{ steps.bump-version.outputs.new_version }}/trimix-analyzer-v${{ steps.bump-version.outputs.new_version }}.tar.gz" >> $GITHUB_STEP_SUMMARY
         echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
-  notify-teams:
-    name: Notify Development Team
-    runs-on: ubuntu-latest
-    needs: auto-release
-    if: success()
-    
-    steps:
-    - name: Post to GitHub Discussions (if available)
-      continue-on-error: true
-      run: |
-        echo "🎉 New release v${{ needs.auto-release.outputs.new_version }} has been created!"
-        echo "Check the Actions tab for build progress and release artifacts."

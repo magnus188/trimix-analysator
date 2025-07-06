@@ -388,8 +388,8 @@ class UpdateSettingsScreen(BaseScreen):
 
     def go_back(self):
         """
-        Navigates back to the previous settings screen.
+        Navigates back to the main settings screen.
         
         Intended to be triggered from the KV language UI file.
         """
-        self.navigate_back()
+        self.manager.current = 'settings'
