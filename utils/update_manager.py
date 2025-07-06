@@ -462,7 +462,8 @@ class UpdateManager(EventDispatcher):
 # Global update manager instance
 _update_manager = None
 
-def get_update_manager() -> UpdateManager:
+
+def get_update_manager():
     """
     Returns the singleton instance of the UpdateManager, creating it if it does not already exist.
     """
