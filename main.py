@@ -34,8 +34,20 @@ from widgets.menu_card import MenuCard
 from widgets.settings_button import SettingsButton
 from widgets.navbar import NavBar
 
-Window.fullscreen = 'auto'
-Window.rotation = 270
+# Configure window for development - exact RPi display emulation
+# 4.3 inch 480x800 portrait mode display (matches physical hardware)
+# This ensures the development UI exactly matches what users see on the device
+Window.fullscreen = False  # Disable fullscreen for development
+Window.size = (480, 800)   # Exact RPi display resolution
+Window.minimum_width = 480  # Lock to exact display width
+Window.minimum_height = 800  # Lock to exact display height
+# Keep portrait orientation for RPi display matching
+
+# Set window title and properties for development
+from kivy.config import Config
+Config.set('graphics', 'resizable', False)  # Lock window size to match RPi display exactly
+if os.environ.get('TRIMIX_ENVIRONMENT') == 'development':
+    Window.set_title('Trimix Analyzer - RPi Display Emulation (480x800)')
 
 
 KV_DIR = os.path.dirname(__file__)

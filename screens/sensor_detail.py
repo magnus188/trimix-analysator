@@ -73,8 +73,7 @@ class SensorDetail(Screen):
         
         print(f"Graph configured for {self.sensor_key}: Y-range {graph.ymin}-{graph.ymax}, ticks major={graph.y_ticks_major}, minor={graph.y_ticks_minor}")
         
-        self.refresh_plot()
-
+        # Create the plot BEFORE trying to refresh it
         if not self.plot:
             print("Creating new plot")
             print(self.theme_color)
@@ -86,6 +85,9 @@ class SensorDetail(Screen):
 
         # Ensure at least one sample, then start the timed updates
         record_readings()
+        
+        # Do initial plot refresh
+        self.refresh_plot()
 
         # Delay the first call to refresh_plot
         if not self._refresh_event:
@@ -103,9 +105,10 @@ class SensorDetail(Screen):
             self.plot = None  # Reset the plot variable to None
 
     def _tick(self, dt):
-        # 1) update live reading
-        val = get_readings()['o2']
-        self.live_value = f"{val:.2f}" if val is not None else "--"
+        # 1) update live reading - use the actual sensor key, not hardcoded 'o2'
+        readings = get_readings()
+        val = readings.get(self.sensor_key)
+        self.live_value = f"{val:.2f}{self.sign}" if val is not None else "--"
         # 2) redraw ONLY from buffer
         self.refresh_plot()
 

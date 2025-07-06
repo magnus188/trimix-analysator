@@ -1,0 +1,37 @@
+# Docker Compose for Development - Simple headless testing only
+
+services:
+  trimix-dev:
+    build:
+      context: .
+      target: development
+    container_name: trimix-dev
+    restart: "no"
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    environment:
+      - TRIMIX_ENVIRONMENT=development
+      - TRIMIX_MOCK_SENSORS=1
+    working_dir: /app
+    command: python -m pytest tests/ -v
+    stdin_open: true
+    tty: true
+
+  # For interactive development/debugging
+  trimix-dev-shell:
+    build:
+      context: .
+      target: development
+    container_name: trimix-dev-shell
+    restart: "no"
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    environment:
+      - TRIMIX_ENVIRONMENT=development
+      - TRIMIX_MOCK_SENSORS=1
+    working_dir: /app
+    command: bash
+    stdin_open: true
+    tty: true

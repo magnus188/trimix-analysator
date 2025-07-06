@@ -1,0 +1,405 @@
+# Trimix Analyzer
+
+A Raspberry Pi-based gas analyzer for trimix diving gas mixtures, featuring real-time O2, CO2, temperature, pressure, and humidity monitoring with a touch-friendly Kivy interface.
+
+## 🏗️ Architecture
+
+- **UI Framework**: Kivy (touch-friendly interface)
+- **Hardware**: Raspberry Pi with I2C sensors (ADS1115, BME280)
+- **Deployment**: Docker containers for consistent environments
+- **Development**: Multi-platform support (Mac, RPi 5, RPi Zero 2W)
+
+## 🚀 Quick Start
+
+### Development (Recommended - Native GUI)
+
+```bash
+# Clone the repository
+git clone https://github.com/magnustrandokken/trimix-analysator.git
+cd trimix-analysator
+
+# Simple one-command startup (emulates 4.3" 480x800 RPi display)
+./dev.sh
+
+# Or manually:
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-base.txt
+pip install https://github.com/kivy-garden/graph/archive/master.zip
+export TRIMIX_ENVIRONMENT=development TRIMIX_MOCK_SENSORS=1
+python main.py
+```
+
+**Display Emulation**: The development window exactly matches the 4.3 inch 480x800 portrait display used on the Raspberry Pi hardware, ensuring pixel-perfect UI development.
+
+### Testing (Docker - Headless)
+
+```bash
+# Run tests in Docker container
+docker-compose -f docker-compose.dev.yml up
+
+# Interactive shell for debugging
+docker-compose -f docker-compose.dev.yml run trimix-dev-shell
+```
+
+### Testing on Raspberry Pi 5
+
+```bash
+# SSH into your RPi 5
+ssh pi@raspberrypi5.local
+
+# Clone and run
+git clone https://github.com/magnustrandokken/trimix-analysator.git
+cd trimix-analysator
+docker-compose up
+
+# Or deploy from Mac
+./scripts/deploy-dev.sh rpi5
+```
+
+### Production on Raspberry Pi Zero 2W
+
+```bash
+# One-time setup
+sudo bash scripts/setup-production.sh
+sudo reboot
+
+# System will boot directly into the Trimix Analyzer
+```
+
+## 📋 Requirements
+
+### Hardware Requirements
+
+#### For Development (Mac)
+- Docker Desktop
+- 4GB+ RAM
+- Git
+
+#### For Raspberry Pi Testing/Production
+- Raspberry Pi 4/5 (development) or Zero 2W (production)
+- MicroSD card (16GB+)
+- **Sensors:**
+  - ADS1115 16-bit ADC (I2C address: 0x48)
+  - BME280 temperature/pressure/humidity sensor (I2C address: 0x76/0x77)
+  - O2 sensor (analog, connected to ADS1115 channel 0)
+  - CO2 sensor (analog, connected to ADS1115 channel 1)
+  - Power button (GPIO 18)
+
+#### Wiring Diagram
+```
+Raspberry Pi <-> Sensors
+GPIO 2 (SDA) <-> ADS1115 SDA, BME280 SDA
+GPIO 3 (SCL) <-> ADS1115 SCL, BME280 SCL
+GPIO 18      <-> Power Button (with pull-up)
+3.3V         <-> Sensor VCC
+GND          <-> Sensor GND
+```
+
+### Software Requirements
+
+- **Docker** (recommended) or Python 3.11+
+- **Git** for version control
+- **SSH access** for remote deployment
+
+## 🐳 Docker Setup
+
+### Environment Files
+
+The project uses environment-specific requirements:
+
+- `requirements-base.txt` - Core UI dependencies (Kivy)
+- `requirements-dev.txt` - Development tools + testing
+- `requirements-rpi.txt` - Hardware libraries for Raspberry Pi
+
+### Docker Compose Files
+
+- `docker-compose.dev.yml` - Development environment (mock sensors)
+- `docker-compose.yml` - Production environment (real hardware)
+
+## 🛠️ Development Workflow
+
+### 1. Local Development (Mac)
+
+```bash
+# Start development environment
+docker-compose -f docker-compose.dev.yml up
+
+# Features:
+# ✅ Mock sensors (no hardware needed)
+# ✅ Live code reload
+# ✅ Same environment as production
+# ✅ Fast iteration
+```
+
+### 2. Hardware Testing (RPi 5)
+
+```bash
+# Deploy from Mac
+./scripts/deploy-dev.sh rpi5
+
+# Or manually on RPi 5
+git pull origin develop
+docker-compose up
+
+# Features:
+# ✅ Real sensor hardware
+# ✅ Full GPIO access
+# ✅ Production-like environment
+```
+
+### 3. Production Deployment (RPi Zero 2W)
+
+```bash
+# One-time setup
+sudo bash scripts/setup-production.sh
+
+# Creates:
+# ✅ Boot-to-app functionality
+# ✅ Auto-restart on failure
+# ✅ Systemd service
+# ✅ Docker auto-start
+```
+
+## 📊 Monitoring & Health Checks
+
+### Health Check
+
+The application includes built-in health monitoring:
+
+```bash
+# Check container health
+docker-compose exec trimix-analyzer python /usr/local/bin/healthcheck.py
+
+# View logs
+docker-compose logs -f trimix-analyzer
+
+# Container status
+docker-compose ps
+```
+
+### Health Check Components
+
+- **Application Process**: Verifies main.py is running
+- **Sensor Access**: Tests sensor communication
+- **I2C Devices**: Validates hardware connectivity (production only)
+
+## 🔧 Configuration
+
+### Environment Variables
+
+| Variable | Development | Production | Description |
+|----------|-------------|------------|-------------|
+| `TRIMIX_ENVIRONMENT` | `development` | `production` | Runtime environment |
+| `TRIMIX_MOCK_SENSORS` | `1` | `0` | Use mock vs real sensors |
+
+### Sensor Configuration
+
+The application automatically detects the environment:
+
+- **Mac/Development**: Uses mock sensors with realistic data
+- **Raspberry Pi**: Uses real hardware sensors
+
+Mock sensors simulate:
+- O2: ~20.9% (with noise)
+- CO2: ~400ppm (variable)
+- Temperature: 20-25°C (daily cycle)
+- Pressure: ~1013 hPa
+- Humidity: 40-50%
+
+## 📁 Project Structure
+
+```
+trimix-analysator/
+├── main.py                     # Application entry point
+├── app.kv                      # Main UI layout
+├── Dockerfile                  # Multi-stage container build
+├── docker-compose.yml          # Production deployment
+├── docker-compose.dev.yml      # Development environment
+├── requirements-*.txt          # Environment-specific dependencies
+├── screens/                    # UI screens
+│   ├── analyze.py             # Real-time sensor display
+│   ├── home.py                # Main menu
+│   ├── sensor_detail.py       # Individual sensor details
+│   └── settings/              # Configuration screens
+├── utils/                      # Core utilities
+│   ├── sensor_interface.py    # Hardware abstraction layer
+│   ├── platform_detector.py   # Environment detection
+│   ├── sensors.py             # Legacy sensor code
+│   └── database_manager.py    # Settings storage
+├── widgets/                    # Custom UI components
+├── scripts/                    # Deployment and setup
+│   ├── healthcheck.py         # Container health monitoring
+│   ├── setup-production.sh    # Production RPi setup
+│   └── deploy-dev.sh          # Development deployment
+└── tests/                      # Test suite
+```
+
+## 🧪 Testing
+
+### Run Tests
+
+```bash
+# With Docker
+docker-compose -f docker-compose.dev.yml exec trimix-dev pytest
+
+# Natively
+pip install -r requirements-dev.txt
+export TRIMIX_MOCK_SENSORS=1
+pytest tests/ -v
+```
+
+### Test Coverage
+
+Tests include:
+- Mock sensor functionality
+- Platform detection
+- Database operations
+- Import validation
+- Basic UI components
+
+## 🚀 CI/CD Pipeline
+
+The project includes automated CI/CD with GitHub Actions:
+
+### Automated Workflow
+
+1. **Code Push** → GitHub
+2. **CI Pipeline** → Tests, builds, multi-arch images
+3. **Staging Deploy** → RPi 5 (develop branch)
+4. **Production Deploy** → RPi Zero 2W (tagged releases)
+
+### Manual Deployment
+
+```bash
+# Deploy to staging
+./scripts/deploy-dev.sh rpi5
+
+# Deploy to production
+./scripts/deploy-dev.sh rpi-zero
+
+# Create production release
+git tag v1.0.0
+git push --tags  # Triggers automatic production deployment
+```
+
+## 🔒 Security
+
+- Non-root container user
+- Minimal container image
+- Hardware device isolation
+- Environment-specific configurations
+
+## 📚 API Reference
+
+### Sensor Interface
+
+```python
+from utils.sensor_interface import get_sensors
+
+sensors = get_sensors()  # Automatically detects mock vs real
+
+# Read sensor values
+o2_percent = sensors.read_oxygen_percent()
+co2_ppm = sensors.read_co2_ppm()
+temperature = sensors.read_temperature_c()
+pressure = sensors.read_pressure_hpa()
+humidity = sensors.read_humidity_pct()
+button_pressed = sensors.is_power_button_pressed()
+```
+
+### Platform Detection
+
+```python
+from utils.platform_detector import is_raspberry_pi, is_development_environment
+
+if is_raspberry_pi():
+    print("Running on Raspberry Pi")
+
+if is_development_environment():
+    print("Using mock sensors")
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### Mac Development
+```bash
+# Docker not starting
+docker-compose -f docker-compose.dev.yml down
+docker system prune -f
+docker-compose -f docker-compose.dev.yml up --build
+
+# Port conflicts
+docker-compose -f docker-compose.dev.yml down
+lsof -ti:5900 | xargs kill -9  # Kill VNC processes
+```
+
+#### Raspberry Pi
+```bash
+# I2C not working
+sudo raspi-config  # Enable I2C
+sudo reboot
+
+# Permissions issues
+sudo usermod -aG docker pi
+sudo usermod -aG i2c pi
+sudo reboot
+
+# Container won't start
+docker-compose down
+docker system prune -f
+docker-compose up --build
+```
+
+#### Sensor Issues
+```bash
+# Check I2C devices
+i2cdetect -y 1
+
+# Expected output:
+#      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+# 00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+# 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+# 20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+# 30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+# 40: -- -- -- -- -- -- -- -- 48 -- -- -- -- -- -- --  # ADS1115
+# 50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+# 60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+# 70: -- -- -- -- -- -- 76 --                          # BME280
+```
+
+### Log Analysis
+
+```bash
+# Application logs
+docker-compose logs -f trimix-analyzer
+
+# Health check logs
+docker-compose exec trimix-analyzer python /usr/local/bin/healthcheck.py
+
+# System logs (RPi)
+journalctl -u trimix-analyzer.service -f
+```
+
+## 📄 License
+
+[Add your license here]
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/magnustrandokken/trimix-analysator/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/magnustrandokken/trimix-analysator/discussions)
+
+---
+
+Built with ❤️ for the diving community

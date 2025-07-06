@@ -1,0 +1,11 @@
+# Development requirements - includes base + dev tools
+-r requirements-base.txt
+
+# Development and testing tools
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0
+
+# Mock hardware libraries for development
+mock>=4.0.0

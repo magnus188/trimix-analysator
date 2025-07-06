@@ -1,0 +1,39 @@
+# Docker Compose for Trimix Analyzer Production
+
+services:
+  trimix-analyzer:
+    image: ghcr.io/magnustrandokken/trimix-analysator:latest
+    # Fallback to local build if image not available
+    build:
+      context: .
+      target: production
+    container_name: trimix-analyzer
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"    # I2C bus for sensors
+      - "/dev/gpiomem:/dev/gpiomem" # GPIO access for power button
+    volumes:
+      - /sys:/sys:ro                # GPIO sysfs access
+      - ./data:/app/data           # Persistent data storage
+      - /dev/fb0:/dev/fb0          # Framebuffer for display
+    environment:
+      - TRIMIX_ENVIRONMENT=production
+      - TRIMIX_MOCK_SENSORS=0
+      - DISPLAY=:0
+    working_dir: /app
+    command: python main.py
+    
+  # Optional: monitoring container
+  watchtower:
+    image: containrrr/watchtower
+    container_name: trimix-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=3600
+    profiles:
+      - monitoring

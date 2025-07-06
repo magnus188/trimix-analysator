@@ -163,7 +163,7 @@ class WiFiSettingsScreen(Screen):
             {'ssid': 'Demo Network 2', 'signal': '60%', 'security': 'Open'},
             {'ssid': 'Demo Network 3', 'signal': '40%', 'security': 'WPA3'},
         ]
-        self._update_networks(demo_networks)
+        self._update_networks_and_status(demo_networks, '')
         
     def check_connection_status(self):
         """Check current WiFi connection status by rescanning networks"""
@@ -316,7 +316,7 @@ class WiFiSettingsScreen(Screen):
             container = self.ids.networks_container
             # Update existing widgets or recreate them
             if self.available_networks:
-                self._update_networks(self.available_networks)
+                self._update_networks_and_status(self.available_networks, self.connected_network)
             
     def navigate_back(self):
         """Navigate back to settings screen"""
