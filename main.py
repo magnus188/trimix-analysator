@@ -180,7 +180,7 @@ class TrimixApp(App):
             
             if os.path.exists(script_path):
                 # Make script executable
-                os.chmod(script_path, 0o755)
+                os.chmod(script_path, 0o755)  # nosec B103 - intentional script permissions
                 
                 # Run the script
                 result = subprocess.run(['bash', script_path], 
