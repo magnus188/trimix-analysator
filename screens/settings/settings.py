@@ -8,17 +8,29 @@ from utils.simple_settings import settings_manager
 
 class SettingsScreen(Screen):
     def on_enter(self):
-        """Called when entering the settings screen"""
+        """
+        Handles actions when the settings screen is entered.
+        
+        This method is triggered automatically when the user navigates to the settings screen.
+        """
         Logger.info("SettingsScreen: Entered settings screen")
     
     def navigate_back(self):
-        """Navigate back to home screen"""
+        """
+        Navigates from the settings screen back to the home screen.
+        """
         self.manager.current = 'home'
 
     def on_setting_press(self, setting_name):
         # Function to handle setting button presses
         
         # Handle specific settings
+        """
+        Handles user interaction with settings options by navigating to the appropriate settings screen or initiating a factory reset confirmation.
+        
+        Parameters:
+            setting_name (str): The identifier of the selected setting option.
+        """
         if setting_name == 'calibrate_o2':
             self.manager.current = 'calibrate_o2'
         elif setting_name == 'wifi_settings':
@@ -39,6 +51,9 @@ class SettingsScreen(Screen):
     
     def navigate_back(self):
         # Function to navigate back to home screen
+        """
+        Navigate back to the home screen by setting the current screen to 'home'.
+        """
         self.manager.current = 'home'
 
     def show_factory_reset_confirmation(self):

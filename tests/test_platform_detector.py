@@ -35,7 +35,9 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_is_not_raspberry_pi(self):
-        """Test non-Raspberry Pi detection."""
+        """
+        Test that `is_raspberry_pi` returns False when `/proc/cpuinfo` does not indicate Raspberry Pi hardware.
+        """
         mock_cpuinfo = "processor\t: 0\nvendor_id\t: GenuineIntel\nmodel name\t: Intel(R) Core(TM) i7-8700K CPU @ 3.70GHz"
         
         with patch('builtins.open', mock_open(read_data=mock_cpuinfo)):
@@ -55,7 +57,9 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_check_hardware_modules_available_success(self):
-        """Test hardware modules availability check - success case."""
+        """
+        Test that hardware module availability check returns True when required modules can be imported successfully.
+        """
         with patch('builtins.__import__') as mock_import:
             # Mock successful imports
             mock_import.return_value = None
@@ -63,7 +67,9 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_check_hardware_modules_available_import_error(self):
-        """Test hardware modules availability check - import error case."""
+        """
+        Test that `_check_hardware_modules_available` returns `False` when importing hardware modules raises an `ImportError`.
+        """
         with patch('builtins.__import__', side_effect=ImportError):
             assert _check_hardware_modules_available() == False
 
@@ -87,7 +93,9 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_is_development_environment_mock_sensors_yes(self, clean_environment):
-        """Test development environment detection with mock sensors set to 'yes'."""
+        """
+        Test that the development environment is detected when 'TRIMIX_MOCK_SENSORS' is set to 'yes'.
+        """
         os.environ['TRIMIX_MOCK_SENSORS'] = 'yes'
         assert is_development_environment() == True
 
@@ -105,7 +113,9 @@ class TestPlatformDetector:
     @patch('utils.platform_detector.is_raspberry_pi')
     @patch('utils.platform_detector._check_hardware_modules_available')
     def test_is_production_environment(self, mock_hw_check, mock_is_rpi, clean_environment):
-        """Test production environment detection."""
+        """
+        Test that the environment is detected as production when hardware checks pass and relevant environment variables are unset.
+        """
         mock_is_rpi.return_value = True
         mock_hw_check.return_value = True
         
@@ -126,7 +136,9 @@ class TestPlatformDetector:
     @patch('platform.python_version')
     def test_get_platform_info(self, mock_py_version, mock_platform, mock_machine, 
                               mock_system, mock_is_dev, mock_is_rpi, clean_environment):
-        """Test platform info gathering."""
+        """
+                              Test that `get_platform_info` returns correct platform details and environment flags when system and environment variables are mocked.
+                              """
         # Setup mocks
         mock_system.return_value = 'Linux'
         mock_machine.return_value = 'armv7l'
@@ -148,7 +160,9 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_get_platform_info_auto_detected_environment(self, clean_environment):
-        """Test platform info with auto-detected environment."""
+        """
+        Test that `get_platform_info` correctly sets the environment to "auto-detected" and marks it as development when no explicit environment variable is set and development is detected.
+        """
         # Clear the test environment variable
         if 'TRIMIX_ENVIRONMENT' in os.environ:
             del os.environ['TRIMIX_ENVIRONMENT']
@@ -162,7 +176,11 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_environment_variables_case_insensitive(self, clean_environment):
-        """Test that environment variables are case insensitive."""
+        """
+        Verify that the `is_development_environment` function treats the `TRIMIX_ENVIRONMENT` environment variable in a case-insensitive manner.
+        
+        Tests multiple case variants of the environment variable to ensure correct detection of development and production environments, with hardware checks mocked for consistency.
+        """
         test_cases = [
             ('DEVELOPMENT', True),
             ('Development', True),
@@ -189,7 +207,9 @@ class TestPlatformDetector:
 
     @pytest.mark.unit
     def test_mock_sensors_case_insensitive(self, clean_environment):
-        """Test that mock sensors environment variable is case insensitive."""
+        """
+        Verify that the `TRIMIX_MOCK_SENSORS` environment variable is interpreted case-insensitively by `is_development_environment`, returning the correct boolean value for various representations of true and false.
+        """
         test_cases = [
             ('1', True),
             ('TRUE', True),

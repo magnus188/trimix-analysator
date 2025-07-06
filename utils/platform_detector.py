@@ -10,10 +10,10 @@ from typing import Optional
 
 def is_raspberry_pi() -> bool:
     """
-    Detect if running on a Raspberry Pi.
+    Detects if the current system is a Raspberry Pi by examining the contents of `/proc/cpuinfo`.
     
     Returns:
-        bool: True if running on Raspberry Pi, False otherwise
+        bool: True if the system is identified as a Raspberry Pi, otherwise False.
     """
     try:
         # Check /proc/cpuinfo for BCM (Broadcom) processor
@@ -26,10 +26,10 @@ def is_raspberry_pi() -> bool:
 
 def _check_hardware_modules_available() -> bool:
     """
-    Check if required hardware modules are available.
+    Determine if required hardware modules for hardware access are available for import.
     
     Returns:
-        bool: True if hardware modules can be imported
+        True if the modules `board`, `busio`, and `digitalio` can be successfully imported; otherwise, False.
     """
     try:
         import board
@@ -42,10 +42,10 @@ def _check_hardware_modules_available() -> bool:
 
 def is_development_environment() -> bool:
     """
-    Check if running in development mode.
+    Determine whether the current environment should be considered development mode.
     
     Returns:
-        bool: True if in development mode
+        bool: True if the environment variable `TRIMIX_ENVIRONMENT` is set to "development", if `TRIMIX_MOCK_SENSORS` is set to "1", "true", or "yes", or if running on a non-Raspberry Pi platform without required hardware modules; otherwise, False.
     """
     env = os.getenv('TRIMIX_ENVIRONMENT', '').lower()
     mock_sensors = os.getenv('TRIMIX_MOCK_SENSORS', '').lower()

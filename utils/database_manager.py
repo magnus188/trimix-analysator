@@ -112,7 +112,11 @@ class DatabaseManager(EventDispatcher):
             raise
     
     def _initialize_default_settings(self):
-        """Initialize default settings if database is empty"""
+        """
+        Insert default application settings into the database if no settings exist.
+        
+        This method checks if the settings table is empty and, if so, populates it with a predefined set of default settings for all categories. It also logs a 'first_run' system event with the current timestamp.
+        """
         cursor = self.connection.cursor()
         
         # Check if settings exist
@@ -446,7 +450,12 @@ class DatabaseManager(EventDispatcher):
         self.close()
 
     def get_default_settings(self) -> Dict[str, Any]:
-        """Get the default settings structure"""
+        """
+        Return the default settings dictionary used to initialize the application's configuration.
+        
+        Returns:
+            Dict[str, Any]: A nested dictionary containing default values for app, display, wifi, sensors, safety, and units settings.
+        """
         return {
             'app': {
                 'first_run': True,

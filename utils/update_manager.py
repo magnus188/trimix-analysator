@@ -23,6 +23,11 @@ class UpdateManager(EventDispatcher):
     __events__ = ('on_update_available', 'on_update_check_complete', 'on_update_progress', 'on_update_complete', 'on_update_error')
     
     def __init__(self, repo_owner: str = None, repo_name: str = None):
+        """
+        Initialize the UpdateManager with repository and version information.
+        
+        Attempts to detect the GitHub repository owner and name from the local git remote URL if not provided. Falls back to environment variables or default values if detection fails. Sets up GitHub API settings, update check preferences, and initializes the current application version.
+        """
         super().__init__()
         
         # Try to detect repository from git remote if not provided
@@ -61,11 +66,22 @@ class UpdateManager(EventDispatcher):
     
     def compare_versions(self, version1: str, version2: str) -> int:
         """
-        Compare two semantic version strings.
-        Returns: -1 if version1 < version2, 0 if equal, 1 if version1 > version2
+        Compares two semantic version strings and determines their ordering.
+        
+        Returns:
+            int: -1 if version1 is less than version2, 0 if they are equal, 1 if version1 is greater than version2.
         """
         def normalize_version(v):
             # Remove 'v' prefix if present
+            """
+            Converts a version string into a list of integers for comparison, handling optional 'v' prefix and pre-release suffixes.
+            
+            Parameters:
+            	v (str): The version string to normalize (e.g., 'v1.2.3', '1.2.3-alpha').
+            
+            Returns:
+            	List[int]: A list of integers representing the major, minor, and patch components of the version.
+            """
             v = v.lstrip('v')
             # Split into parts and convert to integers
             parts = []
@@ -98,8 +114,12 @@ class UpdateManager(EventDispatcher):
     
     def check_for_updates(self) -> Optional[Dict]:
         """
-        Check for available updates from GitHub releases.
-        Returns release info if update available, None otherwise.
+        Checks GitHub for the latest release and determines if an update is available.
+        
+        If a newer release is found (excluding prereleases unless enabled), dispatches update events and returns release information. Returns None if no update is available or if an error occurs.
+        
+        Returns:
+            update_info (dict or None): Dictionary with release details if an update is available, otherwise None.
         """
         try:
             Logger.info("UpdateManager: Checking for updates...")
@@ -158,13 +178,28 @@ class UpdateManager(EventDispatcher):
             return None
     
     def _get_docker_image_url(self, version: str) -> str:
-        """Get the Docker image URL for a specific version."""
+        """
+        Constructs the Docker image URL for the specified version tag.
+        
+        Parameters:
+            version (str): The version tag to use in the Docker image URL.
+        
+        Returns:
+            str: The full Docker image URL for the given version.
+        """
         return f"ghcr.io/{self.repo_owner}/{self.repo_name}:{version}"
     
     def start_update(self, version: str) -> bool:
         """
-        Start the update process for the specified version.
-        This will pull the new Docker image and restart the container.
+        Pulls the specified Docker image version and restarts the application containers to apply the update.
+        
+        Initiates the update process by downloading the new Docker image, updating the Docker Compose configuration, and restarting the containers. Emits progress and completion events throughout the process. Returns True if the update succeeds, or False if any step fails.
+         
+        Parameters:
+            version (str): The version tag of the Docker image to update to.
+        
+        Returns:
+            bool: True if the update was successful, False otherwise.
         """
         try:
             Logger.info(f"UpdateManager: Starting update to version {version}")
@@ -226,7 +261,11 @@ class UpdateManager(EventDispatcher):
             return False
     
     def _update_docker_compose(self, version: str):
-        """Update docker-compose.yml to use the new version tag."""
+        """
+        Update the `docker-compose.yml` file to reference the specified Docker image version.
+        
+        If the compose file is present, replaces the image tag for the application's service with the new version. Logs a warning if the file is missing and logs an error if the update fails.
+        """
         compose_file = 'docker-compose.yml'
         
         if not os.path.exists(compose_file):
@@ -261,7 +300,12 @@ class UpdateManager(EventDispatcher):
             Logger.error(f"UpdateManager: Failed to update docker-compose.yml: {e}")
     
     def download_and_apply_update(self, version: str) -> bool:
-        """Download and apply Docker-based update."""
+        """
+        Downloads and applies an update for the application using a Docker-based release package from GitHub.
+        
+        This method downloads a tar.gz update package for the specified version, extracts it, pulls the corresponding Docker image, runs an update script if present, and updates the Docker Compose configuration to use the new version. Progress and completion events are dispatched throughout the process. Returns True if the update is successfully applied, or False if any step fails.
+        """
+        
         try:
             Logger.info(f"UpdateManager: Starting Docker update to version {version}")
             self.dispatch('on_update_progress', 10, "Downloading update package...")
@@ -325,7 +369,15 @@ class UpdateManager(EventDispatcher):
             return False
     
     def get_release_history(self, limit: int = 10) -> List[Dict]:
-        """Get recent release history from GitHub."""
+        """
+        Retrieve a list of recent GitHub release entries for the configured repository.
+        
+        Parameters:
+        	limit (int): The maximum number of releases to retrieve.
+        
+        Returns:
+        	List[Dict]: A list of dictionaries containing release version, name, notes, publish date, and prerelease status. Returns an empty list if retrieval fails.
+        """
         try:
             url = f"{self.api_base}/repos/{self.repo_owner}/{self.repo_name}/releases"
             params = {'per_page': limit}
@@ -348,7 +400,12 @@ class UpdateManager(EventDispatcher):
             return []
     
     def should_check_for_updates(self) -> bool:
-        """Check if it's time to automatically check for updates."""
+        """
+        Determine whether the automatic update check interval has elapsed.
+        
+        Returns:
+            bool: True if enough time has passed since the last update check or if no previous check has occurred; False otherwise.
+        """
         if self.last_check_time is None:
             return True
         
@@ -357,31 +414,61 @@ class UpdateManager(EventDispatcher):
     
     # Event methods
     def on_update_available(self, update_info):
-        """Called when an update is available."""
+        """
+        Event handler invoked when a new update is detected.
+        
+        Parameters:
+            update_info (dict): Information about the available update, including version and release details.
+        """
         pass
     
     def on_update_check_complete(self, update_available, update_info):
-        """Called when update check is complete."""
+        """
+        Event handler called when an update check has finished.
+        
+        Parameters:
+            update_available (bool): Indicates whether a new update is available.
+            update_info (dict): Information about the update if available, otherwise None.
+        """
         pass
     
     def on_update_progress(self, progress, message):
-        """Called during update process."""
+        """
+        Event handler called to report progress updates during the update process.
+        
+        Parameters:
+            progress (float): The current progress as a value between 0 and 1.
+            message (str): A descriptive message about the current update step.
+        """
         pass
     
     def on_update_complete(self, version):
-        """Called when update is complete."""
+        """
+        Event handler called when an update has been successfully completed.
+        
+        Parameters:
+            version (str): The version number of the update that was applied.
+        """
         pass
     
     def on_update_error(self, error_message):
-        """Called when an update error occurs."""
+        """
+        Event handler called when an update error occurs.
+        
+        Parameters:
+            error_message (str): Description of the error encountered during the update process.
+        """
         pass
 
 
 # Global update manager instance
 _update_manager = None
 
-def get_update_manager() -> UpdateManager:
-    """Get the global update manager instance."""
+
+def get_update_manager():
+    """
+    Returns the singleton instance of the UpdateManager, creating it if it does not already exist.
+    """
     global _update_manager
     if _update_manager is None:
         _update_manager = UpdateManager()

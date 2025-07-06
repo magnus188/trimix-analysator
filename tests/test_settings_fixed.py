@@ -13,7 +13,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_get_with_dot_notation(self, mock_database_manager):
-        """Test SimpleSettings get method with dot notation."""
+        """
+        Tests that the SimpleSettings.get method retrieves a value using dot notation for category and key.
+        """
         from utils.simple_settings import SimpleSettings
         
         # Patch the global db_manager used by SimpleSettings
@@ -30,7 +32,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_get_default_value(self, mock_database_manager):
-        """Test SimpleSettings get method with default value."""
+        """
+        Test that SimpleSettings.get returns the provided default value when the requested setting does not exist.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -42,7 +46,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_set_with_dot_notation(self, mock_database_manager):
-        """Test SimpleSettings set method with dot notation."""
+        """
+        Tests that the SimpleSettings.set method correctly stores a value using dot notation and that the value is saved in the database.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -59,7 +65,11 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_set_invalid_key(self, mock_database_manager):
-        """Test SimpleSettings set method with invalid key format."""
+        """
+        Test that SimpleSettings.set raises a ValueError when given a key without a category.
+        
+        Verifies that attempting to set a value with an invalid key format (missing category) results in a ValueError.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -71,7 +81,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_get_category(self, mock_database_manager):
-        """Test SimpleSettings get method for entire category."""
+        """
+        Test that retrieving a category with SimpleSettings.get returns a dictionary of all key-value pairs in that category.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -91,7 +103,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_factory_reset(self, mock_database_manager):
-        """Test SimpleSettings factory reset."""
+        """
+        Test that the SimpleSettings.factory_reset method restores settings to their default values and removes any custom values not present in the defaults.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -111,7 +125,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_simple_settings_default_settings_property(self, mock_database_manager):
-        """Test SimpleSettings default_settings property."""
+        """
+        Test that the `default_settings` property of `SimpleSettings` returns a dictionary containing expected default categories.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -124,7 +140,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_settings_data_type_preservation(self, mock_database_manager):
-        """Test that data types are preserved when storing/retrieving settings."""
+        """
+        Verify that various data types (bool, int, float, str, dict, list) are correctly preserved when stored and retrieved using SimpleSettings.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -154,7 +172,11 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_settings_dot_notation_edge_cases(self, mock_database_manager):
-        """Test edge cases for dot notation."""
+        """
+        Test that dot notation keys with multiple dots are handled by splitting only on the first dot.
+        
+        Verifies that setting and retrieving a value with a key containing multiple dots stores and retrieves the value correctly, treating the first dot as the category/key separator.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
@@ -169,13 +191,21 @@ class TestSettingsManagement:
 
     @pytest.mark.unit  
     def test_settings_concurrent_access(self, mock_database_manager):
-        """Test concurrent access to settings."""
+        """
+        Verifies that `SimpleSettings` supports thread-safe concurrent set and get operations by running multiple threads that update and retrieve settings simultaneously.
+        """
         from utils.simple_settings import SimpleSettings
         
         with patch('utils.simple_settings.db_manager', mock_database_manager):
             settings = SimpleSettings()
             
             def worker(thread_id):
+                """
+                Performs repeated set and get operations on a thread-specific settings key to test concurrent access.
+                
+                Parameters:
+                    thread_id (int): Identifier for the thread, used to create a unique settings key.
+                """
                 for i in range(10):
                     settings.set(f'test.thread_{thread_id}', i)
                     value = settings.get(f'test.thread_{thread_id}')
@@ -192,7 +222,9 @@ class TestSettingsManagement:
 
     @pytest.mark.unit
     def test_settings_global_instance(self, mock_database_manager):
-        """Test the global settings_manager instance."""
+        """
+        Verifies that the global `settings_manager` instance can set and retrieve values correctly using dot notation keys.
+        """
         with patch('utils.simple_settings.db_manager', mock_database_manager):
             from utils.simple_settings import settings_manager
             
@@ -205,7 +237,9 @@ class TestSettingsManagement:
 
     @pytest.mark.integration
     def test_settings_database_integration(self, mock_database_manager):
-        """Test integration with database manager."""
+        """
+        Tests that the settings manager correctly interacts with the database manager by storing and retrieving a value using dot notation keys.
+        """
         with patch('utils.simple_settings.db_manager', mock_database_manager):
             from utils.simple_settings import settings_manager
             
