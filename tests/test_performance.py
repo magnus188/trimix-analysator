@@ -15,9 +15,19 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_sensor_reading_performance(self, benchmark):
-        """Benchmark sensor reading performance."""
+        """
+        Benchmarks the performance of the sensor reading operation using `get_readings()`.
+        
+        Asserts that the result is a non-empty dictionary to verify correct sensor data retrieval.
+        """
         
         def read_sensors():
+            """
+            Retrieve the latest sensor readings as a dictionary.
+            
+            Returns:
+                dict: A dictionary containing the most recent sensor readings.
+            """
             return get_readings()
         
         # Benchmark the sensor reading function
@@ -30,9 +40,19 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_database_write_performance(self, benchmark, mock_database_manager):
-        """Benchmark database write performance."""
+        """
+        Benchmarks the performance of writing a setting to the database.
+        
+        Asserts that the write operation completes successfully.
+        """
         
         def write_to_database():
+            """
+            Writes a test key-value pair to the 'performance' category in the database.
+            
+            Returns:
+                bool: True if the write operation was performed.
+            """
             db_manager.set_setting('performance', 'test_key', 'test_value')
             return True
         
@@ -43,12 +63,20 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_database_read_performance(self, benchmark, mock_database_manager):
-        """Benchmark database read performance."""
+        """
+        Benchmarks the performance of reading a setting from the database and verifies the retrieved value matches the expected result.
+        """
         
         # Setup test data
         db_manager.set_setting('performance', 'read_test', 'read_value')
         
         def read_from_database():
+            """
+            Retrieve the value of the 'read_test' setting from the 'performance' category in the database.
+            
+            Returns:
+                The value associated with the 'read_test' key in the 'performance' category.
+            """
             return db_manager.get_setting('performance', 'read_test')
         
         # Benchmark the database read function
@@ -58,9 +86,19 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_sensor_recording_batch_performance(self, benchmark):
-        """Benchmark batch sensor recording performance."""
+        """
+        Benchmarks the performance of recording sensor readings in batches.
+        
+        This test measures the time taken to perform 10 consecutive sensor reading recordings as a batch operation and asserts that the batch completes successfully.
+        """
         
         def record_batch():
+            """
+            Record sensor readings in a batch by invoking the reading function 10 times.
+            
+            Returns:
+                bool: True after all readings have been recorded.
+            """
             for _ in range(10):
                 record_readings()
             return True
@@ -72,13 +110,23 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_settings_access_performance(self, benchmark, mock_database_manager):
-        """Benchmark settings access performance."""
+        """
+        Benchmarks the performance of sequentially accessing 10 settings from the database.
+        
+        Asserts that all 10 settings are successfully retrieved.
+        """
         
         # Setup test settings
         for i in range(10):
             db_manager.set_setting('perf_test', f'key_{i}', f'value_{i}')
         
         def access_settings():
+            """
+            Retrieve a list of 10 settings from the 'perf_test' category in the database.
+            
+            Returns:
+                list: The values of settings 'key_0' through 'key_9' from the 'perf_test' category.
+            """
             results = []
             for i in range(10):
                 value = db_manager.get_setting('perf_test', f'key_{i}')
@@ -92,7 +140,11 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_calibration_history_performance(self, benchmark, mock_database_manager):
-        """Benchmark calibration history retrieval performance."""
+        """
+        Benchmarks the performance of retrieving the last 20 calibration history records for the 'o2' sensor after recording 50 calibration entries.
+        
+        Asserts that the number of records retrieved does not exceed 20.
+        """
         
         # Setup test calibration data
         for i in range(50):
@@ -104,6 +156,12 @@ class TestPerformance:
             )
         
         def get_calibration_history():
+            """
+            Retrieve the most recent 20 calibration history records for the 'o2' sensor.
+            
+            Returns:
+                list: A list of calibration record entries for the 'o2' sensor, limited to 20 most recent records.
+            """
             return db_manager.get_calibration_history('o2', limit=20)
         
         # Benchmark calibration history retrieval
@@ -113,7 +171,9 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_memory_usage_sensor_readings(self):
-        """Test memory usage during continuous sensor readings."""
+        """
+        Measures memory usage before and after performing 1000 consecutive sensor readings to ensure that memory consumption does not increase excessively.
+        """
         import psutil
         import os
         
@@ -134,10 +194,20 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_database_transaction_performance(self, benchmark, mock_database_manager):
-        """Benchmark database transaction performance."""
+        """
+        Benchmarks the performance of a simulated complex database transaction involving multiple setting writes.
+        
+        Asserts that the transaction completes successfully.
+        """
         
         def perform_transaction():
             # Simulate a complex transaction
+            """
+            Performs a simulated complex database transaction by writing multiple settings in sequence.
+            
+            Returns:
+                bool: True if the transaction completes successfully.
+            """
             db_manager.set_setting('transaction', 'start', 'begin')
             
             for i in range(5):
@@ -154,7 +224,9 @@ class TestPerformance:
     @pytest.mark.performance
     @pytest.mark.stress
     def test_concurrent_sensor_access(self):
-        """Test performance under concurrent sensor access."""
+        """
+        Tests sensor reading performance and correctness under concurrent access by running multiple threads, each performing repeated sensor readings. Asserts that all readings complete without errors, the expected number of results is collected, and total execution time remains within acceptable limits.
+        """
         import threading
         import time
         
@@ -162,6 +234,9 @@ class TestPerformance:
         errors = []
         
         def read_sensors_repeatedly():
+            """
+            Performs 100 consecutive sensor readings, appending each result to the global `results` list with a short delay between readings. Any exceptions encountered are appended to the global `errors` list.
+            """
             try:
                 for _ in range(100):
                     readings = get_readings()
@@ -196,7 +271,11 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_large_dataset_performance(self, mock_database_manager):
-        """Test performance with large datasets."""
+        """
+        Benchmark database write and read performance with a large dataset of 500 key-value pairs.
+        
+        Writes 500 settings to the database under a specific category, measures the time taken for both writing and reading all settings, and asserts that performance and data integrity meet expected thresholds.
+        """
         
         # Create a smaller dataset for CI (500 instead of 1000)
         num_items = 500
@@ -224,7 +303,11 @@ class TestPerformance:
     @pytest.mark.slow
     @pytest.mark.performance
     def test_startup_performance(self):
-        """Test application startup performance."""
+        """
+        Measures the time required to perform a simulated application startup sequence and verifies that initialization of platform detection, database settings retrieval, and sensor interface completes within 2 seconds.
+        
+        Asserts that all components are initialized correctly and that startup performance meets the specified threshold.
+        """
         
         start_time = time.time()
         

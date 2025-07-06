@@ -12,7 +12,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.update_manager import UpdateManager
 
 def test_update_manager():
-    """Test the update manager functionality."""
+    """
+    Runs a series of tests to validate the core functionality of the UpdateManager class, including version comparison, update checking, and release history retrieval.
+    
+    This function prints the results of each test to the console, indicating success or failure for each operation. It is intended to be executed as a standalone script for manual verification of UpdateManager behavior.
+    """
     print("Testing Update Manager...")
     
     # Create update manager

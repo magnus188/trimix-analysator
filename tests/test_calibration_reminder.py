@@ -13,7 +13,9 @@ class TestCalibrationReminder:
 
     @pytest.fixture
     def calibration_reminder(self):
-        """Create a calibration reminder instance for testing."""
+        """
+        Creates and returns a new instance of the CalibrationReminder class for use in tests.
+        """
         return CalibrationReminder()
 
     @pytest.mark.unit
@@ -25,7 +27,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_check_calibration_due_no_calibrations(self, calibration_reminder):
-        """Test calibration check when no calibrations exist."""
+        """
+        Verify that calibration is marked as due for both O2 and He sensors when no previous calibrations exist.
+        
+        This test mocks the database to simulate the absence of calibration records and checks that the calibration reminder logic correctly identifies both sensors as due for calibration, with no last calibration dates and zero days overdue.
+        """
         # Mock database to return no calibrations
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.return_value = None
@@ -44,7 +50,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_check_calibration_due_recent_calibration(self, calibration_reminder):
-        """Test calibration check with recent calibration."""
+        """
+        Test that `check_calibration_due` correctly identifies that calibration is not due when the last calibration occurred recently.
+        
+        Simulates a scenario where both O2 and He sensors were calibrated one day ago, with a 30-day calibration interval, and verifies that neither sensor is due for calibration.
+        """
         # Mock recent calibration (yesterday)
         recent_date = datetime.now() - timedelta(days=1)
         
@@ -62,7 +72,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_check_calibration_due_old_calibration(self, calibration_reminder):
-        """Test calibration check with old calibration."""
+        """
+        Test that calibration is marked as due when the last calibration occurred beyond the allowed interval.
+        
+        Simulates a scenario where the last calibration was performed 40 days ago and the calibration interval is set to 30 days. Verifies that both O2 and He sensors are flagged as due for calibration, with the correct number of days overdue and accurate last calibration dates.
+        """
         # Mock old calibration (40 days ago, default interval is 30 days)
         old_date = datetime.now() - timedelta(days=40)
         
@@ -82,7 +96,9 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_show_calibration_reminder_disabled(self, calibration_reminder):
-        """Test that reminder respects settings when disabled."""
+        """
+        Verify that no calibration reminder popup is shown when automatic reminders are disabled in settings.
+        """
         # Mock settings to disable auto reminders
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_setting.return_value = False
@@ -95,12 +111,27 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_custom_interval(self, calibration_reminder):
-        """Test calibration check with custom interval."""
+        """
+        Test that calibration is not due when the last calibration was within a custom interval.
+        
+        Mocks a last calibration date 45 days ago and a custom interval of 60 days, verifying that calibration is not flagged as due and the interval is correctly applied.
+        """
         # Mock calibration 45 days ago with 60-day interval
         cal_date = datetime.now() - timedelta(days=45)
         
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             def mock_get_setting(category, key, default):
+                """
+                Mock function to simulate retrieving a setting value, returning 60 for 'calibration_interval_days' and True for all other keys.
+                
+                Parameters:
+                    category: The settings category (unused in this mock).
+                    key: The setting key to retrieve.
+                    default: The default value if the setting is not found (unused in this mock).
+                
+                Returns:
+                    The mocked setting value: 60 if the key is 'calibration_interval_days', otherwise True.
+                """
                 if key == 'calibration_interval_days':
                     return 60
                 return True
@@ -117,9 +148,24 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_different_sensor_dates(self, calibration_reminder):
-        """Test calibration check for different sensor types."""
+        """
+        Test that calibration due status is correctly determined for sensors with different last calibration dates.
+        
+        Simulates an O2 sensor calibrated 5 days ago and a He sensor calibrated 35 days ago, with a 30-day calibration interval. Verifies that calibration is not due for O2 but is due for He.
+        """
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             def mock_get_last_cal(sensor_type):
+                """
+                Simulate retrieval of the last calibration date for a given sensor type.
+                
+                Returns a recent calibration date (5 days ago) for 'o2', an older calibration date (35 days ago) for 'he', or None for other sensor types.
+                
+                Parameters:
+                    sensor_type (str): The type of sensor ('o2', 'he', or other).
+                
+                Returns:
+                    datetime or None: The simulated last calibration date, or None if the sensor type is unrecognized.
+                """
                 if sensor_type == 'o2':
                     return datetime.now() - timedelta(days=5)  # Recent
                 elif sensor_type == 'he':
@@ -137,7 +183,9 @@ class TestCalibrationReminder:
     @pytest.mark.unit
     @patch('utils.calibration_reminder.CalibrationReminder._create_reminder_popup')
     def test_create_reminder_popup(self, mock_create_popup, calibration_reminder):
-        """Test creating calibration reminder popup."""
+        """
+        Verify that the calibration reminder popup creation method is called with the correct status dictionary.
+        """
         # Test that popup creation method is called without errors
         status = {
             'o2_due': True,
@@ -154,7 +202,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_date_calculations(self, calibration_reminder):
-        """Test date calculation accuracy."""
+        """
+        Verify that calibration due status is correctly determined for various calibration dates relative to the configured interval.
+        
+        Tests scenarios where the last calibration is recent, exactly at the interval, just over the interval, and significantly overdue, ensuring the due status matches expectations for both O2 and He sensors.
+        """
         test_cases = [
             (datetime.now() - timedelta(days=1), False),   # Recent
             (datetime.now() - timedelta(days=30), True),   # Exactly at interval 
@@ -173,7 +225,9 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_edge_cases(self, calibration_reminder):
-        """Test edge cases for calibration reminders."""
+        """
+        Test that calibration reminders handle edge cases, such as future calibration dates, without incorrectly marking calibration as due.
+        """
         # Test future calibration date (shouldn't happen but handle gracefully)
         future_date = datetime.now() + timedelta(days=1)
         
@@ -190,12 +244,20 @@ class TestCalibrationReminder:
     @pytest.mark.integration
     @patch('utils.calibration_reminder.CalibrationReminder._create_reminder_popup')
     def test_calibration_full_workflow(self, mock_create_popup, calibration_reminder):
-        """Test the complete calibration reminder workflow."""
+        """
+        Tests the full calibration reminder workflow, including due status calculation and reminder popup display when calibration is overdue and reminders are enabled.
+        """
         # Setup: Old calibration, reminders enabled
         old_date = datetime.now() - timedelta(days=35)
         
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             def mock_get_setting(category, key, default):
+                """
+                Mock function to simulate retrieval of calibration-related settings.
+                
+                Returns:
+                    The value for the requested setting key: `True` for 'auto_calibration_reminder', `30` for 'calibration_interval_days', and `True` for any other key.
+                """
                 if key == 'auto_calibration_reminder':
                     return True
                 elif key == 'calibration_interval_days':
@@ -216,7 +278,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_database_errors(self, calibration_reminder):
-        """Test calibration reminder behavior when database errors occur."""
+        """
+        Test that CalibrationReminder handles database errors gracefully when fetching calibration data.
+        
+        Simulates a database exception and verifies that the method either handles the error without crashing or raises an exception as expected.
+        """
         # Mock database error
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.side_effect = Exception("Database error")
@@ -233,7 +299,9 @@ class TestCalibrationReminder:
     # Test method aliases for backward compatibility
     @pytest.mark.unit
     def test_check_reminders_no_calibrations(self, calibration_reminder):
-        """Test check_reminders method with no calibrations (alias for check_calibration_due)."""
+        """
+        Test that the `check_reminders` method (alias for `check_calibration_due`) correctly reports both O2 and He calibrations as due when no previous calibrations exist.
+        """
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.return_value = None
             mock_db.get_setting.return_value = 30
@@ -244,7 +312,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_check_reminders_recent_calibration(self, calibration_reminder):
-        """Test check_reminders method with recent calibration."""
+        """
+        Test that the `check_reminders` method reports calibration as not due when the last calibration was recent.
+        
+        Simulates a recent calibration date and verifies that both O2 and He sensors are not due for calibration.
+        """
         recent_date = datetime.now() - timedelta(days=1)
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.return_value = recent_date
@@ -256,7 +328,9 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_check_reminders_old_calibration(self, calibration_reminder):
-        """Test check_reminders method with old calibration."""
+        """
+        Test that the `check_reminders` method correctly identifies calibration as due when the last calibration was performed beyond the configured interval.
+        """
         old_date = datetime.now() - timedelta(days=40)
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.return_value = old_date
@@ -268,7 +342,9 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_get_days_since_calibration_no_calibration(self, calibration_reminder):
-        """Test getting days since calibration when no calibration exists."""
+        """
+        Test that `check_calibration_due` returns `None` for last calibration dates when no calibration records exist.
+        """
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.return_value = None
             mock_db.get_setting.return_value = 30
@@ -280,7 +356,11 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_get_days_since_calibration_with_calibration(self, calibration_reminder):
-        """Test getting days since calibration when calibration exists."""
+        """
+        Test that `check_calibration_due` correctly reports the last calibration date when a calibration exists.
+        
+        Verifies that when a calibration date is present in the database, the returned status reflects the correct last calibration date for both O2 and He sensors.
+        """
         cal_date = datetime.now() - timedelta(days=5)
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             mock_db.get_last_calibration.return_value = cal_date
@@ -301,10 +381,23 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_reminder_custom_interval(self, calibration_reminder):
-        """Test calibration reminder with custom interval."""
+        """
+        Test that the calibration reminder correctly uses a custom calibration interval and does not indicate calibration is due when the last calibration is within that interval.
+        """
         cal_date = datetime.now() - timedelta(days=45)
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             def mock_get_setting(category, key, default):
+                """
+                Mock function to simulate retrieving a setting value, returning 60 for 'calibration_interval_days' and True for all other keys.
+                
+                Parameters:
+                    category: The settings category (unused in this mock).
+                    key: The setting key to retrieve.
+                    default: The default value if the setting is not found (unused in this mock).
+                
+                Returns:
+                    The mocked setting value: 60 if the key is 'calibration_interval_days', otherwise True.
+                """
                 if key == 'calibration_interval_days':
                     return 60
                 return True
@@ -318,9 +411,22 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_reminder_multiple_sensors(self, calibration_reminder):
-        """Test calibration reminder with multiple sensors."""
+        """
+        Tests calibration due status for multiple sensors with different last calibration dates, verifying that only sensors overdue their interval are flagged as due.
+        """
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             def mock_get_last_cal(sensor_type):
+                """
+                Simulate retrieval of the last calibration date for a given sensor type.
+                
+                Returns a recent calibration date (5 days ago) for 'o2', an older calibration date (35 days ago) for 'he', or None for other sensor types.
+                
+                Parameters:
+                    sensor_type (str): The type of sensor ('o2', 'he', or other).
+                
+                Returns:
+                    datetime or None: The simulated last calibration date, or None if the sensor type is unrecognized.
+                """
                 if sensor_type == 'o2':
                     return datetime.now() - timedelta(days=5)  # Recent
                 elif sensor_type == 'he':
@@ -337,7 +443,11 @@ class TestCalibrationReminder:
     @pytest.mark.unit
     @patch('utils.calibration_reminder.CalibrationReminder._create_reminder_popup')
     def test_show_calibration_reminder_popup(self, mock_create_popup, calibration_reminder):
-        """Test showing calibration reminder popup."""
+        """
+        Verify that the calibration reminder popup is shown when reminders are enabled and calibration is due.
+        
+        This test ensures that the `_create_reminder_popup` method is called with the correct status dictionary when the reminder setting is enabled.
+        """
         status = {
             'o2_due': True,
             'he_due': False,
@@ -357,9 +467,22 @@ class TestCalibrationReminder:
 
     @pytest.mark.unit
     def test_calibration_reminder_settings_defaults(self, calibration_reminder):
-        """Test calibration reminder settings defaults."""
+        """
+        Tests that the calibration reminder uses the default interval setting when no specific configuration is provided.
+        """
         with patch('utils.calibration_reminder.db_manager') as mock_db:
             def mock_get_setting(category, key, default):
+                """
+                Mock implementation of a settings retrieval function that always returns the provided default value.
+                
+                Parameters:
+                	category (str): The settings category.
+                	key (str): The specific setting key.
+                	default: The default value to return.
+                
+                Returns:
+                	The default value passed to the function.
+                """
                 return default  # Return default values
             
             mock_db.get_setting.side_effect = mock_get_setting

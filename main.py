@@ -93,6 +93,11 @@ class TrimixScreenManager(ScreenManager):
 class TrimixApp(App):
     def build(self):
         # Log version information
+        """
+        Initializes and configures the application, returning the root screen manager.
+        
+        Sets up logging, registers custom fonts, loads KV files, creates the screen manager with a fade transition, and schedules initialization tasks before returning the main screen manager as the app's root widget.
+        """
         Logger.info(f"TrimixApp: Starting Trimix Analyzer v{__version__}")
         build_info = get_build_info()
         Logger.info(f"TrimixApp: Platform: {build_info['platform']}")
@@ -134,7 +139,9 @@ class TrimixApp(App):
         Logger.info(f"TrimixApp: KV loading complete - {successful_count}/{total_count} files loaded")
     
     def _schedule_initialization_tasks(self):
-        """Schedule initialization tasks"""
+        """
+        Schedules initial application initialization tasks, including first-run handling, settings migration, calibration reminders, and a startup update check.
+        """
         Clock.schedule_once(self.handle_first_run, 2)
         Clock.schedule_once(self.migrate_json_settings, 1)
         
@@ -146,6 +153,13 @@ class TrimixApp(App):
         Clock.schedule_once(self.startup_update_check, 3)
     
     def open_detail(self, sensor_key: str, screen_name: str):
+            """
+            Switches to a detail screen and sets the specified sensor for display.
+            
+            Parameters:
+                sensor_key (str): The key identifying the sensor to display details for.
+                screen_name (str): The name of the screen to navigate to.
+            """
             detail = self.root.get_screen(screen_name)
             detail.set_sensor(sensor_key)
             self.root.current = screen_name
@@ -185,7 +199,11 @@ class TrimixApp(App):
             Logger.error(f"TrimixApp: Error in brightness setup: {e}")
     
     def migrate_json_settings(self, dt):
-        """Migrate JSON settings to database if they exist"""
+        """
+        Migrates legacy JSON settings to the database if a settings file is present.
+        
+        If a `trimix_settings.json` file exists in the `utils` directory, attempts to migrate its contents to the database using a migration utility. Logs the outcome of the migration or the absence of the JSON file. Any exceptions during migration are caught and logged.
+        """
         try:
             json_path = os.path.join(os.path.dirname(__file__), 'utils', 'trimix_settings.json')
             
@@ -206,7 +224,11 @@ class TrimixApp(App):
             Logger.error(f"TrimixApp: Migration failed: {e}")
     
     def startup_update_check(self, dt):
-        """Check for updates on startup if auto-updates are enabled"""
+        """
+        Checks for available application updates at startup if auto-update is enabled in settings.
+        
+        This method queries the database to determine if automatic update checks are enabled. If so, it initializes the update manager, binds event handlers for update availability and completion, and initiates an update check. Logs the process and handles exceptions gracefully.
+        """
         try:
             # Check if auto-updates are enabled
             auto_check_enabled = db_manager.get_setting('updates', 'auto_check', True)
@@ -231,7 +253,11 @@ class TrimixApp(App):
             Logger.error(f"TrimixApp: Startup update check failed: {e}")
     
     def on_startup_update_available(self, update_manager, update_info):
-        """Handle update available on startup"""
+        """
+        Handles notification when an application update is available during startup.
+        
+        Logs the available update version and provides a non-intrusive notification for the user to check update details in the settings.
+        """
         version = update_info.get('version', 'Unknown')
         Logger.info(f"TrimixApp: Update available on startup: {version}")
         
@@ -240,7 +266,14 @@ class TrimixApp(App):
         Logger.info("TrimixApp: Update available! Check Settings → Update Settings for details")
     
     def on_startup_update_check_complete(self, update_manager, update_available, update_info):
-        """Handle update check completion on startup"""
+        """
+        Handles the completion of the startup update check by logging the result and unbinding temporary event handlers to prevent memory leaks.
+        
+        Parameters:
+            update_manager: The update manager instance used for checking updates.
+            update_available (bool): Indicates whether a new update is available.
+            update_info: Additional information about the update, if available.
+        """
         if update_available:
             Logger.info("TrimixApp: Startup update check found new version available")
         else:

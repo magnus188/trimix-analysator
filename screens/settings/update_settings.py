@@ -20,6 +20,9 @@ class UpdateSettingsScreen(BaseScreen):
     """Screen for managing application updates."""
     
     def __init__(self, **kwargs):
+        """
+        Initialize the UpdateSettingsScreen, set up the update manager, and bind event handlers for update-related events.
+        """
         super().__init__(**kwargs)
         self.update_manager = get_update_manager()
         self.update_popup = None
@@ -33,12 +36,16 @@ class UpdateSettingsScreen(BaseScreen):
         self.update_manager.bind(on_update_error=self.on_update_error)
     
     def on_enter(self):
-        """Called when screen is entered."""
+        """
+        Updates version information when the screen becomes active.
+        """
         super().on_enter()
         self.update_version_info()
     
     def update_version_info(self):
-        """Update the version information display."""
+        """
+        Updates the UI labels to display the current application version and the last time updates were checked.
+        """
         if hasattr(self.ids, 'current_version_label'):
             self.ids.current_version_label.text = f"Current Version: {__version__}"
         
@@ -50,7 +57,9 @@ class UpdateSettingsScreen(BaseScreen):
                 self.ids.last_check_label.text = "Never checked for updates"
     
     def check_for_updates(self):
-        """Manually check for updates."""
+        """
+        Initiates a manual check for application updates, temporarily disabling the check button and updating its label while the check is performed in the background.
+        """
         Logger.info("UpdateSettingsScreen: Manually checking for updates")
         
         # Disable the check button temporarily
@@ -62,11 +71,17 @@ class UpdateSettingsScreen(BaseScreen):
         Clock.schedule_once(self._perform_update_check, 0.1)
     
     def _perform_update_check(self, dt):
-        """Perform the actual update check."""
+        """
+        Initiates the update check process using the update manager.
+        
+        This method is typically scheduled to run after a short delay to perform the update check asynchronously.
+        """
         self.update_manager.check_for_updates()
     
     def on_update_check_complete(self, update_manager, update_available, update_info):
-        """Called when update check is complete."""
+        """
+        Handles completion of the update check by re-enabling the check button, updating version information, and notifying the user if no updates are available.
+        """
         # Re-enable the check button
         if hasattr(self.ids, 'check_button'):
             self.ids.check_button.disabled = False
@@ -79,11 +94,17 @@ class UpdateSettingsScreen(BaseScreen):
             self.show_info_popup("No Updates", "You are running the latest version.")
     
     def on_update_available(self, update_manager, update_info):
-        """Called when an update is available."""
+        """
+        Handles the event when an update becomes available by displaying a popup with update details.
+        """
         self.show_update_popup(update_info)
     
     def show_update_popup(self, update_info):
-        """Show popup with update information."""
+        """
+        Display a popup dialog presenting available update details and options to update immediately or postpone.
+        
+        The popup shows the new version, truncated release notes if available, and provides buttons for the user to start the update process or dismiss the dialog.
+        """
         content = BoxLayout(orientation='vertical', spacing=10, padding=10)
         
         # Update information
@@ -132,7 +153,11 @@ class UpdateSettingsScreen(BaseScreen):
         self.update_popup.open()
     
     def start_update(self, update_info):
-        """Start the update process."""
+        """
+        Initiates the update process for the specified version.
+        
+        Closes the update information popup, displays a progress popup, and schedules the update manager to begin updating to the provided version.
+        """
         if self.update_popup:
             self.update_popup.dismiss()
         
@@ -144,7 +169,11 @@ class UpdateSettingsScreen(BaseScreen):
         Clock.schedule_once(lambda dt: self.update_manager.start_update(version), 0.1)
     
     def check_for_updates_docker(self):
-        """Check for Docker image updates."""
+        """
+        Initiate a check for available Docker image updates and update the UI to reflect the checking status.
+        
+        If an error occurs during the process, displays an error popup to the user.
+        """
         try:
             if hasattr(self.ids, 'check_button'):
                 self.ids.check_button.disabled = True
@@ -162,7 +191,11 @@ class UpdateSettingsScreen(BaseScreen):
             self.show_error_popup(f"Failed to check for updates: {str(e)}")
     
     def apply_docker_update(self, version):
-        """Apply a Docker-based update."""
+        """
+        Initiate the process to download and apply a Docker-based update for the specified version.
+        
+        If a progress popup is already displayed, it is dismissed before showing a new progress popup. The update process is then started asynchronously.
+        """
         if self.progress_popup:
             self.progress_popup.dismiss()
             
@@ -173,7 +206,12 @@ class UpdateSettingsScreen(BaseScreen):
         Clock.schedule_once(lambda dt: self.update_manager.download_and_apply_update(version), 0.1)
     
     def show_progress_popup(self, message):
-        """Show update progress popup."""
+        """
+        Displays a popup window with a progress bar and message to indicate update progress.
+        
+        Parameters:
+            message (str): The message to display above the progress bar in the popup.
+        """
         content = BoxLayout(orientation='vertical', spacing=10)
         
         progress_label = Label(text=message, size_hint_y=None, height='40dp')
@@ -196,13 +234,21 @@ class UpdateSettingsScreen(BaseScreen):
         self.progress_popup.open()
     
     def on_update_progress(self, update_manager, progress, message):
-        """Handle update progress events."""
+        """
+        Updates the progress popup with the current update progress and status message.
+        
+        Parameters:
+            progress (float): The current progress value, typically between 0 and 100.
+            message (str): A message describing the current update step.
+        """
         if self.progress_popup:
             self.progress_popup.progress_label.text = message
             self.progress_popup.progress_bar.value = progress
     
     def on_update_complete(self, update_manager, version):
-        """Handle update completion."""
+        """
+        Handles actions after an update is completed by dismissing the progress popup and displaying a completion popup with options to restart the system immediately or later.
+        """
         if self.progress_popup:
             self.progress_popup.dismiss()
             
@@ -214,10 +260,16 @@ class UpdateSettingsScreen(BaseScreen):
         later_button = Button(text="Restart Later", size_hint_y=None, height='50dp')
         
         def restart_now(instance):
+            """
+            Dismisses the current popup and initiates a system restart.
+            """
             popup.dismiss()
             self.restart_system()
             
         def restart_later(instance):
+            """
+            Closes the current popup without restarting the system.
+            """
             popup.dismiss()
             
         restart_button.bind(on_release=restart_now)
@@ -236,7 +288,11 @@ class UpdateSettingsScreen(BaseScreen):
         popup.open()
     
     def restart_system(self):
-        """Restart the system to apply updates."""
+        """
+        Attempts to restart the system service to apply updates.
+        
+        If the restart fails, logs the error and displays an error popup to the user.
+        """
         try:
             import subprocess
             subprocess.run(['sudo', 'systemctl', 'restart', 'trimix-analyzer'], check=True)
@@ -245,14 +301,28 @@ class UpdateSettingsScreen(BaseScreen):
             self.show_error_popup(f"Failed to restart: {str(e)}")
 
     def toggle_auto_updates(self, enabled):
-        """Toggle automatic update checking."""
+        """
+        Enables or disables automatic update checking based on the provided flag.
+        
+        Parameters:
+            enabled (bool): If True, automatic update checks are enabled; if False, they are disabled.
+        """
         db_manager.set_setting('updates.auto_check', enabled)
         Logger.info(f"UpdateSettingsScreen: Auto-updates {'enabled' if enabled else 'disabled'}")
     
     def get_version_history(self):
-        """Get version history for display."""
+        """
+        Return the application's version history for display purposes.
+        
+        Returns:
+            list: A list containing version history entries.
+        """
         return VERSION_HISTORY
     
     def go_back(self):
-        """Navigate back to settings screen (called by KV file)"""
+        """
+        Navigates back to the previous settings screen.
+        
+        Intended to be triggered from the KV language UI file.
+        """
         self.navigate_back()

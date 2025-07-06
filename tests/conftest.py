@@ -16,7 +16,11 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
-    """Setup test environment for all tests."""
+    """
+    Configures environment variables for testing, enabling mock sensors and specifying a test database path for all tests.
+    
+    This fixture ensures a consistent test environment by setting relevant environment variables before tests run and removing the test database file after tests complete.
+    """
     # Force mock sensors for all tests
     os.environ['TRIMIX_MOCK_SENSORS'] = '1'
     os.environ['TRIMIX_ENVIRONMENT'] = 'test'
@@ -34,7 +38,12 @@ def setup_test_environment():
 
 @pytest.fixture
 def temp_database():
-    """Create a temporary database for testing."""
+    """
+    Creates and yields the filename of a temporary database file for testing, ensuring the file is deleted after the test completes.
+    
+    Yields:
+        str: The path to the temporary database file.
+    """
     temp_db = tempfile.NamedTemporaryFile(suffix='.db', delete=False)
     temp_db.close()
     
@@ -47,7 +56,12 @@ def temp_database():
 
 @pytest.fixture
 def mock_database_manager(temp_database):
-    """Create a database manager with temporary database."""
+    """
+    Yield a DatabaseManager instance using a temporary database, with event dispatching patched for testing.
+    
+    Yields:
+        DatabaseManager: An instance connected to a temporary database, with its event dispatch method mocked to prevent Kivy-related errors during tests.
+    """
     from utils.database_manager import DatabaseManager
     from unittest.mock import patch
     
@@ -64,7 +78,12 @@ def mock_database_manager(temp_database):
 
 @pytest.fixture
 def sample_sensor_data():
-    """Sample sensor data for testing."""
+    """
+    Provides a dictionary of representative sensor readings for use in tests.
+    
+    Returns:
+        dict: Sample sensor data including oxygen voltage and percent, CO2 voltage and ppm, temperature, pressure (BAR), and humidity.
+    """
     return {
         'o2_voltage': 1.5,
         'o2_percent': 21.0,
@@ -78,7 +97,12 @@ def sample_sensor_data():
 
 @pytest.fixture
 def sample_settings():
-    """Sample settings data for testing."""
+    """
+    Provides a dictionary of sample application settings for use in tests.
+    
+    Returns:
+        dict: Sample settings including app metadata, display configuration, and sensor calibration parameters.
+    """
     return {
         'app': {
             'first_run': False,
@@ -99,7 +123,12 @@ def sample_settings():
 
 @pytest.fixture
 def mock_kivy_app():
-    """Mock Kivy app for UI testing."""
+    """
+    Provides a MagicMock instance in place of the Kivy App class for UI testing.
+    
+    Yields:
+        MagicMock: A mock Kivy App instance for use in tests.
+    """
     with patch('kivy.app.App') as mock_app:
         mock_instance = MagicMock()
         mock_app.return_value = mock_instance
@@ -108,11 +137,19 @@ def mock_kivy_app():
 
 @pytest.fixture
 def mock_sensor_interface():
-    """Mock sensor interface for testing without hardware."""
+    """
+    Provides a mock implementation of the SensorInterface for testing without hardware.
+    
+    Returns:
+        MockSensorInterface: An instance with methods returning predefined sensor values, allowing tests to simulate sensor readings and update mock data dynamically.
+    """
     from utils.sensor_interface import SensorInterface
     
     class MockSensorInterface(SensorInterface):
         def __init__(self):
+            """
+            Initialize the mock sensor interface with default sensor readings for testing purposes.
+            """
             self.mock_data = {
                 'o2_voltage': 1.5,
                 'o2_percent': 21.0,
@@ -125,30 +162,63 @@ def mock_sensor_interface():
             }
         
         def read_oxygen_voltage(self) -> float:
+            """
+            Return the current mock oxygen sensor voltage value.
+            """
             return self.mock_data['o2_voltage']
         
         def read_oxygen_percent(self) -> float:
+            """
+            Return the current mock oxygen concentration as a percentage.
+            """
             return self.mock_data['o2_percent']
         
         def read_co2_voltage(self) -> float:
+            """
+            Return the mock CO2 sensor voltage value.
+            """
             return self.mock_data['co2_voltage']
         
         def read_co2_ppm(self) -> float:
+            """
+            Return the current mock CO2 concentration in parts per million (ppm).
+            """
             return self.mock_data['co2_ppm']
         
         def read_temperature_c(self) -> float:
+            """
+            Returns the current mock temperature value in degrees Celsius.
+            """
             return self.mock_data['temperature']
         
         def read_pressure_hpa(self) -> float:
+            """
+            Return the current mock pressure value in hectopascals (hPa).
+            """
             return self.mock_data['pressure']
         
         def read_humidity_pct(self) -> float:
+            """
+            Return the current mock humidity value as a percentage.
+            """
             return self.mock_data['humidity']
         
         def is_power_button_pressed(self) -> bool:
+            """
+            Return whether the mock power button is currently pressed.
+            
+            Returns:
+                bool: True if the mock power button is pressed, False otherwise.
+            """
             return self.mock_data['button_pressed']
         
         def set_mock_data(self, **kwargs):
+            """
+            Update the mock sensor data with new values.
+            
+            Parameters:
+            	**kwargs: Key-value pairs representing sensor data fields to update.
+            """
             self.mock_data.update(kwargs)
     
     return MockSensorInterface()
@@ -156,7 +226,9 @@ def mock_sensor_interface():
 
 @pytest.fixture
 def calibration_data():
-    """Sample calibration data for testing."""
+    """
+    Return a list of sample calibration records for oxygen and helium sensors, each containing sensor type, calibration date, voltage reading, temperature, and notes.
+    """
     base_date = datetime.now()
     return [
         {
@@ -178,7 +250,11 @@ def calibration_data():
 
 @pytest.fixture
 def clean_environment():
-    """Clean environment variables after test."""
+    """
+    Temporarily saves and restores environment variables for the duration of a test.
+    
+    Ensures that any changes to environment variables during a test do not persist beyond the test's scope.
+    """
     original_env = os.environ.copy()
     
     yield
@@ -189,7 +265,9 @@ def clean_environment():
 
 
 def pytest_configure(config):
-    """Configure pytest with custom markers."""
+    """
+    Registers custom test markers for unit, integration, UI, hardware-dependent, and slow tests in the pytest configuration.
+    """
     config.addinivalue_line(
         "markers", "unit: mark test as a unit test"
     )
