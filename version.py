@@ -1,0 +1,45 @@
+"""
+Version information for Trimix Analyzer.
+This module contains the current version of the application.
+"""
+
+__version__ = "0.1.0"
+__version_info__ = (0, 1, 0)
+
+# Version history and release information
+VERSION_HISTORY = {
+    "0.1.0": {
+        "release_date": "2025-07-06",
+        "description": "Initial release with Docker containerization and CI/CD",
+        "features": [
+            "Docker containerization support",
+            "CI/CD pipeline with GitHub Actions",
+            "Automatic updates via GitHub releases",
+            "Multi-platform support (ARM64, ARM v7, x86_64)",
+            "Database-based settings management",
+            "Sensor interface abstraction",
+            "Calibration reminder system"
+        ]
+    }
+}
+
+def get_version():
+    """Get the current version string."""
+    return __version__
+
+def get_version_info():
+    """Get the current version as a tuple."""
+    return __version_info__
+
+def get_build_info():
+    """Get build information including version and platform."""
+    import platform
+    import sys
+    
+    return {
+        "version": __version__,
+        "version_info": __version_info__,
+        "python_version": sys.version,
+        "platform": platform.platform(),
+        "architecture": platform.machine()
+    }

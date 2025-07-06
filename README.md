@@ -258,6 +258,70 @@ Tests include:
 - Import validation
 - Basic UI components
 
+## 🏷️ Versioning & Releases
+
+This project follows [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH).
+
+### Current Version
+```bash
+python scripts/version_manager.py current
+# Output: Current version: 0.1.0
+```
+
+### Version Management
+
+```bash
+# Check current version
+python scripts/version_manager.py current
+
+# Bump patch version (0.1.0 → 0.1.1)
+python scripts/version_manager.py bump patch
+
+# Bump minor version (0.1.0 → 0.2.0)
+python scripts/version_manager.py bump minor
+
+# Bump major version (0.1.0 → 1.0.0)
+python scripts/version_manager.py bump major
+
+# Set specific version
+python scripts/version_manager.py set 1.0.0
+
+# Create git tag for current version
+python scripts/version_manager.py tag
+```
+
+### Release Process
+
+1. **Prepare Release**:
+   ```bash
+   # Update version and create description
+   python scripts/version_manager.py bump minor
+   # Script will prompt for release description
+   ```
+
+2. **Commit Changes**:
+   ```bash
+   git add version.py
+   git commit -m "Bump version to v0.2.0"
+   ```
+
+3. **Push Tag** (triggers CI/CD):
+   ```bash
+   git push --tags
+   # This automatically triggers production deployment
+   ```
+
+### Automatic Updates
+
+The app includes an update manager that:
+- ✅ Checks GitHub releases for new versions
+- ✅ Compares semantic versions correctly
+- ✅ Downloads new Docker images
+- ✅ Restarts the application automatically
+- ✅ Shows update progress to users
+
+Access via: **Settings → Update Settings**
+
 ## 🚀 CI/CD Pipeline
 
 The project includes automated CI/CD with GitHub Actions:

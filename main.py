@@ -12,6 +12,9 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.logger import Logger
 
+# Import version information
+from version import __version__, get_build_info
+
 # Import database manager directly - no need for adapter
 from utils.database_manager import db_manager
 from utils.calibration_reminder import calibration_reminder
@@ -27,6 +30,7 @@ from screens.settings.wifi_settings import WiFiSettingsScreen
 from screens.settings.display_settings import DisplaySettingsScreen
 from screens.settings.safety_settings import SafetySettingsScreen
 from screens.settings.sensor_settings import SensorSettingsScreen
+from screens.settings.update_settings import UpdateSettingsScreen
 
 # Import widget classes so they're available for KV files
 from widgets.sensor_card import SensorCard
@@ -47,7 +51,8 @@ Window.minimum_height = 800  # Lock to exact display height
 from kivy.config import Config
 Config.set('graphics', 'resizable', False)  # Lock window size to match RPi display exactly
 if os.environ.get('TRIMIX_ENVIRONMENT') == 'development':
-    Window.set_title('Trimix Analyzer - RPi Display Emulation (480x800)')
+    from version import __version__
+    Window.set_title(f'Trimix Analyzer v{__version__} - RPi Display Emulation (480x800)')
 
 
 KV_DIR = os.path.dirname(__file__)
@@ -69,6 +74,12 @@ class TrimixScreenManager(ScreenManager):
 
 class TrimixApp(App):
     def build(self):
+        # Log version information
+        Logger.info(f"TrimixApp: Starting Trimix Analyzer v{__version__}")
+        build_info = get_build_info()
+        Logger.info(f"TrimixApp: Platform: {build_info['platform']}")
+        Logger.info(f"TrimixApp: Architecture: {build_info['architecture']}")
+        
         # Register fonts
         self._register_fonts()
         

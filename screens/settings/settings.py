@@ -28,6 +28,8 @@ class SettingsScreen(Screen):
             self.manager.current = 'safety_settings'
         elif setting_name == 'sensor_settings':
             self.manager.current = 'sensor_settings'
+        elif setting_name == 'update_settings':
+            self.manager.current = 'update_settings'
         elif setting_name == 'factory_reset':
             self.show_factory_reset_confirmation()
         else:
