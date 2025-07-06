@@ -1,7 +1,7 @@
 # Trimix Analyzer - Development Commands
 # Usage: make <command>
 
-.PHONY: dev run install clean test help
+.PHONY: dev run run-docker stop install clean test help
 
 # Default target
 help:
@@ -10,21 +10,42 @@ help:
 	@echo "Usage: make <command>"
 	@echo ""
 	@echo "Commands:"
-	@echo "  dev        🎮 Start development server (RPi emulation)"
-	@echo "  run        🏃 Run the app directly (no env setup)"
-	@echo "  install    📦 Install dependencies in virtual environment"
-	@echo "  clean      🧹 Clean up virtual environment and cache"
-	@echo "  test       🧪 Run tests"
-	@echo "  help       ❓ Show this help message"
+	@echo "  dev           🎮 Start development server (native Python)"
+	@echo "  run           🏃 Run the app with Docker (production with real sensors)"
+	@echo "  run-docker    🐳 Run with Docker GUI (development with mock sensors)"
+	@echo "  run-dev       🔧 Docker development shell (debug/test)"
+	@echo "  stop          🛑 Stop Docker containers"
+	@echo "  install       📦 Install dependencies in virtual environment"
+	@echo "  clean         🧹 Clean up virtual environment and cache"
+	@echo "  test          🧪 Run tests"
+	@echo "  help          ❓ Show this help message"
 
-# Development server with full setup
+# Development server with full setup (native Python)
 dev:
 	@./scripts/dev.sh
 
-# Quick run without environment setup
+# Quick run with Docker (production setup)
 run:
-	@echo "🏃 Running Trimix Analyzer..."
-	@python main.py
+	@echo "🏃 Running Trimix Analyzer with Docker (production)..."
+	@echo "Note: Running in foreground to see output. Press Ctrl+C to stop."
+	@docker compose up --build
+
+# Docker with GUI support
+run-docker:
+	@echo "🐳 Running Trimix Analyzer with Docker GUI..."
+	@echo "Note: On Mac, make sure XQuartz is running with 'Allow connections from network clients' enabled"
+	@echo "Note: On Linux, run 'xhost +local:docker' if you get permission errors"
+	@docker compose -f docker-compose.dev.yml up --build trimix-dev
+
+# Stop the Docker containers
+stop:
+	@echo "🛑 Stopping Trimix Analyzer..."
+	@docker compose down
+
+# Docker development shell for debugging
+run-dev:
+	@echo "🔧 Running Trimix Analyzer with Docker (development shell)..."
+	@docker compose -f docker-compose.dev.yml up --build trimix-shell
 
 # Install dependencies
 install:

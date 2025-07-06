@@ -5,7 +5,28 @@ import glob
 
 # Configure Kivy before any imports
 from kivy.config import Config
-Config.set('graphics', 'resizable', False)  # Lock window size to match RPi display exactly
+
+# Set display configuration based on environment
+environment = os.environ.get('TRIMIX_ENVIRONMENT', 'production')
+
+if environment == 'production':
+    # Check if running in container (Docker)
+    if os.path.exists('/.dockerenv'):
+        # Container environment: configure for framebuffer access
+        Config.set('graphics', 'fbo', 'hardware')
+        Config.set('graphics', 'window', 'sdl2')
+    else:
+        # RPi production: use framebuffer for direct display
+        Config.set('graphics', 'fbo', 'hardware')
+        # Try different window providers for RPi
+        for provider in ['sdl2', 'x11', 'egl_rpi']:
+            try:
+                Config.set('graphics', 'window', provider)
+                break
+            except:
+                continue
+
+Config.set('graphics', 'resizable', '0')     # Use string instead of boolean
 Config.set('graphics', 'width', '480')      # RPi display width
 Config.set('graphics', 'height', '800')     # RPi display height
 
@@ -18,11 +39,26 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.logger import Logger
 
-# Set window properties for development
-Window.fullscreen = False
-if os.environ.get('TRIMIX_ENVIRONMENT') == 'development':
+# Set window properties based on environment
+environment = os.environ.get('TRIMIX_ENVIRONMENT', 'production')
+
+if environment == 'development':
+    # Development mode: windowed for easier debugging
+    Window.fullscreen = False
     from version import __version__
     Window.set_title(f'Trimix Analyzer v{__version__} - RPi Display Emulation (480x800)')
+else:
+    # Production mode: fullscreen on RPi display
+    try:
+        Window.fullscreen = 'auto'  # Use auto to let Kivy decide the best fullscreen mode
+    except Exception as e:
+        Logger.warning(f"Could not set fullscreen mode: {e}")
+        # Fallback: try to set fullscreen to True
+        try:
+            Window.fullscreen = True
+        except Exception as e2:
+            Logger.warning(f"Could not set fullscreen fallback: {e2}")
+            # Last resort: just continue without fullscreen
 
 # Import version information
 from version import __version__, get_build_info

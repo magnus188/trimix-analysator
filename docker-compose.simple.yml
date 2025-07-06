@@ -1,5 +1,29 @@
-# Simple Docker for testing without GUI
+# Simple Docker Compose for GUI testing and basic development
+
 services:
+  # Simple GUI test - works on Mac with XQuartz or Linux with X11
+  trimix-gui:
+    build:
+      context: .
+      target: development
+    container_name: trimix-gui
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    environment:
+      - TRIMIX_ENVIRONMENT=development
+      - TRIMIX_MOCK_SENSORS=1
+      - DISPLAY=${DISPLAY}
+      - KIVY_WINDOW=sdl2
+      - KIVY_GL_BACKEND=gl
+      - SDL_VIDEODRIVER=x11
+    working_dir: /app
+    command: python main.py
+    stdin_open: true
+    tty: true
+
+  # Simple test runner (no GUI)
   trimix-test:
     build:
       context: .
@@ -12,4 +36,3 @@ services:
       - TRIMIX_MOCK_SENSORS=1
     working_dir: /app
     command: python -m pytest tests/ -v
-    # No GUI, just for testing
