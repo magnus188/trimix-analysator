@@ -3,7 +3,6 @@ name: Trimix Analyzer CI/CD
 on:
   push:
     branches: [ main, develop ]
-    tags: [ 'v*' ]
   pull_request:
     branches: [ main ]
 
@@ -56,10 +55,20 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      image-tags: ${{ steps.meta.outputs.tags }}
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    
+    - name: Get current version
+      id: version
+      run: |
+        VERSION=$(python -c "import sys; sys.path.append('.'); from version import __version__; print(__version__)")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Current version: $VERSION"
     
     - name: Log in to Container Registry
       uses: docker/login-action@v3
@@ -79,8 +88,7 @@ jobs:
         tags: |
           type=ref,event=branch
           type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=${{ steps.version.outputs.version }},enable={{is_default_branch}}
           type=sha,prefix={{branch}}-
     
     - name: Build and push Docker images
@@ -95,68 +103,198 @@ jobs:
         cache-to: type=gha,mode=max
         target: production
 
-  deploy-staging:
-    needs: build-and-push
+  auto-release:
+    needs: [test, build-and-push]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    environment: staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      packages: read
     
     steps:
-    - name: Deploy to RPi 5 (Staging)
-      uses: appleboy/ssh-action@v1.0.0
+    - name: Checkout repository
+      uses: actions/checkout@v4
       with:
-        host: ${{ secrets.RPI5_HOST }}
-        username: ${{ secrets.RPI5_USER }}
-        key: ${{ secrets.RPI5_SSH_KEY }}
-        script: |
-          cd /opt/trimix-analyzer
-          docker-compose pull
-          docker-compose up -d
-          docker system prune -f
-
-  deploy-production:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    environment: production
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
     
-    steps:
-    - name: Deploy to RPi Zero 2W (Production)
-      uses: appleboy/ssh-action@v1.0.0
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
-        host: ${{ secrets.RPI_ZERO_HOST }}
-        username: ${{ secrets.RPI_ZERO_USER }}
-        key: ${{ secrets.RPI_ZERO_SSH_KEY }}
-        script: |
-          cd /opt/trimix-analyzer
-          docker-compose pull
-          docker-compose up -d
-          docker system prune -f
-
-  release:
-    needs: deploy-production
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+        python-version: '3.11'
     
-    steps:
-    - uses: actions/checkout@v4
+    - name: Get current version
+      id: current-version
+      run: |
+        VERSION=$(python -c "import sys; sys.path.append('.'); from version import __version__; print(__version__)")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Current version: $VERSION"
+    
+    - name: Check if version tag exists
+      id: tag-exists
+      run: |
+        if git rev-parse "v${{ steps.current-version.outputs.version }}" >/dev/null 2>&1; then
+          echo "exists=true" >> $GITHUB_OUTPUT
+          echo "Tag v${{ steps.current-version.outputs.version }} already exists"
+        else
+          echo "exists=false" >> $GITHUB_OUTPUT
+          echo "Tag v${{ steps.current-version.outputs.version }} does not exist"
+        fi
+    
+    - name: Determine version bump type
+      id: bump-type
+      if: steps.tag-exists.outputs.exists == 'true'
+      run: |
+        # Get the latest commit message
+        COMMIT_MSG="${{ github.event.head_commit.message }}"
+        
+        # Determine bump type based on commit message
+        if echo "$COMMIT_MSG" | grep -qiE "(BREAKING CHANGE|major)"; then
+          echo "type=major" >> $GITHUB_OUTPUT
+          echo "Detected MAJOR version bump from: $COMMIT_MSG"
+        elif echo "$COMMIT_MSG" | grep -qiE "(feat|feature|minor)"; then
+          echo "type=minor" >> $GITHUB_OUTPUT
+          echo "Detected MINOR version bump from: $COMMIT_MSG"
+        else
+          echo "type=patch" >> $GITHUB_OUTPUT
+          echo "Detected PATCH version bump from: $COMMIT_MSG"
+        fi
+    
+    - name: Bump version
+      id: new-version
+      if: steps.tag-exists.outputs.exists == 'true'
+      run: |
+        python -c "
+        import re
+        
+        # Read current version
+        with open('version.py', 'r') as f:
+            content = f.read()
+        
+        version_match = re.search(r'__version__ = [\"\']([\d\.]+)[\"\']', content)
+        if not version_match:
+            raise ValueError('Could not find version')
+        
+        current = version_match.group(1)
+        parts = list(map(int, current.split('.')))
+        
+        # Bump based on type
+        bump_type = '${{ steps.bump-type.outputs.type }}'
+        if bump_type == 'major':
+            parts[0] += 1
+            parts[1] = 0
+            parts[2] = 0
+        elif bump_type == 'minor':
+            parts[1] += 1
+            parts[2] = 0
+        else:  # patch
+            parts[2] += 1
+        
+        new_version = '.'.join(map(str, parts))
+        
+        # Update version.py
+        content = re.sub(
+            r'__version__ = [\"\']([\d\.]+)[\"\']',
+            f'__version__ = \"{new_version}\"',
+            content
+        )
+        content = re.sub(
+            r'__version_info__ = \([^)]+\)',
+            f'__version_info__ = ({parts[0]}, {parts[1]}, {parts[2]})',
+            content
+        )
+        
+        with open('version.py', 'w') as f:
+            f.write(content)
+        
+        print(f'Bumped version from {current} to {new_version}')
+        
+        # Output for next steps
+        with open('$GITHUB_OUTPUT', 'a') as f:
+            f.write(f'version={new_version}\n')
+        "
+    
+    - name: Commit version bump
+      if: steps.tag-exists.outputs.exists == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add version.py
+        git commit -m "Bump version to v${{ steps.new-version.outputs.version }}"
+        git push
+    
+    - name: Get release version
+      id: release-version
+      run: |
+        if [ "${{ steps.tag-exists.outputs.exists }}" == "true" ]; then
+          echo "version=${{ steps.new-version.outputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${{ steps.current-version.outputs.version }}" >> $GITHUB_OUTPUT
+        fi
     
     - name: Create Release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: v${{ steps.release-version.outputs.version }}
+        release_name: Release v${{ steps.release-version.outputs.version }}
         body: |
           ## Changes in this Release
-          - Built for ARM64 (RPi 4/5) and ARM v7 (RPi Zero 2W)
-          - Docker images available at `ghcr.io/${{ github.repository }}:${{ github.ref_name }}`
+          
+          ${{ github.event.head_commit.message }}
           
           ## Deployment
+          
+          **Docker Images:**
+          - `ghcr.io/${{ github.repository }}:v${{ steps.release-version.outputs.version }}`
+          - `ghcr.io/${{ github.repository }}:main`
+          
+          **Multi-platform support:**
+          - ARM64 (Raspberry Pi 4/5)
+          - ARM v7 (Raspberry Pi Zero 2W)
+          - x86_64 (Development/Testing)
+          
           ```bash
-          docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          docker pull ghcr.io/${{ github.repository }}:v${{ steps.release-version.outputs.version }}
           docker-compose up -d
           ```
         draft: false
         prerelease: false
+
+  # Note: Deployment jobs are commented out until secrets are configured
+  # Uncomment and configure secrets (RPI5_HOST, RPI5_USER, RPI5_SSH_KEY, etc.) to enable auto-deployment
+  #
+  # deploy-staging:
+  #   needs: build-and-push
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/develop'
+  #   steps:
+  #   - name: Deploy to RPi 5 (Staging)
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.RPI5_HOST }}
+  #       username: ${{ secrets.RPI5_USER }}
+  #       key: ${{ secrets.RPI5_SSH_KEY }}
+  #       script: |
+  #         cd /opt/trimix-analyzer
+  #         docker-compose pull
+  #         docker-compose up -d
+  #         docker system prune -f
+  #
+  # deploy-production:
+  #   needs: auto-release
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  #   steps:
+  #   - name: Deploy to RPi Zero 2W (Production)
+  #     uses: appleboy/ssh-action@v1.0.0
+  #     with:
+  #       host: ${{ secrets.RPI_ZERO_HOST }}
+  #       username: ${{ secrets.RPI_ZERO_USER }}
+  #       key: ${{ secrets.RPI_ZERO_SSH_KEY }}
+  #       script: |
+  #         cd /opt/trimix-analyzer
+  #         docker-compose pull
+  #         docker-compose up -d
+  #         docker system prune -f

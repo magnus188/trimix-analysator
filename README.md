@@ -258,69 +258,92 @@ Tests include:
 - Import validation
 - Basic UI components
 
-## 🏷️ Versioning & Releases
+## 🏷️ Automated Versioning & Releases
 
-This project follows [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH).
+This project uses **fully automated** version management and releases through GitHub CI/CD.
 
-### Current Version
+### 🤖 **How It Works**
+
+1. **Development**: Work on feature branches, create PRs to `main`
+2. **Automatic Version Bumping**: When PR is merged to `main`, CI/CD automatically:
+   - Detects version bump type from commit message
+   - Bumps version in `version.py`
+   - Creates git tag
+   - Builds and pushes Docker images
+   - Creates GitHub release with PR description
+
+### 📝 **Version Bump Types**
+
+Control version bumping through your **commit messages** or **PR titles**:
+
 ```bash
-python scripts/version_manager.py current
-# Output: Current version: 0.1.0
+# Patch version (0.1.0 → 0.1.1) - DEFAULT
+git commit -m "fix: resolve sensor reading issue"
+git commit -m "docs: update README"
+
+# Minor version (0.1.0 → 0.2.0)
+git commit -m "feat: add new calibration feature"
+git commit -m "feature: implement WiFi setup wizard"
+
+# Major version (0.1.0 → 1.0.0)
+git commit -m "BREAKING CHANGE: redesign sensor interface"
+git commit -m "major: complete API overhaul"
 ```
 
-### Version Management
+### 🔄 **Development Workflow**
 
 ```bash
-# Check current version
-python scripts/version_manager.py current
+# 1. Create feature branch
+git checkout -b feature/awesome-feature
 
-# Bump patch version (0.1.0 → 0.1.1)
-python scripts/version_manager.py bump patch
+# 2. Make changes and commit
+git commit -m "feat: add awesome feature"
 
-# Bump minor version (0.1.0 → 0.2.0)
-python scripts/version_manager.py bump minor
+# 3. Push and create PR
+git push origin feature/awesome-feature
+# Create PR on GitHub with descriptive title/description
 
-# Bump major version (0.1.0 → 1.0.0)
-python scripts/version_manager.py bump major
-
-# Set specific version
-python scripts/version_manager.py set 1.0.0
-
-# Create git tag for current version
-python scripts/version_manager.py tag
+# 4. Merge PR to main
+# ✅ CI/CD automatically handles versioning and release!
 ```
 
-### Release Process
+### 📦 **What Happens Automatically**
 
-1. **Prepare Release**:
-   ```bash
-   # Update version and create description
-   python scripts/version_manager.py bump minor
-   # Script will prompt for release description
-   ```
+When you merge to `main`:
 
-2. **Commit Changes**:
-   ```bash
-   git add version.py
-   git commit -m "Bump version to v0.2.0"
-   ```
+1. **Tests Run**: Full test suite on multiple platforms
+2. **Version Detection**: Analyzes commit message for bump type
+3. **Version Bump**: Updates `version.py` automatically
+4. **Docker Build**: Multi-platform images (ARM64, ARMv7, x86_64)
+5. **Image Push**: To GitHub Container Registry
+6. **Git Tag**: Creates `v0.1.1`, `v0.2.0`, etc.
+7. **GitHub Release**: With your PR description as release notes
+8. **Deployment**: (Optional) Auto-deploy to your Raspberry Pi
 
-3. **Push Tag** (triggers CI/CD):
-   ```bash
-   git push --tags
-   # This automatically triggers production deployment
-   ```
+### 🎯 **Current Version**: `v0.1.0`
 
-### Automatic Updates
+Check current version:
+```bash
+python -c "from version import __version__; print(__version__)"
+```
+
+### 🔄 **Automatic Updates**
 
 The app includes an update manager that:
-- ✅ Checks GitHub releases for new versions
-- ✅ Compares semantic versions correctly
+- ✅ Automatically checks GitHub releases
+- ✅ Compares semantic versions correctly  
 - ✅ Downloads new Docker images
-- ✅ Restarts the application automatically
+- ✅ Restarts the application
 - ✅ Shows update progress to users
 
 Access via: **Settings → Update Settings**
+
+### 🧹 **Workspace Stays Clean**
+
+- ❌ No manual version bumping
+- ❌ No manual tagging
+- ❌ No manual release creation
+- ✅ Just commit, PR, and merge!
 
 ## 🚀 CI/CD Pipeline
 

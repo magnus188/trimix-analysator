@@ -25,8 +25,26 @@ class UpdateManager(EventDispatcher):
     def __init__(self, repo_owner: str = None, repo_name: str = None):
         super().__init__()
         
-        # Default to repository from environment or guess from container
-        self.repo_owner = repo_owner or os.environ.get('GITHUB_REPOSITORY_OWNER', 'magnustrandokken')
+        # Try to detect repository from git remote if not provided
+        if not repo_owner or not repo_name:
+            try:
+                import subprocess
+                result = subprocess.run(['git', 'remote', 'get-url', 'origin'], 
+                                      capture_output=True, text=True)
+                if result.returncode == 0:
+                    url = result.stdout.strip()
+                    # Parse GitHub URL: https://github.com/owner/repo.git
+                    if 'github.com' in url:
+                        parts = url.split('/')
+                        detected_owner = parts[-2]
+                        detected_repo = parts[-1].replace('.git', '')
+                        repo_owner = repo_owner or detected_owner
+                        repo_name = repo_name or detected_repo
+            except Exception:
+                pass
+        
+        # Default to repository from environment or fallback
+        self.repo_owner = repo_owner or os.environ.get('GITHUB_REPOSITORY_OWNER', 'magnus188')
         self.repo_name = repo_name or os.environ.get('GITHUB_REPOSITORY_NAME', 'trimix-analysator')
         self.current_version = __version__
         
