@@ -212,4 +212,8 @@ __marimo__/
 trimix_settings.json.backup
 settings_manager.py.backup
 
+# Auto-generated folders
+.benchmarks/          # pytest-benchmark results
+data/                 # Docker persistent data storage
+
 .lgd-nfy0

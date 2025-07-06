@@ -143,91 +143,107 @@ class UpdateSettingsScreen(BaseScreen):
         version = update_info['version']
         Clock.schedule_once(lambda dt: self.update_manager.start_update(version), 0.1)
     
-    def show_progress_popup(self):
+    def check_for_updates_docker(self):
+        """Check for Docker image updates."""
+        try:
+            if hasattr(self.ids, 'check_button'):
+                self.ids.check_button.disabled = True
+                self.ids.check_button.text = "Checking..."
+            
+            # Update status
+            if hasattr(self.ids, 'status_label'):
+                self.ids.status_label.text = "Checking for updates..."
+            
+            # Check for updates asynchronously
+            Clock.schedule_once(lambda dt: self.update_manager.check_for_updates(), 0.1)
+            
+        except Exception as e:
+            Logger.error(f"UpdateSettingsScreen: Error checking for updates: {e}")
+            self.show_error_popup(f"Failed to check for updates: {str(e)}")
+    
+    def apply_docker_update(self, version):
+        """Apply a Docker-based update."""
+        if self.progress_popup:
+            self.progress_popup.dismiss()
+            
+        # Show progress popup
+        self.show_progress_popup("Downloading update...")
+        
+        # Start the update process
+        Clock.schedule_once(lambda dt: self.update_manager.download_and_apply_update(version), 0.1)
+    
+    def show_progress_popup(self, message):
         """Show update progress popup."""
-        content = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        content = BoxLayout(orientation='vertical', spacing=10)
         
-        content.add_widget(Label(
-            text="Updating Application...",
-            font_size='18sp',
-            size_hint_y=None,
-            height=40
-        ))
+        progress_label = Label(text=message, size_hint_y=None, height='40dp')
+        progress_bar = ProgressBar(max=100, value=0, size_hint_y=None, height='30dp')
         
-        self.progress_bar = ProgressBar(
-            max=100,
-            value=0,
-            size_hint_y=None,
-            height=30
-        )
-        content.add_widget(self.progress_bar)
-        
-        self.progress_label = Label(
-            text="Preparing...",
-            size_hint_y=None,
-            height=30
-        )
-        content.add_widget(self.progress_label)
+        content.add_widget(progress_label)
+        content.add_widget(progress_bar)
         
         self.progress_popup = Popup(
-            title="Updating",
+            title="Updating...",
             content=content,
-            size_hint=(0.6, 0.4),
+            size_hint=(0.8, 0.3),
             auto_dismiss=False
         )
+        
+        # Store references for updates
+        self.progress_popup.progress_label = progress_label
+        self.progress_popup.progress_bar = progress_bar
+        
         self.progress_popup.open()
     
     def on_update_progress(self, update_manager, progress, message):
-        """Called during update progress."""
-        if self.progress_popup and hasattr(self, 'progress_bar'):
-            self.progress_bar.value = progress
-            self.progress_label.text = message
+        """Handle update progress events."""
+        if self.progress_popup:
+            self.progress_popup.progress_label.text = message
+            self.progress_popup.progress_bar.value = progress
     
     def on_update_complete(self, update_manager, version):
-        """Called when update is complete."""
+        """Handle update completion."""
         if self.progress_popup:
             self.progress_popup.dismiss()
+            
+        # Show completion popup
+        content = BoxLayout(orientation='vertical', spacing=10)
         
-        self.show_info_popup(
-            "Update Complete",
-            f"Successfully updated to version {version}.\nThe application will restart shortly."
-        )
+        label = Label(text=f"Successfully updated to version {version}!\n\nThe system will restart automatically.")
+        restart_button = Button(text="Restart Now", size_hint_y=None, height='50dp')
+        later_button = Button(text="Restart Later", size_hint_y=None, height='50dp')
         
-        # Schedule app restart
-        Clock.schedule_once(self.restart_app, 3)
-    
-    def on_update_error(self, update_manager, error_message):
-        """Called when an update error occurs."""
-        if self.progress_popup:
-            self.progress_popup.dismiss()
+        def restart_now(instance):
+            popup.dismiss()
+            self.restart_system()
+            
+        def restart_later(instance):
+            popup.dismiss()
+            
+        restart_button.bind(on_release=restart_now)
+        later_button.bind(on_release=restart_later)
         
-        self.show_info_popup("Update Failed", f"Update failed: {error_message}")
-    
-    def show_info_popup(self, title, message):
-        """Show an information popup."""
-        content = BoxLayout(orientation='vertical', spacing=10, padding=10)
-        
-        content.add_widget(Label(text=message, text_size=(300, None), halign='center', valign='middle'))
-        
-        ok_button = Button(text="OK", size_hint=(None, None), size=(100, 40), pos_hint={'center_x': 0.5})
-        content.add_widget(ok_button)
+        content.add_widget(label)
+        content.add_widget(restart_button)
+        content.add_widget(later_button)
         
         popup = Popup(
-            title=title,
+            title="Update Complete",
             content=content,
-            size_hint=(0.6, 0.4),
+            size_hint=(0.8, 0.5),
             auto_dismiss=False
         )
-        ok_button.bind(on_press=popup.dismiss)
         popup.open()
     
-    def restart_app(self, dt):
-        """Restart the application."""
-        # This will depend on your deployment method
-        # For Docker, the container should restart automatically
-        import sys
-        sys.exit(0)
-    
+    def restart_system(self):
+        """Restart the system to apply updates."""
+        try:
+            import subprocess
+            subprocess.run(['sudo', 'systemctl', 'restart', 'trimix-analyzer'], check=True)
+        except Exception as e:
+            Logger.error(f"Failed to restart system: {e}")
+            self.show_error_popup(f"Failed to restart: {str(e)}")
+
     def toggle_auto_updates(self, enabled):
         """Toggle automatic update checking."""
         db_manager.set_setting('updates.auto_check', enabled)

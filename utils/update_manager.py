@@ -260,6 +260,70 @@ class UpdateManager(EventDispatcher):
         except Exception as e:
             Logger.error(f"UpdateManager: Failed to update docker-compose.yml: {e}")
     
+    def download_and_apply_update(self, version: str) -> bool:
+        """Download and apply Docker-based update."""
+        try:
+            Logger.info(f"UpdateManager: Starting Docker update to version {version}")
+            self.dispatch('on_update_progress', 10, "Downloading update package...")
+            
+            # Download update package
+            download_url = f"{self.api_base}/repos/{self.repo_owner}/{self.repo_name}/releases/download/{version}/trimix-analyzer-update-{version}.tar.gz"
+            
+            update_dir = "/tmp/trimix-update"
+            os.makedirs(update_dir, exist_ok=True)
+            
+            # Download update package
+            response = requests.get(download_url, stream=True, timeout=300)
+            response.raise_for_status()
+            
+            update_file = f"{update_dir}/update.tar.gz"
+            with open(update_file, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            self.dispatch('on_update_progress', 50, "Extracting update...")
+            
+            # Extract update package
+            subprocess.run(['tar', '-xzf', update_file, '-C', update_dir], 
+                         check=True, cwd=update_dir)
+            
+            self.dispatch('on_update_progress', 70, "Pulling new Docker image...")
+            
+            # Pull new Docker image
+            image_name = f"ghcr.io/{self.repo_owner.lower()}/{self.repo_name.lower()}:{version}"
+            result = subprocess.run(['docker', 'pull', image_name], 
+                                  capture_output=True, text=True)
+            
+            if result.returncode != 0:
+                raise Exception(f"Failed to pull Docker image: {result.stderr}")
+            
+            self.dispatch('on_update_progress', 90, "Applying update...")
+            
+            # Run update script
+            update_script = f"{update_dir}/update.sh"
+            if os.path.exists(update_script):
+                os.chmod(update_script, 0o755)
+                result = subprocess.run(['sudo', 'bash', update_script], 
+                                      capture_output=True, text=True)
+                
+                if result.returncode != 0:
+                    raise Exception(f"Update script failed: {result.stderr}")
+            
+            # Update docker-compose.yml to use new version
+            self._update_compose_version(version)
+            
+            self.dispatch('on_update_progress', 100, "Update complete!")
+            self.dispatch('on_update_complete', version)
+            
+            Logger.info(f"UpdateManager: Successfully updated to version {version}")
+            return True
+            
+        except Exception as e:
+            error_msg = f"Failed to apply update: {str(e)}"
+            Logger.error(f"UpdateManager: {error_msg}")
+            self.dispatch('on_update_error', error_msg)
+            return False
+    
     def get_release_history(self, limit: int = 10) -> List[Dict]:
         """Get recent release history from GitHub."""
         try:

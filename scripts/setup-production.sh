@@ -40,6 +40,12 @@ chown -R pi:pi /opt/trimix-analyzer
 mkdir -p /opt/trimix-analyzer/data
 chown pi:pi /opt/trimix-analyzer/data
 
+# Make update script executable
+chmod +x /opt/trimix-analyzer/scripts/update-trimix.sh
+
+# Create symlink for easy updates
+ln -sf /opt/trimix-analyzer/scripts/update-trimix.sh /usr/local/bin/update-trimix
+
 # Install systemd service
 echo "⚙️ Installing systemd service..."
 cp scripts/trimix-analyzer.service /etc/systemd/system/
