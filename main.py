@@ -147,10 +147,11 @@ class TrimixApp(App):
         
         # Start calibration reminder system
         calibration_reminder.schedule_periodic_check()
-        Clock.schedule_once(lambda dt: calibration_reminder.show_calibration_reminder(), 5)
+        # Delay the calibration reminder check to avoid startup congestion
+        Clock.schedule_once(lambda dt: calibration_reminder.show_calibration_reminder(), 10)
         
-        # Check for updates on startup (if auto-updates enabled)
-        Clock.schedule_once(self.startup_update_check, 3)
+        # Check for updates on startup (if auto-updates enabled) - TEMPORARILY DISABLED
+        # Clock.schedule_once(self.startup_update_check, 3)
     
     def open_detail(self, sensor_key: str, screen_name: str):
             """
@@ -244,8 +245,8 @@ class TrimixApp(App):
                 update_manager.bind(on_update_available=self.on_startup_update_available)
                 update_manager.bind(on_update_check_complete=self.on_startup_update_check_complete)
                 
-                # Perform the update check
-                update_manager.check_for_updates()
+                # Perform a simple update check (disabled for now to test performance)
+                # update_manager.check_for_updates()
             else:
                 Logger.info("TrimixApp: Auto-updates disabled, skipping startup update check")
                 

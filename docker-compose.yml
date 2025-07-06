@@ -27,6 +27,12 @@ services:
       - TRIMIX_ENVIRONMENT=production
       - TRIMIX_MOCK_SENSORS=0
       - TRIMIX_AUTO_UPDATE=false   # Control auto-updates
+      # Graphics environment variables to reduce warnings and improve performance
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - MESA_GL_VERSION_OVERRIDE=3.3
+      - GALLIUM_DRIVER=softpipe
+      - KIVY_WINDOW=sdl2
+      - KIVY_GL_BACKEND=gl
     working_dir: /app
     command: python main.py
     labels:

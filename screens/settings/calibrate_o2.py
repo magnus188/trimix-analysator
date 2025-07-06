@@ -55,8 +55,8 @@ class CalibrateO2Screen(Screen):
         self.start_time = time.time()
         self.voltage_readings = []
         
-        # Start the clock to update progress every 0.1 seconds
-        self.clock_event = Clock.schedule_interval(self.update_calibration, 0.1)
+        # Start the clock to update progress every 0.5 seconds (reduced frequency)
+        self.clock_event = Clock.schedule_interval(self.update_calibration, 0.5)
     
     def update_calibration(self, dt):
         """Update calibration progress and collect readings"""

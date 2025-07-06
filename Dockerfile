@@ -40,12 +40,12 @@ WORKDIR /app
 
 # Copy requirements and install Python dependencies
 COPY requirements*.txt ./
-RUN pip install -r requirements-dev.txt
+RUN pip install -r requirements-rpi.txt
 RUN pip install https://github.com/kivy-garden/graph/archive/master.zip
 
 # Set environment variables (can be overridden by docker-compose)
-ENV TRIMIX_ENVIRONMENT=development
-ENV TRIMIX_MOCK_SENSORS=1
+ENV TRIMIX_ENVIRONMENT=production
+ENV TRIMIX_MOCK_SENSORS=0
 
 # Copy application code
 COPY . .

@@ -11,14 +11,18 @@ class AnalyzeScreen(Screen):
     def on_enter(self):
         if not self._record_ev:
             record_readings()
-            self._record_ev = Clock.schedule_interval(lambda dt: record_readings(), 1)
+            self._record_ev = Clock.schedule_interval(lambda dt: record_readings(), 2)  # Reduced frequency to 2 seconds
 
         Clock.schedule_once(self._deferred_update, 0)
-        self._update_ev = Clock.schedule_interval(self._update_sensors, 1)
+        self._update_ev = Clock.schedule_interval(self._update_sensors, 2)  # Reduced frequency to 2 seconds
 
     def on_leave(self):
         if self._update_ev:
             Clock.unschedule(self._update_ev)
+            self._update_ev = None
+        if self._record_ev:
+            Clock.unschedule(self._record_ev)
+            self._record_ev = None
     
     def navigate_back(self):
         """Navigate back to home screen"""
