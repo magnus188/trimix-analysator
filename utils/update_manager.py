@@ -304,6 +304,8 @@ class UpdateManager(EventDispatcher):
         Downloads and applies an update for the application using a Docker-based release package from GitHub.
         
         This method downloads a tar.gz update package for the specified version, extracts it, pulls the corresponding Docker image, runs an update script if present, and updates the Docker Compose configuration to use the new version. Progress and completion events are dispatched throughout the process. Returns True if the update is successfully applied, or False if any step fails.
+        """
+        
         try:
             Logger.info(f"UpdateManager: Starting Docker update to version {version}")
             self.dispatch('on_update_progress', 10, "Downloading update package...")
