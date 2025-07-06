@@ -185,6 +185,11 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libgl1-mesa-dev libglib2.0-0 libmtdev1
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -196,6 +201,12 @@ jobs:
       run: |
         echo "TRIMIX_MOCK_SENSORS=1" >> $GITHUB_ENV
         echo "TRIMIX_ENVIRONMENT=test" >> $GITHUB_ENV
+        echo "DISPLAY=:99.0" >> $GITHUB_ENV
+
+    - name: Start virtual display
+      run: |
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 2
 
     - name: Test application import
       run: |
