@@ -13,7 +13,9 @@ class TestMainAppIntegration:
     @pytest.mark.integration
     @pytest.mark.ui
     def test_app_import_and_instantiation(self):
-        """Test that the main app can be imported and instantiated."""
+        """
+        Verify that the main application class can be imported and instantiated, and that it defines the required lifecycle methods.
+        """
         from main import TrimixApp
         
         app = TrimixApp()
@@ -25,7 +27,11 @@ class TestMainAppIntegration:
     @pytest.mark.ui
     @patch('kivy.app.App.run')
     def test_app_can_be_built(self, mock_run):
-        """Test that the app can be built without errors."""
+        """
+        Verify that the Trimix application can be built successfully, ensuring the root widget is created without errors.
+        
+        Fails the test if an exception occurs during the build process.
+        """
         from main import TrimixApp
         
         app = TrimixApp()
@@ -40,7 +46,9 @@ class TestMainAppIntegration:
     @pytest.mark.integration
     @pytest.mark.database
     def test_app_database_integration(self):
-        """Test that app correctly integrates with database."""
+        """
+        Verify that the application can connect to the database and retrieve a boolean setting value.
+        """
         from main import TrimixApp
         from utils.database_manager import db_manager
         
@@ -54,7 +62,9 @@ class TestMainAppIntegration:
     @pytest.mark.integration
     @pytest.mark.sensor
     def test_app_sensor_integration(self):
-        """Test that app correctly integrates with sensor interface."""
+        """
+        Verify that the application integrates with the sensor interface by ensuring sensors can be retrieved and sensor readings are returned as a non-empty dictionary.
+        """
         from main import TrimixApp
         from utils.sensor_interface import get_sensors, get_readings
         
@@ -69,7 +79,11 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_screen_navigation_setup(self):
-        """Test that screen manager and navigation is properly set up."""
+        """
+        Verify that the application's root widget is an instance of the screen manager after building the app.
+        
+        Asserts that the screen navigation infrastructure is correctly initialized during app construction.
+        """
         from main import TrimixApp, TrimixScreenManager
         
         app = TrimixApp()
@@ -83,7 +97,11 @@ class TestMainAppIntegration:
     @pytest.mark.integration
     @pytest.mark.ui
     def test_all_screens_can_be_imported(self):
-        """Test that all screen classes can be imported without errors."""
+        """
+        Verify that all main screen classes can be imported successfully without raising ImportError.
+        
+        Fails the test if any screen class cannot be imported.
+        """
         try:
             from screens.home import HomeScreen
             from screens.analyze import AnalyzeScreen
@@ -108,7 +126,9 @@ class TestMainAppIntegration:
     @pytest.mark.integration
     @pytest.mark.ui
     def test_all_widgets_can_be_imported(self):
-        """Test that all widget classes can be imported without errors."""
+        """
+        Verify that all custom widget classes can be imported successfully without raising ImportError.
+        """
         try:
             from widgets.sensor_card import SensorCard
             from widgets.menu_card import MenuCard
@@ -126,7 +146,11 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_kv_files_can_be_loaded(self):
-        """Test that KV files can be loaded without syntax errors."""
+        """
+        Verify that all KV files in the project root directory can be loaded without syntax errors.
+        
+        Fails the test if any KV file cannot be loaded or contains syntax errors.
+        """
         from utils.kv_loader import create_kv_loader
         import os
         
@@ -141,7 +165,9 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_version_consistency(self):
-        """Test that version information is consistent across the app."""
+        """
+        Verify that the application's version string is set and, if present in the database, is stored as a string.
+        """
         from version import __version__
         from utils.database_manager import db_manager
         
@@ -158,7 +184,11 @@ class TestMainAppIntegration:
     @pytest.mark.integration
     @pytest.mark.slow
     def test_calibration_reminder_integration(self):
-        """Test calibration reminder system integration."""
+        """
+        Verify that the calibration reminder system is integrated and returns the expected status dictionary.
+        
+        Asserts that the calibration reminder component is available and that calling its `check_calibration_due()` method returns a dictionary containing the keys `'o2_due'` and `'he_due'`. Fails the test if any exception occurs during the check.
+        """
         from utils.calibration_reminder import calibration_reminder
         from utils.database_manager import db_manager
         
@@ -176,7 +206,9 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_settings_migration_compatibility(self):
-        """Test that settings migration works correctly."""
+        """
+        Verify that all expected settings categories can be retrieved as dictionaries from the database manager, ensuring settings migration compatibility.
+        """
         from utils.database_manager import db_manager
         
         # Test that we can access all expected setting categories
@@ -188,7 +220,11 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_environment_detection_integration(self):
-        """Test that environment detection works with app startup."""
+        """
+        Verify that environment detection utilities correctly identify the platform and detect the development environment during app startup.
+        
+        Asserts that platform information is returned as a dictionary with required keys, and that the environment is recognized as development in the test context.
+        """
         from utils.platform_detector import get_platform_info, is_development_environment
         
         # Platform info should be available
@@ -202,7 +238,9 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_app_configuration_for_test_environment(self):
-        """Test that app is properly configured for test environment."""
+        """
+        Verify that the application is configured for the test environment by checking relevant environment variables and ensuring development mode is enabled.
+        """
         # Environment variables should be set for testing
         assert os.environ.get('TRIMIX_MOCK_SENSORS') == '1'
         assert os.environ.get('TRIMIX_ENVIRONMENT') == 'test'
@@ -216,7 +254,11 @@ class TestMainAppIntegration:
     @patch('kivy.clock.Clock.schedule_interval')
     @patch('kivy.clock.Clock.schedule_once')
     def test_app_startup_sequence(self, mock_schedule_once, mock_schedule_interval):
-        """Test the complete app startup sequence."""
+        """
+        Verifies that the application can be built and started without raising exceptions.
+        
+        This test builds the main application, asserts that the root widget is created, and calls the `on_start` method to ensure the startup sequence completes successfully.
+        """
         from main import TrimixApp
         
         app = TrimixApp()
@@ -234,7 +276,9 @@ class TestMainAppIntegration:
 
     @pytest.mark.integration
     def test_font_loading_integration(self):
-        """Test that custom fonts can be loaded."""
+        """
+        Verifies that custom font files exist and are non-empty in the application's assets directory.
+        """
         import os
         
         # Check that font files exist

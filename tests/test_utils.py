@@ -14,6 +14,9 @@ class MockSensorInterface:
     """Mock sensor interface for testing."""
     
     def __init__(self):
+        """
+        Initialize the mock sensor interface with default sensor readings for testing purposes.
+        """
         self.mock_data = {
             'o2_voltage': 1.5,
             'o2_percent': 21.0,
@@ -26,31 +29,63 @@ class MockSensorInterface:
         }
     
     def read_oxygen_voltage(self) -> float:
+        """
+        Return the current mock oxygen sensor voltage value.
+        """
         return self.mock_data['o2_voltage']
     
     def read_oxygen_percent(self) -> float:
+        """
+        Return the current mock oxygen percentage value.
+        """
         return self.mock_data['o2_percent']
     
     def read_co2_voltage(self) -> float:
+        """
+        Return the current mock CO2 sensor voltage value.
+        """
         return self.mock_data['co2_voltage']
     
     def read_co2_ppm(self) -> float:
+        """
+        Return the current mock CO2 concentration in parts per million (ppm).
+        """
         return self.mock_data['co2_ppm']
     
     def read_temperature_c(self) -> float:
+        """
+        Return the current mock temperature value in degrees Celsius.
+        """
         return self.mock_data['temperature']
     
     def read_pressure_hpa(self) -> float:
+        """
+        Returns the current mock pressure value in hectopascals (hPa).
+        """
         return self.mock_data['pressure']
     
     def read_humidity_pct(self) -> float:
+        """
+        Return the current mock humidity value as a percentage.
+        """
         return self.mock_data['humidity']
     
     def is_power_button_pressed(self) -> bool:
+        """
+        Return whether the mock power button is currently pressed.
+        
+        Returns:
+            bool: True if the mock power button is pressed, False otherwise.
+        """
         return self.mock_data['button_pressed']
     
     def set_mock_data(self, **kwargs):
-        """Update mock data for testing specific scenarios."""
+        """
+        Update the mock sensor data with new values for testing scenarios.
+        
+        Parameters:
+        	**kwargs: Key-value pairs representing mock sensor data fields to update.
+        """
         self.mock_data.update(kwargs)
 
 
@@ -59,7 +94,15 @@ class TestDataGenerator:
     
     @staticmethod
     def generate_sensor_readings(count: int = 10) -> List[Dict[str, Any]]:
-        """Generate a series of sensor readings."""
+        """
+        Generate a list of synthetic sensor reading dictionaries with randomized values for O2, temperature, pressure, and humidity.
+        
+        Parameters:
+            count (int): Number of sensor readings to generate.
+        
+        Returns:
+            List[Dict[str, Any]]: List of sensor readings, each containing a timestamp and randomized sensor values.
+        """
         import random
         
         readings = []
@@ -79,7 +122,16 @@ class TestDataGenerator:
     
     @staticmethod
     def generate_calibration_history(sensor_type: str, count: int = 5) -> List[Dict[str, Any]]:
-        """Generate calibration history data."""
+        """
+        Generate a list of synthetic calibration history records for a specified sensor type.
+        
+        Parameters:
+        	sensor_type (str): The type of sensor for which to generate calibration records.
+        	count (int, optional): The number of calibration records to generate. Defaults to 5.
+        
+        Returns:
+        	List[Dict[str, Any]]: A list of calibration records, each containing sensor type, calibration date, voltage reading, temperature, and notes.
+        """
         import random
         
         history = []
@@ -99,7 +151,14 @@ class TestDataGenerator:
     
     @staticmethod
     def generate_settings_data() -> Dict[str, Dict[str, Any]]:
-        """Generate comprehensive settings data."""
+        """
+        Return a nested dictionary representing comprehensive application settings for testing purposes.
+        
+        The returned settings include categories for app configuration, display, Wi-Fi, sensors, safety, and measurement units, each populated with representative values.
+         
+        Returns:
+            settings (Dict[str, Dict[str, Any]]): Nested dictionary containing mock settings data for all major configuration categories.
+        """
         return {
             'app': {
                 'first_run': False,
@@ -149,27 +208,47 @@ class DatabaseTestHelper:
     
     @staticmethod
     def create_temp_database():
-        """Create a temporary database file."""
+        """
+        Create and return the file path of a temporary database file.
+        
+        Returns:
+            str: The file path to the created temporary database file.
+        """
         temp_db = tempfile.NamedTemporaryFile(suffix='.db', delete=False)
         temp_db.close()
         return temp_db.name
     
     @staticmethod
     def cleanup_temp_database(db_path: str):
-        """Clean up temporary database file."""
+        """
+        Delete the temporary database file at the specified path if it exists.
+        
+        Parameters:
+            db_path (str): Path to the temporary database file to be deleted.
+        """
         if os.path.exists(db_path):
             os.remove(db_path)
     
     @staticmethod
     def populate_test_data(db_manager, test_data: Dict[str, Any]):
-        """Populate database with test data."""
+        """
+        Inserts test settings data into the database using the provided database manager.
+        
+        Parameters:
+            test_data (Dict[str, Any]): A dictionary mapping categories to their respective settings and values.
+        """
         for category, settings in test_data.items():
             for key, value in settings.items():
                 db_manager.set_setting(category, key, value)
     
     @staticmethod
     def verify_database_integrity(db_manager) -> bool:
-        """Verify database integrity."""
+        """
+        Checks whether the database manager supports basic set, get, and category retrieval operations.
+        
+        Returns:
+            bool: True if all operations succeed and return expected results; False otherwise.
+        """
         try:
             # Test basic operations
             test_key = 'integrity_test'
@@ -199,10 +278,17 @@ class EnvironmentManager:
     """Manage test environment setup and cleanup."""
     
     def __init__(self):
+        """
+        Initialize the EnvironmentManager and store a dictionary for original environment variables.
+        """
         self.original_env = {}
     
     def setup_test_environment(self):
-        """Setup environment for testing."""
+        """
+        Sets up environment variables required for testing, saving original values for later restoration.
+        
+        This method sets specific environment variables to enable test mode and mock sensors, while preserving any existing values so they can be restored after tests.
+        """
         # Store original environment
         test_vars = ['TRIMIX_ENVIRONMENT', 'TRIMIX_MOCK_SENSORS', 'TRIMIX_TEST_DB_PATH']
         for var in test_vars:
@@ -214,7 +300,9 @@ class EnvironmentManager:
         os.environ['TRIMIX_MOCK_SENSORS'] = '1'
     
     def cleanup_test_environment(self):
-        """Restore original environment."""
+        """
+        Restores the original environment variables after test modifications by removing test-specific variables and resetting any previously saved values.
+        """
         # Remove test variables
         test_vars = ['TRIMIX_ENVIRONMENT', 'TRIMIX_MOCK_SENSORS', 'TRIMIX_TEST_DB_PATH']
         for var in test_vars:
@@ -231,7 +319,11 @@ class TestAssertions:
     
     @staticmethod
     def assert_sensor_reading_valid(reading: Dict[str, Any]):
-        """Assert that a sensor reading is valid."""
+        """
+        Asserts that a sensor reading dictionary contains required keys with valid types and value ranges for O2, temperature, pressure, and humidity.
+        
+        Raises an AssertionError if any key is missing, has an invalid type, or its value falls outside the expected range.
+        """
         required_keys = ['o2', 'temp', 'press', 'hum']
         
         for key in required_keys:
@@ -246,7 +338,11 @@ class TestAssertions:
     
     @staticmethod
     def assert_calibration_data_valid(calibration: Dict[str, Any]):
-        """Assert that calibration data is valid."""
+        """
+        Assert that the provided calibration data dictionary contains valid keys, types, and value ranges.
+        
+        Raises an AssertionError if required keys are missing, sensor type is invalid, calibration date is not a datetime, or if optional voltage and temperature values are out of expected ranges.
+        """
         required_keys = ['sensor_type', 'calibration_date']
         
         for key in required_keys:
@@ -263,7 +359,11 @@ class TestAssertions:
     
     @staticmethod
     def assert_settings_structure_valid(settings: Dict[str, Any]):
-        """Assert that settings structure is valid."""
+        """
+        Assert that the provided settings dictionary contains all required categories with dictionary values.
+        
+        Raises an AssertionError if any expected category is missing or not a dictionary.
+        """
         expected_categories = ['app', 'display', 'wifi', 'sensors', 'safety', 'units']
         
         for category in expected_categories:
@@ -276,7 +376,9 @@ class MockKivyComponents:
     
     @staticmethod
     def mock_app():
-        """Create a mock Kivy app."""
+        """
+        Return a mock Kivy App instance with stubbed `build` and `on_start` methods for UI testing.
+        """
         app = MagicMock()
         app.build.return_value = MagicMock()
         app.on_start.return_value = None
@@ -284,21 +386,41 @@ class MockKivyComponents:
     
     @staticmethod
     def mock_screen():
-        """Create a mock Kivy screen."""
+        """
+        Return a mocked Kivy screen object with a mock manager attribute for use in UI-related tests.
+        
+        Returns:
+            MagicMock: A mock screen object with a mocked 'manager' attribute.
+        """
         screen = MagicMock()
         screen.manager = MagicMock()
         return screen
     
     @staticmethod
     def mock_widget():
-        """Create a mock Kivy widget."""
+        """
+        Return a mock Kivy widget object with a mocked `bind` method for use in UI-related tests.
+        
+        Returns:
+            MagicMock: A mock widget instance with a mocked `bind` method.
+        """
         widget = MagicMock()
         widget.bind = MagicMock()
         return widget
 
 
 def create_test_file_structure(base_path: str) -> Dict[str, str]:
-    """Create a test file structure for testing file operations."""
+    """
+    Create a directory structure with sample files for testing file operations.
+    
+    Creates 'config', 'data', 'logs', and 'backups' subdirectories under the specified base path, and generates sample files in the 'config', 'data', and 'logs' folders. Returns a dictionary mapping folder and file names to their full paths.
+    
+    Parameters:
+        base_path (str): The root directory where the test structure will be created.
+    
+    Returns:
+        Dict[str, str]: A dictionary with keys for each folder and sample file, mapping to their respective paths.
+    """
     structure = {
         'config': os.path.join(base_path, 'config'),
         'data': os.path.join(base_path, 'data'),
@@ -326,6 +448,11 @@ def create_test_file_structure(base_path: str) -> Dict[str, str]:
 
 
 def cleanup_test_file_structure(base_path: str):
-    """Clean up test file structure."""
+    """
+    Recursively deletes the test file structure at the specified base path if it exists.
+    
+    Parameters:
+        base_path (str): The root directory of the test file structure to remove.
+    """
     if os.path.exists(base_path):
         shutil.rmtree(base_path)

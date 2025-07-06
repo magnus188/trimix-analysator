@@ -20,19 +20,30 @@ class BaseScreen(Screen):
     """
     
     def __init__(self, **kwargs):
+        """
+        Initializes the base screen with references to the database and settings managers.
+        """
         super().__init__(**kwargs)
         self.db_manager = db_manager
         self.settings_manager = settings_manager
     
     def navigate_back(self):
-        """Standard back navigation - override in subclasses if needed"""
+        """
+        Navigates to the previous screen if available; otherwise, returns to the 'home' screen.
+        
+        Override this method in subclasses to customize back navigation behavior.
+        """
         if hasattr(self.manager, 'previous_screen'):
             self.manager.current = self.manager.previous_screen
         else:
             self.manager.current = 'home'
     
     def navigate_to(self, screen_name: str):
-        """Navigate to a specific screen"""
+        """
+        Navigates to the specified screen and stores the current screen for back navigation.
+        
+        If navigation fails, logs the error and displays an error popup to the user.
+        """
         try:
             # Store current screen as previous for back navigation
             if hasattr(self.manager, 'current'):
@@ -46,7 +57,17 @@ class BaseScreen(Screen):
             self.show_error("Navigation Error", f"Failed to navigate to {screen_name}")
     
     def get_setting(self, category: str, key: str, default=None):
-        """Convenient settings access"""
+        """
+        Retrieve a setting value from the database manager, returning a default if retrieval fails.
+        
+        Parameters:
+            category (str): The category under which the setting is stored.
+            key (str): The specific setting key.
+            default: The value to return if the setting cannot be retrieved.
+        
+        Returns:
+            The setting value if found; otherwise, the provided default.
+        """
         try:
             return self.db_manager.get_setting(category, key, default)
         except Exception as e:
@@ -54,7 +75,12 @@ class BaseScreen(Screen):
             return default
     
     def set_setting(self, category: str, key: str, value):
-        """Convenient settings update"""
+        """
+        Update a setting in the specified category, displaying an error popup and returning False if the operation fails.
+        
+        Returns:
+            bool: True if the setting was updated successfully, False otherwise.
+        """
         try:
             return self.db_manager.set_setting(category, key, value)
         except Exception as e:
@@ -63,7 +89,11 @@ class BaseScreen(Screen):
             return False
     
     def show_error(self, title: str, message: str):
-        """Show standardized error popup"""
+        """
+        Displays a standardized error popup dialog with a given title and message.
+        
+        The popup includes an OK button to dismiss it. Logs the error message as a warning. If popup creation fails, logs the exception.
+        """
         try:
             content = BoxLayout(orientation='vertical', spacing='10dp', padding='20dp')
             
@@ -97,7 +127,15 @@ class BaseScreen(Screen):
             Logger.error(f"BaseScreen: Failed to show error popup: {e}")
     
     def show_confirmation(self, title: str, message: str, on_confirm=None, on_cancel=None):
-        """Show standardized confirmation dialog"""
+        """
+        Display a confirmation dialog with customizable title and message, and optional callbacks for confirm and cancel actions.
+        
+        Parameters:
+            title (str): The title of the confirmation dialog.
+            message (str): The message displayed in the dialog.
+            on_confirm (callable, optional): Function to call if the user confirms.
+            on_cancel (callable, optional): Function to call if the user cancels.
+        """
         try:
             content = BoxLayout(orientation='vertical', spacing='15dp', padding='20dp')
             
@@ -124,11 +162,17 @@ class BaseScreen(Screen):
             )
             
             def _on_cancel(instance):
+                """
+                Handles the cancel action in a confirmation dialog by dismissing the popup and invoking the optional cancel callback.
+                """
                 popup.dismiss()
                 if on_cancel:
                     on_cancel()
             
             def _on_confirm(instance):
+                """
+                Handles the confirm action in a confirmation dialog by dismissing the popup and invoking the confirmation callback if provided.
+                """
                 popup.dismiss()
                 if on_confirm:
                     on_confirm()
@@ -142,7 +186,20 @@ class BaseScreen(Screen):
             Logger.error(f"BaseScreen: Failed to show confirmation dialog: {e}")
     
     def validate_numeric_input(self, value, min_val=None, max_val=None, input_type=int):
-        """Validate numeric input with standardized error handling"""
+        """
+        Validates and converts input to a numeric type, enforcing optional minimum and maximum bounds.
+        
+        If the input is invalid or out of range, displays an error popup and returns None. Otherwise, returns the converted numeric value.
+        
+        Parameters:
+            value: The input value to validate and convert.
+            min_val: Optional minimum allowed value.
+            max_val: Optional maximum allowed value.
+            input_type: The numeric type to convert to (default is int).
+        
+        Returns:
+            The converted numeric value if valid; otherwise, None.
+        """
         try:
             converted_value = input_type(value)
             
@@ -168,31 +225,57 @@ class BaseSettingsScreen(BaseScreen):
     """
     
     def __init__(self, **kwargs):
+        """
+        Initializes the settings screen and binds to external settings changes to enable automatic updates when settings are modified elsewhere.
+        """
         super().__init__(**kwargs)
         # Bind to settings changes
         settings_manager.bind(settings=self.on_settings_changed)
     
     def on_enter(self):
-        """Called when entering the screen - load settings"""
+        """
+        Triggered when the screen is entered; initiates loading of settings for the screen.
+        """
         self.load_settings()
     
     def on_settings_changed(self, instance, settings):
-        """Called when settings are updated externally"""
+        """
+        Handles external updates to settings by reloading the current settings.
+        
+        This method is triggered when the settings manager signals that settings have changed elsewhere, ensuring the screen reflects the latest values.
+        """
         self.load_settings()
     
     def load_settings(self):
-        """Override in subclasses to load specific settings"""
+        """
+        Placeholder method to load settings for the screen.
+        
+        Intended to be overridden in subclasses to implement loading of specific settings when the screen is entered.
+        """
         Logger.info(f"{self.__class__.__name__}: Loading settings")
     
     def navigate_back(self):
-        """Navigate back to main settings screen"""
+        """
+        Navigates back to the main settings screen by setting the current screen to 'settings'.
+        """
         self.manager.current = 'settings'
     
     def show_reset_confirmation(self, settings_category: str, reset_callback=None):
-        """Show standardized reset confirmation for settings"""
+        """
+        Display a confirmation dialog to reset all settings in the specified category to factory defaults.
+        
+        Parameters:
+            settings_category (str): The category of settings to reset.
+            reset_callback (callable, optional): A function to execute if the user confirms the reset. If not provided, calls `reset_to_defaults()`.
+        
+        This method presents a warning dialog to the user. If confirmed, it executes the provided reset callback or defaults to the class's reset logic.
+        """
         message = f"Reset all {settings_category} settings to factory defaults?\n\nThis action cannot be undone."
         
         def perform_reset():
+            """
+            Executes the provided reset callback if available; otherwise, calls the default reset-to-defaults method.
+            """
             if reset_callback:
                 reset_callback()
             else:
@@ -205,5 +288,7 @@ class BaseSettingsScreen(BaseScreen):
         )
     
     def reset_to_defaults(self):
-        """Override in subclasses to implement specific reset logic"""
+        """
+        Stub method for resetting settings to factory defaults; should be overridden in subclasses to implement specific reset logic.
+        """
         Logger.warning(f"{self.__class__.__name__}: reset_to_defaults not implemented")

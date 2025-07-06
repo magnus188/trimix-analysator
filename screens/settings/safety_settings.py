@@ -28,11 +28,17 @@ class SafetySettingsScreen(Screen):
         self.load_settings_from_manager()
         
     def on_enter(self):
-        """Called when entering the screen"""
+        """
+        Loads and applies the latest safety settings when the screen becomes active.
+        """
         self.load_settings_from_manager()
         
     def load_settings_from_manager(self):
-        """Load current safety settings from the database"""
+        """
+        Load the current safety settings from persistent storage and update the screen's properties.
+        
+        Retrieves O2 and He percentage limits and warning thresholds from the settings manager, applying default values if not set.
+        """
         self.max_o2_percentage = settings_manager.get('safety.max_o2_percentage', 100)
         self.max_he_percentage = settings_manager.get('safety.max_he_percentage', 100)
         self.high_o2_threshold = settings_manager.get('safety.warning_thresholds_high_o2', 23.0)
@@ -40,7 +46,11 @@ class SafetySettingsScreen(Screen):
         self.high_he_threshold = settings_manager.get('safety.warning_thresholds_high_he', 50.0)
     
     def on_max_o2_change(self, value):
-        """Called when max O2 percentage changes"""
+        """
+        Handles changes to the maximum O2 percentage setting, validating input and updating the stored value.
+        
+        If the input is not an integer between 10 and 100, an error popup is shown and the value is not saved.
+        """
         try:
             int_value = int(value)
             if not (10 <= int_value <= 100):
@@ -74,7 +84,9 @@ class SafetySettingsScreen(Screen):
             self.show_error("Invalid Input", "Please enter a valid number")
     
     def on_high_o2_threshold_change(self, value):
-        """Called when high O2 threshold changes"""
+        """
+        Handles updates to the high O2 threshold setting, validating the input and ensuring it is within the allowed range and above the low O2 threshold. Displays error messages for invalid input or save failures.
+        """
         try:
             float_value = round(float(value), 1)
             if not (19.0 <= float_value <= 25.0):
@@ -96,7 +108,11 @@ class SafetySettingsScreen(Screen):
             self.show_error("Invalid Input", "Please enter a valid number")
     
     def on_low_o2_threshold_change(self, value):
-        """Called when low O2 threshold changes"""
+        """
+        Handles changes to the low O2 threshold, validating the input and updating the setting.
+        
+        If the input is not a float between 15.0 and 22.0, or is not less than the current high O2 threshold, an error popup is shown and the value is not updated. On successful validation, updates the property and persists the new value.
+        """
         try:
             float_value = round(float(value), 1)
             if not (15.0 <= float_value <= 22.0):
@@ -118,7 +134,11 @@ class SafetySettingsScreen(Screen):
             self.show_error("Invalid Input", "Please enter a valid number")
     
     def on_high_he_threshold_change(self, value):
-        """Called when high He threshold changes"""
+        """
+        Validate and update the high helium (He) warning threshold based on user input.
+        
+        If the input is a valid float between 30.0 and 80.0, updates the property and saves it to persistent settings. Displays an error popup for invalid input or save failures.
+        """
         try:
             float_value = round(float(value), 1)
             if not (30.0 <= float_value <= 80.0):
@@ -181,7 +201,12 @@ class SafetySettingsScreen(Screen):
         popup.open()
     
     def _perform_reset(self, popup):
-        """Perform the actual safety settings reset"""
+        """
+        Resets all safety settings to their factory default values and updates the UI.
+        
+        Parameters:
+            popup: The confirmation popup to be dismissed after the reset is performed.
+        """
         popup.dismiss()
         
         # Reset to default values
@@ -197,7 +222,13 @@ class SafetySettingsScreen(Screen):
         self.load_settings_from_manager()
     
     def show_error(self, title: str, message: str):
-        """Show error popup to user"""
+        """
+        Displays an error popup with the specified title and message, and logs the warning.
+        
+        Parameters:
+            title (str): The title of the error popup.
+            message (str): The error message to display.
+        """
         content = BoxLayout(orientation='vertical', spacing='10dp', padding='20dp')
         
         content.add_widget(Label(

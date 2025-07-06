@@ -26,15 +26,29 @@ VERSION_HISTORY = {
 }
 
 def get_version():
-    """Get the current version string."""
+    """
+    Return the current version string of the Trimix Analyzer application.
+    """
     return __version__
 
 def get_version_info():
-    """Get the current version as a tuple."""
+    """
+    Return the current application version as a tuple of integers.
+    
+    Returns:
+        tuple: The version information in (major, minor, patch) format.
+    """
     return __version_info__
 
 def get_build_info():
-    """Get build information including version and platform."""
+    """
+    Return a dictionary containing build and environment information for the application.
+    
+    The returned dictionary includes the application version, version tuple, Python runtime version, platform details, and machine architecture.
+     
+    Returns:
+        dict: Build and environment metadata.
+    """
     import platform
     import sys
     

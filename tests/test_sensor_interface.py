@@ -13,7 +13,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_get_sensors_returns_mock_in_test_environment(self):
-        """Test that get_sensors returns mock interface in test environment."""
+        """
+        Verify that `get_sensors()` returns a mock sensor interface with expected sensor reading methods in the test environment.
+        """
         sensors = get_sensors()
         
         # Should return a sensor interface
@@ -26,7 +28,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_mock_sensor_readings_within_expected_ranges(self, mock_sensor_interface):
-        """Test that mock sensor readings are within expected ranges."""
+        """
+        Verify that mock sensor interface readings for oxygen, CO2, temperature, pressure, humidity, and button state fall within realistic and expected value ranges.
+        """
         sensors = mock_sensor_interface
         
         # Test O2 readings
@@ -56,7 +60,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_mock_sensor_data_modification(self, mock_sensor_interface):
-        """Test that mock sensor data can be modified for testing."""
+        """
+        Verify that mock sensor data can be set to custom values and that subsequent sensor readings reflect the modifications.
+        """
         sensors = mock_sensor_interface
         
         # Set custom test data
@@ -76,7 +82,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_get_readings_returns_dict(self):
-        """Test that get_readings returns a dictionary with all sensor values."""
+        """
+        Verify that get_readings() returns a dictionary containing keys for oxygen, temperature, pressure, and humidity, each mapped to a numeric value.
+        """
         readings = get_readings()
         
         assert isinstance(readings, dict)
@@ -90,7 +98,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_record_readings_stores_data(self):
-        """Test that record_readings stores sensor data."""
+        """
+        Verify that calling record_readings() appends new sensor data to the internal history for each sensor type.
+        """
         from utils.sensor_interface import get_history, _history
         
         # Clear history before test
@@ -111,7 +121,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_get_history_returns_list(self):
-        """Test that get_history returns historical data."""
+        """
+        Tests that `get_history()` returns a list of historical data entries for a given sensor type, with each entry containing at least a timestamp and a value.
+        """
         # Record some readings first
         record_readings()
         record_readings()
@@ -128,7 +140,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_pressure_units_in_bar(self, sample_sensor_data):
-        """Test that pressure readings are in BAR units."""
+        """
+        Verify that the pressure reading from `get_readings()` is a float in BAR units and within the expected atmospheric range (0.8 to 1.2 BAR).
+        """
         readings = get_readings()
         pressure = readings['press']
         
@@ -139,7 +153,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_sensor_readings_consistency(self):
-        """Test that sensor readings are consistent between calls."""
+        """
+        Verifies that consecutive sensor readings remain within a reasonable tolerance, ensuring data consistency between calls.
+        """
         # Get multiple readings
         readings1 = get_readings()
         readings2 = get_readings()
@@ -157,7 +173,9 @@ class TestSensorInterface:
     @pytest.mark.sensor
     @patch('utils.sensor_interface.get_sensors')
     def test_sensor_interface_error_handling(self, mock_get_sensors):
-        """Test error handling when sensor interface fails."""
+        """
+        Tests that the sensor interface handles exceptions raised during sensor reading, either by returning a dictionary or by propagating the exception.
+        """
         # Mock sensor interface that raises an exception
         mock_sensors = MagicMock()
         mock_sensors.read_oxygen_percent.side_effect = Exception("Sensor failure")
@@ -175,7 +193,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_o2_percentage_normal_air(self, mock_sensor_interface):
-        """Test O2 percentage reading for normal air."""
+        """
+        Verifies that the oxygen percentage reading from the mock sensor interface matches the expected value for normal air (20.9%) within a 0.1% tolerance.
+        """
         sensors = mock_sensor_interface
         
         # Set normal air O2 percentage
@@ -187,7 +207,11 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_co2_ppm_normal_levels(self, mock_sensor_interface):
-        """Test CO2 PPM reading for normal levels."""
+        """
+        Verifies that the CO2 PPM reading from the mock sensor interface reflects a typical outdoor air level when set to 400 ppm.
+        
+        Asserts that the returned CO2 value is within 50 ppm of the expected 400 ppm.
+        """
         sensors = mock_sensor_interface
         
         # Set normal CO2 levels (outdoor air is ~400 ppm)
@@ -199,7 +223,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_temperature_room_temperature(self, mock_sensor_interface):
-        """Test temperature reading for room temperature."""
+        """
+        Verifies that the temperature reading from the sensor interface matches a set room temperature of 22°C within a 1°C tolerance.
+        """
         sensors = mock_sensor_interface
         
         # Set room temperature
@@ -211,7 +237,9 @@ class TestSensorInterface:
     @pytest.mark.unit
     @pytest.mark.sensor
     def test_humidity_normal_levels(self, mock_sensor_interface):
-        """Test humidity reading for normal levels."""
+        """
+        Verifies that the humidity sensor reading reflects a set mock value within a 5% tolerance.
+        """
         sensors = mock_sensor_interface
         
         # Set comfortable humidity level
@@ -223,7 +251,11 @@ class TestSensorInterface:
     @pytest.mark.integration
     @pytest.mark.sensor
     def test_sensor_data_persistence(self):
-        """Test that sensor data persists correctly in the database."""
+        """
+        Verify that sensor data history retains multiple recorded readings for each sensor type.
+        
+        Records sensor readings three times and asserts that the history for each sensor type contains at least three entries, confirming data persistence.
+        """
         # Record multiple readings
         for _ in range(3):
             record_readings()
@@ -236,7 +268,9 @@ class TestSensorInterface:
     @pytest.mark.slow
     @pytest.mark.sensor
     def test_sensor_reading_performance(self):
-        """Test sensor reading performance (marked as slow test)."""
+        """
+        Measures the time required to perform 100 consecutive sensor readings and asserts that the total duration is under 1 second.
+        """
         import time
         
         start_time = time.time()

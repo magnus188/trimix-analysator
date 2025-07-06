@@ -13,7 +13,14 @@ from typing import Tuple
 
 
 def get_current_version() -> str:
-    """Get the current version from version.py"""
+    """
+    Extracts and returns the current version string from the version.py file.
+    
+    Raises:
+        ValueError: If the version string is not found in version.py.
+    Returns:
+        str: The current version string.
+    """
     with open('version.py', 'r') as f:
         content = f.read()
     
@@ -25,7 +32,18 @@ def get_current_version() -> str:
 
 
 def parse_version(version: str) -> Tuple[int, int, int]:
-    """Parse a semantic version string into components."""
+    """
+    Parse a semantic version string (e.g., '1.2.3') into its major, minor, and patch integer components.
+    
+    Parameters:
+        version (str): Semantic version string in the format 'major.minor.patch'.
+    
+    Returns:
+        Tuple[int, int, int]: A tuple containing the major, minor, and patch numbers.
+    
+    Raises:
+        ValueError: If the version string does not have exactly three components separated by dots.
+    """
     parts = version.split('.')
     if len(parts) != 3:
         raise ValueError(f"Invalid version format: {version}")
@@ -34,7 +52,19 @@ def parse_version(version: str) -> Tuple[int, int, int]:
 
 
 def increment_version(version: str, part: str) -> str:
-    """Increment a specific part of the version."""
+    """
+    Return a new semantic version string with the specified part incremented.
+    
+    Parameters:
+        version (str): The current version string in 'major.minor.patch' format.
+        part (str): The part to increment ('major', 'minor', or 'patch').
+    
+    Returns:
+        str: The incremented version string.
+    
+    Raises:
+        ValueError: If the specified part is not 'major', 'minor', or 'patch'.
+    """
     major, minor, patch = parse_version(version)
     
     if part == 'major':
@@ -53,7 +83,11 @@ def increment_version(version: str, part: str) -> str:
 
 
 def update_version_file(new_version: str, description: str = None):
-    """Update the version.py file with a new version."""
+    """
+    Update the `version.py` file with a new version string and version info tuple.
+    
+    If a description is provided, inserts a new entry for the version at the start of the `VERSION_HISTORY` dictionary with the current date, description, and a placeholder for features.
+    """
     major, minor, patch = parse_version(new_version)
     
     with open('version.py', 'r') as f:
@@ -98,7 +132,11 @@ def update_version_file(new_version: str, description: str = None):
 
 
 def create_git_tag(version: str):
-    """Create a git tag for the version."""
+    """
+    Creates an annotated Git tag for the specified version if it does not already exist.
+    
+    Prompts the user to optionally push the new tag to the remote repository. Prints status messages for each operation. Handles errors if Git is not installed or if Git commands fail.
+    """
     tag_name = f"v{version}"
     
     try:
@@ -125,7 +163,11 @@ def create_git_tag(version: str):
 
 
 def main():
-    """Main function."""
+    """
+    Entry point for the version management script, handling command-line arguments to display, bump, set, or tag project versions.
+    
+    Parses user commands to perform version operations, prompts for descriptions when updating versions, and manages git tagging. Prints usage instructions for invalid or missing commands and reports errors encountered during execution.
+    """
     if len(sys.argv) < 2:
         print("Usage: python version_manager.py <command> [args]")
         print("Commands:")

@@ -114,6 +114,11 @@ class RealSensors(SensorInterface):
     
     def __init__(self):
         # Import hardware libraries only when needed
+        """
+        Initializes hardware interfaces and sensor devices for real sensor readings.
+        
+        Sets up I2C communication, configures the ADS1115 ADC for analog O2 and CO2 sensors, initializes the BME280 sensor for temperature, pressure, and humidity, and configures the GPIO pin for the power button. Stores calibration constants for O2 and CO2 sensors.
+        """
         import board
         import busio
         import digitalio
@@ -149,18 +154,43 @@ class RealSensors(SensorInterface):
         self._co2_span_voltage = 3.3  # CO2 sensor span
     
     def read_oxygen_voltage(self) -> float:
+        """
+        Reads the current oxygen sensor voltage from analog channel 0.
+        
+        Returns:
+            float: The measured voltage from the oxygen sensor in volts.
+        """
         chan = self._AnalogIn(self._ads, 0)  # O2 on channel 0
         return chan.voltage
     
     def read_oxygen_percent(self) -> float:
+        """
+        Calculates and returns the oxygen concentration percentage based on the current sensor voltage and calibration value.
+        
+        Returns:
+            float: The calculated oxygen percentage.
+        """
         voltage = self.read_oxygen_voltage()
         return (voltage / self._v_air) * 20.9
     
     def read_co2_voltage(self) -> float:
+        """
+        Reads the raw voltage from the CO2 sensor analog channel.
+        
+        Returns:
+            float: The voltage reading from the CO2 sensor input.
+        """
         chan = self._AnalogIn(self._ads, 1)  # CO2 on channel 1
         return chan.voltage
     
     def read_co2_ppm(self) -> float:
+        """
+        Return the current CO2 concentration in parts per million (ppm) based on the sensor's voltage reading.
+        
+        The value is calculated by normalizing the measured voltage using the sensor's zero and span calibration voltages, then scaling to a 0–5000 ppm range.
+        Returns:
+            float: The calculated CO2 concentration in ppm.
+        """
         voltage = self.read_co2_voltage()
         # Convert voltage to PPM based on sensor specs
         # This will need calibration for your specific CO2 sensor
@@ -198,7 +228,12 @@ _V_AIR = 0.0095  # Default calibrated voltage in air
 
 
 def get_sensors() -> SensorInterface:
-    """Get the appropriate sensor implementation."""
+    """
+    Return the singleton sensor interface instance, selecting either real hardware sensors or mock sensors based on environment and hardware availability.
+    
+    Returns:
+        SensorInterface: An instance of either RealSensors or MockSensors, depending on the execution environment and hardware initialization success.
+    """
     global _sensor_instance
     
     if _sensor_instance is None:

@@ -10,14 +10,27 @@ import argparse
 
 
 def setup_test_environment():
-    """Setup environment variables for testing."""
+    """
+    Configure environment variables to enable the test environment.
+    
+    Sets variables to mock sensors and indicate a test environment for consistent local test execution.
+    """
     os.environ['TRIMIX_MOCK_SENSORS'] = '1'
     os.environ['TRIMIX_ENVIRONMENT'] = 'test'
     print("✅ Test environment configured")
 
 
 def run_unit_tests(verbose=False, coverage=False):
-    """Run unit tests."""
+    """
+    Run all unit tests using pytest with optional verbosity and coverage reporting.
+    
+    Parameters:
+        verbose (bool): If True, enables verbose pytest output.
+        coverage (bool): If True, includes coverage reporting in the test run.
+    
+    Returns:
+        int: The exit code from the pytest process.
+    """
     cmd = ['pytest', 'tests/', '-m', 'unit']
     
     if verbose:
@@ -31,7 +44,15 @@ def run_unit_tests(verbose=False, coverage=False):
 
 
 def run_integration_tests(verbose=False):
-    """Run integration tests."""
+    """
+    Run all integration tests using pytest.
+    
+    Parameters:
+        verbose (bool): If True, enables verbose output from pytest.
+    
+    Returns:
+        int: The exit code returned by the pytest process.
+    """
     cmd = ['pytest', 'tests/', '-m', 'integration']
     
     if verbose:
@@ -42,7 +63,16 @@ def run_integration_tests(verbose=False):
 
 
 def run_all_tests(verbose=False, coverage=False):
-    """Run all tests."""
+    """
+    Run all tests in the 'tests/' directory using pytest.
+    
+    Parameters:
+        verbose (bool): If True, enables verbose output.
+        coverage (bool): If True, includes coverage reporting.
+    
+    Returns:
+        int: The exit code from the pytest process.
+    """
     cmd = ['pytest', 'tests/']
     
     if verbose:
@@ -56,7 +86,16 @@ def run_all_tests(verbose=False, coverage=False):
 
 
 def run_specific_test(test_path, verbose=False):
-    """Run a specific test file or test method."""
+    """
+    Run a specific test file or test method using pytest.
+    
+    Parameters:
+        test_path (str): Path to the test file or test method to run.
+        verbose (bool, optional): If True, enables verbose pytest output. Defaults to False.
+    
+    Returns:
+        int: The exit code returned by the pytest subprocess.
+    """
     cmd = ['pytest', test_path]
     
     if verbose:
@@ -67,7 +106,12 @@ def run_specific_test(test_path, verbose=False):
 
 
 def run_linting():
-    """Run code linting."""
+    """
+    Run code linting checks using black, flake8, and isort.
+    
+    Returns:
+        int: 0 if all linting checks pass, 1 if any check fails.
+    """
     print("🔍 Running code linting...")
     
     # Run black
@@ -91,7 +135,12 @@ def run_linting():
 
 
 def run_security_check():
-    """Run security checks."""
+    """
+    Run security vulnerability checks using Safety and Bandit tools.
+    
+    Returns:
+        int: The highest exit code returned by either Safety or Bandit, indicating the overall result of the security checks.
+    """
     print("🔒 Running security checks...")
     
     # Run safety check
@@ -106,7 +155,12 @@ def run_security_check():
 
 
 def run_performance_tests():
-    """Run performance tests."""
+    """
+    Run performance tests marked as "slow" using pytest with benchmark-only mode.
+    
+    Returns:
+        int: The exit code from the pytest subprocess.
+    """
     cmd = ['pytest', 'tests/', '-m', 'slow', '--benchmark-only']
     
     print("⚡ Running performance tests...")
@@ -114,7 +168,9 @@ def run_performance_tests():
 
 
 def fix_code_style():
-    """Automatically fix code style issues."""
+    """
+    Automatically formats code and sorts imports using Black and isort.
+    """
     print("🔧 Fixing code style...")
     
     # Run black to format code
@@ -129,7 +185,11 @@ def fix_code_style():
 
 
 def main():
-    """Main test runner."""
+    """
+    Parses command-line arguments to run tests, linting, security checks, or code style fixes, then executes the selected actions and returns the combined exit code.
+    
+    Runs the appropriate test or code quality commands based on user-specified flags, sets up the test environment, and prints a summary of results. Returns the cumulative exit code of all executed actions.
+    """
     parser = argparse.ArgumentParser(description='Trimix Analyzer Test Runner')
     parser.add_argument('--unit', action='store_true', help='Run unit tests only')
     parser.add_argument('--integration', action='store_true', help='Run integration tests only')
