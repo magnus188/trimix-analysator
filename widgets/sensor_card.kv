@@ -3,10 +3,10 @@
 
 <SensorCard@ButtonBehavior+BoxLayout>:
     orientation: 'vertical'
-    padding: dp(10)
-    spacing: dp(5)
-    width: dp(200)  # Set width
-    height: dp(200)  # Set height
+    padding: dp(8)
+    spacing: dp(4)
+    width: dp(160)  # Reduced width
+    height: dp(140)  # Reduced height
     # simply dim the card when state is 'down'
     opacity: 0.6 if self.state=='down' else 1
 
@@ -20,12 +20,12 @@
             radius: [dp(8),]
     Label:
         text: root.title
-        font_size: '32sp'
+        font_size: '28sp'  # Reduced font size
         size_hint_y: None
         height: self.texture_size[1]
         color: 1,1,1,1
     Label:
         text: root.value
-        font_size: '48sp'
+        font_size: '40sp'  # Reduced font size
         bold: True
         color: root.theme_color

@@ -499,6 +499,73 @@ class DatabaseManager(EventDispatcher):
             }
         }
 
+    def save_gas_mix(self, o2_percentage: float, he_percentage: float = 0.0, 
+                     n2_percentage: float = None) -> bool:
+        """Save a gas mix analysis to the database"""
+        try:
+            # Calculate N2 percentage if not provided
+            if n2_percentage is None:
+                n2_percentage = 100.0 - o2_percentage - he_percentage
+            
+            cursor = self.connection.cursor()
+            
+            # Insert gas analysis record
+            cursor.execute('''
+                INSERT INTO gas_analysis 
+                (o2_percentage, he_percentage, n2_percentage, notes)
+                VALUES (?, ?, ?, ?)
+            ''', (o2_percentage, he_percentage, n2_percentage, None))
+            
+            self.connection.commit()
+            
+            # Log system event
+            self.log_system_event('gas_mix_saved', {
+                'o2_percentage': o2_percentage,
+                'he_percentage': he_percentage,
+                'n2_percentage': n2_percentage
+            })
+            
+            # Dispatch change event
+            self.dispatch('on_data_changed', 'gas_mix', 'saved', {
+                'o2': o2_percentage,
+                'he': he_percentage,
+                'n2': n2_percentage
+            })
+            
+            return True
+            
+        except Exception as e:
+            Logger.error(f"DatabaseManager: Error saving gas mix: {e}")
+            return False
+    
+    def get_gas_mix_history(self, limit: int = 50) -> List[Dict]:
+        """Get gas mix analysis history"""
+        try:
+            cursor = self.connection.cursor()
+            
+            cursor.execute('''
+                SELECT * FROM gas_analysis 
+                ORDER BY analysis_date DESC 
+                LIMIT ?
+            ''', (limit,))
+            
+            history = []
+            for row in cursor.fetchall():
+                history.append({
+                    'id': row['id'],
+                    'o2_percentage': row['o2_percentage'],
+                    'he_percentage': row['he_percentage'],
+                    'n2_percentage': row['n2_percentage'],
+                    'analysis_date': row['analysis_date'],
+                    'notes': row['notes']
+                })
+            
+            return history
+            
+        except Exception as e:
+            Logger.error(f"DatabaseManager: Error getting gas mix history: {e}")
+            return []
+
 
 # Global database manager instance
 db_manager = DatabaseManager()

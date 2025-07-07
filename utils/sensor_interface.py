@@ -102,6 +102,18 @@ class MockSensors(SensorInterface):
         variation = random.uniform(-5, 5)
         return max(0, min(100, base + variation))
     
+    def read_helium_pct(self) -> float:
+        # Simulate helium sensor (0-30% for trimix)
+        base = 15.0  # Example trimix with 15% He
+        variation = random.uniform(-2, 2)
+        return max(0, min(50, base + variation))
+    
+    def read_co_ppm(self) -> float:
+        # Simulate CO sensor (0-100 ppm, should be very low)
+        base = 5.0  # Low CO level
+        variation = random.uniform(-2, 2)
+        return max(0, min(100, base + variation))
+    
     def is_power_button_pressed(self) -> bool:
         # Simulate random button presses for testing
         if random.random() < 0.001:  # Very rare random press
@@ -221,6 +233,10 @@ _history = {
     'temp': deque(maxlen=60),
     'press': deque(maxlen=60),
     'hum': deque(maxlen=60),
+    'he': deque(maxlen=60),
+    'n2': deque(maxlen=60),
+    'co2': deque(maxlen=60),
+    'co': deque(maxlen=60),
 }
 
 # Calibration value
@@ -259,11 +275,35 @@ def get_sensors() -> SensorInterface:
 def get_readings() -> dict:
     """Return a dict of all current sensor values."""
     sensors = get_sensors()
+    o2_pct = round(sensors.read_oxygen_percent(), 2)
+    
+    # Get He reading from sensor if available, otherwise use placeholder
+    if hasattr(sensors, 'read_helium_pct'):
+        he_pct = round(sensors.read_helium_pct(), 2)
+    else:
+        he_pct = 0.0
+    
+    # Calculate N2 from O2 and He
+    n2_pct = round(100.0 - o2_pct - he_pct, 2)
+    
+    # Get CO2 reading in PPM
+    co2_ppm = round(sensors.read_co2_ppm(), 2)
+    
+    # Get CO reading from sensor if available, otherwise use placeholder
+    if hasattr(sensors, 'read_co_ppm'):
+        co_ppm = round(sensors.read_co_ppm(), 2)
+    else:
+        co_ppm = 0.0
+    
     return {
-        'o2': round(sensors.read_oxygen_percent(), 2),
+        'o2': o2_pct,
         'temp': round(sensors.read_temperature_c(), 2),
         'press': round(sensors.read_pressure_hpa(), 2),
         'hum': round(sensors.read_humidity_pct(), 2),
+        'he': he_pct,
+        'n2': n2_pct,
+        'co2': co2_ppm,
+        'co': co_ppm,
     }
 
 
@@ -271,10 +311,37 @@ def record_readings():
     """Record current sensor readings to history."""
     sensors = get_sensors()
     t = time.time()
-    _history['o2'].append((t, sensors.read_oxygen_percent()))
+    
+    # Read base sensor values
+    o2_pct = sensors.read_oxygen_percent()
+    
+    # Get He reading from sensor if available, otherwise use placeholder
+    if hasattr(sensors, 'read_helium_pct'):
+        he_pct = sensors.read_helium_pct()
+    else:
+        he_pct = 0.0
+    
+    # Calculate N2 from O2 and He
+    n2_pct = 100.0 - o2_pct - he_pct
+    
+    # Get CO2 reading in PPM
+    co2_ppm = sensors.read_co2_ppm()
+    
+    # Get CO reading from sensor if available, otherwise use placeholder
+    if hasattr(sensors, 'read_co_ppm'):
+        co_ppm = sensors.read_co_ppm()
+    else:
+        co_ppm = 0.0
+    
+    # Record all sensor data
+    _history['o2'].append((t, o2_pct))
     _history['temp'].append((t, sensors.read_temperature_c()))
     _history['press'].append((t, sensors.read_pressure_hpa()))
     _history['hum'].append((t, sensors.read_humidity_pct()))
+    _history['he'].append((t, he_pct))
+    _history['n2'].append((t, n2_pct))
+    _history['co2'].append((t, co2_ppm))
+    _history['co'].append((t, co_ppm))
 
 
 def get_history(key: str):

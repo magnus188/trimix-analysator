@@ -10,6 +10,10 @@ environment = os.environ.get('TRIMIX_ENVIRONMENT', 'production')
 if environment == 'production':
     Config.set('graphics', 'fbo', 'hardware')
     Config.set('graphics', 'window', 'sdl2')
+    
+# Enable virtual keyboard for both environments
+Config.set('kivy', 'keyboard_mode', 'systemandmulti')
+Config.set('kivy', 'keyboard_layout', 'numeric')  # Try to use numeric layout by default
 
 # Kivy imports
 from kivy.app import App
@@ -41,6 +45,7 @@ from utils.kv_loader import create_kv_loader
 from screens.analyze import AnalyzeScreen
 from screens.sensor_detail import SensorDetail
 from screens.home import HomeScreen
+from screens.history import HistoryScreen
 from screens.settings.settings import SettingsScreen
 from screens.settings.calibrate_o2 import CalibrateO2Screen
 from screens.settings.wifi_settings import WiFiSettingsScreen
@@ -118,6 +123,7 @@ class TrimixApp(App):
             HomeScreen(name='home'),
             AnalyzeScreen(name='analyze'),
             SensorDetail(name='sensor_detail'),
+            HistoryScreen(name='history'),
             SettingsScreen(name='settings'),
             CalibrateO2Screen(name='calibrate_o2'),
             WiFiSettingsScreen(name='wifi_settings'),

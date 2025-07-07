@@ -16,15 +16,46 @@
         # Content area - GridLayout for sensor cards
         GridLayout:
             cols: 2
-            rows: 3
-            spacing: dp(10)
-            padding: dp(10)
+            rows: 4
+            spacing: dp(8)
+            padding: dp(8)
+            size_hint_y: 0.7
 
             SensorCard:
                 id: o2_card
                 title: 'O2'
                 value: '--%'
                 on_press: app.open_detail('o2', 'sensor_detail')
+
+            SensorCard:
+                id: he_card
+                title: 'He'
+                value: '— %'
+                on_press: app.open_detail('he', 'sensor_detail')
+
+            SensorCard:
+                id: n2_card
+                title: 'N2'
+                value: '— %'
+                on_press: app.open_detail('n2', 'sensor_detail')
+
+            SensorCard:
+                id: co2_card
+                title: 'CO2'
+                value: '— %'
+                on_press: app.open_detail('co2', 'sensor_detail')
+
+            SensorCard:
+                id: co_card
+                title: 'CO'
+                value: '— %'
+                on_press: app.open_detail('co', 'sensor_detail')
+
+            SensorCard:
+                id: hum_card
+                title: 'HUMIDITY'
+                value: '--%'
+                on_press: app.open_detail('hum', 'sensor_detail')
 
             SensorCard:
                 id: temp_card
@@ -37,19 +68,17 @@
                 title: 'PRESSURE'
                 value: '-- Bar'
                 on_press: app.open_detail('press', 'sensor_detail')
-
-            SensorCard:
-                id: hum_card
-                title: 'HUMIDITY'
-                value: '--%'
-                on_press: app.open_detail('hum', 'sensor_detail')
-
-            SensorCard:
-                id: mix_card
-                title: 'He'
-                value: '— %'
-
-            SensorCard:
-                id: depth_card
-                title: 'CO2'
-                value: '— %'
+        
+        # Save Mix Button at bottom
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.15
+            padding: dp(15)
+            spacing: dp(10)
+            
+            Button:
+                text: 'Save Mix'
+                font_size: '24sp'
+                background_color: (0.2, 0.6, 0.2, 1)
+                on_press: root.save_mix()
+                size_hint_x: 1

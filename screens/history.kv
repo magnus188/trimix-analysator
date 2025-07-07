@@ -1,0 +1,23 @@
+#:kivy 2.1.0
+#:import dp kivy.metrics.dp
+
+<HistoryScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        
+        # Navigation bar
+        NavBar:
+            title: 'Gas Mix History'
+            show_left_button: True
+            left_button_text: '← Back'
+            show_right_button: False
+            left_button_callback: root.navigate_back
+        
+        # Content area with scroll view
+        ScrollView:
+            id: history_scroll
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 1
+            
+            # Content will be added programmatically
