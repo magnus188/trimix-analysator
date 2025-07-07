@@ -5,7 +5,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from utils.sensors import read_oxygen_voltage, update_v_air_calibration
+from utils.sensor_interface import read_oxygen_voltage, update_v_air_calibration
 from utils.calibration_reminder import calibration_reminder
 import time
 

@@ -1,7 +1,7 @@
 # screens/home.py
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
-from utils.sensors import record_readings, get_readings
+from utils.sensor_interface import record_readings, get_readings
 from utils.sensor_meta import _SENSOR_META
 
 class AnalyzeScreen(Screen):

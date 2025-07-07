@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty
 from kivy.clock import Clock
 from kivy_garden.graph import LinePlot
-from utils.sensors import get_history, get_readings, record_readings
+from utils.sensor_interface import get_history, get_readings, record_readings
 from utils.sensor_meta import _SENSOR_META
 
 
