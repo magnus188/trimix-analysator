@@ -1,0 +1,84 @@
+name: ESP32 Firmware CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build ESP32 Firmware
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Cache PlatformIO
+      uses: actions/cache@v4
+      with:
+        path: ~/.platformio
+        key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+        restore-keys: |
+          ${{ runner.os }}-platformio-
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+    
+    - name: Run PlatformIO Check
+      run: |
+        cd esp32-lvgl-app
+        pio check --verbose
+    
+    - name: Build firmware
+      run: |
+        cd esp32-lvgl-app
+        pio run --verbose
+    
+    - name: Build filesystem
+      run: |
+        cd esp32-lvgl-app
+        pio run --target buildfs --verbose
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware-build
+        path: |
+          esp32-lvgl-app/.pio/build/*/firmware.bin
+          esp32-lvgl-app/.pio/build/*/spiffs.bin
+        retention-days: 30
+    
+    - name: Generate build summary
+      run: |
+        cd esp32-lvgl-app
+        echo "## 🔧 ESP32 Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📊 Build Information" >> $GITHUB_STEP_SUMMARY
+        echo "- **Platform**: ESP32" >> $GITHUB_STEP_SUMMARY
+        echo "- **Framework**: Arduino + LVGL" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Date**: $(date -u +%Y-%m-%d\ %H:%M\ UTC)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f .pio/build/*/firmware.bin ]; then
+          FIRMWARE_SIZE=$(stat -c%s .pio/build/*/firmware.bin)
+          echo "- **Firmware**: ${FIRMWARE_SIZE} bytes" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f .pio/build/*/spiffs.bin ]; then
+          SPIFFS_SIZE=$(stat -c%s .pio/build/*/spiffs.bin)
+          echo "- **SPIFFS**: ${SPIFFS_SIZE} bytes" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ✅ Build Status" >> $GITHUB_STEP_SUMMARY
+        echo "Build completed successfully! Artifacts are available for download." >> $GITHUB_STEP_SUMMARY

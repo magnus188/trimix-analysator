@@ -1,5 +1,0 @@
-# Base requirements - UI and core functionality
-kivy>=2.3.0
-typing_extensions==4.14.1
-kivy-garden
-requests>=2.31.0

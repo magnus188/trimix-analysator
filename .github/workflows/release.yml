@@ -1,0 +1,227 @@
+name: Build and Release ESP32 Firmware
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Cache PlatformIO
+      uses: actions/cache@v4
+      with:
+        path: ~/.platformio
+        key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+        restore-keys: |
+          ${{ runner.os }}-platformio-
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+    
+    - name: Extract version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+    
+    - name: Update version in code
+      run: |
+        cd esp32-lvgl-app
+        sed -i 's/#define FIRMWARE_VERSION ".*"/#define FIRMWARE_VERSION "${{ steps.get_version.outputs.VERSION }}"/' include/version.h
+        sed -i 's/your-username\/trimix-analyzer/${{ github.repository }}/' src/utils/ota_update_manager.cpp
+    
+    - name: Build firmware
+      run: |
+        cd esp32-lvgl-app
+        pio run --environment esp32dev
+    
+    - name: Build filesystem
+      run: |
+        cd esp32-lvgl-app
+        pio run --target buildfs --environment esp32dev
+    
+    - name: Prepare release artifacts
+      run: |
+        cd esp32-lvgl-app
+        mkdir -p release
+        cp .pio/build/esp32dev/firmware.bin release/trimix-analyzer-${{ steps.get_version.outputs.VERSION }}.bin
+        
+        # Copy additional files if they exist
+        if [ -f .pio/build/esp32dev/partitions.bin ]; then
+          cp .pio/build/esp32dev/partitions.bin release/partitions-${{ steps.get_version.outputs.VERSION }}.bin
+        fi
+        
+        if [ -f .pio/build/esp32dev/bootloader.bin ]; then
+          cp .pio/build/esp32dev/bootloader.bin release/bootloader-${{ steps.get_version.outputs.VERSION }}.bin
+        fi
+        
+        if [ -f .pio/build/esp32dev/spiffs.bin ]; then
+          cp .pio/build/esp32dev/spiffs.bin release/spiffs-${{ steps.get_version.outputs.VERSION }}.bin
+        fi
+        
+        # Create a simple flash script
+        cat > release/flash_firmware.sh << 'EOF'
+        #!/bin/bash
+        echo "Flashing Trimix Analyzer firmware..."
+        
+        # Check if esptool is available
+        if ! command -v esptool.py &> /dev/null; then
+          echo "Error: esptool.py not found. Please install it with: pip install esptool"
+          exit 1
+        fi
+        
+        # Auto-detect port (common ESP32 ports)
+        PORT=""
+        for p in /dev/ttyUSB0 /dev/ttyACM0 /dev/cu.usbserial-* /dev/cu.SLAB_USBtoUART /dev/cu.usbmodem*; do
+          if [ -e "$p" ]; then
+            PORT="$p"
+            break
+          fi
+        done
+        
+        if [ -z "$PORT" ]; then
+          echo "Error: No ESP32 device found. Please connect your ESP32 and try again."
+          exit 1
+        fi
+        
+        echo "Using port: $PORT"
+        
+        # Flash firmware
+        esptool.py --chip esp32 --port "$PORT" --baud 460800 write_flash \
+          0x10000 trimix-analyzer-${{ steps.get_version.outputs.VERSION }}.bin
+        
+        echo "Flash complete! Your Trimix Analyzer should now be running ${{ steps.get_version.outputs.VERSION }}"
+        EOF
+        chmod +x release/flash_firmware.sh
+        
+        # Create README
+        cat > release/README.md << 'EOF'
+        # Trimix Analyzer Firmware ${{ steps.get_version.outputs.VERSION }}
+        
+        ## Files
+        - `trimix-analyzer-${{ steps.get_version.outputs.VERSION }}.bin` - Main firmware binary
+        - `spiffs-${{ steps.get_version.outputs.VERSION }}.bin` - File system data (if present)
+        - `flash_firmware.sh` - Flash script for Linux/Mac
+        
+        ## OTA Update (Recommended)
+        The main firmware file can be used for OTA updates through the device WiFi settings:
+        1. Connect your device to WiFi
+        2. Go to Settings > Update Settings
+        3. Check for updates or upload firmware file
+        
+        ## Manual Flash
+        ### Using the provided script:
+        ```bash
+        chmod +x flash_firmware.sh
+        ./flash_firmware.sh
+        ```
+        
+        ### Using esptool manually:
+        ```bash
+        esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 write_flash \
+          0x10000 trimix-analyzer-${{ steps.get_version.outputs.VERSION }}.bin
+        ```
+        
+        ## Build Info
+        - Version: ${{ steps.get_version.outputs.VERSION }}
+        - Build Date: $(date -u +"%Y-%m-%d %H:%M UTC")
+        - Commit: ${{ github.sha }}
+        - Platform: ESP32 with LVGL
+        
+        ## Features
+        - Real-time trimix gas analysis
+        - OTA firmware updates
+        - WiFi connectivity
+        - Persistent storage
+        - Safety warnings and alarms
+        - Analysis history with export
+        - Professional UI with smooth animations
+        EOF
+    
+    - name: Create Release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd esp32-lvgl-app
+        
+        # Create release using GitHub CLI
+        gh release create "${{ steps.get_version.outputs.VERSION }}" \
+          --title "Trimix Analyzer ${{ steps.get_version.outputs.VERSION }}" \
+          --notes "## ESP32 Firmware Release ${{ steps.get_version.outputs.VERSION }}
+
+        ### Features
+        - OTA update support via WiFi
+        - Persistent storage with SPIFFS
+        - Advanced safety settings and alarms
+        - Analysis history with export capability
+        - Premium UI with smooth animations
+        - Real-time sensor data with filtering
+
+        ### Technical Details
+        - ESP32 optimized performance
+        - LVGL 8.3+ with custom themes
+        - Double-buffered display rendering
+        - Advanced sensor calibration
+        - Secure OTA updates
+
+        ### Installation
+        1. **OTA Update (Recommended)**: Use the device WiFi settings to update
+        2. **Manual Flash**: Use the provided flash script or esptool.py
+        3. **First Setup**: Connect to WiFi for future OTA updates
+
+        See README.md in release assets for detailed instructions.
+
+        **Build Info:**
+        - Commit: ${{ github.sha }}
+        - Built: $(date -u +'%Y-%m-%d %H:%M UTC')
+        - Platform: ESP32 with Arduino Framework" \
+          release/trimix-analyzer-${{ steps.get_version.outputs.VERSION }}.bin \
+          release/flash_firmware.sh \
+          release/README.md \
+          $([ -f release/spiffs-${{ steps.get_version.outputs.VERSION }}.bin ] && echo "release/spiffs-${{ steps.get_version.outputs.VERSION }}.bin" || echo "")
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware-release-${{ steps.get_version.outputs.VERSION }}
+        path: |
+          esp32-lvgl-app/release/
+        retention-days: 90
+    
+    - name: Generate release summary
+      run: |
+        echo "## 🚀 Release Created!" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📊 Release Information" >> $GITHUB_STEP_SUMMARY
+        echo "- **Version**: ${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Platform**: ESP32 with LVGL" >> $GITHUB_STEP_SUMMARY
+        echo "- **Release Date**: $(date -u +%Y-%m-%d\ %H:%M\ UTC)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 Release Assets" >> $GITHUB_STEP_SUMMARY
+        echo "- **Firmware Binary**: \`trimix-analyzer-${{ steps.get_version.outputs.VERSION }}.bin\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flash Script**: \`flash_firmware.sh\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Documentation**: \`README.md\`" >> $GITHUB_STEP_SUMMARY
+        if [ -f esp32-lvgl-app/release/spiffs-${{ steps.get_version.outputs.VERSION }}.bin ]; then
+          echo "- **File System**: \`spiffs-${{ steps.get_version.outputs.VERSION }}.bin\`" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔧 Installation Methods" >> $GITHUB_STEP_SUMMARY
+        echo "1. **OTA Update**: Through device WiFi settings (recommended)" >> $GITHUB_STEP_SUMMARY
+        echo "2. **Manual Flash**: Using provided script or esptool.py" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ✅ Next Steps" >> $GITHUB_STEP_SUMMARY
+        echo "- Download firmware from the release page" >> $GITHUB_STEP_SUMMARY
+        echo "- Follow installation instructions in README.md" >> $GITHUB_STEP_SUMMARY
+        echo "- Connect device to WiFi for future OTA updates" >> $GITHUB_STEP_SUMMARY

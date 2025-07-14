@@ -1,54 +1,49 @@
-# Trimix Analyzer - Development Commands
+# Trimix Analyzer Makefile
+# Essential commands for building and running the project
 
-.PHONY: dev run install clean test test-fast test-slow test-coverage ci-check help
+# Environments
+ESP32_ENV = esp32dev
+NATIVE_ENV = native
+NATIVE_EXECUTABLE = .pio/build/$(NATIVE_ENV)/program
 
+# Default target
+.PHONY: help
 help:
-	@echo "🚀 Trimix Analyzer Development Commands"
+	@echo "Trimix Analyzer Build System"
+	@echo "============================="
 	@echo ""
-	@echo "Development Commands:"
-	@echo "  run           🥧 Run on Raspberry Pi (native, production-like)"
-	@echo "  dev           💻 Run on Mac/Linux (development with GUI)"
-	@echo "  install       📦 Install dependencies"
-	@echo "  clean         🧹 Clean up virtual environment"
-	@echo "  test          🧪 Run all tests"
-	@echo "  test-fast     🚀 Run fast tests only"
-	@echo "  test-slow     ⏳ Run slow tests only"
-	@echo "  test-coverage 📊 Run tests with coverage"
-	@echo "  ci-check      🔍 Run CI/CD checks"
-	@echo "  help          ❓ Show this help"
+	@echo "Available commands:"
+	@echo "  dev            - Build and run Mac simulator"
+	@echo "  upload-esp32   - Build and upload to ESP32"
+	@echo "  monitor        - Monitor ESP32 serial output"
+	@echo "  clean          - Clean build artifacts"
+	@echo ""
+	@echo "Usage:"
+	@echo "  make dev           # Run on Mac"
+	@echo "  make upload-esp32  # Upload to ESP32"
+	@echo "  make monitor       # Monitor ESP32"
 
-run:
-	@echo "🥧 Running Trimix Analyzer on Raspberry Pi (native)..."
-	@if [ ! -d ".venv" ]; then echo "❌ Run 'make install' first."; exit 1; fi
-	@export TRIMIX_ENVIRONMENT=production && export TRIMIX_MOCK_SENSORS=0 && .venv/bin/python main.py
-
+# Run on Mac simulator
+.PHONY: dev
 dev:
-	@./scripts/dev.sh
+	@echo "Building and running native simulator..."
+	pio run -e $(NATIVE_ENV)
+	$(NATIVE_EXECUTABLE)
 
-install:
-	@echo "📦 Setting up virtual environment..."
-	@python3 -m venv .venv
-	@.venv/bin/pip install -r requirements-base.txt
-	@.venv/bin/pip install https://github.com/kivy-garden/graph/archive/master.zip
-	@echo "✅ Installation complete!"
+# Upload to ESP32
+.PHONY: upload-esp32
+upload-esp32:
+	@echo "Building and uploading to ESP32..."
+	pio run -e $(ESP32_ENV) --target upload
 
+# Monitor ESP32 serial output
+.PHONY: monitor
+monitor:
+	@echo "Starting serial monitor..."
+	pio device monitor -e $(ESP32_ENV)
+
+# Clean build artifacts
+.PHONY: clean
 clean:
-	@echo "🧹 Cleaning up..."
-	@rm -rf .venv
-	@find . -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-	@find . -name "*.pyc" -delete 2>/dev/null || true
-
-test:
-	@python -m pytest tests/ -v
-
-test-fast:
-	@python -m pytest tests/ -v -m "not slow"
-
-test-slow:
-	@python -m pytest tests/ -v -m "slow"
-
-test-coverage:
-	@python -m pytest tests/ -v --cov=. --cov-report=html:htmlcov --cov-report=term-missing
-
-ci-check:
-	@./scripts/run-ci-checks.sh
+	@echo "Cleaning build artifacts..."
+	pio run --target clean
