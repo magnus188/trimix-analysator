@@ -6,6 +6,7 @@
 #include "TrimixApp.h"
 #include "ui/HomeScreen.h"
 #include "ui/AnalyzeScreen.h"
+#include "ui/SettingsScreen.h"
 
 // Static instance pointer
 TrimixApp* TrimixApp::instance = nullptr;
@@ -58,8 +59,14 @@ void TrimixApp::update() {
     // Handle system tasks
     handleSystemTasks();
     
-    // Update current screen if needed
-    // This is handled by individual screens
+    // Update current screen
+    if (homeScreen && lv_scr_act() == homeScreen->getScreen()) {
+        homeScreen->update();
+    } else if (analyzeScreen && lv_scr_act() == analyzeScreen->getScreen()) {
+        analyzeScreen->update();
+    } else if (settingsScreen && lv_scr_act() == settingsScreen->getScreen()) {
+        settingsScreen->update();
+    }
 }
 
 void TrimixApp::initializeScreens() {
@@ -79,7 +86,12 @@ void TrimixApp::initializeScreens() {
         return;
     }
     
-    // TODO: Create settings screen
+    // Create settings screen
+    settingsScreen = new SettingsScreen(this);
+    if (!settingsScreen->create()) {
+        Serial.println("TrimixApp: Failed to create settings screen");
+        return;
+    }
     
     Serial.println("TrimixApp: UI screens created successfully");
 }
@@ -101,9 +113,11 @@ void TrimixApp::showAnalyze() {
 }
 
 void TrimixApp::showSettings() {
-    // TODO: Implement settings screen
-    Serial.println("TrimixApp: Settings screen not implemented yet");
-    wakeFromScreenSaver();
+    if (settingsScreen) {
+        Serial.println("TrimixApp: Showing settings screen");
+        settingsScreen->show();
+        wakeFromScreenSaver();
+    }
 }
 
 void TrimixApp::showScreen(lv_obj_t* screen) {
