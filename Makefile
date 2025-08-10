@@ -1,54 +1,48 @@
-# Trimix Analyzer - Development Commands
+# ESP32-S3 Trimix Analyzer - Development Commands
 
-.PHONY: dev run install clean test test-fast test-slow test-coverage ci-check help
+.PHONY: build upload monitor clean dev test flash erase help
 
 help:
-	@echo "🚀 Trimix Analyzer Development Commands"
+	@echo "🚀 ESP32-S3 Trimix Analyzer Development Commands"
 	@echo ""
-	@echo "Development Commands:"
-	@echo "  run           🥧 Run on Raspberry Pi (native, production-like)"
-	@echo "  dev           💻 Run on Mac/Linux (development with GUI)"
-	@echo "  install       📦 Install dependencies"
-	@echo "  clean         🧹 Clean up virtual environment"
-	@echo "  test          🧪 Run all tests"
-	@echo "  test-fast     🚀 Run fast tests only"
-	@echo "  test-slow     ⏳ Run slow tests only"
-	@echo "  test-coverage 📊 Run tests with coverage"
-	@echo "  ci-check      🔍 Run CI/CD checks"
+	@echo "Build Commands:"
+	@echo "  build         🔨 Build the ESP32 firmware"
+	@echo "  upload        � Upload firmware to ESP32"
+	@echo "  monitor       � Monitor serial output"
+	@echo "  flash         ⚡ Build and upload firmware"
+	@echo "  dev           💻 Build, upload and monitor (development)"
+	@echo "  clean         🧹 Clean build files"
+	@echo "  erase         💥 Erase ESP32 flash memory"
+	@echo "  test          🧪 Run firmware tests"
 	@echo "  help          ❓ Show this help"
 
-run:
-	@echo "🥧 Running Trimix Analyzer on Raspberry Pi (native)..."
-	@if [ ! -d ".venv" ]; then echo "❌ Run 'make install' first."; exit 1; fi
-	@export TRIMIX_ENVIRONMENT=production && export TRIMIX_MOCK_SENSORS=0 && .venv/bin/python main.py
+build:
+	@echo "🔨 Building ESP32-S3 Trimix Analyzer..."
+	@pio run
 
-dev:
-	@./scripts/dev.sh
+upload:
+	@echo "📤 Uploading firmware to ESP32-S3..."
+	@pio run --target upload
 
-install:
-	@echo "📦 Setting up virtual environment..."
-	@python3 -m venv .venv
-	@.venv/bin/pip install -r requirements-base.txt
-	@.venv/bin/pip install https://github.com/kivy-garden/graph/archive/master.zip
-	@echo "✅ Installation complete!"
+monitor:
+	@echo "� Monitoring ESP32-S3 serial output..."
+	@pio device monitor
+
+flash: build upload
+	@echo "⚡ Firmware flashed successfully!"
+
+dev: build upload monitor
+	@echo "💻 Development mode: build, upload, and monitor"
 
 clean:
-	@echo "🧹 Cleaning up..."
-	@rm -rf .venv
-	@find . -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-	@find . -name "*.pyc" -delete 2>/dev/null || true
+	@echo "🧹 Cleaning build files..."
+	@pio run --target clean
+	@rm -rf .pio/build
+
+erase:
+	@echo "💥 Erasing ESP32-S3 flash memory..."
+	@pio run --target erase
 
 test:
-	@python -m pytest tests/ -v
-
-test-fast:
-	@python -m pytest tests/ -v -m "not slow"
-
-test-slow:
-	@python -m pytest tests/ -v -m "slow"
-
-test-coverage:
-	@python -m pytest tests/ -v --cov=. --cov-report=html:htmlcov --cov-report=term-missing
-
-ci-check:
-	@./scripts/run-ci-checks.sh
+	@echo "🧪 Running ESP32 firmware tests..."
+	@pio test
