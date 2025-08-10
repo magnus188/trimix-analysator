@@ -1,6 +1,7 @@
 /*
  * DisplayManager.h
  * Manages LVGL display and touch for ESP32-S3 Trimix Analyzer
+ * Optimized for ESP32-8048S043 development board
  */
 
 #ifndef DISPLAY_MANAGER_H
@@ -9,7 +10,9 @@
 #include <Arduino.h>
 #include <lvgl.h>
 #include <TFT_eSPI.h>
-#include <XPT2046_Touchscreen.h>
+
+// Include User_Setup.h for TFT_eSPI configuration
+#include "User_Setup.h"
 
 // Display configuration
 #ifndef DISPLAY_WIDTH
@@ -20,9 +23,13 @@
 #define DISPLAY_HEIGHT 480
 #endif
 
-// Touch pins (adjust for your specific board)
-#define TOUCH_CS_PIN 21
-#define TOUCH_IRQ_PIN 22
+// Touch configuration for ESP32-8048S043
+// This board typically uses I2C touch controllers like GT911 or FT6336
+#define TOUCH_I2C_SDA 19
+#define TOUCH_I2C_SCL 20
+#define TOUCH_I2C_INT 40
+#define TOUCH_I2C_RST 38
+#define TOUCH_I2C_ADDR 0x5D  // GT911 default address
 
 class DisplayManager {
 public:
@@ -51,7 +58,6 @@ public:
 private:
     // Hardware
     TFT_eSPI tft;
-    XPT2046_Touchscreen* touch;
     
     // LVGL objects
     lv_disp_t* display;
@@ -64,6 +70,10 @@ private:
     lv_color_t* display_buffer2;
     lv_disp_draw_buf_t display_buf;
     
+    // Touch state
+    bool touch_pressed;
+    int16_t touch_x, touch_y;
+    
     // Settings
     uint8_t current_brightness;
     
@@ -71,6 +81,11 @@ private:
     bool initializeDisplay();
     bool initializeTouch();
     bool initializeLVGL();
+    
+    // Touch I2C methods
+    bool touchI2CWrite(uint8_t reg, uint8_t* data, uint8_t len);
+    bool touchI2CRead(uint8_t reg, uint8_t* data, uint8_t len);
+    void updateTouch();
     
     // LVGL callback functions (static)
     static void displayFlush(lv_disp_drv_t* disp, const lv_area_t* area, lv_color_t* color_p);

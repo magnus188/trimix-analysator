@@ -46,6 +46,12 @@ void setup() {
     Serial.printf("Build: %s %s\n", BUILD_DATE, BUILD_TIME);
     Serial.printf("Free heap: %d bytes\n", ESP.getFreeHeap());
     Serial.printf("PSRAM: %d bytes\n", ESP.getPsramSize());
+    
+#ifdef DEVELOPMENT_MODE
+    Serial.println(F("*** DEVELOPMENT MODE ENABLED ***"));
+    Serial.println(F("More robust initialization with fallbacks"));
+#endif
+    
     Serial.println(F("==============================================="));
 
     // Initialize Wire (I2C) early
@@ -58,14 +64,22 @@ void setup() {
     settingsManager = new SettingsManager();
     if (!settingsManager->begin()) {
         Serial.println(F("ERROR: Failed to initialize settings manager"));
+#ifdef DEVELOPMENT_MODE
+        Serial.println(F("DEVELOPMENT MODE: Continuing anyway..."));
+#else
         return;
+#endif
     }
 
     Serial.println(F("Initializing display manager..."));
     displayManager = new DisplayManager();
     if (!displayManager->begin()) {
         Serial.println(F("ERROR: Failed to initialize display manager"));
+#ifdef DEVELOPMENT_MODE
+        Serial.println(F("DEVELOPMENT MODE: Continuing anyway..."));
+#else
         return;
+#endif
     }
 
     Serial.println(F("Initializing sensor manager..."));
@@ -79,7 +93,11 @@ void setup() {
     app = new TrimixApp(displayManager, sensorManager, settingsManager);
     if (!app->begin()) {
         Serial.println(F("ERROR: Failed to initialize main application"));
+#ifdef DEVELOPMENT_MODE
+        Serial.println(F("DEVELOPMENT MODE: Continuing anyway..."));
+#else
         return;
+#endif
     }
 
     // Initialize WiFi if enabled
