@@ -1,7 +1,7 @@
 /*
  * DisplayManager.cpp 
  * Implementation of display management for ESP32-S3 Trimix Analyzer
- * Optimized for ESP32-8048S043 development board
+ * Optimized for ESP32-8048S043 development board with Arduino_GFX
  */
 
 #include "display/DisplayManager.h"
@@ -11,6 +11,8 @@
 DisplayManager* DisplayManager::instance = nullptr;
 
 DisplayManager::DisplayManager() :
+    rgbpanel(nullptr),
+    gfx(nullptr),
     display(nullptr),
     touch_indev(nullptr),
     display_buffer1(nullptr),
@@ -69,18 +71,40 @@ void DisplayManager::update() {
 }
 
 bool DisplayManager::initializeDisplay() {
-    Serial.println("DisplayManager: Attempting TFT display initialization...");
+    Serial.println("DisplayManager: Attempting Arduino_GFX RGB display initialization...");
     
     try {
-        // Initialize TFT display
-        tft.init();
-        tft.setRotation(1); // Landscape orientation for 800x480
-        tft.fillScreen(TFT_BLACK);
+        // Initialize RGB panel for ESP32-8048S043
+        rgbpanel = new Arduino_ESP32RGBPanel(
+            40 /* DE */, 41 /* VSYNC */, 39 /* HSYNC */, 42 /* PCLK */,
+            45 /* R0 */, 48 /* R1 */, 47 /* R2 */, 21 /* R3 */, 14 /* R4 */,
+            5 /* G0 */, 6 /* G1 */, 7 /* G2 */, 15 /* G3 */, 16 /* G4 */, 4 /* G5 */,
+            8 /* B0 */, 3 /* B1 */, 46 /* B2 */, 9 /* B3 */, 1 /* B4 */,
+            0 /* hsync_polarity */, 8 /* hsync_front_porch */, 4 /* hsync_pulse_width */, 8 /* hsync_back_porch */,
+            0 /* vsync_polarity */, 8 /* vsync_front_porch */, 4 /* vsync_pulse_width */, 8 /* vsync_back_porch */,
+            1 /* pclk_active_neg */, 16000000 /* prefer_speed */, true /* auto_flush */
+        );
         
-        Serial.println("DisplayManager: TFT display initialized successfully");
+        // Initialize display with RGB panel
+        gfx = new Arduino_RGB_Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, rgbpanel);
+        
+        // Initialize display
+        if (!gfx->begin()) {
+            Serial.println("DisplayManager: ERROR - Arduino_GFX initialization failed");
+            return false;
+        }
+        
+        // Clear screen
+        gfx->fillScreen(BLACK);
+        
+        // Initialize backlight
+        pinMode(TFT_BL, OUTPUT);
+        digitalWrite(TFT_BL, HIGH); // Turn on backlight
+        
+        Serial.println("DisplayManager: Arduino_GFX RGB display initialized successfully");
         return true;
     } catch (...) {
-        Serial.println("DisplayManager: TFT initialization failed, but continuing...");
+        Serial.println("DisplayManager: Display initialization failed, but continuing...");
         return true; // Continue anyway for development
     }
 }
@@ -172,16 +196,13 @@ bool DisplayManager::initializeLVGL() {
 }
 
 void DisplayManager::displayFlush(lv_disp_drv_t* disp, const lv_area_t* area, lv_color_t* color_p) {
-    if (!instance) return;
+    if (!instance || !instance->gfx) return;
     
     uint32_t w = (area->x2 - area->x1 + 1);
     uint32_t h = (area->y2 - area->y1 + 1);
     
-    // Set window for writing
-    instance->tft.setAddrWindow(area->x1, area->y1, w, h);
-    
-    // Push color data to display
-    instance->tft.pushColors((uint16_t*)color_p, w * h, true);
+    // Draw the area using Arduino_GFX
+    instance->gfx->draw16bitRGBBitmap(area->x1, area->y1, (uint16_t*)color_p, w, h);
     
     // Tell LVGL that flush is complete
     lv_disp_flush_ready(disp);

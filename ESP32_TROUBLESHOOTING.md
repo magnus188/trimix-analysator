@@ -21,25 +21,76 @@
 
 ## Current Status
 
-The ESP32-S3 Trimix Analyzer has been converted and configured for the ESP32-8048S043 development board with the latest fixes for build compatibility.
+The ESP32-S3 Trimix Analyzer has been converted and configured for the ESP32-8048S043 development board with the latest fixes for build compatibility. **IMPORTANT UPDATE**: The project has been migrated from TFT_eSPI to Arduino_GFX library to resolve GPIO_DIR_MASK compilation errors on ESP32-S3.
+
+## Recent Major Fix: TFT_eSPI → Arduino_GFX Migration
+
+✅ **Fixed ESP32-S3 GPIO_DIR_MASK Compilation Error**:
+- **Root Cause**: TFT_eSPI library has compatibility issues with ESP32-S3 GPIO register definitions
+- **Solution**: Migrated to Arduino_GFX library (GFX Library for Arduino v1.4.7) which is specifically designed for ESP32-S3 RGB displays
+- **Hardware Support**: Arduino_GFX provides native support for ESP32-8048S043's parallel RGB LCD interface
+- **Performance**: Better performance and stability for 800×480 RGB displays
+
+✅ **Updated Library Configuration**:
+- Removed `bodmer/TFT_eSPI@^2.5.43` (causing GPIO_DIR_MASK errors)
+- Added `moononournation/GFX Library for Arduino@^1.4.7` (ESP32-S3 compatible)
+- Updated DisplayManager to use Arduino_GFX native RGB panel support
+- Removed User_Setup.h (TFT_eSPI specific configuration)
+
+✅ **ESP32-8048S043 Specific Optimizations**:
+- Native RGB panel initialization with correct pin assignments
+- Proper timing configuration for 800×480 display
+- Arduino_GFX optimized for ESP32-S3 with PSRAM
+- Backlight control via GPIO 2
 
 ## Build Issues
 
+### GPIO_DIR_MASK Compilation Error (RESOLVED)
+
+**If you see errors like:**
+```
+error: 'GPIO_DIR_MASK' was not declared in this scope
+.pio/libdeps/esp32-s3-devkitc-1/TFT_eSPI/Processors/TFT_eSPI_ESP32_S3.h:398:34
+```
+
+**This has been FIXED** by migrating from TFT_eSPI to Arduino_GFX library. The latest code uses:
+- `moononournation/GFX Library for Arduino@^1.4.7` instead of TFT_eSPI
+- Native ESP32-S3 RGB panel support for ESP32-8048S043
+- No more GPIO register compatibility issues
+
 ### PlatformIO Platform Download
-If you're experiencing build failures, it's likely due to network issues downloading the ESP32 platform. Try:
+
+If you're experiencing build failures due to network issues downloading the ESP32 platform, try:
 
 ```bash
-# Clean install
+# Clean install with alternative registry
 pio platform uninstall espressif32
+export PLATFORMIO_REGISTRY_URL=https://registry.platformio.org
 pio platform install espressif32@latest
+
+# Or use offline mode if you have the platform cached
+pio run --offline
 ```
 
 ### Display Configuration
-The ESP32-8048S043 uses a parallel RGB LCD interface, not SPI. The current TFT_eSPI configuration may need adjustment. Alternative approaches:
 
-1. **ESP32-S3-LCD library** (recommended for this board)
-2. **Direct ESP-IDF LCD APIs**
-3. **LVGL with custom display drivers**
+The ESP32-8048S043 uses a parallel RGB LCD interface, not SPI. **The latest version uses Arduino_GFX library** which provides native support for this hardware:
+
+✅ **Arduino_GFX Configuration** (Current):
+- Native ESP32-S3 RGB panel support
+- Optimized for 800×480 parallel RGB displays  
+- No GPIO register conflicts
+- Better performance and stability
+
+❌ **Previous TFT_eSPI Configuration** (Removed):
+- Had GPIO_DIR_MASK compilation errors on ESP32-S3
+- Required complex parallel mode configuration
+- Compatibility issues with ESP32-S3 register definitions
+
+Alternative approaches for reference:
+1. **ESP32-S3-LCD library** (specialized for ESP32-S3 LCD controllers)
+2. **Direct ESP-IDF LCD APIs** (lower level, more complex)
+3. **Other Arduino_GFX variants** (already implemented)
 
 ## Hardware Setup
 

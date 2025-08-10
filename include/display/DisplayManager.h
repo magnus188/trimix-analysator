@@ -1,7 +1,7 @@
 /*
  * DisplayManager.h
  * Manages LVGL display and touch for ESP32-S3 Trimix Analyzer
- * Optimized for ESP32-8048S043 development board
+ * Optimized for ESP32-8048S043 development board with Arduino_GFX
  */
 
 #ifndef DISPLAY_MANAGER_H
@@ -9,10 +9,9 @@
 
 #include <Arduino.h>
 #include <lvgl.h>
-#include <TFT_eSPI.h>
 
-// Include User_Setup.h for TFT_eSPI configuration
-#include "User_Setup.h"
+// Use Arduino_GFX for ESP32-8048S043 RGB LCD support
+#include <Arduino_GFX_Library.h>
 
 // Display configuration
 #ifndef DISPLAY_WIDTH
@@ -27,9 +26,12 @@
 // This board typically uses I2C touch controllers like GT911 or FT6336
 #define TOUCH_I2C_SDA 19
 #define TOUCH_I2C_SCL 20
-#define TOUCH_I2C_INT 40
+#define TOUCH_I2C_INT 0      // Changed from 40 to avoid conflict with TFT_DE
 #define TOUCH_I2C_RST 38
 #define TOUCH_I2C_ADDR 0x5D  // GT911 default address
+
+// ESP32-8048S043 RGB LCD pin definitions
+#define TFT_BL 2   // Backlight control
 
 class DisplayManager {
 public:
@@ -56,8 +58,9 @@ public:
     void getTouchPosition(int16_t* x, int16_t* y);
 
 private:
-    // Hardware
-    TFT_eSPI tft;
+    // Hardware - Arduino_GFX for ESP32-8048S043 RGB LCD
+    Arduino_ESP32RGBPanel *rgbpanel;
+    Arduino_RGB_Display *gfx;
     
     // LVGL objects
     lv_disp_t* display;
