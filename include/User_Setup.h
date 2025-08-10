@@ -47,10 +47,11 @@
 #define TFT_HSYNC 39 // Horizontal Sync
 #define TFT_PCLK  42 // Pixel Clock
 
-// Touch controller pins (I2C)
+//
+// Touch controller pins (I2C) - pins that don't conflict with display
 #define TOUCH_SDA 19
 #define TOUCH_SCL 20
-#define TOUCH_INT 40
+#define TOUCH_INT 0   // Changed from 40 to avoid conflict with TFT_DE
 #define TOUCH_RST 38
 
 // RGB interface settings

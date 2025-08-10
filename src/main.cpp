@@ -54,10 +54,10 @@ void setup() {
     
     Serial.println(F("==============================================="));
 
-    // Initialize Wire (I2C) early
+    // Initialize Wire (I2C) early - use pins that don't conflict with TFT
     Wire.begin(I2C_SDA, I2C_SCL);
     Wire.setClock(400000); // 400kHz I2C speed
-    Serial.printf("I2C initialized (SDA: %d, SCL: %d)\n", I2C_SDA, I2C_SCL);
+    Serial.printf("I2C initialized (SDA: %d, SCL: %d) - updated pins to avoid TFT conflicts\n", I2C_SDA, I2C_SCL);
 
     // Initialize managers in order
     Serial.println(F("Initializing settings manager..."));

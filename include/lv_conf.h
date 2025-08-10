@@ -1,6 +1,7 @@
 /*
  * LVGL Configuration for ESP32-S3 Trimix Analyzer
  * Target: ESP32-8048S043 (4.3" 800x480 IPS Touch Display)
+ * LVGL Version: 9.0.0+
  */
 
 #ifndef LV_CONF_H
@@ -25,7 +26,6 @@
 
 /* Graphic buffer size. Used by draw engine for partial redraw */
 #define LV_DISP_DEF_REFR_PERIOD 16    /* [ms] refresh period */
-#define LV_VDB_SIZE ((LV_HOR_RES_MAX * LV_VER_RES_MAX) / 10)  /* Size of VDB in pixels */
 
 /*====================
    FEATURE CONFIGURATION
@@ -33,9 +33,6 @@
 
 /* Enable animations */
 #define LV_USE_ANIMATION 1
-
-/* Enable shadow drawing */
-#define LV_USE_SHADOW 1
 
 /* Enable image support */
 #define LV_USE_IMG 1
@@ -51,9 +48,6 @@
 
 /* Enable arc (gauge) support */
 #define LV_USE_ARC 1
-
-/* Enable gauge support */
-#define LV_USE_GAUGE 1
 
 /* Enable chart support for sensor graphs */
 #define LV_USE_CHART 1
@@ -116,6 +110,20 @@
 #define LV_LOG_LEVEL LV_LOG_LEVEL_INFO
 
 /*====================
+   DISPLAY CONFIGURATION
+ *====================*/
+
+/* Horizontal and vertical resolution of the display */
+#define LV_HOR_RES 800
+#define LV_VER_RES 480
+
+/* DPI for scaling */
+#define LV_DPI_DEF 120
+
+/* Display buffer size */
+#define LV_DRAW_BUF_SIZE ((LV_HOR_RES * LV_VER_RES) / 10)
+
+/*====================
    HAL SETTINGS
  *====================*/
 
@@ -137,17 +145,6 @@
 
 /* Memory alignment for performance */
 #define LV_ATTRIBUTE_MEM_ALIGN __attribute__((aligned(4)))
-
-/*====================
-   DISPLAY CONFIGURATION
- *====================*/
-
-/* Horizontal and vertical resolution of the display */
-#define LV_HOR_RES_MAX 800
-#define LV_VER_RES_MAX 480
-
-/* DPI for scaling */
-#define LV_DPI_DEF 120
 
 /*====================
    GPU CONFIGURATION

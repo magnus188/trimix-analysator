@@ -1,8 +1,27 @@
 # ESP32-8048S043 Build and Setup Guide
 
+## Recent Fixes (Latest Update)
+
+✅ **Fixed LVGL v9.0.0 Configuration Issues**:
+- Updated `lv_conf.h` for LVGL v9.2.0 compatibility
+- Removed deprecated features (`LV_USE_SHADOW`, `LV_USE_GAUGE`) 
+- Fixed buffer size calculations
+- Updated resolution constants (`LV_HOR_RES`, `LV_VER_RES`)
+
+✅ **Fixed Pin Conflicts**:
+- Changed I2C pins from SDA=8, SCL=9 to SDA=19, SCL=20 (avoid TFT data line conflicts)
+- Fixed touch interrupt pin conflict (TOUCH_INT moved from 40 to 0)
+- Updated platformio.ini and main.cpp accordingly
+
+✅ **Updated Library Versions**:
+- LVGL updated to v9.2.0 (more stable)
+- ArduinoJson updated to v7.0.4
+- TFT_eSPI updated to v2.5.43
+- Updated Adafruit libraries to latest versions
+
 ## Current Status
 
-The ESP32-S3 Trimix Analyzer has been converted and configured for the ESP32-8048S043 development board. However, there are some configuration challenges specific to this board that need to be addressed.
+The ESP32-S3 Trimix Analyzer has been converted and configured for the ESP32-8048S043 development board with the latest fixes for build compatibility.
 
 ## Build Issues
 
@@ -30,11 +49,11 @@ The ESP32-8048S043 uses a parallel RGB LCD interface, not SPI. The current TFT_e
 - **MCU**: ESP32-S3 with PSRAM
 - **Interface**: USB-C for programming and power
 
-### Pin Configuration
-The board uses these approximate pin assignments:
+### Pin Configuration (Updated)
+The board uses these pin assignments:
 - **Display**: Parallel RGB interface (16-bit)
-- **Touch I2C**: SDA=19, SCL=20, INT=40, RST=38
-- **Sensor I2C**: SDA=8, SCL=9 (configurable)
+- **Touch I2C**: SDA=19, SCL=20, INT=0, RST=38
+- **Sensor I2C**: SDA=19, SCL=20 (shared with touch)
 
 ## Development Mode
 
