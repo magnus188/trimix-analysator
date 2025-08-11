@@ -78,7 +78,7 @@ void HomeScreen::createMenuButtons() {
     static lv_style_t btn_pressed;
     lv_style_init(&btn_pressed);
     lv_style_set_bg_color(&btn_pressed, lv_color_hex(0x1976D2));
-    lv_style_set_transform_scale(&btn_pressed, 950);
+    // Remove transform scale for compatibility with current LVGL config
     
     // Analyze button
     analyze_btn = lv_btn_create(screen);

@@ -245,27 +245,27 @@ void SettingsManager::printAllSettings() {
 }
 
 // Helper methods
-String SettingsManager::getString(const char* key, const String& defaultValue) {
+String SettingsManager::getString(const char* key, const String& defaultValue) const {
     return prefs.getString(key, defaultValue);
 }
 
-bool SettingsManager::getBool(const char* key, bool defaultValue) {
+bool SettingsManager::getBool(const char* key, bool defaultValue) const {
     return prefs.getBool(key, defaultValue);
 }
 
-float SettingsManager::getFloat(const char* key, float defaultValue) {
+float SettingsManager::getFloat(const char* key, float defaultValue) const {
     return prefs.getFloat(key, defaultValue);
 }
 
-uint8_t SettingsManager::getUInt8(const char* key, uint8_t defaultValue) {
+uint8_t SettingsManager::getUInt8(const char* key, uint8_t defaultValue) const {
     return prefs.getUChar(key, defaultValue);
 }
 
-uint16_t SettingsManager::getUInt16(const char* key, uint16_t defaultValue) {
+uint16_t SettingsManager::getUInt16(const char* key, uint16_t defaultValue) const {
     return prefs.getUShort(key, defaultValue);
 }
 
-unsigned long SettingsManager::getULong(const char* key, unsigned long defaultValue) {
+unsigned long SettingsManager::getULong(const char* key, unsigned long defaultValue) const {
     return prefs.getULong(key, defaultValue);
 }
 

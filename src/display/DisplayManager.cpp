@@ -66,7 +66,14 @@ void DisplayManager::update() {
     // Update touch state
     updateTouch();
     
-    // Update LVGL (handles display refresh and input)
+    // Inform LVGL about elapsed time and handle tasks
+    unsigned long now = millis();
+    if (last_tick_ms == 0) last_tick_ms = now;
+    uint32_t diff = (uint32_t)(now - last_tick_ms);
+    if (diff > 0) {
+        lv_tick_inc(diff);
+        last_tick_ms = now;
+    }
     lv_timer_handler();
 }
 
@@ -75,27 +82,28 @@ bool DisplayManager::initializeDisplay() {
     
     try {
         // Initialize RGB panel for ESP32-8048S043
+        // Use known-good timing for ESP32-8048S043 (RGB666 panels often work with these)
         rgbpanel = new Arduino_ESP32RGBPanel(
             40 /* DE */, 41 /* VSYNC */, 39 /* HSYNC */, 42 /* PCLK */,
             45 /* R0 */, 48 /* R1 */, 47 /* R2 */, 21 /* R3 */, 14 /* R4 */,
             5 /* G0 */, 6 /* G1 */, 7 /* G2 */, 15 /* G3 */, 16 /* G4 */, 4 /* G5 */,
             8 /* B0 */, 3 /* B1 */, 46 /* B2 */, 9 /* B3 */, 1 /* B4 */,
-            0 /* hsync_polarity */, 8 /* hsync_front_porch */, 4 /* hsync_pulse_width */, 8 /* hsync_back_porch */,
-            0 /* vsync_polarity */, 8 /* vsync_front_porch */, 4 /* vsync_pulse_width */, 8 /* vsync_back_porch */,
-            1 /* pclk_active_neg */, 16000000 /* prefer_speed */, true /* auto_flush */
+            0 /* hsync_polarity */, 8 /* hsync_front_porch */, 4 /* hsync_pulse_width */, 44 /* hsync_back_porch */,
+            0 /* vsync_polarity */, 8 /* vsync_front_porch */, 4 /* vsync_pulse_width */, 16 /* vsync_back_porch */,
+            0 /* pclk_active_neg */, 18000000 /* prefer_speed */, false /* auto_flush: LVGL drives flush */
         );
         
         // Initialize display with RGB panel
         gfx = new Arduino_RGB_Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, rgbpanel);
         
-        // Initialize display
-        if (!gfx->begin()) {
+    // Initialize display
+    if (!gfx->begin()) {
             Serial.println("DisplayManager: ERROR - Arduino_GFX initialization failed");
             return false;
         }
         
-        // Clear screen
-        gfx->fillScreen(BLACK);
+    // Clear screen
+    gfx->fillScreen(BLACK);
         
         // Initialize backlight
         pinMode(TFT_BL, OUTPUT);
@@ -149,11 +157,11 @@ bool DisplayManager::initializeTouch() {
 
 bool DisplayManager::initializeLVGL() {
     // Calculate buffer size (1/10 of screen for good performance)
-    size_t buffer_size = DISPLAY_WIDTH * DISPLAY_HEIGHT / 10;
+    size_t buffer_size = (DISPLAY_WIDTH * DISPLAY_HEIGHT) / 10;
     
     // Allocate display buffers
-    display_buffer1 = (lv_color_t*)heap_caps_malloc(buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
-    display_buffer2 = (lv_color_t*)heap_caps_malloc(buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA);
+    display_buffer1 = (lv_color_t*)heap_caps_malloc(buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
+    display_buffer2 = (lv_color_t*)heap_caps_malloc(buffer_size * sizeof(lv_color_t), MALLOC_CAP_DMA | MALLOC_CAP_INTERNAL);
     
     if (!display_buffer1 || !display_buffer2) {
         Serial.println("DisplayManager: Failed to allocate display buffers");
@@ -200,8 +208,7 @@ void DisplayManager::displayFlush(lv_disp_drv_t* disp, const lv_area_t* area, lv
     
     uint32_t w = (area->x2 - area->x1 + 1);
     uint32_t h = (area->y2 - area->y1 + 1);
-    
-    // Draw the area using Arduino_GFX
+    // Draw the area directly
     instance->gfx->draw16bitRGBBitmap(area->x1, area->y1, (uint16_t*)color_p, w, h);
     
     // Tell LVGL that flush is complete
@@ -280,7 +287,7 @@ bool DisplayManager::touchI2CRead(uint8_t reg, uint8_t* data, uint8_t len) {
     Wire1.write(reg);
     if (Wire1.endTransmission() != 0) return false;
     
-    Wire1.requestFrom(TOUCH_I2C_ADDR, len);
+    Wire1.requestFrom((uint16_t)TOUCH_I2C_ADDR, (uint8_t)len);
     for (uint8_t i = 0; i < len; i++) {
         if (Wire1.available()) {
             data[i] = Wire1.read();

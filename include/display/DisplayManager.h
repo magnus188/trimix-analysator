@@ -9,6 +9,7 @@
 
 #include <Arduino.h>
 #include <lvgl.h>
+#include <esp_heap_caps.h>
 
 // Use Arduino_GFX for ESP32-8048S043 RGB LCD support
 #include <Arduino_GFX_Library.h>
@@ -79,6 +80,7 @@ private:
     
     // Settings
     uint8_t current_brightness;
+    unsigned long last_tick_ms = 0;
     
     // Private methods
     bool initializeDisplay();

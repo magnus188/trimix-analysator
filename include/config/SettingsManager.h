@@ -67,7 +67,7 @@ public:
     void printAllSettings();
 
 private:
-    Preferences prefs;
+    mutable Preferences prefs;
     
     // Default values
     static const char* PREF_NAMESPACE;
@@ -85,12 +85,12 @@ private:
     static const bool DEFAULT_ALARMS_ENABLED = true;
     
     // Helper methods
-    String getString(const char* key, const String& defaultValue = "");
-    bool getBool(const char* key, bool defaultValue = false);
-    float getFloat(const char* key, float defaultValue = 0.0f);
-    uint8_t getUInt8(const char* key, uint8_t defaultValue = 0);
-    uint16_t getUInt16(const char* key, uint16_t defaultValue = 0);
-    unsigned long getULong(const char* key, unsigned long defaultValue = 0);
+    String getString(const char* key, const String& defaultValue = "") const;
+    bool getBool(const char* key, bool defaultValue = false) const;
+    float getFloat(const char* key, float defaultValue = 0.0f) const;
+    uint8_t getUInt8(const char* key, uint8_t defaultValue = 0) const;
+    uint16_t getUInt16(const char* key, uint16_t defaultValue = 0) const;
+    unsigned long getULong(const char* key, unsigned long defaultValue = 0) const;
     
     void setString(const char* key, const String& value);
     void setBool(const char* key, bool value);

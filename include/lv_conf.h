@@ -1,7 +1,7 @@
 /*
  * LVGL Configuration for ESP32-S3 Trimix Analyzer
  * Target: ESP32-8048S043 (4.3" 800x480 IPS Touch Display)
- * LVGL Version: 9.0.0+
+ * LVGL Version: 8.x
  */
 
 #ifndef LV_CONF_H
@@ -114,14 +114,14 @@
  *====================*/
 
 /* Horizontal and vertical resolution of the display */
-#define LV_HOR_RES 800
-#define LV_VER_RES 480
+#define LV_HOR_RES_MAX 800
+#define LV_VER_RES_MAX 480
 
 /* DPI for scaling */
 #define LV_DPI_DEF 120
 
 /* Display buffer size */
-#define LV_DRAW_BUF_SIZE ((LV_HOR_RES * LV_VER_RES) / 10)
+/* Use default draw buffer size; we'll set it from code */
 
 /*====================
    HAL SETTINGS
@@ -134,7 +134,9 @@
 #define LV_INDEV_DEF_READ_PERIOD 16  /* [ms] */
 
 /* Use a custom tick source */
-#define LV_TICK_CUSTOM 1
+/* Provide custom tick from Arduino millis() */
+/* Use default tick; we'll call lv_tick_inc() from code */
+#define LV_TICK_CUSTOM 0
 
 /*====================
    COMPILER SETTINGS
