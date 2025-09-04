@@ -1,0 +1,353 @@
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
+#include <freertos/task.h>
+
+#include <esp_err.h>
+#include <esp_lcd_panel_ops.h>
+#include <esp_lcd_panel_rgb.h>
+#include <esp_lcd_touch_gt911.h>
+#include <esp_log.h>
+#include <esp_timer.h>
+
+#include <driver/gpio.h>
+#include <driver/i2c.h>
+
+#include "sdkconfig.h"
+#include "lvgl.h"
+
+// Forward declare accessor functions (already provided by lvgl headers) to satisfy compiler with opaque structs
+// (If not needed after full build they can be removed.)
+#include "hardware.h"
+
+#define TAG "main"
+
+const i2c_port_t i2c_master_port = I2C_NUM_0;
+
+#include "trimix_screens.h"  // Trimix Analyzer UI
+
+
+/*
+* touch related
+*/
+
+esp_err_t gt911_init_i2c(void)
+{
+    i2c_config_t conf = { .mode = I2C_MODE_MASTER,
+        .sda_io_num = TOUCH_PIN_SDA,
+        .scl_io_num = TOUCH_PIN_SCL,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master = {
+            .clk_speed = TOUCH_FREQ_HZ,
+        },
+        .clk_flags = I2C_SCLK_SRC_FLAG_FOR_NOMAL };
+
+    ESP_LOGI(TAG, "Initializing I2C");
+
+    ESP_ERROR_CHECK(i2c_param_config(i2c_master_port, &conf));
+    ESP_ERROR_CHECK(i2c_driver_install(i2c_master_port, conf.mode, 0, 0, 0));
+
+    return ESP_OK;
+}
+
+// Simple map helper for touch raw->screen coordinate scaling
+uint16_t gt911_map(uint16_t n, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) { return (n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; }
+
+// We want the UI in portrait (480x800) while the RGB panel timing remains 800x480.
+// We therefore keep the hardware panel configured as 800x480 (landscape) and
+// apply a 90 degree clockwise rotation in the flush callback. Touch input is
+// transformed the opposite way here to provide correct LVGL coordinates.
+//
+// LVGL logical (portrait) resolution: 480 (X) x 800 (Y)
+// Hardware (panel) resolution:       800 (X) x 480 (Y)
+// Rotation (LVGL->HW): hw_x = lv_y; hw_y = (LVGL_X_MAX - 1) - lv_x
+// Inverse (HW touch->LVGL): lv_x = (LVGL_X_MAX - 1) - hw_y; lv_y = hw_x
+#define LVGL_PORTRAIT_WIDTH  480
+#define LVGL_PORTRAIT_HEIGHT 800
+
+void gt911_process_coordinates(esp_lcd_touch_handle_t tp, uint16_t *x, uint16_t *y, uint16_t *strength, uint8_t *point_num, uint8_t max_point_num)
+{
+    // First scale raw touch space (approx 480x270) to hardware panel space 800x480
+    uint16_t hw_x = gt911_map(*x, TOUCH_H_RES_MIN, TOUCH_H_RES_MAX, 0, LCD_H_RES); // 0..799
+    uint16_t hw_y = gt911_map(*y, TOUCH_V_RES_MIN, TOUCH_V_RES_MAX, 0, LCD_V_RES); // 0..479
+
+    // Convert hardware landscape coords to LVGL portrait coords
+    *x = (LVGL_PORTRAIT_WIDTH - 1) - hw_y; // 0..479
+    *y = hw_x;                             // 0..799
+
+    ESP_LOGI(TAG, "Touch (lvgl) X: %d Y: %d (hw_x=%d hw_y=%d)\n", *x, *y, hw_x, hw_y);
+}
+
+void gt911_touch_init(esp_lcd_touch_handle_t *tp)
+{
+    esp_lcd_panel_io_handle_t tp_io_handle = NULL;
+
+    const esp_lcd_panel_io_i2c_config_t tp_io_config = { 
+        .dev_addr = ESP_LCD_TOUCH_IO_I2C_GT911_ADDRESS,
+        .on_color_trans_done = NULL,
+        .user_ctx = NULL,
+        .control_phase_bytes = 1,
+        .dc_bit_offset = 0,
+        .lcd_cmd_bits = 16,
+        .lcd_param_bits = 0,
+        .flags = {
+            .dc_low_on_data = 0,
+            .disable_control_phase = 1,
+        } };
+
+    const esp_lcd_touch_config_t tp_cfg = {
+        .x_max = LCD_H_RES,
+        .y_max = LCD_V_RES,
+        .rst_gpio_num = TOUCH_PIN_RESET,
+        .int_gpio_num = TOUCH_PIN_INT,
+        .levels = {
+            .reset = 0,
+            .interrupt = 0,
+        },
+        .flags = {
+            .swap_xy = 0,
+            .mirror_x = 0,
+            .mirror_y = 0,
+        },
+        .process_coordinates = gt911_process_coordinates,
+        .interrupt_callback = NULL
+        };
+
+    ESP_ERROR_CHECK(esp_lcd_new_panel_io_i2c((esp_lcd_i2c_bus_handle_t)i2c_master_port, &tp_io_config, &tp_io_handle));
+    ESP_ERROR_CHECK(esp_lcd_touch_new_i2c_gt911(tp_io_handle, &tp_cfg, tp));
+}
+
+static void gt911_touchpad_read(lv_indev_t *indev_drv, lv_indev_data_t *data)
+{
+    esp_lcd_touch_handle_t tp = (esp_lcd_touch_handle_t)lv_indev_get_user_data(indev_drv);
+    assert(tp);
+
+    uint16_t touchpad_x;
+    uint16_t touchpad_y;
+    uint8_t touchpad_cnt = 0;
+
+    esp_lcd_touch_read_data(tp);
+
+    bool touchpad_pressed = esp_lcd_touch_get_coordinates(tp, &touchpad_x, &touchpad_y, NULL, &touchpad_cnt, 1);
+    if (touchpad_pressed && touchpad_cnt > 0)
+    {
+        data->point.x = touchpad_x;
+        data->point.y = touchpad_y;
+        data->state = LV_INDEV_STATE_PRESSED;
+    }
+    else
+    {
+        data->state = LV_INDEV_STATE_RELEASED;
+    }
+}
+
+
+/*
+* LVGL related functions
+*/
+static void lcd_lvgl_flush_cb(lv_display_t *drv, const lv_area_t *area, unsigned char *color_map)
+{
+  // LVGL gives us an area in portrait coordinates (480x800).
+  // We must rotate this 90 deg CW and flush to the 800x480 panel.
+  esp_lcd_panel_handle_t panel_handle = (esp_lcd_panel_handle_t)lv_display_get_user_data(drv);
+
+  int lv_x1 = area->x1;
+  int lv_y1 = area->y1;
+  int lv_x2 = area->x2;
+  int lv_y2 = area->y2;
+
+  int w = lv_x2 - lv_x1 + 1;
+  int h = lv_y2 - lv_y1 + 1;
+
+  // Destination (hardware) rectangle after rotation
+  // hw_x = lv_y; hw_y = (LVGL_PORTRAIT_WIDTH - 1) - lv_x
+  int hw_x1 = lv_y1;
+  int hw_x2 = lv_y2;
+  int hw_y1 = (LVGL_PORTRAIT_WIDTH - 1) - lv_x2;
+  int hw_y2 = (LVGL_PORTRAIT_WIDTH - 1) - lv_x1;
+
+  const int bytes_per_pixel = LV_COLOR_DEPTH / 8; // Expect 2 for RGB565
+  int rotated_w = hw_x2 - hw_x1 + 1; // should equal h
+  int rotated_h = hw_y2 - hw_y1 + 1; // should equal w
+
+  // Allocate a temporary buffer for rotated block (in PSRAM if possible)
+  size_t buf_size = rotated_w * rotated_h * bytes_per_pixel;
+  void *rot_buf = heap_caps_malloc(buf_size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  if(!rot_buf) {
+      ESP_LOGE(TAG, "Rotation buffer alloc failed (%d x %d)", rotated_w, rotated_h);
+      // Fallback: flush nothing to avoid crash, but mark ready
+      lv_disp_flush_ready(drv);
+      return;
+  }
+
+  // Perform rotation (src: portrait, dst: landscape rotated)
+  // Iterate LVGL portrait area and place into rotated buffer at (dst_x,dst_y)
+  // where dst width = rotated_w (=h), dst height = rotated_h (=w)
+  uint8_t *dst = (uint8_t *)rot_buf;
+  const uint8_t *src = (const uint8_t *)color_map;
+  for(int y = 0; y < h; ++y) {
+      for(int x = 0; x < w; ++x) {
+          // LVGL pixel index
+          int src_index = (y * w + x) * bytes_per_pixel;
+          // Portrait -> landscape rotation mapping inside the block:
+          // local lv coords -> global -> rotated local coords
+          // local lv (x,y) corresponds to global (lv_x1+x, lv_y1+y)
+          // global rotated: hw_x = lv_y1 + y; hw_y = (LVGL_PORTRAIT_WIDTH -1) - (lv_x1 + x)
+          // Local rotated within block:
+          int dst_x = y;                // along width rotated_w
+          int dst_y = (w - 1) - x;      // along height rotated_h
+          int dst_index = (dst_y * rotated_w + dst_x) * bytes_per_pixel;
+          memcpy(dst + dst_index, src + src_index, bytes_per_pixel);
+      }
+  }
+
+  // Flush rotated buffer to hardware panel
+  esp_lcd_panel_draw_bitmap(panel_handle, hw_x1, hw_y1, hw_x2 + 1, hw_y2 + 1, rot_buf);
+
+  heap_caps_free(rot_buf);
+  lv_disp_flush_ready(drv);
+}
+
+static void tick(void *arg)
+{ 
+    lv_tick_inc(2); 
+}
+
+// Demo touch event handler removed along with demo UI.
+
+void lcd_init(void *)
+{
+  static lv_display_t *disp;
+  static lv_indev_t *indev_drv_tp;
+  static esp_lcd_touch_handle_t tp;
+  static esp_lcd_panel_handle_t panel_handle = NULL;
+
+  gpio_config_t bk_gpio_config = {.pin_bit_mask = 1ULL << LCD_PIN_BK_LIGHT,
+                                  .mode = GPIO_MODE_OUTPUT,
+                                  .pull_up_en = GPIO_PULLUP_DISABLE,
+                                  .pull_down_en = GPIO_PULLDOWN_DISABLE,
+                                  .intr_type = GPIO_INTR_DISABLE};
+
+  esp_lcd_rgb_panel_config_t panel_config = {
+      .clk_src = LCD_CLK_SRC_DEFAULT,
+      .timings = {.pclk_hz = LCD_PIXEL_CLOCK_HZ,
+                  .h_res = LCD_H_RES,
+                  .v_res = LCD_V_RES,
+
+                  .hsync_pulse_width = 4,
+                  .hsync_back_porch = 8,
+                  .hsync_front_porch = 8,
+                  .vsync_pulse_width = 4,
+                  .vsync_back_porch = 8,
+                  .vsync_front_porch = 8,
+                  .flags = {.hsync_idle_low = false,
+                            .vsync_idle_low = false,
+                            .de_idle_high = false,
+                            .pclk_active_neg = true,
+                            .pclk_idle_high = false}},
+      .data_width = 16,
+      .bits_per_pixel = 0,
+      .num_fbs = 2,
+      .bounce_buffer_size_px = 0,
+      .sram_trans_align = 0,
+      .psram_trans_align = 64,
+
+      .hsync_gpio_num = LCD_PIN_HSYNC,
+      .vsync_gpio_num = LCD_PIN_VSYNC,
+      .de_gpio_num    = LCD_PIN_DE,
+      .pclk_gpio_num  = LCD_PIN_PCLK,
+      .disp_gpio_num  = LCD_PIN_DISP_EN,
+      .data_gpio_nums = {LCD_PIN_DATA0, LCD_PIN_DATA1, LCD_PIN_DATA2,
+                         LCD_PIN_DATA3, LCD_PIN_DATA4, LCD_PIN_DATA5,
+                         LCD_PIN_DATA6, LCD_PIN_DATA7, LCD_PIN_DATA8,
+                         LCD_PIN_DATA9, LCD_PIN_DATA10, LCD_PIN_DATA11,
+                         LCD_PIN_DATA12, LCD_PIN_DATA13, LCD_PIN_DATA14,
+                         LCD_PIN_DATA15},
+      .flags = {.disp_active_low = 0,
+                .refresh_on_demand = 0,
+                .fb_in_psram = true,
+                .double_fb = true,
+                .no_fb = 0,
+                .bb_invalidate_cache = 0}};
+
+
+  //
+  // Init/setup lcd hardware and lvgl
+  //
+
+  ESP_LOGI(TAG, "Turning LCD backlight off");
+  ESP_ERROR_CHECK(gpio_config(&bk_gpio_config));
+
+  ESP_LOGI(TAG, "Initializing LCD panel");
+  ESP_ERROR_CHECK(esp_lcd_new_rgb_panel(&panel_config, &panel_handle));
+  ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
+  ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
+
+  ESP_LOGI(TAG, "Initialize LVGL library");
+  lv_init();
+
+    ESP_LOGI(TAG, "Allocating LVGL buffers from PSRAM (portrait logical %dx%d)", LVGL_PORTRAIT_WIDTH, LVGL_PORTRAIT_HEIGHT);
+    // Use portrait logical dimensions for buffer sizing (partial mode ~10%)
+    void *buf1 = heap_caps_malloc(LVGL_PORTRAIT_WIDTH * LVGL_PORTRAIT_HEIGHT / 10, MALLOC_CAP_SPIRAM);
+  assert(buf1);
+    void *buf2 = heap_caps_malloc(LVGL_PORTRAIT_WIDTH * LVGL_PORTRAIT_HEIGHT / 10, MALLOC_CAP_SPIRAM);
+  assert(buf2);
+
+  ESP_LOGI(TAG, "Register buffers and display callback with LVGL");
+    disp = lv_display_create(LVGL_PORTRAIT_WIDTH, LVGL_PORTRAIT_HEIGHT);
+    lv_display_set_buffers(disp, buf1, buf2, LVGL_PORTRAIT_WIDTH * LVGL_PORTRAIT_HEIGHT / 10, LV_DISPLAY_RENDER_MODE_PARTIAL);
+  lv_display_set_user_data(disp, panel_handle);
+  lv_display_set_flush_cb(disp, lcd_lvgl_flush_cb);
+
+
+  //
+  // GT911 init and register as input device with lvgl:
+  //
+  ESP_ERROR_CHECK(gt911_init_i2c());
+  gt911_touch_init(&tp);
+
+  indev_drv_tp = lv_indev_create();
+  lv_indev_set_type(indev_drv_tp, LV_INDEV_TYPE_POINTER);
+  lv_indev_set_user_data(indev_drv_tp, tp);
+  lv_indev_set_read_cb(indev_drv_tp, gt911_touchpad_read);
+  lv_indev_enable(indev_drv_tp, true);
+  lv_indev_set_display(indev_drv_tp, disp);
+
+
+  //
+  // start lvgl
+  //
+  ESP_LOGI(TAG, "Creating timer for lvgl-ticks");
+  const esp_timer_create_args_t lvgl_tick_timer_args = {
+      .callback = &tick,
+      .arg = NULL,
+      .dispatch_method = ESP_TIMER_TASK,
+      .name = "lvgl_tick",
+      .skip_unhandled_events = true};
+
+  esp_timer_handle_t lvgl_tick_timer = NULL;
+
+  ESP_ERROR_CHECK(esp_timer_create(&lvgl_tick_timer_args, &lvgl_tick_timer));
+  ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, 2000));
+
+  ESP_LOGI(TAG, "Turning on LCD backlight");
+  gpio_set_level(LCD_PIN_BK_LIGHT, LCD_BK_LIGHT_ON_LEVEL);
+
+    // Initialize Trimix Analyzer screens (creates labels, timers, etc.)
+    ESP_LOGI(TAG, "Initializing Trimix screens");
+    screens_init();
+
+    ESP_LOGI(TAG, "Entering LVGL loop");
+    while (1) {
+        vTaskDelay(20 / portTICK_PERIOD_MS);
+        lv_timer_handler();
+    }
+}
+
+void app_main(void) {
+
+  // start LVGL related calls on core #1.
+  xTaskCreatePinnedToCore(lcd_init, "lcd_init", 8192, NULL, 1, NULL, 1);
+
+  vTaskDelay(portMAX_DELAY);
+}
