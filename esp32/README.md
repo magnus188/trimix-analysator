@@ -2,35 +2,45 @@
 
 This directory contains the ESP32 version of the Trimix Analyzer, converted from the original Raspberry Pi/Kivy implementation to ESP32/LVGL with capacitive touch screen.
 
-## Quick Start with PlatformIO
+## Quick Start with ESP-IDF
 
 ### Prerequisites
-- [PlatformIO IDE](https://platformio.org/platformio-ide) or [PlatformIO Core](https://platformio.org/install/cli)
+- [ESP-IDF v5.1+](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/) installed and configured
 - ESP32-S3 development board with 480x800 touch display
 
 ### Build and Upload
 ```bash
-# Build the project
-pio run
+# Navigate to ESP32 directory
+cd esp32/
 
-# Upload to ESP32
-pio run --target upload
+# Set target (if not set globally)
+idf.py set-target esp32s3
+
+# Build the project
+idf.py build
+
+# Flash to ESP32
+idf.py flash
 
 # Monitor serial output
-pio device monitor
+idf.py monitor
 
-# Build, upload, and monitor in one command
-pio run --target upload && pio device monitor
+# Build, flash, and monitor in one command
+idf.py build flash monitor
 ```
 
-### PlatformIO Project Structure
+### ESP-IDF Project Structure
 ```
 esp32/
-├── platformio.ini          # PlatformIO configuration
-├── partitions.csv          # Custom partition table for large LVGL app
-├── src/                    # Source files (.c)
-├── include/                # Header files (.h)
-├── lib/lv_conf/           # LVGL configuration
+├── CMakeLists.txt           # Main CMake configuration
+├── sdkconfig.defaults       # ESP-IDF configuration defaults
+├── main/                    # Main component source files
+│   ├── main.c              # Application entry point
+│   ├── sensor_interface.c  # Sensor drivers
+│   ├── trimix_screens.c    # LVGL GUI screens
+│   ├── lv_conf.h          # LVGL configuration
+│   ├── idf_component.yml  # Component dependencies
+│   └── CMakeLists.txt     # Component CMake file
 └── README.md              # This file
 ```
 
@@ -156,11 +166,11 @@ idf.py monitor
 ```
 
 ### Dependencies
-The project uses ESP-IDF component manager for dependencies:
+The project uses ESP-IDF component manager for dependencies (defined in `main/idf_component.yml`):
 - `lvgl/lvgl` v9.x - Graphics library
 - `espressif/esp_lcd_touch_gt911` - Touch controller driver
 
-Dependencies are automatically downloaded during build.
+Dependencies are automatically downloaded during the build process.
 
 ## Sensor Calibration
 
