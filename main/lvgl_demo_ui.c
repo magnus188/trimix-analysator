@@ -7,6 +7,9 @@
 #include <math.h>
 #include <lvgl.h>
 
+// Forward declaration (should be in lvgl.h; kept to appease compiler if opaque):
+// void *lv_timer_get_user_data(lv_timer_t * timer);
+
 #ifndef PI
 #define PI  (3.14159f)
 #endif
@@ -31,7 +34,8 @@ static lv_color_t arc_color[] = {
 
 static void anim_timer_cb(lv_timer_t *timer)
 {
-    my_timer_context_t *timer_ctx = (my_timer_context_t *) timer->user_data;
+    // LVGL v9: timer struct is opaque; use accessor to get user data
+    my_timer_context_t *timer_ctx = (my_timer_context_t *) lv_timer_get_user_data(timer);
     int count = timer_ctx->count_val;
     lv_obj_t *scr = timer_ctx->scr;
 
