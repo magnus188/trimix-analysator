@@ -1,6 +1,6 @@
 idf_component_register(
     SRCS 
-        "lvgl9.c"          # Contains app_main()
+        "main.c"          # Contains app_main()
         "trimix_screens.c"  # UI screens
         "sensor_interface.c" # Mock sensor implementation
     INCLUDE_DIRS "."

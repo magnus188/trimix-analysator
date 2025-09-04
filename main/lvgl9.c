@@ -19,7 +19,7 @@
 // (If not needed after full build they can be removed.)
 #include "hardware.h"
 
-#define TAG "lvgl9"
+#define TAG "main"
 
 const i2c_port_t i2c_master_port = I2C_NUM_0;
 
@@ -50,14 +50,32 @@ esp_err_t gt911_init_i2c(void)
     return ESP_OK;
 }
 
+// Simple map helper for touch raw->screen coordinate scaling
 uint16_t gt911_map(uint16_t n, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) { return (n - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; }
+
+// We want the UI in portrait (480x800) while the RGB panel timing remains 800x480.
+// We therefore keep the hardware panel configured as 800x480 (landscape) and
+// apply a 90 degree clockwise rotation in the flush callback. Touch input is
+// transformed the opposite way here to provide correct LVGL coordinates.
+//
+// LVGL logical (portrait) resolution: 480 (X) x 800 (Y)
+// Hardware (panel) resolution:       800 (X) x 480 (Y)
+// Rotation (LVGL->HW): hw_x = lv_y; hw_y = (LVGL_X_MAX - 1) - lv_x
+// Inverse (HW touch->LVGL): lv_x = (LVGL_X_MAX - 1) - hw_y; lv_y = hw_x
+#define LVGL_PORTRAIT_WIDTH  480
+#define LVGL_PORTRAIT_HEIGHT 800
 
 void gt911_process_coordinates(esp_lcd_touch_handle_t tp, uint16_t *x, uint16_t *y, uint16_t *strength, uint8_t *point_num, uint8_t max_point_num)
 {
-    *x = gt911_map(*x, TOUCH_H_RES_MIN, TOUCH_H_RES_MAX, 0, LCD_H_RES);
-    *y = gt911_map(*y, TOUCH_V_RES_MIN, TOUCH_V_RES_MAX, 0, LCD_V_RES);
+    // First scale raw touch space (approx 480x270) to hardware panel space 800x480
+    uint16_t hw_x = gt911_map(*x, TOUCH_H_RES_MIN, TOUCH_H_RES_MAX, 0, LCD_H_RES); // 0..799
+    uint16_t hw_y = gt911_map(*y, TOUCH_V_RES_MIN, TOUCH_V_RES_MAX, 0, LCD_V_RES); // 0..479
 
-    ESP_LOGI(TAG, "Touch X: %d Y: %d\n", *x, *y);
+    // Convert hardware landscape coords to LVGL portrait coords
+    *x = (LVGL_PORTRAIT_WIDTH - 1) - hw_y; // 0..479
+    *y = hw_x;                             // 0..799
+
+    ESP_LOGI(TAG, "Touch (lvgl) X: %d Y: %d (hw_x=%d hw_y=%d)\n", *x, *y, hw_x, hw_y);
 }
 
 void gt911_touch_init(esp_lcd_touch_handle_t *tp)
@@ -129,15 +147,64 @@ static void gt911_touchpad_read(lv_indev_t *indev_drv, lv_indev_data_t *data)
 */
 static void lcd_lvgl_flush_cb(lv_display_t *drv, const lv_area_t *area, unsigned char *color_map)
 {
+  // LVGL gives us an area in portrait coordinates (480x800).
+  // We must rotate this 90 deg CW and flush to the 800x480 panel.
   esp_lcd_panel_handle_t panel_handle = (esp_lcd_panel_handle_t)lv_display_get_user_data(drv);
 
-  int offsetx1 = area->x1;
-  int offsetx2 = area->x2;
-  int offsety1 = area->y1;
-  int offsety2 = area->y2;
+  int lv_x1 = area->x1;
+  int lv_y1 = area->y1;
+  int lv_x2 = area->x2;
+  int lv_y2 = area->y2;
 
-  esp_lcd_panel_draw_bitmap(panel_handle, offsetx1, offsety1, offsetx2 + 1, offsety2 + 1, color_map);
+  int w = lv_x2 - lv_x1 + 1;
+  int h = lv_y2 - lv_y1 + 1;
 
+  // Destination (hardware) rectangle after rotation
+  // hw_x = lv_y; hw_y = (LVGL_PORTRAIT_WIDTH - 1) - lv_x
+  int hw_x1 = lv_y1;
+  int hw_x2 = lv_y2;
+  int hw_y1 = (LVGL_PORTRAIT_WIDTH - 1) - lv_x2;
+  int hw_y2 = (LVGL_PORTRAIT_WIDTH - 1) - lv_x1;
+
+  const int bytes_per_pixel = LV_COLOR_DEPTH / 8; // Expect 2 for RGB565
+  int rotated_w = hw_x2 - hw_x1 + 1; // should equal h
+  int rotated_h = hw_y2 - hw_y1 + 1; // should equal w
+
+  // Allocate a temporary buffer for rotated block (in PSRAM if possible)
+  size_t buf_size = rotated_w * rotated_h * bytes_per_pixel;
+  void *rot_buf = heap_caps_malloc(buf_size, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+  if(!rot_buf) {
+      ESP_LOGE(TAG, "Rotation buffer alloc failed (%d x %d)", rotated_w, rotated_h);
+      // Fallback: flush nothing to avoid crash, but mark ready
+      lv_disp_flush_ready(drv);
+      return;
+  }
+
+  // Perform rotation (src: portrait, dst: landscape rotated)
+  // Iterate LVGL portrait area and place into rotated buffer at (dst_x,dst_y)
+  // where dst width = rotated_w (=h), dst height = rotated_h (=w)
+  uint8_t *dst = (uint8_t *)rot_buf;
+  const uint8_t *src = (const uint8_t *)color_map;
+  for(int y = 0; y < h; ++y) {
+      for(int x = 0; x < w; ++x) {
+          // LVGL pixel index
+          int src_index = (y * w + x) * bytes_per_pixel;
+          // Portrait -> landscape rotation mapping inside the block:
+          // local lv coords -> global -> rotated local coords
+          // local lv (x,y) corresponds to global (lv_x1+x, lv_y1+y)
+          // global rotated: hw_x = lv_y1 + y; hw_y = (LVGL_PORTRAIT_WIDTH -1) - (lv_x1 + x)
+          // Local rotated within block:
+          int dst_x = y;                // along width rotated_w
+          int dst_y = (w - 1) - x;      // along height rotated_h
+          int dst_index = (dst_y * rotated_w + dst_x) * bytes_per_pixel;
+          memcpy(dst + dst_index, src + src_index, bytes_per_pixel);
+      }
+  }
+
+  // Flush rotated buffer to hardware panel
+  esp_lcd_panel_draw_bitmap(panel_handle, hw_x1, hw_y1, hw_x2 + 1, hw_y2 + 1, rot_buf);
+
+  heap_caps_free(rot_buf);
   lv_disp_flush_ready(drv);
 }
 
@@ -219,15 +286,16 @@ void lcd_init(void *)
   ESP_LOGI(TAG, "Initialize LVGL library");
   lv_init();
 
-  ESP_LOGI(TAG, "Allocating LVGL buffers from PSRAM");
-  void *buf1 = heap_caps_malloc(LCD_H_RES * LCD_V_RES / 10, MALLOC_CAP_SPIRAM);
+    ESP_LOGI(TAG, "Allocating LVGL buffers from PSRAM (portrait logical %dx%d)", LVGL_PORTRAIT_WIDTH, LVGL_PORTRAIT_HEIGHT);
+    // Use portrait logical dimensions for buffer sizing (partial mode ~10%)
+    void *buf1 = heap_caps_malloc(LVGL_PORTRAIT_WIDTH * LVGL_PORTRAIT_HEIGHT / 10, MALLOC_CAP_SPIRAM);
   assert(buf1);
-  void *buf2 = heap_caps_malloc(LCD_H_RES * LCD_V_RES / 10, MALLOC_CAP_SPIRAM);
+    void *buf2 = heap_caps_malloc(LVGL_PORTRAIT_WIDTH * LVGL_PORTRAIT_HEIGHT / 10, MALLOC_CAP_SPIRAM);
   assert(buf2);
 
   ESP_LOGI(TAG, "Register buffers and display callback with LVGL");
-  disp = lv_display_create(LCD_H_RES, LCD_V_RES);
-  lv_display_set_buffers(disp, buf1, buf2, LCD_H_RES * LCD_V_RES / 10, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    disp = lv_display_create(LVGL_PORTRAIT_WIDTH, LVGL_PORTRAIT_HEIGHT);
+    lv_display_set_buffers(disp, buf1, buf2, LVGL_PORTRAIT_WIDTH * LVGL_PORTRAIT_HEIGHT / 10, LV_DISPLAY_RENDER_MODE_PARTIAL);
   lv_display_set_user_data(disp, panel_handle);
   lv_display_set_flush_cb(disp, lcd_lvgl_flush_cb);
 
