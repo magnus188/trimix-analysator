@@ -7,7 +7,7 @@ This directory contains the ESP32 version of the Trimix Analyzer, converted from
 ### ESP32 Board
 - **ESP32-S3** microcontroller (recommended for PSRAM support)
 - **Sunton ESP32-8048S043** development board or compatible
-- **800x480 pixel capacitive touch display** with GT911 touch controller
+- **480x800 pixel capacitive touch display** (portrait orientation) with GT911 touch controller
 
 ### Sensors
 - **ADS1115** 16-bit ADC for analog sensors (I2C address: 0x48)
@@ -68,7 +68,7 @@ GND             │ Sensor GND, Touch GND
 
 ### Original vs ESP32
 - **Original**: 480x800 portrait (Raspberry Pi)
-- **ESP32**: 800x480 landscape (ESP32-8048S043)
+- **ESP32**: 480x800 portrait (matching original orientation)
 - **Framework**: Kivy → LVGL
 - **Touch**: Resistive → Capacitive (GT911)
 

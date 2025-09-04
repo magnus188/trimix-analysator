@@ -84,10 +84,10 @@ static lv_obj_t *create_navbar(lv_obj_t *parent) {
     return navbar;
 }
 
-// Helper function to create sensor card
+// Helper function to create sensor card (optimized for portrait)
 static lv_obj_t *create_sensor_card(lv_obj_t *parent, const char *title, const char *value, const char *unit, lv_color_t color) {
     lv_obj_t *card = lv_obj_create(parent);
-    lv_obj_set_size(card, 180, 100);
+    lv_obj_set_size(card, 200, 120); // Slightly larger for portrait layout
     lv_obj_set_style_bg_color(card, color, 0);
     lv_obj_set_style_border_width(card, 2, 0);
     lv_obj_set_style_border_color(card, lv_color_white(), 0);
@@ -127,14 +127,14 @@ lv_obj_t *create_home_screen(void) {
     lv_obj_set_style_text_color(version, lv_color_hex(0x888888), 0);
     lv_obj_align(version, LV_ALIGN_TOP_MID, 0, 55);
     
-    // Menu grid
+    // Menu grid (optimized for portrait)
     lv_obj_t *menu_container = lv_obj_create(screen);
-    lv_obj_set_size(menu_container, LV_PCT(90), 280);
+    lv_obj_set_size(menu_container, LV_PCT(85), 400); // Taller for portrait
     lv_obj_center(menu_container);
     lv_obj_set_style_bg_opa(menu_container, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(menu_container, 0, 0);
     lv_obj_set_flex_flow(menu_container, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_style_pad_gap(menu_container, 20, 0);
+    lv_obj_set_style_pad_gap(menu_container, 25, 0);
     
     // Analyze button (main action)
     lv_obj_t *btn_analyze = lv_btn_create(menu_container);
@@ -166,11 +166,11 @@ lv_obj_t *create_home_screen(void) {
     lv_obj_set_style_text_font(settings_label, &lv_font_montserrat_16, 0);
     lv_obj_center(settings_label);
     
-    // Status information
+    // Status information (positioned for portrait)
     lv_obj_t *status = lv_label_create(screen);
     lv_label_set_text(status, "Status: Ready");
     lv_obj_set_style_text_color(status, COLOR_SECONDARY, 0);
-    lv_obj_align(status, LV_ALIGN_BOTTOM_MID, 0, -80);
+    lv_obj_align(status, LV_ALIGN_BOTTOM_MID, 0, -120); // More space for navbar
     
     return screen;
 }
@@ -186,15 +186,15 @@ lv_obj_t *create_analyze_screen(void) {
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
     
-    // Sensor grid container
+    // Sensor grid container (optimized for portrait layout)
     lv_obj_t *grid_container = lv_obj_create(screen);
-    lv_obj_set_size(grid_container, LV_PCT(95), 320);
-    lv_obj_align(grid_container, LV_ALIGN_CENTER, 0, -20);
+    lv_obj_set_size(grid_container, LV_PCT(90), 600); // Much taller for portrait
+    lv_obj_align(grid_container, LV_ALIGN_CENTER, 0, 20); // Move down to accommodate title
     lv_obj_set_style_bg_opa(grid_container, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(grid_container, 0, 0);
     lv_obj_set_layout(grid_container, LV_LAYOUT_GRID);
     
-    // Configure grid: 2 columns, 3 rows
+    // Configure grid: 2 columns, 3 rows (better for portrait)
     static int32_t col_dsc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
     static int32_t row_dsc[] = {LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST};
     lv_obj_set_grid_dsc_array(grid_container, col_dsc, row_dsc);
@@ -311,14 +311,14 @@ lv_obj_t *create_settings_screen(void) {
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
     
-    // Settings menu container
+    // Settings menu container (optimized for portrait)
     lv_obj_t *menu_container = lv_obj_create(screen);
-    lv_obj_set_size(menu_container, LV_PCT(90), 300);
+    lv_obj_set_size(menu_container, LV_PCT(85), 450); // Taller for portrait
     lv_obj_center(menu_container);
     lv_obj_set_style_bg_opa(menu_container, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(menu_container, 0, 0);
     lv_obj_set_flex_flow(menu_container, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_style_pad_gap(menu_container, 15, 0);
+    lv_obj_set_style_pad_gap(menu_container, 20, 0);
     
     // O2 Calibration button
     lv_obj_t *btn_calibrate = lv_btn_create(menu_container);

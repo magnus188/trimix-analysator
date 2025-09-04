@@ -4,15 +4,15 @@
 // Hardware configuration for ESP32-8048S043 board (Trimix Analyzer)
 //
 
-// Display resolution (landscape mode)
-#define LCD_H_RES 800
-#define LCD_V_RES 480
+// Display resolution (portrait mode)
+#define LCD_H_RES 480
+#define LCD_V_RES 800
 
-// Touch screen calibration 
+// Touch screen calibration (portrait orientation)
 #define TOUCH_H_RES_MIN 0
-#define TOUCH_H_RES_MAX 477
+#define TOUCH_H_RES_MAX 269
 #define TOUCH_V_RES_MIN 0
-#define TOUCH_V_RES_MAX 269
+#define TOUCH_V_RES_MAX 477
 
 // LCD timing
 #define LCD_PIXEL_CLOCK_HZ (18 * 1000 * 1000)
