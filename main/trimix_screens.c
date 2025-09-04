@@ -31,6 +31,42 @@ static esp_timer_handle_t sensor_update_timer;
 static void sensor_update_callback(void *arg);
 
 // Helper function to create navigation bar
+// Forward navigation function prototypes (implemented later)
+void navigate_to_home(void);
+void navigate_to_analyze(void);
+void navigate_to_settings(void);
+void navigate_to_calibrate_o2(void);
+
+// Event callbacks (C, not C++ lambdas)
+static void event_go_home(lv_event_t *e) {
+    if (lv_event_get_code(e) == LV_EVENT_CLICKED) navigate_to_home();
+}
+static void event_go_analyze(lv_event_t *e) {
+    if (lv_event_get_code(e) == LV_EVENT_CLICKED) navigate_to_analyze();
+}
+static void event_go_settings(lv_event_t *e) {
+    if (lv_event_get_code(e) == LV_EVENT_CLICKED) navigate_to_settings();
+}
+static void event_go_calibrate_o2(lv_event_t *e) {
+    if (lv_event_get_code(e) == LV_EVENT_CLICKED) navigate_to_calibrate_o2();
+}
+static void event_do_o2_calibration(lv_event_t *e) {
+    if (lv_event_get_code(e) != LV_EVENT_CLICKED) return;
+    esp_err_t ret = sensor_calibrate_oxygen_air();
+    if (ret == ESP_OK) {
+        ESP_LOGI(TAG, "O2 calibration completed");
+        lv_obj_t *msg = lv_label_create(lv_scr_act());
+        lv_label_set_text(msg, "Calibration Complete!");
+        lv_obj_set_style_text_color(msg, COLOR_SECONDARY, 0);
+        lv_obj_align(msg, LV_ALIGN_CENTER, 0, 120);
+    } else {
+        ESP_LOGE(TAG, "O2 calibration failed");
+    }
+}
+static void event_back_to_settings(lv_event_t *e) {
+    if (lv_event_get_code(e) == LV_EVENT_CLICKED) navigate_to_settings();
+}
+
 static lv_obj_t *create_navbar(lv_obj_t *parent) {
     lv_obj_t *navbar = lv_obj_create(parent);
     lv_obj_set_size(navbar, LV_PCT(100), 60);
@@ -43,11 +79,7 @@ static lv_obj_t *create_navbar(lv_obj_t *parent) {
     lv_obj_t *btn_home = lv_btn_create(navbar);
     lv_obj_set_size(btn_home, 80, 40);
     lv_obj_align(btn_home, LV_ALIGN_LEFT_MID, 10, 0);
-    lv_obj_add_event_cb(btn_home, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_home();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_home, event_go_home, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *label_home = lv_label_create(btn_home);
     lv_label_set_text(label_home, "Home");
@@ -57,11 +89,7 @@ static lv_obj_t *create_navbar(lv_obj_t *parent) {
     lv_obj_t *btn_analyze = lv_btn_create(navbar);
     lv_obj_set_size(btn_analyze, 80, 40);
     lv_obj_align(btn_analyze, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_add_event_cb(btn_analyze, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_analyze();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_analyze, event_go_analyze, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *label_analyze = lv_label_create(btn_analyze);
     lv_label_set_text(label_analyze, "Analyze");
@@ -71,11 +99,7 @@ static lv_obj_t *create_navbar(lv_obj_t *parent) {
     lv_obj_t *btn_settings = lv_btn_create(navbar);
     lv_obj_set_size(btn_settings, 80, 40);
     lv_obj_align(btn_settings, LV_ALIGN_RIGHT_MID, -10, 0);
-    lv_obj_add_event_cb(btn_settings, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_settings();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_settings, event_go_settings, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *label_settings = lv_label_create(btn_settings);
     lv_label_set_text(label_settings, "Settings");
@@ -104,7 +128,7 @@ static lv_obj_t *create_sensor_card(lv_obj_t *parent, const char *title, const c
     lv_obj_t *value_label = lv_label_create(card);
     lv_label_set_text_fmt(value_label, "%s %s", value, unit);
     lv_obj_set_style_text_color(value_label, lv_color_white(), 0);
-    lv_obj_set_style_text_font(value_label, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(value_label, &lv_font_montserrat_14, 0);
     lv_obj_align(value_label, LV_ALIGN_CENTER, 0, 5);
     
     return value_label; // Return the value label for updates
@@ -117,7 +141,7 @@ lv_obj_t *create_home_screen(void) {
     // Title
     lv_obj_t *title = lv_label_create(screen);
     lv_label_set_text(title, "Trimix Analyzer");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_24, 0);
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_14, 0);
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 20);
     
@@ -140,30 +164,22 @@ lv_obj_t *create_home_screen(void) {
     lv_obj_t *btn_analyze = lv_btn_create(menu_container);
     lv_obj_set_size(btn_analyze, LV_PCT(100), 80);
     lv_obj_set_style_bg_color(btn_analyze, COLOR_SECONDARY, 0);
-    lv_obj_add_event_cb(btn_analyze, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_analyze();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_analyze, event_go_analyze, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *analyze_label = lv_label_create(btn_analyze);
     lv_label_set_text(analyze_label, "Start Analysis");
-    lv_obj_set_style_text_font(analyze_label, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(analyze_label, &lv_font_montserrat_14, 0);
     lv_obj_center(analyze_label);
     
     // Settings button
     lv_obj_t *btn_settings = lv_btn_create(menu_container);
     lv_obj_set_size(btn_settings, LV_PCT(100), 60);
     lv_obj_set_style_bg_color(btn_settings, COLOR_PRIMARY, 0);
-    lv_obj_add_event_cb(btn_settings, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_settings();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_settings, event_go_settings, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *settings_label = lv_label_create(btn_settings);
     lv_label_set_text(settings_label, "Settings & Calibration");
-    lv_obj_set_style_text_font(settings_label, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(settings_label, &lv_font_montserrat_14, 0);
     lv_obj_center(settings_label);
     
     // Status information (positioned for portrait)
@@ -182,7 +198,7 @@ lv_obj_t *create_analyze_screen(void) {
     // Title
     lv_obj_t *title = lv_label_create(screen);
     lv_label_set_text(title, "Real-time Analysis");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_14, 0);
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
     
@@ -215,7 +231,7 @@ lv_obj_t *create_analyze_screen(void) {
     label_o2 = lv_label_create(o2_card);
     lv_label_set_text(label_o2, "20.9 %");
     lv_obj_set_style_text_color(label_o2, lv_color_white(), 0);
-    lv_obj_set_style_text_font(label_o2, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(label_o2, &lv_font_montserrat_14, 0);
     lv_obj_align(label_o2, LV_ALIGN_CENTER, 0, 5);
     
     // CO2 card
@@ -234,7 +250,7 @@ lv_obj_t *create_analyze_screen(void) {
     label_co2 = lv_label_create(co2_card);
     lv_label_set_text(label_co2, "400 ppm");
     lv_obj_set_style_text_color(label_co2, lv_color_white(), 0);
-    lv_obj_set_style_text_font(label_co2, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(label_co2, &lv_font_montserrat_14, 0);
     lv_obj_align(label_co2, LV_ALIGN_CENTER, 0, 5);
     
     // Temperature card
@@ -253,7 +269,7 @@ lv_obj_t *create_analyze_screen(void) {
     label_temp = lv_label_create(temp_card);
     lv_label_set_text(label_temp, "22.5 °C");
     lv_obj_set_style_text_color(label_temp, lv_color_white(), 0);
-    lv_obj_set_style_text_font(label_temp, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(label_temp, &lv_font_montserrat_14, 0);
     lv_obj_align(label_temp, LV_ALIGN_CENTER, 0, 5);
     
     // Pressure card
@@ -272,7 +288,7 @@ lv_obj_t *create_analyze_screen(void) {
     label_pressure = lv_label_create(press_card);
     lv_label_set_text(label_pressure, "1.01 bar");
     lv_obj_set_style_text_color(label_pressure, lv_color_white(), 0);
-    lv_obj_set_style_text_font(label_pressure, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(label_pressure, &lv_font_montserrat_14, 0);
     lv_obj_align(label_pressure, LV_ALIGN_CENTER, 0, 5);
     
     // Humidity card (spans both columns)
@@ -291,7 +307,7 @@ lv_obj_t *create_analyze_screen(void) {
     label_humidity = lv_label_create(hum_card);
     lv_label_set_text(label_humidity, "45.2 %");
     lv_obj_set_style_text_color(label_humidity, lv_color_white(), 0);
-    lv_obj_set_style_text_font(label_humidity, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(label_humidity, &lv_font_montserrat_14, 0);
     lv_obj_align(label_humidity, LV_ALIGN_CENTER, 0, 5);
     
     // Create navigation bar
@@ -307,7 +323,7 @@ lv_obj_t *create_settings_screen(void) {
     // Title
     lv_obj_t *title = lv_label_create(screen);
     lv_label_set_text(title, "Settings");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_14, 0);
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
     
@@ -324,15 +340,11 @@ lv_obj_t *create_settings_screen(void) {
     lv_obj_t *btn_calibrate = lv_btn_create(menu_container);
     lv_obj_set_size(btn_calibrate, LV_PCT(100), 60);
     lv_obj_set_style_bg_color(btn_calibrate, COLOR_SECONDARY, 0);
-    lv_obj_add_event_cb(btn_calibrate, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_calibrate_o2();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_calibrate, event_go_calibrate_o2, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *calibrate_label = lv_label_create(btn_calibrate);
     lv_label_set_text(calibrate_label, "O2 Sensor Calibration");
-    lv_obj_set_style_text_font(calibrate_label, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(calibrate_label, &lv_font_montserrat_14, 0);
     lv_obj_center(calibrate_label);
     
     // System Info button (placeholder)
@@ -342,7 +354,7 @@ lv_obj_t *create_settings_screen(void) {
     
     lv_obj_t *sysinfo_label = lv_label_create(btn_sysinfo);
     lv_label_set_text(sysinfo_label, "System Information");
-    lv_obj_set_style_text_font(sysinfo_label, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(sysinfo_label, &lv_font_montserrat_14, 0);
     lv_obj_center(sysinfo_label);
     
     // About button (placeholder)
@@ -352,7 +364,7 @@ lv_obj_t *create_settings_screen(void) {
     
     lv_obj_t *about_label = lv_label_create(btn_about);
     lv_label_set_text(about_label, "About");
-    lv_obj_set_style_text_font(about_label, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(about_label, &lv_font_montserrat_14, 0);
     lv_obj_center(about_label);
     
     // Create navigation bar
@@ -368,7 +380,7 @@ lv_obj_t *create_calibrate_o2_screen(void) {
     // Title
     lv_obj_t *title = lv_label_create(screen);
     lv_label_set_text(title, "O2 Calibration");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_14, 0);
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 10);
     
@@ -385,7 +397,7 @@ lv_obj_t *create_calibrate_o2_screen(void) {
     // Current reading display
     lv_obj_t *current_reading = lv_label_create(screen);
     lv_label_set_text(current_reading, "Current: 20.9% O2");
-    lv_obj_set_style_text_font(current_reading, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_font(current_reading, &lv_font_montserrat_14, 0);
     lv_obj_set_style_text_color(current_reading, COLOR_SECONDARY, 0);
     lv_obj_align(current_reading, LV_ALIGN_CENTER, 0, 0);
     
@@ -394,26 +406,11 @@ lv_obj_t *create_calibrate_o2_screen(void) {
     lv_obj_set_size(btn_calibrate, 200, 60);
     lv_obj_align(btn_calibrate, LV_ALIGN_CENTER, 0, 60);
     lv_obj_set_style_bg_color(btn_calibrate, COLOR_SECONDARY, 0);
-    lv_obj_add_event_cb(btn_calibrate, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            // Perform calibration
-            esp_err_t ret = sensor_calibrate_oxygen_air();
-            if (ret == ESP_OK) {
-                ESP_LOGI(TAG, "O2 calibration completed");
-                // Show success message
-                lv_obj_t *msg = lv_label_create(lv_scr_act());
-                lv_label_set_text(msg, "Calibration Complete!");
-                lv_obj_set_style_text_color(msg, COLOR_SECONDARY, 0);
-                lv_obj_align(msg, LV_ALIGN_CENTER, 0, 120);
-            } else {
-                ESP_LOGE(TAG, "O2 calibration failed");
-            }
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_calibrate, event_do_o2_calibration, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *calibrate_label = lv_label_create(btn_calibrate);
     lv_label_set_text(calibrate_label, "Calibrate Now");
-    lv_obj_set_style_text_font(calibrate_label, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_font(calibrate_label, &lv_font_montserrat_14, 0);
     lv_obj_center(calibrate_label);
     
     // Back button
@@ -421,11 +418,7 @@ lv_obj_t *create_calibrate_o2_screen(void) {
     lv_obj_set_size(btn_back, 100, 40);
     lv_obj_align(btn_back, LV_ALIGN_BOTTOM_LEFT, 10, -10);
     lv_obj_set_style_bg_color(btn_back, COLOR_PRIMARY, 0);
-    lv_obj_add_event_cb(btn_back, [](lv_event_t *e) {
-        if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-            navigate_to_settings();
-        }
-    }, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(btn_back, event_back_to_settings, LV_EVENT_CLICKED, NULL);
     
     lv_obj_t *back_label = lv_label_create(btn_back);
     lv_label_set_text(back_label, "Back");
@@ -499,19 +492,8 @@ screen_id_t screen_manager_current(void) {
     return current_screen;
 }
 
-// Navigation functions
-void navigate_to_home(void) {
-    screen_manager_show(SCREEN_HOME);
-}
-
-void navigate_to_analyze(void) {
-    screen_manager_show(SCREEN_ANALYZE);
-}
-
-void navigate_to_settings(void) {
-    screen_manager_show(SCREEN_SETTINGS);
-}
-
-void navigate_to_calibrate_o2(void) {
-    screen_manager_show(SCREEN_CALIBRATE_O2);
-}
+// Navigation helper implementations (single definitions)
+void navigate_to_home(void) { screen_manager_show(SCREEN_HOME); }
+void navigate_to_analyze(void) { screen_manager_show(SCREEN_ANALYZE); }
+void navigate_to_settings(void) { screen_manager_show(SCREEN_SETTINGS); }
+void navigate_to_calibrate_o2(void) { screen_manager_show(SCREEN_CALIBRATE_O2); }

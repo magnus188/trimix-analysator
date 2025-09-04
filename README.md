@@ -1,230 +1,291 @@
-# Trimix Analyzer - ESP32
+# Trimix Analyzer ESP32 Conversion
 
-A modern ESP32-based gas analyzer for trimix diving gas mixtures, featuring real-time O2, CO2, temperature, pressure, and humidity monitoring with a capacitive touch screen interface.
+This directory contains the ESP32 version of the Trimix Analyzer, converted from the original Raspberry Pi/Kivy implementation to ESP32/LVGL with capacitive touch screen.
 
-## 🎯 Overview
-
-This ESP32 implementation provides a compact, efficient, and cost-effective solution for analyzing diving gas mixtures. Built with the ESP32-S3 microcontroller and LVGL GUI framework, it delivers professional-grade performance in a portable package.
-
-## ✨ Features
-
-- **Real-time Monitoring**: O2, CO2, temperature, pressure, and humidity sensors
-- **Touch Interface**: 480x800 capacitive touch screen (portrait orientation)
-- **Fast Performance**: <5 second boot time, responsive touch interface
-- **Low Power**: ~300mA @ 5V power consumption
-- **Compact Design**: Embedded microcontroller solution
-- **Professional GUI**: Modern LVGL-based interface with smooth animations
-
-## 🛠️ Hardware Requirements
-
-### Core Components
-- **ESP32-S3 Development Board** (ESP32-8048S043 recommended)
-- **4.3" Capacitive Touch Display** (480x800, GT911 touch controller)
-- **Sensors:**
-  - ADS1115 16-bit ADC (I2C address: 0x48)
-  - BME280 temperature/pressure/humidity sensor (I2C address: 0x76/0x77)
-  - O2 sensor (analog, connected to ADS1115 channel 0)
-  - CO2 sensor (analog, connected to ADS1115 channel 1)
-
-### Wiring Diagram
-```
-ESP32-S3 <-> Sensors
-GPIO 8 (SDA)  <-> ADS1115 SDA, BME280 SDA
-GPIO 9 (SCL)  <-> ADS1115 SCL, BME280 SCL
-3.3V          <-> Sensor VCC
-GND           <-> Sensor GND
-```
-
-## 🚀 Quick Start
+## Quick Start with ESP-IDF
 
 ### Prerequisites
-- ESP-IDF v5.0 or later
-- ESP32-S3 development board
-- USB-C cable for programming and power
+- [ESP-IDF v5.1+](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/) installed and configured
+- ESP32-S3 development board with 480x800 touch display
 
-### Build and Flash
-
+### Build and Upload
 ```bash
-# Clone the repository
-git clone https://github.com/magnus188/trimix-analysator.git
-cd trimix-analysator/esp32
+# Navigate to ESP32 directory
+cd esp32/
 
-# Set target and configure
+# Set target (if not set globally)
 idf.py set-target esp32s3
-idf.py menuconfig  # Optional: customize configuration
 
-# Build and flash
+# Build the project
+idf.py build
+
+# Flash to ESP32
+idf.py flash
+
+# Monitor serial output
+idf.py monitor
+
+# Build, flash, and monitor in one command
 idf.py build flash monitor
 ```
 
-### First Boot
-1. Connect your ESP32-S3 board via USB-C
-2. Flash the firmware using the commands above
-3. The device will boot and display the main screen
-4. Navigate through the interface using touch gestures
-
-## 📱 User Interface
-
-The ESP32 implementation features three main screens optimized for portrait mode:
-
-### Home Screen
-- Navigation buttons for Analyze and Settings
-- System status indicators
-- Quick access to core functions
-
-### Analyze Screen
-- Real-time sensor readings in a 2x3 grid layout
-- Large, easy-to-read values with units
-- Color-coded status indicators
-- Automatic refresh every second
-
-### Settings Screen
-- Sensor calibration options
-- Display configuration
-- System information
-- Calibration workflows
-
-## 🏗️ Architecture
-
-### Software Stack
-- **Framework**: ESP-IDF + LVGL
-- **Language**: C/C++
-- **Display**: LVGL graphics library
-- **Sensors**: I2C communication
-- **Touch**: Capacitive touch with gesture support
-
-### Project Structure
+### ESP-IDF Project Structure
 ```
 esp32/
-├── main/
-│   ├── main.c                 # Application entry point
-│   ├── trimix_screens.c       # GUI screens implementation
-│   ├── sensor_interface.c     # Hardware abstraction layer
-│   ├── hardware.h             # Hardware pin definitions
-│   └── lv_conf.h             # LVGL configuration
-├── CMakeLists.txt            # Build configuration
-├── sdkconfig.defaults        # ESP32 configuration
-└── README.md                 # Detailed documentation
+├── CMakeLists.txt           # Main CMake configuration
+├── sdkconfig.defaults       # ESP-IDF configuration defaults
+├── main/                    # Main component source files
+│   ├── main.c              # Application entry point
+│   ├── sensor_interface.c  # Sensor drivers
+│   ├── trimix_screens.c    # LVGL GUI screens
+│   ├── lv_conf.h          # LVGL configuration
+│   ├── idf_component.yml  # Component dependencies
+│   └── CMakeLists.txt     # Component CMake file
+└── README.md              # This file
 ```
 
-## ⚙️ Configuration
+## Hardware Requirements
 
-### Display Settings
-- **Resolution**: 480x800 (portrait)
-- **Touch Controller**: GT911 capacitive
-- **Interface**: RGB parallel
-- **Backlight**: PWM controlled
+### ESP32 Board
+- **ESP32-S3** microcontroller (recommended for PSRAM support)
+- **Sunton ESP32-8048S043** development board or compatible
+- **480x800 pixel capacitive touch display** (portrait orientation) with GT911 touch controller
 
-### Sensor Configuration
-- **I2C Frequency**: 100kHz
-- **Sampling Rate**: 1Hz (configurable)
-- **Calibration**: Built-in calibration workflows
-- **Accuracy**: 16-bit ADC resolution
+### Sensors
+- **ADS1115** 16-bit ADC for analog sensors (I2C address: 0x48)
+- **BME280** environmental sensor for temperature, pressure, humidity (I2C address: 0x76/0x77)
+- **O2 sensor** (analog output connected to ADS1115 channel 0)
+- **CO2 sensor** (analog output connected to ADS1115 channel 1)
 
-## 🧪 Development
+### Wiring Diagram
+```
+ESP32-S3 Pin    │ Connection
+─────────────────┼─────────────────────────────
+GPIO 11         │ Sensor I2C SDA
+GPIO 12         │ Sensor I2C SCL  
+GPIO 36         │ O2 sensor analog (via ADS1115)
+GPIO 37         │ CO2 sensor analog (via ADS1115)
+GPIO 19         │ Touch I2C SDA (GT911)
+GPIO 20         │ Touch I2C SCL (GT911)
+GPIO 18         │ Touch interrupt (GT911)
+GPIO 38         │ Touch reset (GT911)
+3.3V            │ Sensor VCC, Touch VCC
+GND             │ Sensor GND, Touch GND
+```
 
-### Debugging
+## Software Architecture
+
+### Framework Migration
+- **From**: Python + Kivy framework
+- **To**: C/C++ + LVGL (Light and Versatile Graphics Library)
+- **RTOS**: FreeRTOS (ESP-IDF)
+
+### Key Components
+
+#### 1. Main Application (`main.c`)
+- Hardware initialization (LCD, touch, I2C)
+- LVGL setup and configuration
+- Touch screen calibration and input handling
+- Main application loop
+
+#### 2. Sensor Interface (`sensor_interface.c/h`)
+- Abstracted sensor reading functions
+- BME280 driver implementation
+- ADC reading for analog sensors (O2, CO2)
+- Sensor calibration management
+
+#### 3. Screen Management (`trimix_screens.c/h`)
+- LVGL-based UI screens matching original Kivy design
+- Navigation between screens
+- Real-time sensor data display
+- Settings and calibration interfaces
+
+#### 4. Hardware Configuration (`hardware.h`)
+- GPIO pin definitions
+- Display timing parameters
+- I2C bus configuration
+- Touch screen settings
+
+## Display Configuration
+
+### Original vs ESP32
+- **Original**: 480x800 portrait (Raspberry Pi)
+- **ESP32**: 480x800 portrait (matching original orientation)
+- **Framework**: Kivy → LVGL
+- **Touch**: Resistive → Capacitive (GT911)
+
+### Screen Adaptation
+All original Kivy screens have been recreated in LVGL:
+
+1. **Home Screen**
+   - Main menu with navigation buttons
+   - System status display
+   - Version information
+
+2. **Analyze Screen**
+   - Real-time sensor readings in grid layout
+   - Color-coded sensor cards
+   - Auto-updating values (2-second intervals)
+
+3. **Settings Screen**
+   - Sensor calibration options
+   - System configuration
+   - About information
+
+4. **Calibration Screen**
+   - O2 sensor calibration workflow
+   - Real-time readings during calibration
+   - Calibration confirmation
+
+## Building and Flashing
+
+### Prerequisites
+- **ESP-IDF v5.1+** installed and configured
+- **ESP32-S3** toolchain
+- USB-C cable for programming
+
+### Build Steps
 ```bash
-# View real-time logs
+# Navigate to ESP32 directory
+cd esp32/
+
+# Set target (if not set globally)
+idf.py set-target esp32s3
+
+# Configure project (optional)
+idf.py menuconfig
+
+# Build project
+idf.py build
+
+# Flash to device
+idf.py flash
+
+# Monitor output
 idf.py monitor
-
-# Flash and monitor in one command
-idf.py flash monitor
-
-# Clean build
-idf.py fullclean
 ```
 
-### Customization
-- Modify `hardware.h` for different pin configurations
-- Adjust `lv_conf.h` for LVGL customization
-- Update sensor parameters in `sensor_interface.c`
+### Dependencies
+The project uses ESP-IDF component manager for dependencies (defined in `main/idf_component.yml`):
+- `lvgl/lvgl` v9.x - Graphics library
+- `espressif/esp_lcd_touch_gt911` - Touch controller driver
 
-## 🔧 Troubleshooting
+Dependencies are automatically downloaded during the build process.
+
+## Sensor Calibration
+
+### O2 Sensor Calibration
+1. Navigate to Settings → O2 Calibration
+2. Ensure sensor is exposed to normal air (20.9% O2)
+3. Wait for readings to stabilize
+4. Press "Calibrate Now" button
+5. Calibration data is stored in flash memory
+
+### CO2 Sensor Setup
+- Default range: 0-5000 ppm
+- Voltage range: 0-3.3V
+- Calibration: Adjustable zero and span points
+
+## Performance Characteristics
+
+### Memory Usage
+- **Flash**: ~2MB (application + LVGL)
+- **RAM**: ~500KB (display buffers + application)
+- **PSRAM**: ~384KB (LVGL buffers)
+
+### Update Rates
+- **Sensor readings**: 2 seconds
+- **Display refresh**: 30 FPS
+- **Touch response**: <50ms
+
+### Power Consumption
+- **Active display**: ~300mA @ 5V
+- **Idle**: ~150mA @ 5V
+- **Sleep mode**: <1mA @ 5V (future enhancement)
+
+## Differences from Original
+
+### Enhanced Features
+1. **Higher resolution display** (800x480 vs 480x800)
+2. **Capacitive touch** (more responsive than resistive)
+3. **Hardware acceleration** (RGB parallel interface)
+4. **Lower power consumption** (compared to Raspberry Pi)
+5. **Faster boot time** (<5 seconds vs ~30 seconds)
+
+### Limitations
+1. **No WiFi implementation** (yet - planned for future)
+2. **No update manager** (OTA updates planned)
+3. **Simplified settings** (core functionality only)
+4. **No file system** (settings stored in NVS)
+
+## Development Notes
+
+### Code Organization
+- Maintains similar structure to original Python code
+- Sensor interface abstraction allows easy testing
+- Modular screen design for easy extension
+- Hardware abstraction for different ESP32 boards
+
+### Testing Strategy
+- Hardware-in-the-loop testing with real sensors
+- Mock sensor data for development
+- LVGL simulator support (future)
+- Unit tests for sensor calculations
+
+### Future Enhancements
+1. **WiFi connectivity** - Remote monitoring and updates
+2. **Data logging** - Store sensor history in flash
+3. **Bluetooth** - Mobile app connectivity
+4. **OTA updates** - Over-the-air firmware updates
+5. **Power management** - Sleep modes and battery operation
+6. **Additional sensors** - Helium, Nitrogen, etc.
+
+## Troubleshooting
 
 ### Common Issues
 
-#### Display Not Working
-- Check RGB parallel interface connections
-- Verify 3.3V and 5V power supplies
-- Ensure backlight is enabled
+1. **Display not working**
+   - Check power supply (5V, 2A minimum)
+   - Verify display cable connections
+   - Check GPIO pin assignments
 
-#### Touch Not Responding
-- Verify GT911 I2C connections (SDA/SCL)
-- Check touch controller I2C address
-- Ensure proper grounding
+2. **Touch not responding**
+   - Verify GT911 I2C connections
+   - Check touch calibration in code
+   - Ensure proper grounding
 
-#### Sensor Reading Issues
-- Use `i2cdetect` equivalent to scan I2C devices
-- Check ADS1115 address (default 0x48)
-- Verify BME280 address (0x76 or 0x77)
+3. **Sensors not reading**
+   - Check I2C bus connections
+   - Verify sensor addresses (i2cdetect)
+   - Check power supply to sensors
 
-### Log Analysis
+4. **Build errors**
+   - Update ESP-IDF to v5.1+
+   - Clean build directory
+   - Check component dependencies
+
+### Debug Commands
 ```bash
-# Enable verbose logging
-idf.py menuconfig
-# Component Config → Log Output → Default log verbosity → Verbose
+# Check I2C devices
+idf.py monitor
+# In ESP32 console, use I2C scan functionality
 
-# View component-specific logs
-idf.py monitor --print-filter="trimix_*"
+# Memory usage
+idf.py size
+
+# Real-time monitoring
+idf.py monitor --decode-crashes
 ```
 
-## 📊 Performance
+## Contributing
 
-### Specifications
-- **Boot Time**: <5 seconds
-- **Touch Response**: <50ms
-- **Sensor Update Rate**: 1Hz
-- **Power Consumption**: ~300mA @ 5V
-- **Memory Usage**: ~2MB flash, ~200KB RAM
+When adding new features:
+1. Follow ESP-IDF coding standards
+2. Update hardware.h for new GPIO assignments
+3. Add screen navigation in trimix_screens.c
+4. Test with both real and mock sensors
+5. Update documentation
 
-### Compared to Raspberry Pi Version
-| Feature | ESP32 | Raspberry Pi |
-|---------|-------|--------------|
-| Boot Time | <5s | ~30s |
-| Power | 300mA | 2A |
-| Cost | ~$50 | ~$150 |
-| Size | Compact | Larger |
-| Reliability | High | Medium |
+## License
 
-## 🔄 Auto-Release System
-
-This project features automatic release creation when Pull Requests are merged into `main`:
-
-- **Smart Version Bumping**: Analyzes commit messages for version bump type
-- **Automated Testing**: Runs comprehensive tests before release creation  
-- **GitHub Releases**: Automatically creates releases with changelogs
-
-### Version Bump Examples
-```bash
-# Patch release (1.0.0 → 1.0.1)
-git commit -m "fix: resolve sensor calibration issue"
-
-# Minor release (1.0.0 → 1.1.0)
-git commit -m "feat: add new temperature sensor support" 
-
-# Major release (1.0.0 → 2.0.0)
-git commit -m "BREAKING CHANGE: new sensor interface API"
-```
-
-## 📄 License
-
-[Add your license here]
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/magnus188/trimix-analysator/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/magnus188/trimix-analysator/discussions)
-- **Documentation**: [ESP32 README](esp32/README.md)
-
----
-
-Built with ❤️ for the diving community
+Same as original Trimix Analyzer project.
