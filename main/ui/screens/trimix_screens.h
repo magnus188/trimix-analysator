@@ -1,6 +1,10 @@
-#pragma once
+﻿#pragma once
 #include <lvgl.h>
 #include <esp_err.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // Screen identifiers
 typedef enum {
@@ -32,6 +36,10 @@ void navigate_to_analyze(void);
 void navigate_to_settings(void);
 void navigate_to_calibrate_o2(void);
 
-// Sensor interface hooks (implemented in sensor_interface.c)
+// Sensor interface hooks
 esp_err_t sensor_read_all(sensor_readings_t *out);
 esp_err_t sensor_calibrate_oxygen_air(void);
+
+#ifdef __cplusplus
+}
+#endif
