@@ -1,6 +1,26 @@
 # Trimix Analyzer
 
-A Raspberry Pi-based gas analyzer for trimix diving gas mixtures, featuring real-time O2, CO2, temperature, pressure, and humidity monitoring with a touch-friendly Kivy interface.
+A gas analyzer for trimix diving gas mixtures, featuring real-time O2, CO2, temperature, pressure, and humidity monitoring with a touch-friendly interface.
+
+## 🔄 **NEW: ESP32 Version Available!**
+
+This project now includes an **ESP32 implementation** alongside the original Raspberry Pi version:
+
+- **[ESP32 Version](esp32/)** - Modern microcontroller implementation with LVGL GUI
+- **[Raspberry Pi Version](#raspberry-pi-version)** - Original Python/Kivy implementation
+
+| Feature | ESP32 Version | Raspberry Pi Version |
+|---------|---------------|---------------------|
+| **Display** | 800x480 capacitive touch | 480x800 resistive touch |
+| **Framework** | C++ / LVGL | Python / Kivy |
+| **Boot Time** | <5 seconds | ~30 seconds |
+| **Power** | ~300mA @ 5V | ~2A @ 5V |
+| **Cost** | ~$50 | ~$150 |
+| **Portability** | Compact, embedded | Larger, full computer |
+
+---
+
+## Raspberry Pi Version
 
 ## 🔄 Auto-Release System
 
@@ -33,6 +53,18 @@ git commit -m "BREAKING CHANGE: new sensor interface API"
 - **Development**: Multi-platform support (Mac, RPi 5, RPi Zero 2W)
 
 ## 🚀 Quick Start
+
+### Choose Your Platform
+
+#### ESP32 Version (Recommended for new builds)
+```bash
+# See esp32/README.md for detailed instructions
+cd esp32/
+idf.py set-target esp32s3
+idf.py build flash monitor
+```
+
+#### Raspberry Pi Version (Original implementation)
 
 ### Development (Recommended - Native GUI)
 
