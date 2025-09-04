@@ -2,6 +2,38 @@
 
 This directory contains the ESP32 version of the Trimix Analyzer, converted from the original Raspberry Pi/Kivy implementation to ESP32/LVGL with capacitive touch screen.
 
+## Quick Start with PlatformIO
+
+### Prerequisites
+- [PlatformIO IDE](https://platformio.org/platformio-ide) or [PlatformIO Core](https://platformio.org/install/cli)
+- ESP32-S3 development board with 480x800 touch display
+
+### Build and Upload
+```bash
+# Build the project
+pio run
+
+# Upload to ESP32
+pio run --target upload
+
+# Monitor serial output
+pio device monitor
+
+# Build, upload, and monitor in one command
+pio run --target upload && pio device monitor
+```
+
+### PlatformIO Project Structure
+```
+esp32/
+├── platformio.ini          # PlatformIO configuration
+├── partitions.csv          # Custom partition table for large LVGL app
+├── src/                    # Source files (.c)
+├── include/                # Header files (.h)
+├── lib/lv_conf/           # LVGL configuration
+└── README.md              # This file
+```
+
 ## Hardware Requirements
 
 ### ESP32 Board

@@ -10,6 +10,12 @@ dependencies.lock
 *.elf
 *.map
 
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+.pio_cache/
+
 # IDE files
 .vscode/
 *.code-workspace
