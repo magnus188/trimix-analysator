@@ -23,7 +23,7 @@
 
 const i2c_port_t i2c_master_port = I2C_NUM_0;
 
-extern void example_lvgl_demo_ui(lv_obj_t *scr);
+#include "trimix_screens.h"  // Trimix Analyzer UI
 
 
 /*
@@ -146,14 +146,7 @@ static void tick(void *arg)
     lv_tick_inc(2); 
 }
 
-static void touch_event(lv_event_t *e)
-{
-    uint8_t n = rand() % 0xff;
-    if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-        lv_obj_t *label = (lv_obj_t *) lv_event_get_user_data(e);
-        lv_obj_set_style_text_color(label, lv_color_make(n, n, n), 0);
-    }
-}
+// Demo touch event handler removed along with demo UI.
 
 void lcd_init(void *)
 {
@@ -272,29 +265,15 @@ void lcd_init(void *)
   ESP_LOGI(TAG, "Turning on LCD backlight");
   gpio_set_level(LCD_PIN_BK_LIGHT, LCD_BK_LIGHT_ON_LEVEL);
 
-  ESP_LOGI(TAG, "Printing to lvgl-label");
-  lv_obj_t *label = lv_label_create(lv_scr_act());
-  lv_obj_set_style_text_color(label, lv_color_make(0xff, 0x00, 0x00), 0);
-  lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
-  lv_label_set_text_static(label, "LVLG9 test");
+    // Initialize Trimix Analyzer screens (creates labels, timers, etc.)
+    ESP_LOGI(TAG, "Initializing Trimix screens");
+    screens_init();
 
-  lv_obj_add_event_cb(lv_scr_act(), touch_event, LV_EVENT_CLICKED, label);
-
-
-  uint8_t n = 0;
-  char buf[32];
-
-  example_lvgl_demo_ui(lv_scr_act());
-
-  ESP_LOGI(TAG, "Starting lvgl update loop");
-  while (1)
-  {
-    sprintf(buf, "LVGL9: %04d", n++);
-    lv_label_set_text_static(label, buf);
-
-    vTaskDelay(20 / portTICK_PERIOD_MS);
-    lv_timer_handler();
-  }
+    ESP_LOGI(TAG, "Entering LVGL loop");
+    while (1) {
+        vTaskDelay(20 / portTICK_PERIOD_MS);
+        lv_timer_handler();
+    }
 }
 
 void app_main(void) {
