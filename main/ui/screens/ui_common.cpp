@@ -47,6 +47,11 @@ lv_obj_t *ui_create_navbar(lv_obj_t *parent) {
     lv_obj_set_style_border_width(navbar, 0, 0);
     lv_obj_set_style_radius(navbar, 0, 0);
     
+    // Disable scrolling on navbar - it should be static
+    lv_obj_clear_flag(navbar, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollbar_mode(navbar, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_set_scroll_dir(navbar, LV_DIR_NONE);
+    
     // Create buttons container
     lv_obj_set_flex_flow(navbar, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(navbar, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);

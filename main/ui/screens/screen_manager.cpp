@@ -1,11 +1,11 @@
 #include "screen_manager.h"
 #include "sensors/sensor_interface.h"
-#include "screen_home.h"
-#include "screen_analyze.h"
-#include "screen_dive_planner.h"
-#include "screen_history.h"
-#include "screen_settings.h"
-#include "screen_calibrate_o2.h"
+#include "home/home.h"
+#include "analyze/analyze.h"
+#include "dive_planner/dive_planner.h"
+#include "history/history.h"
+#include "settings/settings.h"
+#include "calibrate_o2/calibrate_o2.h"
 #include <esp_log.h>
 #include <esp_timer.h>
 #include <array>

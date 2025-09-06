@@ -39,10 +39,10 @@ extern "C" void lvgl_port_init(void){
     gpio_config(&bk_gpio_config);
     esp_lcd_new_rgb_panel(&panel_config, &panel); esp_lcd_panel_reset(panel); esp_lcd_panel_init(panel);
     lv_init();
-    void *buf1 = heap_caps_malloc(PORTRAIT_W * PORTRAIT_H / 10, MALLOC_CAP_SPIRAM); assert(buf1);
-    void *buf2 = heap_caps_malloc(PORTRAIT_W * PORTRAIT_H / 10, MALLOC_CAP_SPIRAM); assert(buf2);
+    void *buf1 = heap_caps_malloc(PORTRAIT_W * PORTRAIT_H / 6 * 2, MALLOC_CAP_SPIRAM); assert(buf1);
+    void *buf2 = heap_caps_malloc(PORTRAIT_W * PORTRAIT_H / 6 * 2, MALLOC_CAP_SPIRAM); assert(buf2);
     disp = lv_display_create(PORTRAIT_W, PORTRAIT_H);
-    lv_display_set_buffers(disp, buf1, buf2, PORTRAIT_W * PORTRAIT_H / 10, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    lv_display_set_buffers(disp, buf1, buf2, PORTRAIT_W * PORTRAIT_H / 6 * 2, LV_DISPLAY_RENDER_MODE_PARTIAL);
     lv_display_set_user_data(disp, panel);
     lv_display_set_flush_cb(disp, flush_cb);
     init_i2c();
