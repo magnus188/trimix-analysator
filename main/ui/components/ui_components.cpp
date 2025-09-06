@@ -106,6 +106,49 @@ lv_obj_t* ui_create_title(lv_obj_t* parent, const char* text) {
     return title;
 }
 
+// Create a large, finger-friendly button for settings
+lv_obj_t* ui_create_large_button(lv_obj_t* parent, const char* text, lv_color_t color, lv_event_cb_t event_cb) {
+    if (!parent || !text) {
+        return NULL;
+    }
+    
+    lv_obj_t* btn = lv_btn_create(parent);
+    
+    // Make button large and finger-friendly (Apple style)
+    lv_obj_set_size(btn, LV_PCT(100), 70);
+    lv_obj_set_style_radius(btn, 16, 0);
+    lv_obj_set_style_bg_color(btn, color, 0);
+    lv_obj_set_style_bg_opa(btn, LV_OPA_90, 0);
+    lv_obj_set_style_border_width(btn, 0, 0);
+    lv_obj_set_style_shadow_width(btn, 8, 0);
+    lv_obj_set_style_shadow_color(btn, lv_color_black(), 0);
+    lv_obj_set_style_shadow_opa(btn, LV_OPA_20, 0);
+    
+    // Fix pressed state styling to prevent visual glitches
+    lv_obj_set_style_bg_color(btn, color, LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(btn, LV_OPA_70, LV_STATE_PRESSED);
+    lv_obj_set_style_radius(btn, 16, LV_STATE_PRESSED);
+    lv_obj_set_style_border_width(btn, 0, LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_width(btn, 4, LV_STATE_PRESSED);
+    
+    // Remove transform scale to prevent expansion glitch
+    // lv_obj_set_style_transform_scale(btn, 950, LV_STATE_PRESSED);
+    
+    // Create label with proper styling
+    lv_obj_t* label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_font(label, FONT_BUTTON, 0);
+    lv_obj_set_style_text_color(label, lv_color_white(), 0);
+    lv_obj_center(label);
+    
+    // Add event handler
+    if (event_cb) {
+        lv_obj_add_event_cb(btn, event_cb, LV_EVENT_CLICKED, NULL);
+    }
+    
+    return btn;
+}
+
 // Event handlers for navigation (moved from ui_common.cpp)
 void event_go_home(lv_event_t *e) {
     if (lv_event_get_code(e) == LV_EVENT_CLICKED) {

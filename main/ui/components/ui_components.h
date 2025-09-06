@@ -26,6 +26,12 @@
 #define UI_COLOR_WARNING lv_color_hex(0xFF9800)
 #define UI_COLOR_BACKGROUND lv_color_hex(0x121212)
 
+// Additional UI colors for enhanced styling
+#define UI_COLOR_CARD_BG lv_color_hex(0x1E1E1E)
+#define UI_COLOR_SEPARATOR lv_color_hex(0x333333)
+#define UI_COLOR_TEXT_PRIMARY lv_color_hex(0xFFFFFF)
+#define UI_COLOR_TEXT_SECONDARY lv_color_hex(0xCCCCCC)
+
 // Navigation bar height
 #define UI_TOPBAR_HEIGHT 50
 
@@ -62,6 +68,9 @@ lv_obj_t* ui_create_grid_container(lv_obj_t* parent, int cols, int rows, int wid
 
 // Title label
 lv_obj_t* ui_create_title(lv_obj_t* parent, const char* text);
+
+// Large settings button for finger-friendly touch interface
+lv_obj_t* ui_create_large_button(lv_obj_t* parent, const char* text, lv_color_t color, lv_event_cb_t event_cb);
 
 // Event handlers for navigation
 void event_go_home(lv_event_t *e);
