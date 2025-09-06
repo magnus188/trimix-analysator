@@ -34,7 +34,7 @@ lv_obj_t *screen_home_create(void) {
     // Title
     lv_obj_t *title = lv_label_create(screen);
     lv_label_set_text(title, "Trimix Analyzer");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(title, FONT_HEADER, 0);
     lv_obj_set_style_text_color(title, lv_color_white(), 0);
     lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 15);
     
@@ -61,7 +61,7 @@ lv_obj_t *screen_home_create(void) {
         
         lv_obj_t *label = lv_label_create(btn);
         lv_label_set_text(label, txt);
-        lv_obj_set_style_text_font(label, &lv_font_montserrat_14, 0);
+        lv_obj_set_style_text_font(label, FONT_BUTTON, 0);
         lv_obj_center(label);
         return btn;
     };

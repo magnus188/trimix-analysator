@@ -11,12 +11,22 @@ idf_component_register(
         "ui/screens/screen_settings.cpp"     # settings screen
         "ui/screens/screen_calibrate_o2.cpp" # calibration screen
         "ui/lvgl/lvgl_port.cpp"              # lvgl port/hw layer
+        # Custom fonts
+        "ui/fonts/custom_font_normal_16.c"
+        "ui/fonts/custom_font_normal_20.c"
+        "ui/fonts/custom_font_normal_24.c"
+        "ui/fonts/custom_font_bold_16.c"
+        "ui/fonts/custom_font_bold_20.c"
+        "ui/fonts/custom_font_bold_24.c"
+        "ui/fonts/custom_font_light_14.c"
+        "ui/fonts/custom_font_light_16.c"
     INCLUDE_DIRS
         .
         ui/screens
         ui/lvgl
+        ui/fonts
         sensors
-    board
+        board
     REQUIRES
         esp_lcd
         esp_timer
