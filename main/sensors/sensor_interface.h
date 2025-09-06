@@ -1,5 +1,5 @@
 #pragma once
-#include "trimix_screens.h"
+#include "ui/screens/screen_manager.h"
 #include <esp_err.h>
 #ifdef __cplusplus
 extern "C" {

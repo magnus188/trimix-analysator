@@ -3,7 +3,7 @@
 #include <freertos/task.h>
 #include <lvgl.h>
 #include "ui/lvgl/lvgl_port.h"
-#include "trimix_screens.h" // screens API
+#include "ui/screens/screen_manager.h" // screens API
 
 static void ui_task(void *arg){
     lvgl_port_init();
