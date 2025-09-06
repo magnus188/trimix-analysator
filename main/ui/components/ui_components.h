@@ -1,21 +1,22 @@
 #pragma once
 #include <lvgl.h>
+#include "../fonts/custom_fonts.h"
 
-// Forward declarations for custom fonts
+// Forward declarations for custom fonts - using larger existing custom font defaults
 #ifndef FONT_HEADER
-#define FONT_HEADER &lv_font_montserrat_14
+#define FONT_HEADER &custom_font_bold_24
 #endif
 #ifndef FONT_BUTTON
-#define FONT_BUTTON &lv_font_montserrat_14
+#define FONT_BUTTON &custom_font_normal_20
 #endif
 #ifndef FONT_NORMAL
-#define FONT_NORMAL &lv_font_montserrat_14
+#define FONT_NORMAL &custom_font_normal_20
 #endif
 #ifndef FONT_LARGE
-#define FONT_LARGE &lv_font_montserrat_14
+#define FONT_LARGE &custom_font_normal_24
 #endif
 #ifndef FONT_MEDIUM
-#define FONT_MEDIUM &lv_font_montserrat_14
+#define FONT_MEDIUM &custom_font_normal_24
 #endif
 
 // UI Theme Colors

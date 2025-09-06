@@ -125,48 +125,6 @@ FONT_CONFIGS = [
         'name': 'custom_font_light_20'
     }
 ]
-    {
-        'input': '../../assets/fonts/bold.ttf',
-        'output': 'custom_font_bold_16.c',
-        'size': 16,
-        'format': 'lvgl',
-        'bpp': 4,
-        'name': 'custom_font_bold_16'
-    },
-    {
-        'input': '../../assets/fonts/bold.ttf',
-        'output': 'custom_font_bold_20.c',
-        'size': 20,
-        'format': 'lvgl',
-        'bpp': 4,
-        'name': 'custom_font_bold_20'
-    },
-    {
-        'input': '../../assets/fonts/bold.ttf',
-        'output': 'custom_font_bold_24.c',
-        'size': 24,
-        'format': 'lvgl',
-        'bpp': 4,
-        'name': 'custom_font_bold_24'
-    },
-    # Light weight fonts
-    {
-        'input': '../../assets/fonts/light.ttf',
-        'output': 'custom_font_light_14.c',
-        'size': 14,
-        'format': 'lvgl',
-        'bpp': 4,
-        'name': 'custom_font_light_14'
-    },
-    {
-        'input': '../../assets/fonts/light.ttf',
-        'output': 'custom_font_light_16.c',
-        'size': 16,
-        'format': 'lvgl',
-        'bpp': 4,
-        'name': 'custom_font_light_16'
-    }
-]
 
 def check_lv_font_conv():
     """Check if lv_font_conv is installed"""
