@@ -7,6 +7,8 @@
 #include "settings/settings.h"
 #include "calibrate_o2/calibrate_o2.h"
 #include "wifi/wifi_settings.h"
+#include "software_update/software_update.h"
+#include "../components/ui_components.h"
 #include <esp_log.h>
 #include <esp_timer.h>
 #include <array>
@@ -30,8 +32,12 @@ public:
         screens_[SCREEN_SETTINGS] = screen_settings_create();
         screens_[SCREEN_CALIBRATE_O2] = screen_calibrate_o2_create();
         screens_[SCREEN_WIFI_SETTINGS] = screen_wifi_settings_create();
+        screens_[SCREEN_SOFTWARE_UPDATE] = screen_software_update_create();
         
         show(SCREEN_HOME);
+        
+        // Initialize update manager
+        update_manager_init();
         
         // Start sensor update timer
         const esp_timer_create_args_t timer_args = {
@@ -43,6 +49,17 @@ public:
         };
         esp_timer_create(&timer_args, &sensor_update_timer_);
         esp_timer_start_periodic(sensor_update_timer_, 2000000); // 2 seconds
+        
+        // Start WiFi status update timer
+        const esp_timer_create_args_t wifi_timer_args = {
+            .callback = &wifi_status_update_callback,
+            .arg = nullptr,
+            .dispatch_method = ESP_TIMER_TASK,
+            .name = "wifi_status_update",
+            .skip_unhandled_events = true
+        };
+        esp_timer_create(&wifi_timer_args, &wifi_status_timer_);
+        esp_timer_start_periodic(wifi_status_timer_, 1000000); // 1 second
     }
     
     void show(screen_id_t id) {
@@ -101,11 +118,16 @@ private:
     lv_obj_t *label_pressure_ = nullptr;
     lv_obj_t *label_humidity_ = nullptr;
     esp_timer_handle_t sensor_update_timer_{};
+    esp_timer_handle_t wifi_status_timer_{};
     
     static void sensor_update_callback(void * /*arg*/) {
         if (instance().analyze_active()) {
             instance().update_analyze();
         }
+    }
+    
+    static void wifi_status_update_callback(void * /*arg*/) {
+        ui_update_wifi_status();
     }
 };
 

@@ -18,8 +18,7 @@ static void event_calibrate_sensors(lv_event_t *e) {
 
 static void event_software_update(lv_event_t *e) {
     if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-        // TODO: Navigate to software update screen
-        // screen_manager_show(SCREEN_SOFTWARE_UPDATE);
+        screen_manager_show(SCREEN_SOFTWARE_UPDATE);
     }
 }
 

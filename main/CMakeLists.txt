@@ -1,6 +1,7 @@
 idf_component_register(
     SRCS
         "main.cpp"                           # app_main
+        "version.cpp"                        # version information
         "sensors/sensor_interface.cpp"       # sensors (mock)
         "ui/screens/screen_manager.cpp"      # main screen manager
         "ui/components/ui_components.cpp"    # reusable UI components
@@ -12,6 +13,7 @@ idf_component_register(
         "ui/screens/calibrate_o2/calibrate_o2.cpp" # calibration screen
         "ui/screens/wifi/wifi_settings.cpp"  # wifi settings screen
         "ui/screens/wifi/wifi_manager.cpp"   # wifi manager
+        "ui/screens/software_update/software_update.cpp" # software update screen
         "ui/lvgl/lvgl_port.cpp"              # lvgl port/hw layer
         # Custom fonts
         "ui/fonts/custom_font_normal_16.c"
@@ -39,6 +41,10 @@ idf_component_register(
         esp_wifi
         nvs_flash
         esp_netif
+        esp_http_client
+        esp_https_ota
+        app_update
+        json
 )
 
 # Ensure C++ standard (ESP-IDF sets default; enforce at least C++17 for future needs)

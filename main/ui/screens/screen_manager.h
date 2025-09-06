@@ -15,6 +15,7 @@ typedef enum {
     SCREEN_SETTINGS,
     SCREEN_CALIBRATE_O2,
     SCREEN_WIFI_SETTINGS,
+    SCREEN_SOFTWARE_UPDATE,
     SCREEN_COUNT
 } screen_id_t;
 

@@ -1,5 +1,6 @@
 #include "ui_components.h"
 #include "../screens/screen_manager.h"
+#include "../screens/wifi/wifi_settings.h"
 
 // Create a styled button with custom configuration
 lv_obj_t* ui_create_button(lv_obj_t* parent, const ui_button_config_t* config) {
@@ -227,6 +228,16 @@ lv_obj_t* ui_create_navbar(lv_obj_t* parent) {
     return navbar;
 }
 
+// Static WiFi icon reference for global updates
+static lv_obj_t* wifi_icon_global = NULL;
+
+// WiFi signal strength symbols (simple text that works with custom fonts)
+#define WIFI_ICON_DISCONNECTED "WiFi"
+#define WIFI_ICON_CONNECTING "WiFi?"
+#define WIFI_ICON_WEAK "WiFi-"
+#define WIFI_ICON_GOOD "WiFi"  
+#define WIFI_ICON_STRONG "WiFi+"
+
 // Create top navigation bar (moved from ui_common.cpp)
 lv_obj_t* ui_create_topbar(lv_obj_t* parent, const char* title) {
     if (!parent || !title) {
@@ -260,5 +271,51 @@ lv_obj_t* ui_create_topbar(lv_obj_t* parent, const char* title) {
     lv_obj_set_style_text_color(title_label, lv_color_white(), 0);
     lv_obj_align(title_label, LV_ALIGN_CENTER, 0, 0);
     
+    // WiFi status icon (top right)
+    wifi_icon_global = lv_label_create(topbar);
+    lv_label_set_text(wifi_icon_global, WIFI_ICON_DISCONNECTED);
+    lv_obj_set_style_text_font(wifi_icon_global, FONT_NORMAL, 0);
+    lv_obj_set_style_text_color(wifi_icon_global, UI_COLOR_TEXT_SECONDARY, 0);
+    lv_obj_align(wifi_icon_global, LV_ALIGN_RIGHT_MID, -10, 0);
+    
+    // Initialize WiFi status
+    ui_update_wifi_status();
+    
     return topbar;
+}
+
+// Function to update WiFi status icon globally
+void ui_update_wifi_status(void) {
+    if (!wifi_icon_global || !lv_obj_is_valid(wifi_icon_global)) {
+        return;
+    }
+    
+    wifi_connection_status_t status = wifi_manager_get_status();
+    const char* icon = WIFI_ICON_DISCONNECTED;
+    lv_color_t color = UI_COLOR_TEXT_SECONDARY;
+    
+    switch (status) {
+        case WIFI_STATUS_DISCONNECTED:
+            icon = WIFI_ICON_DISCONNECTED;
+            color = UI_COLOR_TEXT_SECONDARY;
+            break;
+        case WIFI_STATUS_CONNECTING:
+            icon = WIFI_ICON_CONNECTING;
+            color = UI_COLOR_WARNING;
+            break;
+        case WIFI_STATUS_CONNECTED:
+            // Get signal strength for connected network
+            // For now, use strong signal icon, but this can be enhanced
+            // to check actual RSSI and show appropriate strength
+            icon = WIFI_ICON_STRONG;
+            color = UI_COLOR_SECONDARY;
+            break;
+        case WIFI_STATUS_FAILED:
+            icon = WIFI_ICON_DISCONNECTED;
+            color = UI_COLOR_DANGER;
+            break;
+    }
+    
+    lv_label_set_text(wifi_icon_global, icon);
+    lv_obj_set_style_text_color(wifi_icon_global, color, 0);
 }

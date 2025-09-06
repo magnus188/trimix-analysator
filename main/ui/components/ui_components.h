@@ -18,6 +18,9 @@
 #ifndef FONT_MEDIUM
 #define FONT_MEDIUM &custom_font_normal_24
 #endif
+#ifndef FONT_LIGHT
+#define FONT_LIGHT &custom_font_light_16
+#endif
 
 // UI Theme Colors
 #define UI_COLOR_PRIMARY lv_color_hex(0x2196F3)
@@ -62,6 +65,7 @@ lv_obj_t* ui_create_sensor_card(lv_obj_t* parent, const ui_card_config_t* config
 // Navigation components
 lv_obj_t* ui_create_navbar(lv_obj_t* parent);
 lv_obj_t* ui_create_topbar(lv_obj_t* parent, const char* title);
+void ui_update_wifi_status(void);  // Function to update WiFi status globally
 
 // Grid container for layout
 lv_obj_t* ui_create_grid_container(lv_obj_t* parent, int cols, int rows, int width_pct, int height);
