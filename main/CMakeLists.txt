@@ -10,6 +10,8 @@ idf_component_register(
         "ui/screens/history/history.cpp"     # history screen  
         "ui/screens/settings/settings.cpp"   # settings screen
         "ui/screens/calibrate_o2/calibrate_o2.cpp" # calibration screen
+        "ui/screens/wifi/wifi_settings.cpp"  # wifi settings screen
+        "ui/screens/wifi/wifi_manager.cpp"   # wifi manager
         "ui/lvgl/lvgl_port.cpp"              # lvgl port/hw layer
         # Custom fonts
         "ui/fonts/custom_font_normal_16.c"
@@ -34,6 +36,9 @@ idf_component_register(
         driver
         lvgl
         esp_lcd_touch_gt911
+        esp_wifi
+        nvs_flash
+        esp_netif
 )
 
 # Ensure C++ standard (ESP-IDF sets default; enforce at least C++17 for future needs)

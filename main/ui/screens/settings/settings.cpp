@@ -25,8 +25,7 @@ static void event_software_update(lv_event_t *e) {
 
 static void event_wifi_settings(lv_event_t *e) {
     if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
-        // TODO: Navigate to WiFi settings screen
-        // screen_manager_show(SCREEN_WIFI_SETTINGS);
+        screen_manager_show(SCREEN_WIFI_SETTINGS);
     }
 }
 

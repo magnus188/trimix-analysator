@@ -6,6 +6,7 @@
 #include "history/history.h"
 #include "settings/settings.h"
 #include "calibrate_o2/calibrate_o2.h"
+#include "wifi/wifi_settings.h"
 #include <esp_log.h>
 #include <esp_timer.h>
 #include <array>
@@ -28,6 +29,7 @@ public:
         screens_[SCREEN_HISTORY] = screen_history_create();
         screens_[SCREEN_SETTINGS] = screen_settings_create();
         screens_[SCREEN_CALIBRATE_O2] = screen_calibrate_o2_create();
+        screens_[SCREEN_WIFI_SETTINGS] = screen_wifi_settings_create();
         
         show(SCREEN_HOME);
         
@@ -48,6 +50,13 @@ public:
             ESP_LOGE(TAG, "Invalid screen %d", id);
             return;
         }
+        
+        // Cleanup previous screen if needed
+        if (current_screen_ == SCREEN_WIFI_SETTINGS && id != SCREEN_WIFI_SETTINGS) {
+            ESP_LOGI(TAG, "Cleaning up WiFi settings screen");
+            screen_wifi_settings_cleanup();
+        }
+        
         current_screen_ = id;
         lv_scr_load(screens_[id]);
     }
