@@ -417,18 +417,34 @@ lv_obj_t* wifi_screen_create(void) {
     lv_obj_set_style_text_color(g_state.status_label, lv_color_hex(STYLE_COLOR_PRIMARY), 0);
     lv_obj_align(g_state.status_label, LV_ALIGN_TOP_LEFT, 0, 0);
     
-    // Scan button
+    // Scan button - large, easy to tap
     g_state.scan_btn = lv_btn_create(content);
-    lv_obj_set_size(g_state.scan_btn, 80, 36);
-    lv_obj_align(g_state.scan_btn, LV_ALIGN_TOP_RIGHT, 0, -4);
+    lv_obj_set_size(g_state.scan_btn, 130, 50);
+    lv_obj_align(g_state.scan_btn, LV_ALIGN_TOP_RIGHT, 0, -8);
     lv_obj_set_style_bg_color(g_state.scan_btn, lv_color_hex(STYLE_COLOR_PRIMARY), 0);
-    lv_obj_set_style_radius(g_state.scan_btn, 18, 0);
+    lv_obj_set_style_bg_color(g_state.scan_btn, lv_color_hex(STYLE_COLOR_PRIMARY_DARK), LV_STATE_PRESSED);
+    lv_obj_set_style_radius(g_state.scan_btn, 25, 0);
+    lv_obj_set_style_shadow_width(g_state.scan_btn, 8, 0);
+    lv_obj_set_style_shadow_opa(g_state.scan_btn, LV_OPA_30, 0);
     lv_obj_add_event_cb(g_state.scan_btn, on_scan_click, LV_EVENT_CLICKED, nullptr);
     
-    lv_obj_t* scan_label = lv_label_create(g_state.scan_btn);
+    // Scan button icon + text
+    lv_obj_t* scan_content = lv_obj_create(g_state.scan_btn);
+    lv_obj_remove_style_all(scan_content);
+    lv_obj_set_size(scan_content, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+    lv_obj_center(scan_content);
+    lv_obj_set_flex_flow(scan_content, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(scan_content, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_style_pad_column(scan_content, 8, 0);
+    lv_obj_clear_flag(scan_content, LV_OBJ_FLAG_CLICKABLE);
+    
+    lv_obj_t* scan_icon = lv_label_create(scan_content);
+    lv_label_set_text(scan_icon, LV_SYMBOL_REFRESH);
+    lv_obj_set_style_text_font(scan_icon, &lv_font_montserrat_18, 0);
+    
+    lv_obj_t* scan_label = lv_label_create(scan_content);
     lv_label_set_text(scan_label, "Scan");
-    lv_obj_set_style_text_font(scan_label, &lv_font_montserrat_14, 0);
-    lv_obj_center(scan_label);
+    lv_obj_set_style_text_font(scan_label, &lv_font_montserrat_18, 0);
     
     // Connected network panel
     g_state.connected_panel = lv_obj_create(content);

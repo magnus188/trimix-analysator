@@ -11,6 +11,8 @@ idf_component_register(
         "ui/screens/settings/settings_screen.cpp"  # settings screen
         "ui/screens/settings/wifi_screen.cpp"      # WiFi settings screen
         "ui/screens/settings/update_screen.cpp"    # software update screen
+        "ui/screens/dive_planner/dive_planner_screen.cpp"  # dive planner screen
+        "ui/screens/dive_planner/gas_calculator.cpp"       # gas calculations
         "ui/styles/styles.cpp"               # global styles
         "ui/components/navbar.cpp"           # reusable navbar
         "ui/components/status_icons.cpp"     # status bar icons (WiFi/battery)

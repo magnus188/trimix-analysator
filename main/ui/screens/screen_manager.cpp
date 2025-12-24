@@ -1,5 +1,6 @@
 #include "screen_manager.h"
 #include "home/home_screen.h"
+#include "dive_planner/dive_planner_screen.h"
 #include "settings/settings_screen.h"
 #include "settings/wifi_screen.h"
 #include "settings/update_screen.h"
@@ -47,7 +48,7 @@ public:
         // Create screens
         screens_[SCREEN_HOME] = home_screen_create();
         screens_[SCREEN_ANALYSE] = create_placeholder_screen("Analyse");
-        screens_[SCREEN_DIVE_PLANNER] = create_placeholder_screen("Dive Planner");
+        screens_[SCREEN_DIVE_PLANNER] = dive_planner_screen_create();
         screens_[SCREEN_HISTORY] = create_placeholder_screen("History");
         screens_[SCREEN_SETTINGS] = settings_screen_create();
         screens_[SCREEN_WIFI] = wifi_screen_create();

@@ -21,10 +21,9 @@ struct StatusState {
 
 StatusState g_status;
 
-// WiFi symbols based on signal strength
-const char* get_wifi_symbol(bool connected, wifi_signal_level_t level) {
-    if (!connected) return "";  // No icon when disconnected
-    // Use LVGL WiFi symbol - same for all levels, color indicates strength
+// WiFi symbols based on connection state
+const char* get_wifi_symbol(bool connected) {
+    // Always show WiFi icon - connected or disconnected indicator
     return LV_SYMBOL_WIFI;
 }
 
@@ -60,20 +59,33 @@ uint32_t get_battery_color(uint8_t percentage, bool charging) {
 }
 
 void update_wifi_display() {
-    if (!g_status.wifi_icon) return;
+    if (!g_status.wifi_icon || !lv_obj_is_valid(g_status.wifi_icon)) {
+        ESP_LOGW(TAG, "WiFi icon invalid, skipping update");
+        return;
+    }
+    
+    lv_label_set_text(g_status.wifi_icon, get_wifi_symbol(g_status.wifi_connected));
     
     if (g_status.wifi_connected) {
-        lv_label_set_text(g_status.wifi_icon, get_wifi_symbol(true, g_status.wifi_signal));
+        // Connected - show in white/color based on signal strength
         lv_obj_set_style_text_color(g_status.wifi_icon, 
             lv_color_hex(get_wifi_color(g_status.wifi_signal)), 0);
-        lv_obj_clear_flag(g_status.wifi_icon, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_set_style_text_opa(g_status.wifi_icon, LV_OPA_COVER, 0);
     } else {
-        lv_obj_add_flag(g_status.wifi_icon, LV_OBJ_FLAG_HIDDEN);
+        // Not connected - show dimmed/grayed out (like iOS)
+        lv_obj_set_style_text_color(g_status.wifi_icon, 
+            lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
+        lv_obj_set_style_text_opa(g_status.wifi_icon, LV_OPA_40, 0);
     }
+    lv_obj_clear_flag(g_status.wifi_icon, LV_OBJ_FLAG_HIDDEN);
 }
 
 void update_battery_display() {
-    if (!g_status.battery_icon || !g_status.battery_pct) return;
+    if (!g_status.battery_icon || !g_status.battery_pct ||
+        !lv_obj_is_valid(g_status.battery_icon) || !lv_obj_is_valid(g_status.battery_pct)) {
+        ESP_LOGW(TAG, "Battery icons invalid, skipping update");
+        return;
+    }
     
     // Update icon
     lv_label_set_text(g_status.battery_icon, 
@@ -92,10 +104,18 @@ void update_battery_display() {
 lv_obj_t* status_icons_create(lv_obj_t* parent) {
     ESP_LOGI(TAG, "Creating status icons");
     
-    // Container for status icons
+    // Clean up previous status icons if they exist to prevent orphaned objects
+    if (g_status.container != nullptr && lv_obj_is_valid(g_status.container)) {
+        ESP_LOGI(TAG, "Cleaning up previous status icons");
+        lv_obj_del(g_status.container);
+    }
+    // Reset state
+    g_status = StatusState{};
+    
+    // Container for status icons - use fixed size to prevent layout jumps
     lv_obj_t* cont = lv_obj_create(parent);
     lv_obj_remove_style_all(cont);
-    lv_obj_set_size(cont, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+    lv_obj_set_size(cont, 110, 24);  // Fixed size for WiFi + battery + percentage
     lv_obj_align(cont, LV_ALIGN_RIGHT_MID, 0, 0);
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(cont, LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -104,12 +124,12 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
     
     g_status.container = cont;
     
-    // WiFi icon
+    // WiFi icon - always visible, opacity indicates connection state
     g_status.wifi_icon = lv_label_create(cont);
     lv_label_set_text(g_status.wifi_icon, LV_SYMBOL_WIFI);
     lv_obj_set_style_text_font(g_status.wifi_icon, &lv_font_montserrat_16, 0);
-    lv_obj_set_style_text_color(g_status.wifi_icon, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
-    lv_obj_add_flag(g_status.wifi_icon, LV_OBJ_FLAG_HIDDEN);  // Hidden until connected
+    lv_obj_set_style_text_color(g_status.wifi_icon, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
+    lv_obj_set_style_text_opa(g_status.wifi_icon, LV_OPA_40, 0);  // Start dimmed (not connected)
     
     // Battery percentage
     g_status.battery_pct = lv_label_create(cont);
