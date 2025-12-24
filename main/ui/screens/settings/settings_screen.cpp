@@ -18,7 +18,7 @@ struct SettingsItem {
 
 constexpr SettingsItem SETTINGS_ITEMS[] = {
     { "Calibrate Sensors",  LV_SYMBOL_REFRESH,   STYLE_COLOR_ACCENT,   SCREEN_CALIBRATE },
-    { "Software Update",    LV_SYMBOL_DOWNLOAD,  STYLE_COLOR_PRIMARY,  SCREEN_COUNT },
+    { "Software Update",    LV_SYMBOL_DOWNLOAD,  STYLE_COLOR_PRIMARY,  SCREEN_UPDATE },
     { "WiFi Settings",      LV_SYMBOL_WIFI,      STYLE_COLOR_PRIMARY,  SCREEN_WIFI },
     { "Safety Settings",    LV_SYMBOL_WARNING,   STYLE_COLOR_WARNING,  SCREEN_SAFETY },
     { "Device Settings",    LV_SYMBOL_SETTINGS,  STYLE_COLOR_PRIMARY,  SCREEN_DEVICE },

@@ -2,6 +2,7 @@
 #include "home/home_screen.h"
 #include "settings/settings_screen.h"
 #include "settings/wifi_screen.h"
+#include "settings/update_screen.h"
 #include "../styles/styles.h"
 #include "../components/navbar.h"
 #include <array>
@@ -50,6 +51,7 @@ public:
         screens_[SCREEN_HISTORY] = create_placeholder_screen("History");
         screens_[SCREEN_SETTINGS] = settings_screen_create();
         screens_[SCREEN_WIFI] = wifi_screen_create();
+        screens_[SCREEN_UPDATE] = update_screen_create();
         screens_[SCREEN_CALIBRATE] = create_placeholder_screen("Calibrate Sensors");
         screens_[SCREEN_SAFETY] = create_placeholder_screen("Safety Settings");
         screens_[SCREEN_DEVICE] = create_placeholder_screen("Device Settings");
