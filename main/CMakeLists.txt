@@ -3,11 +3,15 @@ idf_component_register(
         "main.cpp"                           # app_main
         "version.cpp"                        # version information
         "sensors/sensor_interface.cpp"       # sensors (mock)
+        "services/wifi_service.cpp"          # WiFi management
+        "services/battery_service.cpp"       # Battery monitoring
         "ui/screens/screen_manager.cpp"      # screen manager
         "ui/screens/home/home_screen.cpp"    # home screen (main menu)
         "ui/screens/settings/settings_screen.cpp"  # settings screen
+        "ui/screens/settings/wifi_screen.cpp"      # WiFi settings screen
         "ui/styles/styles.cpp"               # global styles
         "ui/components/navbar.cpp"           # reusable navbar
+        "ui/components/status_icons.cpp"     # status bar icons (WiFi/battery)
         "ui/lvgl/lvgl_port.cpp"              # lvgl port/hw layer
         # Custom fonts
         "ui/fonts/custom_font_normal_16.c"
@@ -27,6 +31,7 @@ idf_component_register(
         ui/components
         ui/config
         sensors
+        services
         board
     REQUIRES
         esp_lcd
@@ -41,6 +46,7 @@ idf_component_register(
         esp_https_ota
         app_update
         json
+        esp_event
 )
 
 # Ensure C++ standard (ESP-IDF sets default; enforce at least C++17 for future needs)

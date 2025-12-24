@@ -13,16 +13,16 @@ struct SettingsItem {
     const char* label;
     const char* icon;
     uint32_t color;
-    // Future: could add screen_id_t for sub-screens
+    screen_id_t target_screen;  // SCREEN_COUNT = no navigation
 };
 
 constexpr SettingsItem SETTINGS_ITEMS[] = {
-    { "Calibrate Sensors",  LV_SYMBOL_REFRESH,   STYLE_COLOR_ACCENT },
-    { "Software Update",    LV_SYMBOL_DOWNLOAD,  STYLE_COLOR_PRIMARY },
-    { "WiFi Settings",      LV_SYMBOL_WIFI,      STYLE_COLOR_PRIMARY },
-    { "Safety Settings",    LV_SYMBOL_WARNING,   STYLE_COLOR_WARNING },
-    { "Device Settings",    LV_SYMBOL_SETTINGS,  STYLE_COLOR_PRIMARY },
-    { "Factory Reset",      LV_SYMBOL_TRASH,     STYLE_COLOR_ERROR },
+    { "Calibrate Sensors",  LV_SYMBOL_REFRESH,   STYLE_COLOR_ACCENT,   SCREEN_CALIBRATE },
+    { "Software Update",    LV_SYMBOL_DOWNLOAD,  STYLE_COLOR_PRIMARY,  SCREEN_COUNT },
+    { "WiFi Settings",      LV_SYMBOL_WIFI,      STYLE_COLOR_PRIMARY,  SCREEN_WIFI },
+    { "Safety Settings",    LV_SYMBOL_WARNING,   STYLE_COLOR_WARNING,  SCREEN_SAFETY },
+    { "Device Settings",    LV_SYMBOL_SETTINGS,  STYLE_COLOR_PRIMARY,  SCREEN_DEVICE },
+    { "Factory Reset",      LV_SYMBOL_TRASH,     STYLE_COLOR_ERROR,    SCREEN_COUNT },
 };
 constexpr size_t SETTINGS_ITEM_COUNT = sizeof(SETTINGS_ITEMS) / sizeof(SETTINGS_ITEMS[0]);
 
@@ -36,8 +36,13 @@ constexpr lv_coord_t CONTENT_PAD = 16;
 void settings_item_event_cb(lv_event_t* e) {
     if (lv_event_get_code(e) == LV_EVENT_CLICKED) {
         intptr_t index = reinterpret_cast<intptr_t>(lv_event_get_user_data(e));
-        ESP_LOGI(TAG, "Settings item clicked: %s", SETTINGS_ITEMS[index].label);
-        // TODO: Navigate to sub-screens when implemented
+        const SettingsItem& item = SETTINGS_ITEMS[index];
+        ESP_LOGI(TAG, "Settings item clicked: %s", item.label);
+        
+        // Navigate to sub-screen if configured
+        if (item.target_screen != SCREEN_COUNT) {
+            screen_manager_show(item.target_screen);
+        }
     }
 }
 

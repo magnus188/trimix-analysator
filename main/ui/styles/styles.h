@@ -9,8 +9,10 @@ extern "C" {
 #define STYLE_COLOR_PRIMARY     0x1565C0  // Deep blue
 #define STYLE_COLOR_PRIMARY_DARK 0x0D47A1 // Darker blue for pressed
 #define STYLE_COLOR_ACCENT      0x00BFA5  // Teal accent
-#define STYLE_COLOR_BG_DARK     0x121212  // Dark background
+#define STYLE_COLOR_BACKGROUND  0x121212  // Main background
+#define STYLE_COLOR_BG_DARK     0x121212  // Dark background (alias)
 #define STYLE_COLOR_BG_CARD     0x1E1E1E  // Card background
+#define STYLE_COLOR_SURFACE     0x1E1E1E  // Surface/card (alias)
 #define STYLE_COLOR_TEXT_LIGHT  0xFFFFFF  // White text
 #define STYLE_COLOR_TEXT_DIM    0xB0B0B0  // Dimmed text
 #define STYLE_COLOR_SUCCESS     0x4CAF50  // Green

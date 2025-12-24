@@ -3,11 +3,25 @@
 #include <freertos/task.h>
 #include <lvgl.h>
 #include "ui/lvgl/lvgl_port.h"
-#include "ui/screens/screen_manager.h" // screens API
+#include "ui/screens/screen_manager.h"
+#include "services/wifi_service.h"
+#include "services/battery_service.h"
 
 static void ui_task(void *arg){
+    // Initialize services before UI
+    wifi_service_init();
+    battery_service_init();
+    
+    // Initialize display and LVGL
     lvgl_port_init();
     screens_init();
+    
+    // Start battery monitoring (updates status icons)
+    battery_start_monitoring();
+    
+    // Auto-connect to saved WiFi if available
+    wifi_service_auto_connect();
+    
     for(;;){
         vTaskDelay(10 / portTICK_PERIOD_MS);
         lv_timer_handler();
