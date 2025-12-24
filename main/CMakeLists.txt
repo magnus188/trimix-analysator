@@ -13,6 +13,7 @@ idf_component_register(
         "ui/screens/calibrate_o2/calibrate_o2.cpp" # calibration screen
         "ui/screens/wifi/wifi_settings.cpp"  # wifi settings screen
         "ui/screens/wifi/wifi_manager.cpp"   # wifi manager
+        "ui/widgets/keyboard.cpp"            # custom keyboard widget
         "ui/screens/software_update/software_update.cpp" # software update screen
         "ui/lvgl/lvgl_port.cpp"              # lvgl port/hw layer
         # Custom fonts
@@ -28,6 +29,7 @@ idf_component_register(
         .
         ui/screens
         ui/components
+        ui/widgets
         ui/lvgl
         ui/fonts
         sensors

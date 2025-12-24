@@ -194,7 +194,7 @@ lv_obj_t* ui_create_navbar(lv_obj_t* parent) {
     }
     
     lv_obj_t* navbar = lv_obj_create(parent);
-    lv_obj_set_size(navbar, LV_PCT(100), 60);
+    lv_obj_set_size(navbar, LV_PCT(100), UI_NAVBAR_HEIGHT);
     lv_obj_align(navbar, LV_ALIGN_BOTTOM_MID, 0, 0);
     lv_obj_set_style_bg_color(navbar, lv_color_hex(0x333333), 0);
     lv_obj_set_style_border_width(navbar, 0, 0);
@@ -214,9 +214,9 @@ lv_obj_t* ui_create_navbar(lv_obj_t* parent) {
     
     for (int i = 0; i < 5; i++) {
         lv_obj_t* btn = lv_btn_create(navbar);
-        lv_obj_set_size(btn, 80, 40);
+        lv_obj_set_size(btn, UI_NAVBAR_BTN_WIDTH, UI_NAVBAR_BTN_HEIGHT);
         lv_obj_set_style_bg_color(btn, UI_COLOR_PRIMARY, 0);
-        lv_obj_set_style_radius(btn, 6, 0);
+        lv_obj_set_style_radius(btn, 8, 0);
         lv_obj_add_event_cb(btn, nav_callbacks[i], LV_EVENT_CLICKED, NULL);
         
         lv_obj_t* label = lv_label_create(btn);

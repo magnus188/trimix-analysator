@@ -4,7 +4,7 @@
 #define TRIMIX_ANALYZER_VERSION_MAJOR 1
 #define TRIMIX_ANALYZER_VERSION_MINOR 0
 #define TRIMIX_ANALYZER_VERSION_PATCH 0
-#define TRIMIX_ANALYZER_VERSION "1.0.0"
+#define TRIMIX_ANALYZER_VERSION "0.1.0"
 
 // Build information (these can be set during build process)
 #ifndef BUILD_DATE

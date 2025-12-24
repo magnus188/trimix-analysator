@@ -28,6 +28,7 @@ static wifi_ap_info_t scan_results[20];
 static int scan_count = 0;
 static bool scan_done = false;
 static wifi_scan_callback_t scan_callback = NULL;
+static wifi_connection_callback_t connection_callback = NULL;
 
 // Forward declarations
 static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
@@ -209,6 +210,11 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t e
                     }
                     memset(current_ssid, 0, sizeof(current_ssid));
                     xEventGroupSetBits(s_wifi_event_group, WIFI_FAIL_BIT);
+                    
+                    // Notify UI of connection status change
+                    if (connection_callback) {
+                        connection_callback(wifi_status);
+                    }
                 }
                 break;
             }
@@ -287,6 +293,11 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t e
                 retry_count = 0;
                 
                 xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
+                
+                // Notify UI of connection status change
+                if (connection_callback) {
+                    connection_callback(wifi_status);
+                }
                 break;
             }
             
@@ -299,4 +310,9 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t e
 // Set scan completion callback
 void wifi_manager_set_scan_callback(wifi_scan_callback_t callback) {
     scan_callback = callback;
+}
+
+// Set connection status callback
+void wifi_manager_set_connection_callback(wifi_connection_callback_t callback) {
+    connection_callback = callback;
 }

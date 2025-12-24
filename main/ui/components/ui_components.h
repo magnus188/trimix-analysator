@@ -35,8 +35,11 @@
 #define UI_COLOR_TEXT_PRIMARY lv_color_hex(0xFFFFFF)
 #define UI_COLOR_TEXT_SECONDARY lv_color_hex(0xCCCCCC)
 
-// Navigation bar height
-#define UI_TOPBAR_HEIGHT 50
+// Navigation bar dimensions
+#define UI_TOPBAR_HEIGHT 55
+#define UI_NAVBAR_HEIGHT 75
+#define UI_NAVBAR_BTN_WIDTH 90
+#define UI_NAVBAR_BTN_HEIGHT 55
 
 #ifdef __cplusplus
 extern "C" {
