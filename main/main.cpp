@@ -8,7 +8,10 @@
 static void ui_task(void *arg){
     lvgl_port_init();
     screens_init();
-    for(;;){ vTaskDelay(20 / portTICK_PERIOD_MS); lv_timer_handler(); }
+    for(;;){
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+        lv_timer_handler();
+    }
 }
 
-extern "C" void app_main(void){ xTaskCreatePinnedToCore(ui_task, "ui", 8192, nullptr, 1, nullptr, 1); vTaskDelay(portMAX_DELAY); }
+extern "C" void app_main(void){ xTaskCreatePinnedToCore(ui_task, "ui", 8192, nullptr, 3, nullptr, 1); vTaskDelay(portMAX_DELAY); }

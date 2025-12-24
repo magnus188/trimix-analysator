@@ -3,18 +3,11 @@ idf_component_register(
         "main.cpp"                           # app_main
         "version.cpp"                        # version information
         "sensors/sensor_interface.cpp"       # sensors (mock)
-        "ui/screens/screen_manager.cpp"      # main screen manager
-        "ui/components/ui_components.cpp"    # reusable UI components
-        "ui/screens/home/home.cpp"           # home screen
-        "ui/screens/analyze/analyze.cpp"     # analyze screen
-        "ui/screens/dive_planner/dive_planner.cpp" # dive planner screen
-        "ui/screens/history/history.cpp"     # history screen  
-        "ui/screens/settings/settings.cpp"   # settings screen
-        "ui/screens/calibrate_o2/calibrate_o2.cpp" # calibration screen
-        "ui/screens/wifi/wifi_settings.cpp"  # wifi settings screen
-        "ui/screens/wifi/wifi_manager.cpp"   # wifi manager
-        "ui/widgets/keyboard.cpp"            # custom keyboard widget
-        "ui/screens/software_update/software_update.cpp" # software update screen
+        "ui/screens/screen_manager.cpp"      # screen manager
+        "ui/screens/home/home_screen.cpp"    # home screen (main menu)
+        "ui/screens/settings/settings_screen.cpp"  # settings screen
+        "ui/styles/styles.cpp"               # global styles
+        "ui/components/navbar.cpp"           # reusable navbar
         "ui/lvgl/lvgl_port.cpp"              # lvgl port/hw layer
         # Custom fonts
         "ui/fonts/custom_font_normal_16.c"
@@ -28,10 +21,11 @@ idf_component_register(
     INCLUDE_DIRS
         .
         ui/screens
-        ui/components
-        ui/widgets
         ui/lvgl
         ui/fonts
+        ui/styles
+        ui/components
+        ui/config
         sensors
         board
     REQUIRES

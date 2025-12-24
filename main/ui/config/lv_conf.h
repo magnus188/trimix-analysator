@@ -408,7 +408,7 @@
     LV_FONT_DECLARE(custom_font_light_16)
 
 /*Always set a default font*/
-#define LV_FONT_DEFAULT &custom_font_normal_20
+#define LV_FONT_DEFAULT &lv_font_montserrat_20
 
 /*Enable handling large font and/or fonts with a lot of characters.
  *The limit depends on the font size, font face and bpp.
