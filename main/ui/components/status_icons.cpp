@@ -104,13 +104,9 @@ void update_battery_display() {
 lv_obj_t* status_icons_create(lv_obj_t* parent) {
     ESP_LOGI(TAG, "Creating status icons");
     
-    // Clean up previous status icons if they exist to prevent orphaned objects
-    if (g_status.container != nullptr && lv_obj_is_valid(g_status.container)) {
-        ESP_LOGI(TAG, "Cleaning up previous status icons");
-        lv_obj_del(g_status.container);
-    }
-    // Reset state
-    g_status = StatusState{};
+    // Note: Each navbar gets its own independent status icons
+    // The global state tracks the most recently created icons for updates
+    // Previous icons remain on their parent navbars with initial values
     
     // Container for status icons - use fixed size to prevent layout jumps
     lv_obj_t* cont = lv_obj_create(parent);
@@ -128,24 +124,29 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
     g_status.wifi_icon = lv_label_create(cont);
     lv_label_set_text(g_status.wifi_icon, LV_SYMBOL_WIFI);
     lv_obj_set_style_text_font(g_status.wifi_icon, &lv_font_montserrat_16, 0);
-    lv_obj_set_style_text_color(g_status.wifi_icon, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
-    lv_obj_set_style_text_opa(g_status.wifi_icon, LV_OPA_40, 0);  // Start dimmed (not connected)
+    // Start with current known state or dimmed if unknown
+    if (g_status.wifi_connected) {
+        lv_obj_set_style_text_color(g_status.wifi_icon, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+        lv_obj_set_style_text_opa(g_status.wifi_icon, LV_OPA_COVER, 0);
+    } else {
+        lv_obj_set_style_text_color(g_status.wifi_icon, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
+        lv_obj_set_style_text_opa(g_status.wifi_icon, LV_OPA_40, 0);
+    }
     
     // Battery percentage
     g_status.battery_pct = lv_label_create(cont);
-    lv_label_set_text(g_status.battery_pct, "100%");
+    char buf[8];
+    snprintf(buf, sizeof(buf), "%d%%", g_status.battery_percentage);
+    lv_label_set_text(g_status.battery_pct, buf);
     lv_obj_set_style_text_font(g_status.battery_pct, &lv_font_montserrat_12, 0);
     lv_obj_set_style_text_color(g_status.battery_pct, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
     
     // Battery icon
     g_status.battery_icon = lv_label_create(cont);
-    lv_label_set_text(g_status.battery_icon, LV_SYMBOL_BATTERY_FULL);
+    lv_label_set_text(g_status.battery_icon, get_battery_symbol(g_status.battery_percentage, g_status.battery_charging));
     lv_obj_set_style_text_font(g_status.battery_icon, &lv_font_montserrat_16, 0);
-    lv_obj_set_style_text_color(g_status.battery_icon, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
-    
-    // Initial update
-    update_wifi_display();
-    update_battery_display();
+    lv_obj_set_style_text_color(g_status.battery_icon, 
+        lv_color_hex(get_battery_color(g_status.battery_percentage, g_status.battery_charging)), 0);
     
     return cont;
 }

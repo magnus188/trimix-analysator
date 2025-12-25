@@ -23,18 +23,21 @@ constexpr int RESULT_CARD_HEIGHT = 100;
 // Slider ranges
 constexpr int DEPTH_MIN = 0;
 constexpr int DEPTH_MAX = 150;
-constexpr int PPO2_MIN = 50;   // 0.50 bar * 100
+constexpr int PPO2_MIN = 100;  // 1.00 bar * 100
 constexpr int PPO2_MAX = 200;  // 2.00 bar * 100
+constexpr int O2_MIN = 0;
+constexpr int O2_MAX = 100;
 constexpr int EAD_MIN = 0;
-constexpr int EAD_MAX = 150;
+constexpr int EAD_MAX = 60;
 constexpr int HELIUM_MIN = 0;
-constexpr int HELIUM_MAX = 70;
+constexpr int HELIUM_MAX = 100;
 
 // Which parameter can be locked
 enum class LockTarget {
     NONE,
     DEPTH,
     PPO2,
+    O2,
     EAD,
     HELIUM
 };
@@ -46,18 +49,21 @@ struct DivePlannerState {
     // Sliders
     lv_obj_t* depth_slider = nullptr;
     lv_obj_t* ppo2_slider = nullptr;
+    lv_obj_t* o2_slider = nullptr;
     lv_obj_t* ead_slider = nullptr;
     lv_obj_t* helium_slider = nullptr;
     
     // Value labels
     lv_obj_t* depth_value = nullptr;
     lv_obj_t* ppo2_value = nullptr;
+    lv_obj_t* o2_value = nullptr;
     lv_obj_t* ead_value = nullptr;
     lv_obj_t* helium_value = nullptr;
     
     // Lock buttons
     lv_obj_t* depth_lock = nullptr;
     lv_obj_t* ppo2_lock = nullptr;
+    lv_obj_t* o2_lock = nullptr;
     lv_obj_t* ead_lock = nullptr;
     lv_obj_t* helium_lock = nullptr;
     
@@ -74,6 +80,7 @@ struct DivePlannerState {
     // Current values
     float depth = 30.0f;      // meters
     float ppo2 = 1.40f;       // bar
+    float o2 = 21.0f;         // percent
     float ead = 30.0f;        // meters
     float helium = 0.0f;      // percent
     
@@ -116,6 +123,7 @@ void set_lock_button_style(lv_obj_t* btn, bool is_locked) {
 void update_lock_button_styles() {
     set_lock_button_style(g_state.depth_lock, g_state.locked == LockTarget::DEPTH);
     set_lock_button_style(g_state.ppo2_lock, g_state.locked == LockTarget::PPO2);
+    set_lock_button_style(g_state.o2_lock, g_state.locked == LockTarget::O2);
     if (g_state.ead_lock) {
         set_lock_button_style(g_state.ead_lock, g_state.locked == LockTarget::EAD);
     }
@@ -126,22 +134,24 @@ void update_lock_button_styles() {
 
 // Update result card
 void update_results() {
-    // Calculate recommended O2%
-    float o2_percent = calc_o2_for_depth_ppo2(g_state.depth, g_state.ppo2);
-    float mod = calc_mod(o2_percent, g_state.ppo2);
+    // Calculate MOD based on user's O2 setting
+    float mod = calc_mod(g_state.o2, g_state.ppo2);
     
     // Calculate gas density at depth (g/L)
     // Density = (FO2 * 1.429 + FN2 * 1.251 + FHe * 0.179) * P_abs
     // where P_abs = depth/10 + 1 (in bar)
     float p_abs = (g_state.depth / 10.0f) + 1.0f;
-    float fo2 = o2_percent / 100.0f;
+    float fo2 = g_state.o2 / 100.0f;
     float fhe = g_state.helium / 100.0f;
     float fn2 = 1.0f - fo2 - fhe;
     if (fn2 < 0) fn2 = 0;
     float density = (fo2 * 1.429f + fn2 * 1.251f + fhe * 0.179f) * p_abs;
     
+    // Calculate PPO2 at depth for the current O2%
+    float ppo2_at_depth = calc_ppo2(g_state.depth, g_state.o2);
+    
     char buf[64];
-    snprintf(buf, sizeof(buf), "O2: %.0f%%", o2_percent);
+    snprintf(buf, sizeof(buf), "PPO2: %.2f", ppo2_at_depth);
     lv_label_set_text(g_state.result_o2, buf);
     
     snprintf(buf, sizeof(buf), "MOD: %.0fm", mod);
@@ -149,12 +159,12 @@ void update_results() {
     
     // Show mix recommendation
     if (g_state.trimix_enabled && g_state.helium > 0) {
-        float n2 = 100.0f - o2_percent - g_state.helium;
+        float n2 = 100.0f - g_state.o2 - g_state.helium;
         if (n2 < 0) n2 = 0;
-        snprintf(buf, sizeof(buf), "Mix: %.0f/%.0f (O2/He)", o2_percent, g_state.helium);
+        snprintf(buf, sizeof(buf), "Mix: %.0f/%.0f (O2/He)", g_state.o2, g_state.helium);
     } else {
-        if (o2_percent > 21.5f) {
-            snprintf(buf, sizeof(buf), "EAN%.0f (Nitrox)", o2_percent);
+        if (g_state.o2 > 21.5f) {
+            snprintf(buf, sizeof(buf), "EAN%.0f (Nitrox)", g_state.o2);
         } else {
             snprintf(buf, sizeof(buf), "Air (21%% O2)");
         }
@@ -177,6 +187,7 @@ void update_results() {
 void update_all_displays() {
     update_value_label(g_state.depth_value, "%.0f m", g_state.depth);
     update_value_label(g_state.ppo2_value, "%.2f bar", g_state.ppo2);
+    update_value_label(g_state.o2_value, "%.0f %%", g_state.o2);
     
     if (g_state.ead_value) {
         update_value_label(g_state.ead_value, "%.0f m", g_state.ead);
@@ -188,6 +199,7 @@ void update_all_displays() {
     // Update slider positions
     lv_slider_set_value(g_state.depth_slider, (int)g_state.depth, LV_ANIM_OFF);
     lv_slider_set_value(g_state.ppo2_slider, (int)(g_state.ppo2 * 100), LV_ANIM_OFF);
+    lv_slider_set_value(g_state.o2_slider, (int)g_state.o2, LV_ANIM_OFF);
     
     if (g_state.ead_slider) {
         lv_slider_set_value(g_state.ead_slider, (int)g_state.ead, LV_ANIM_OFF);
@@ -309,6 +321,14 @@ void helium_slider_event_cb(lv_event_t* e) {
     
     g_state.helium = (float)lv_slider_get_value(g_state.helium_slider);
     recalculate_from_helium();
+}
+
+void o2_slider_event_cb(lv_event_t* e) {
+    if (g_state.locked == LockTarget::O2) return;
+    
+    g_state.o2 = (float)lv_slider_get_value(g_state.o2_slider);
+    // O2 affects density calculation, just update displays
+    update_all_displays();
 }
 
 void lock_button_event_cb(lv_event_t* e) {
@@ -543,6 +563,11 @@ lv_obj_t* dive_planner_screen_create(void) {
     create_slider_row(content, "PPO2", PPO2_MIN, PPO2_MAX, (int)(g_state.ppo2 * 100),
                       &g_state.ppo2_slider, &g_state.ppo2_value, &g_state.ppo2_lock,
                       ppo2_slider_event_cb, LockTarget::PPO2);
+    
+    // O2 slider
+    create_slider_row(content, "O2", O2_MIN, O2_MAX, (int)g_state.o2,
+                      &g_state.o2_slider, &g_state.o2_value, &g_state.o2_lock,
+                      o2_slider_event_cb, LockTarget::O2);
     
     // Trimix toggle
     create_trimix_toggle(content);

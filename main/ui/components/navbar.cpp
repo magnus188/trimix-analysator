@@ -86,6 +86,10 @@ lv_obj_t* navbar_create_with_back(lv_obj_t* parent, const char* title, lv_event_
     lv_obj_set_style_text_font(label, styles_get_font_bold(), 0);
     lv_obj_set_style_text_color(label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
     lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+    
+    // Status icons (WiFi + Battery) - right side
+    lv_obj_t* status = status_icons_create(navbar);
+    lv_obj_align(status, LV_ALIGN_RIGHT_MID, -NAVBAR_PAD, 0);
 
     // Store label in user data for later updates
     lv_obj_set_user_data(navbar, label);
