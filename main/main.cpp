@@ -28,4 +28,4 @@ static void ui_task(void *arg){
     }
 }
 
-extern "C" void app_main(void){ xTaskCreatePinnedToCore(ui_task, "ui", 8192, nullptr, 3, nullptr, 1); vTaskDelay(portMAX_DELAY); }
+extern "C" void app_main(void){ xTaskCreatePinnedToCore(ui_task, "ui", 12288, nullptr, 3, nullptr, 1); vTaskDelay(portMAX_DELAY); }
