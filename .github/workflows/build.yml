@@ -1,0 +1,37 @@
+name: Build Check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    name: Build ESP32 Firmware
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run tests
+      run: |
+        chmod +x scripts/run_tests.sh
+        ./scripts/run_tests.sh
+
+    - name: Build with ESP-IDF
+      uses: espressif/esp-idf-ci-action@v1
+      with:
+        esp_idf_version: v5.1.6
+        target: esp32s3
+        path: '.'
+
+    - name: Report build size
+      run: |
+        echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        ls -lh build/Trimix_analyzer.bin >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Firmware built successfully for ESP32-S3" >> $GITHUB_STEP_SUMMARY
