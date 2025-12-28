@@ -379,19 +379,25 @@ void lock_button_event_cb(lv_event_t* e) {
     LockTarget target = (LockTarget)(intptr_t)lv_event_get_user_data(e);
     
     // Determine which group this lock belongs to
+    // Pressing a lock button always locks that target (auto-unlocks any other in same group)
+    // Press again on already-locked target to unlock
     if (is_top_group(target)) {
-        // Toggle within top group (Depth, PPO2, O2)
+        // Top group (Depth, PPO2, O2) - auto-switch: lock new target directly
         if (g_state.top_lock == target) {
+            // Already locked - unlock it
             g_state.top_lock = LockTarget::NONE;
         } else {
+            // Lock this one (automatically unlocks any previous in this group)
             g_state.top_lock = target;
         }
         ESP_LOGI(TAG, "Top lock changed to: %d", (int)g_state.top_lock);
     } else if (is_bottom_group(target)) {
-        // Toggle within bottom group (EAD, Helium)
+        // Bottom group (EAD, Helium) - auto-switch: lock new target directly
         if (g_state.bottom_lock == target) {
+            // Already locked - unlock it
             g_state.bottom_lock = LockTarget::NONE;
         } else {
+            // Lock this one (automatically unlocks any previous in this group)
             g_state.bottom_lock = target;
         }
         ESP_LOGI(TAG, "Bottom lock changed to: %d", (int)g_state.bottom_lock);
