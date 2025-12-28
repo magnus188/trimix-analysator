@@ -5,6 +5,8 @@
 #include "../screen_manager.h"
 #include <esp_log.h>
 #include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
 static const char* TAG = "DIVE_PLANNER";
 
@@ -42,6 +44,19 @@ enum class LockTarget {
     HELIUM
 };
 
+// Numpad input state
+struct NumpadState {
+    lv_obj_t* modal = nullptr;
+    lv_obj_t* input_label = nullptr;
+    lv_obj_t* title_label = nullptr;
+    LockTarget editing_target = LockTarget::NONE;
+    char input_buffer[16] = {0};
+    int input_len = 0;
+    float min_val = 0;
+    float max_val = 100;
+    int decimals = 0;  // 0 for integers, 2 for PPO2
+};
+
 // Screen state
 struct DivePlannerState {
     lv_obj_t* screen = nullptr;
@@ -77,6 +92,9 @@ struct DivePlannerState {
     lv_obj_t* result_mix = nullptr;
     lv_obj_t* result_density = nullptr;
     
+    // Numpad
+    NumpadState numpad;
+    
     // Current values
     float depth = 30.0f;      // meters
     float ppo2 = 1.40f;       // bar
@@ -84,8 +102,11 @@ struct DivePlannerState {
     float ead = 30.0f;        // meters
     float helium = 0.0f;      // percent
     
-    // Lock state
-    LockTarget locked = LockTarget::NONE;
+    // Lock state - two independent groups
+    // Top group: DEPTH, PPO2, O2 (one lock allowed)
+    // Bottom group: EAD, HELIUM (one lock allowed)
+    LockTarget top_lock = LockTarget::NONE;
+    LockTarget bottom_lock = LockTarget::NONE;
     bool trimix_enabled = false;
     bool updating = false;  // Prevent recursive updates
 };
@@ -99,6 +120,29 @@ void recalculate_from_ppo2();
 void recalculate_from_ead();
 void recalculate_from_helium();
 void update_lock_button_styles();
+void show_numpad(LockTarget target, const char* title, float current_val, float min_val, float max_val, int decimals);
+void close_numpad();
+void apply_numpad_value();
+
+// Check if target is in top group (Depth, PPO2, O2)
+bool is_top_group(LockTarget target) {
+    return target == LockTarget::DEPTH || target == LockTarget::PPO2 || target == LockTarget::O2;
+}
+
+// Check if target is in bottom group (EAD, Helium)
+bool is_bottom_group(LockTarget target) {
+    return target == LockTarget::EAD || target == LockTarget::HELIUM;
+}
+
+// Check if a target is currently locked
+bool is_locked(LockTarget target) {
+    if (is_top_group(target)) {
+        return g_state.top_lock == target;
+    } else if (is_bottom_group(target)) {
+        return g_state.bottom_lock == target;
+    }
+    return false;
+}
 
 // Update value label text
 void update_value_label(lv_obj_t* label, const char* format, float value) {
@@ -121,14 +165,14 @@ void set_lock_button_style(lv_obj_t* btn, bool is_locked) {
 }
 
 void update_lock_button_styles() {
-    set_lock_button_style(g_state.depth_lock, g_state.locked == LockTarget::DEPTH);
-    set_lock_button_style(g_state.ppo2_lock, g_state.locked == LockTarget::PPO2);
-    set_lock_button_style(g_state.o2_lock, g_state.locked == LockTarget::O2);
+    set_lock_button_style(g_state.depth_lock, g_state.top_lock == LockTarget::DEPTH);
+    set_lock_button_style(g_state.ppo2_lock, g_state.top_lock == LockTarget::PPO2);
+    set_lock_button_style(g_state.o2_lock, g_state.top_lock == LockTarget::O2);
     if (g_state.ead_lock) {
-        set_lock_button_style(g_state.ead_lock, g_state.locked == LockTarget::EAD);
+        set_lock_button_style(g_state.ead_lock, g_state.bottom_lock == LockTarget::EAD);
     }
     if (g_state.helium_lock) {
-        set_lock_button_style(g_state.helium_lock, g_state.locked == LockTarget::HELIUM);
+        set_lock_button_style(g_state.helium_lock, g_state.bottom_lock == LockTarget::HELIUM);
     }
 }
 
@@ -216,8 +260,14 @@ void recalculate_from_depth() {
     if (g_state.updating) return;
     g_state.updating = true;
     
+    // Handle top group lock - if PPO2 is locked, adjust O2 to maintain PPO2
+    if (g_state.top_lock == LockTarget::PPO2) {
+        g_state.o2 = calc_o2_for_depth_ppo2(g_state.depth, g_state.ppo2);
+        g_state.o2 = clamp_float(g_state.o2, O2_MIN, O2_MAX);
+    }
+    
     if (g_state.trimix_enabled) {
-        switch (g_state.locked) {
+        switch (g_state.bottom_lock) {
             case LockTarget::EAD:
                 // Depth changed, EAD locked -> adjust helium
                 g_state.helium = calc_helium_for_ead(g_state.depth, g_state.ead);
@@ -250,18 +300,15 @@ void recalculate_from_ead() {
     if (g_state.updating) return;
     g_state.updating = true;
     
-    switch (g_state.locked) {
-        case LockTarget::DEPTH:
-            // EAD changed, depth locked -> adjust helium
-            g_state.helium = calc_helium_for_ead(g_state.depth, g_state.ead);
-            break;
+    // Check bottom lock for trimix calculations
+    switch (g_state.bottom_lock) {
         case LockTarget::HELIUM:
             // EAD changed, helium locked -> adjust depth
             g_state.depth = calc_depth_for_ead(g_state.ead, g_state.helium);
             g_state.depth = clamp_float(g_state.depth, DEPTH_MIN, DEPTH_MAX);
             break;
         default:
-            // No lock, adjust helium by default
+            // No helium lock, adjust helium by default
             g_state.helium = calc_helium_for_ead(g_state.depth, g_state.ead);
             break;
     }
@@ -274,18 +321,15 @@ void recalculate_from_helium() {
     if (g_state.updating) return;
     g_state.updating = true;
     
-    switch (g_state.locked) {
-        case LockTarget::DEPTH:
-            // Helium changed, depth locked -> adjust EAD
-            g_state.ead = calc_ead(g_state.depth, g_state.helium);
-            break;
+    // Check bottom lock for trimix calculations
+    switch (g_state.bottom_lock) {
         case LockTarget::EAD:
             // Helium changed, EAD locked -> adjust depth
             g_state.depth = calc_depth_for_ead(g_state.ead, g_state.helium);
             g_state.depth = clamp_float(g_state.depth, DEPTH_MIN, DEPTH_MAX);
             break;
         default:
-            // No lock, adjust EAD by default
+            // No EAD lock, adjust EAD by default
             g_state.ead = calc_ead(g_state.depth, g_state.helium);
             break;
     }
@@ -296,35 +340,35 @@ void recalculate_from_helium() {
 
 // Event handlers
 void depth_slider_event_cb(lv_event_t* e) {
-    if (g_state.locked == LockTarget::DEPTH) return;  // Can't change locked slider
+    if (is_locked(LockTarget::DEPTH)) return;  // Can't change locked slider
     
     g_state.depth = (float)lv_slider_get_value(g_state.depth_slider);
     recalculate_from_depth();
 }
 
 void ppo2_slider_event_cb(lv_event_t* e) {
-    if (g_state.locked == LockTarget::PPO2) return;
+    if (is_locked(LockTarget::PPO2)) return;
     
     g_state.ppo2 = lv_slider_get_value(g_state.ppo2_slider) / 100.0f;
     recalculate_from_ppo2();
 }
 
 void ead_slider_event_cb(lv_event_t* e) {
-    if (g_state.locked == LockTarget::EAD) return;
+    if (is_locked(LockTarget::EAD)) return;
     
     g_state.ead = (float)lv_slider_get_value(g_state.ead_slider);
     recalculate_from_ead();
 }
 
 void helium_slider_event_cb(lv_event_t* e) {
-    if (g_state.locked == LockTarget::HELIUM) return;
+    if (is_locked(LockTarget::HELIUM)) return;
     
     g_state.helium = (float)lv_slider_get_value(g_state.helium_slider);
     recalculate_from_helium();
 }
 
 void o2_slider_event_cb(lv_event_t* e) {
-    if (g_state.locked == LockTarget::O2) return;
+    if (is_locked(LockTarget::O2)) return;
     
     g_state.o2 = (float)lv_slider_get_value(g_state.o2_slider);
     // O2 affects density calculation, just update displays
@@ -334,15 +378,264 @@ void o2_slider_event_cb(lv_event_t* e) {
 void lock_button_event_cb(lv_event_t* e) {
     LockTarget target = (LockTarget)(intptr_t)lv_event_get_user_data(e);
     
-    // Toggle lock
-    if (g_state.locked == target) {
-        g_state.locked = LockTarget::NONE;
-    } else {
-        g_state.locked = target;
+    // Determine which group this lock belongs to
+    if (is_top_group(target)) {
+        // Toggle within top group (Depth, PPO2, O2)
+        if (g_state.top_lock == target) {
+            g_state.top_lock = LockTarget::NONE;
+        } else {
+            g_state.top_lock = target;
+        }
+        ESP_LOGI(TAG, "Top lock changed to: %d", (int)g_state.top_lock);
+    } else if (is_bottom_group(target)) {
+        // Toggle within bottom group (EAD, Helium)
+        if (g_state.bottom_lock == target) {
+            g_state.bottom_lock = LockTarget::NONE;
+        } else {
+            g_state.bottom_lock = target;
+        }
+        ESP_LOGI(TAG, "Bottom lock changed to: %d", (int)g_state.bottom_lock);
     }
     
     update_lock_button_styles();
-    ESP_LOGI(TAG, "Lock changed to: %d", (int)g_state.locked);
+}
+
+// Numpad button map
+static const char* numpad_map[] = {
+    "7", "8", "9", "\n",
+    "4", "5", "6", "\n",
+    "1", "2", "3", "\n",
+    ",", "0", ".", "\n",
+    LV_SYMBOL_BACKSPACE, "OK", ""
+};
+
+void numpad_button_event_cb(lv_event_t* e) {
+    lv_obj_t* btnm = (lv_obj_t*)lv_event_get_target(e);
+    uint32_t id = lv_buttonmatrix_get_selected_button(btnm);
+    const char* txt = lv_buttonmatrix_get_button_text(btnm, id);
+    
+    if (txt == nullptr) return;
+    
+    NumpadState& np = g_state.numpad;
+    
+    if (strcmp(txt, LV_SYMBOL_BACKSPACE) == 0) {
+        // Backspace
+        if (np.input_len > 0) {
+            np.input_len--;
+            np.input_buffer[np.input_len] = '\0';
+        }
+    } else if (strcmp(txt, "OK") == 0) {
+        // Apply value and close
+        apply_numpad_value();
+        close_numpad();
+        return;
+    } else if (strcmp(txt, ",") == 0 || strcmp(txt, ".") == 0) {
+        // Decimal point - only allow one, and only if decimals are allowed
+        if (np.decimals > 0 && np.input_len < 14) {
+            // Check if there's already a decimal point
+            bool has_decimal = false;
+            for (int i = 0; i < np.input_len; i++) {
+                if (np.input_buffer[i] == '.') {
+                    has_decimal = true;
+                    break;
+                }
+            }
+            if (!has_decimal) {
+                np.input_buffer[np.input_len++] = '.';
+                np.input_buffer[np.input_len] = '\0';
+            }
+        }
+    } else {
+        // Digit
+        if (np.input_len < 14) {
+            np.input_buffer[np.input_len++] = txt[0];
+            np.input_buffer[np.input_len] = '\0';
+        }
+    }
+    
+    // Update display
+    if (np.input_len > 0) {
+        lv_label_set_text(np.input_label, np.input_buffer);
+    } else {
+        lv_label_set_text(np.input_label, "0");
+    }
+}
+
+void numpad_cancel_event_cb(lv_event_t* e) {
+    close_numpad();
+}
+
+void apply_numpad_value() {
+    NumpadState& np = g_state.numpad;
+    
+    if (np.input_len == 0) return;
+    
+    // Parse the value
+    float value = strtof(np.input_buffer, nullptr);
+    value = clamp_float(value, np.min_val, np.max_val);
+    
+    // Apply to the appropriate state variable
+    switch (np.editing_target) {
+        case LockTarget::DEPTH:
+            g_state.depth = value;
+            recalculate_from_depth();
+            break;
+        case LockTarget::PPO2:
+            g_state.ppo2 = value;
+            recalculate_from_ppo2();
+            break;
+        case LockTarget::O2:
+            g_state.o2 = value;
+            update_all_displays();
+            break;
+        case LockTarget::EAD:
+            g_state.ead = value;
+            recalculate_from_ead();
+            break;
+        case LockTarget::HELIUM:
+            g_state.helium = value;
+            recalculate_from_helium();
+            break;
+        default:
+            break;
+    }
+}
+
+void close_numpad() {
+    if (g_state.numpad.modal) {
+        lv_obj_delete(g_state.numpad.modal);
+        g_state.numpad.modal = nullptr;
+        g_state.numpad.input_label = nullptr;
+        g_state.numpad.title_label = nullptr;
+        g_state.numpad.editing_target = LockTarget::NONE;
+    }
+}
+
+void show_numpad(LockTarget target, const char* title, float current_val, float min_val, float max_val, int decimals) {
+    // Close any existing numpad
+    close_numpad();
+    
+    NumpadState& np = g_state.numpad;
+    np.editing_target = target;
+    np.min_val = min_val;
+    np.max_val = max_val;
+    np.decimals = decimals;
+    np.input_len = 0;
+    np.input_buffer[0] = '\0';
+    
+    // Create modal backdrop
+    np.modal = lv_obj_create(g_state.screen);
+    lv_obj_set_size(np.modal, SCREEN_WIDTH, SCREEN_HEIGHT);
+    lv_obj_set_pos(np.modal, 0, 0);
+    lv_obj_set_style_bg_color(np.modal, lv_color_hex(0x000000), 0);
+    lv_obj_set_style_bg_opa(np.modal, LV_OPA_70, 0);
+    lv_obj_set_style_border_width(np.modal, 0, 0);
+    lv_obj_set_style_radius(np.modal, 0, 0);
+    lv_obj_clear_flag(np.modal, LV_OBJ_FLAG_SCROLLABLE);
+    
+    // Dialog container
+    lv_obj_t* dialog = lv_obj_create(np.modal);
+    lv_obj_set_size(dialog, 280, 380);
+    lv_obj_center(dialog);
+    lv_obj_set_style_bg_color(dialog, lv_color_hex(STYLE_COLOR_SURFACE), 0);
+    lv_obj_set_style_bg_opa(dialog, LV_OPA_COVER, 0);
+    lv_obj_set_style_radius(dialog, 16, 0);
+    lv_obj_set_style_border_width(dialog, 0, 0);
+    lv_obj_set_style_pad_all(dialog, 16, 0);
+    lv_obj_clear_flag(dialog, LV_OBJ_FLAG_SCROLLABLE);
+    
+    // Title
+    np.title_label = lv_label_create(dialog);
+    lv_label_set_text(np.title_label, title);
+    lv_obj_set_style_text_font(np.title_label, &lv_font_montserrat_18, 0);
+    lv_obj_set_style_text_color(np.title_label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_align(np.title_label, LV_ALIGN_TOP_MID, 0, 0);
+    
+    // Current value display
+    np.input_label = lv_label_create(dialog);
+    char buf[32];
+    if (decimals > 0) {
+        snprintf(buf, sizeof(buf), "%.2f", current_val);
+    } else {
+        snprintf(buf, sizeof(buf), "%.0f", current_val);
+    }
+    lv_label_set_text(np.input_label, buf);
+    lv_obj_set_style_text_font(np.input_label, &lv_font_montserrat_28, 0);
+    lv_obj_set_style_text_color(np.input_label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_align(np.input_label, LV_ALIGN_TOP_MID, 0, 35);
+    
+    // Range hint
+    lv_obj_t* range_label = lv_label_create(dialog);
+    if (decimals > 0) {
+        snprintf(buf, sizeof(buf), "(%.2f - %.2f)", min_val, max_val);
+    } else {
+        snprintf(buf, sizeof(buf), "(%.0f - %.0f)", min_val, max_val);
+    }
+    lv_label_set_text(range_label, buf);
+    lv_obj_set_style_text_font(range_label, &lv_font_montserrat_12, 0);
+    lv_obj_set_style_text_color(range_label, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
+    lv_obj_align(range_label, LV_ALIGN_TOP_MID, 0, 68);
+    
+    // Numpad button matrix
+    lv_obj_t* btnm = lv_buttonmatrix_create(dialog);
+    lv_buttonmatrix_set_map(btnm, numpad_map);
+    lv_obj_set_size(btnm, 248, 220);
+    lv_obj_align(btnm, LV_ALIGN_TOP_MID, 0, 90);
+    
+    // Style the button matrix
+    lv_obj_set_style_bg_color(btnm, lv_color_hex(STYLE_COLOR_SURFACE), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(btnm, LV_OPA_TRANSP, LV_PART_MAIN);
+    lv_obj_set_style_border_width(btnm, 0, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(btnm, 4, LV_PART_MAIN);
+    
+    lv_obj_set_style_bg_color(btnm, lv_color_hex(0x404040), LV_PART_ITEMS);
+    lv_obj_set_style_bg_opa(btnm, LV_OPA_COVER, LV_PART_ITEMS);
+    lv_obj_set_style_text_color(btnm, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), LV_PART_ITEMS);
+    lv_obj_set_style_text_font(btnm, &lv_font_montserrat_20, LV_PART_ITEMS);
+    lv_obj_set_style_radius(btnm, 8, LV_PART_ITEMS);
+    
+    lv_obj_add_event_cb(btnm, numpad_button_event_cb, LV_EVENT_VALUE_CHANGED, nullptr);
+    
+    // Cancel button
+    lv_obj_t* cancel_btn = lv_btn_create(dialog);
+    lv_obj_set_size(cancel_btn, 100, 36);
+    lv_obj_align(cancel_btn, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+    lv_obj_set_style_bg_color(cancel_btn, lv_color_hex(STYLE_COLOR_ERROR), 0);
+    lv_obj_set_style_radius(cancel_btn, 8, 0);
+    
+    lv_obj_t* cancel_label = lv_label_create(cancel_btn);
+    lv_label_set_text(cancel_label, "Cancel");
+    lv_obj_set_style_text_font(cancel_label, &lv_font_montserrat_14, 0);
+    lv_obj_center(cancel_label);
+    
+    lv_obj_add_event_cb(cancel_btn, numpad_cancel_event_cb, LV_EVENT_CLICKED, nullptr);
+    
+    ESP_LOGI(TAG, "Numpad opened for %s", title);
+}
+
+// Value label tap handlers
+void value_label_click_cb(lv_event_t* e) {
+    LockTarget target = (LockTarget)(intptr_t)lv_event_get_user_data(e);
+    
+    switch (target) {
+        case LockTarget::DEPTH:
+            show_numpad(target, "Depth (m)", g_state.depth, DEPTH_MIN, DEPTH_MAX, 0);
+            break;
+        case LockTarget::PPO2:
+            show_numpad(target, "PPO2 (bar)", g_state.ppo2, PPO2_MIN / 100.0f, PPO2_MAX / 100.0f, 2);
+            break;
+        case LockTarget::O2:
+            show_numpad(target, "O2 (%)", g_state.o2, O2_MIN, O2_MAX, 0);
+            break;
+        case LockTarget::EAD:
+            show_numpad(target, "EAD (m)", g_state.ead, EAD_MIN, EAD_MAX, 0);
+            break;
+        case LockTarget::HELIUM:
+            show_numpad(target, "Helium (%)", g_state.helium, HELIUM_MIN, HELIUM_MAX, 0);
+            break;
+        default:
+            break;
+    }
 }
 
 void trimix_toggle_event_cb(lv_event_t* e) {
@@ -351,17 +644,12 @@ void trimix_toggle_event_cb(lv_event_t* e) {
     if (g_state.trimix_section) {
         if (g_state.trimix_enabled) {
             lv_obj_clear_flag(g_state.trimix_section, LV_OBJ_FLAG_HIDDEN);
-            // Reset trimix lock if was set
-            if (g_state.locked == LockTarget::EAD || g_state.locked == LockTarget::HELIUM) {
-                // Keep the lock
-            }
+            // Keep any existing bottom lock
         } else {
             lv_obj_add_flag(g_state.trimix_section, LV_OBJ_FLAG_HIDDEN);
-            // Clear trimix-related lock
-            if (g_state.locked == LockTarget::EAD || g_state.locked == LockTarget::HELIUM) {
-                g_state.locked = LockTarget::NONE;
-                update_lock_button_styles();
-            }
+            // Clear bottom lock when disabling trimix
+            g_state.bottom_lock = LockTarget::NONE;
+            update_lock_button_styles();
             g_state.helium = 0;
             g_state.ead = g_state.depth;  // EAD equals depth with no helium
         }
@@ -400,10 +688,12 @@ lv_obj_t* create_slider_row(lv_obj_t* parent, const char* label_text,
     lv_obj_set_style_text_font(label, &lv_font_montserrat_16, 0);
     lv_obj_set_style_text_color(label, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
     
-    // Value label
+    // Value label (clickable for numpad input)
     lv_obj_t* value = lv_label_create(top_row);
     lv_obj_set_style_text_font(value, &lv_font_montserrat_20, 0);
     lv_obj_set_style_text_color(value, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_add_flag(value, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(value, value_label_click_cb, LV_EVENT_CLICKED, (void*)(intptr_t)lock_target);
     *out_value = value;
     
     // Lock button
@@ -539,7 +829,7 @@ lv_obj_t* dive_planner_screen_create(void) {
     // Navbar with back button
     navbar_create_with_back(screen, "Dive Planner", nullptr);
     
-    // Scrollable content area
+    // Content area - disable all scrolling to prevent unwanted scroll behavior
     lv_obj_t* content = lv_obj_create(screen);
     lv_obj_remove_style_all(content);
     lv_obj_set_size(content, SCREEN_WIDTH, SCREEN_HEIGHT - NAVBAR_HEIGHT);
@@ -548,8 +838,7 @@ lv_obj_t* dive_planner_screen_create(void) {
     lv_obj_set_style_pad_row(content, 12, 0);
     lv_obj_set_flex_flow(content, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(content, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_set_scroll_dir(content, LV_DIR_VER);
-    lv_obj_set_scrollbar_mode(content, LV_SCROLLBAR_MODE_AUTO);
+    lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLLABLE);  // Disable scrolling completely
     
     // Result card at top
     create_result_card(content);

@@ -4,11 +4,15 @@
 #include <lvgl.h>
 #include "ui/lvgl/lvgl_port.h"
 #include "ui/screens/screen_manager.h"
+#include "services/settings_service.h"
 #include "services/wifi_service.h"
 #include "services/battery_service.h"
 
 static void ui_task(void *arg){
-    // Initialize services before UI
+    // Initialize settings first (loads from NVS)
+    settings_init();
+    
+    // Initialize other services
     wifi_service_init();
     battery_service_init();
     

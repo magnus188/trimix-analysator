@@ -4,6 +4,7 @@
 #include "settings/settings_screen.h"
 #include "settings/wifi_screen.h"
 #include "settings/update_screen.h"
+#include "settings/device_screen.h"
 #include "../styles/styles.h"
 #include "../components/navbar.h"
 #include <array>
@@ -55,7 +56,7 @@ public:
         screens_[SCREEN_UPDATE] = update_screen_create();
         screens_[SCREEN_CALIBRATE] = create_placeholder_screen("Calibrate Sensors");
         screens_[SCREEN_SAFETY] = create_placeholder_screen("Safety Settings");
-        screens_[SCREEN_DEVICE] = create_placeholder_screen("Device Settings");
+        screens_[SCREEN_DEVICE] = device_screen_create();
         
         show(SCREEN_HOME);
     }
@@ -67,7 +68,17 @@ public:
         }
 
         current_screen_ = id;
-        lv_scr_load(screens_[id]);
+        lv_obj_t* scr = screens_[id];
+        
+        // Reset any accumulated scroll offset and disable screen-level scrolling
+        // This prevents the bug where screen content shifts down and wraps
+        lv_obj_scroll_to(scr, 0, 0, LV_ANIM_OFF);
+        lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLL_ELASTIC);
+        lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLL_MOMENTUM);
+        lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLL_CHAIN);
+        
+        lv_scr_load(scr);
     }
 
     screen_id_t current() const {

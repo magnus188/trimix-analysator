@@ -519,6 +519,9 @@ lv_obj_t* wifi_screen_create(void) {
     lv_obj_set_style_pad_row(g_state.network_list, 8, 0);
     lv_obj_add_flag(g_state.network_list, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_scroll_dir(g_state.network_list, LV_DIR_VER);
+    // Prevent elastic/bounce scroll
+    lv_obj_add_flag(g_state.network_list, LV_OBJ_FLAG_SCROLL_ONE);
+    lv_obj_set_scroll_snap_y(g_state.network_list, LV_SCROLL_SNAP_START);
     
     // Initial scan and connected panel update will be triggered by LV_EVENT_SCREEN_LOADED
     
