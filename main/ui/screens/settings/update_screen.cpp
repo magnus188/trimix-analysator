@@ -1,12 +1,17 @@
 #include "update_screen.h"
 #include "../../styles/styles.h"
 #include "../../components/navbar.h"
+#include "../../images/magson_logo.h"
 #include "../../../services/ota_service.h"
 #include "../../../services/wifi_service.h"
 #include "../screen_manager.h"
 #include <esp_log.h>
+#include <esp_system.h>
 #include <cstring>
 #include <cstdio>
+#include <atomic>
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 
 static const char* TAG = "UPDATE_SCREEN";
 
@@ -16,6 +21,12 @@ constexpr int SCREEN_WIDTH = 480;
 constexpr int SCREEN_HEIGHT = 800;
 constexpr int NAVBAR_HEIGHT = 70;
 constexpr int CONTENT_START_Y = NAVBAR_HEIGHT;
+
+// Thread-safe progress state (updated from OTA task, read from LVGL task)
+static std::atomic<int> g_ota_progress{0};
+static char g_ota_status[64] = "Installing update...";
+static char g_last_status[64] = "";
+static SemaphoreHandle_t g_status_mutex = nullptr;
 
 // Screen state
 struct UpdateScreenState {
@@ -31,6 +42,15 @@ struct UpdateScreenState {
     lv_obj_t* reboot_btn = nullptr;
     lv_obj_t* update_panel = nullptr;
     lv_timer_t* state_timer = nullptr;
+    // Fullscreen update overlay
+    lv_obj_t* update_overlay = nullptr;
+    lv_obj_t* overlay_logo = nullptr;
+    lv_obj_t* overlay_progress = nullptr;
+    lv_obj_t* overlay_status = nullptr;
+    lv_obj_t* overlay_percent = nullptr;
+    int last_displayed_progress = -1;  // Track last displayed value
+    ota_state_t last_ota_state = OTA_STATE_IDLE;  // Track state changes
+    bool success_handled = false;  // Track if success state was handled
 };
 
 UpdateScreenState g_state;
@@ -41,30 +61,149 @@ void on_update_click(lv_event_t* e);
 void on_reboot_click(lv_event_t* e);
 void update_ui_state();
 void ota_progress_callback(int progress, const char* status);
+void show_update_overlay();
+void hide_update_overlay();
+void update_overlay_progress();
 
 // Back button callback
 void update_back_cb(lv_event_t* e) {
     screen_manager_show(SCREEN_SETTINGS);
 }
 
-// Timer to poll OTA state
+// Timer to poll OTA state and update overlay progress
 void state_timer_cb(lv_timer_t* timer) {
+    update_overlay_progress();  // Update progress bar from stored values
     update_ui_state();
 }
 
-// Progress callback from OTA service
-void ota_progress_callback(int progress, const char* status) {
-    if (g_state.progress_bar) {
-        lv_bar_set_value(g_state.progress_bar, progress, LV_ANIM_ON);
+// Create fullscreen update overlay with logo and progress
+void show_update_overlay() {
+    if (g_state.update_overlay) return;  // Already showing
+    
+    // Create fullscreen dark overlay
+    g_state.update_overlay = lv_obj_create(lv_layer_top());
+    lv_obj_set_size(g_state.update_overlay, SCREEN_WIDTH, SCREEN_HEIGHT);
+    lv_obj_set_pos(g_state.update_overlay, 0, 0);
+    lv_obj_set_style_bg_color(g_state.update_overlay, lv_color_hex(0x000000), 0);
+    lv_obj_set_style_bg_opa(g_state.update_overlay, LV_OPA_COVER, 0);
+    lv_obj_set_style_border_width(g_state.update_overlay, 0, 0);
+    lv_obj_set_style_radius(g_state.update_overlay, 0, 0);
+    lv_obj_clear_flag(g_state.update_overlay, LV_OBJ_FLAG_SCROLLABLE);
+    
+    // Logo image
+    g_state.overlay_logo = lv_image_create(g_state.update_overlay);
+    lv_image_set_src(g_state.overlay_logo, &magson_logo);
+    lv_obj_align(g_state.overlay_logo, LV_ALIGN_CENTER, 0, -140);
+    
+    // Status label
+    g_state.overlay_status = lv_label_create(g_state.update_overlay);
+    lv_label_set_text(g_state.overlay_status, "Installing update...");
+    lv_obj_set_style_text_font(g_state.overlay_status, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_color(g_state.overlay_status, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_align(g_state.overlay_status, LV_ALIGN_CENTER, 0, 60);
+    
+    // Progress bar
+    g_state.overlay_progress = lv_bar_create(g_state.update_overlay);
+    lv_obj_set_size(g_state.overlay_progress, SCREEN_WIDTH - 100, 12);
+    lv_obj_align(g_state.overlay_progress, LV_ALIGN_CENTER, 0, 100);
+    lv_bar_set_range(g_state.overlay_progress, 0, 100);
+    lv_bar_set_value(g_state.overlay_progress, 0, LV_ANIM_OFF);
+    lv_obj_set_style_bg_color(g_state.overlay_progress, lv_color_hex(0x333333), 0);
+    lv_obj_set_style_bg_color(g_state.overlay_progress, lv_color_hex(0x298ACA), LV_PART_INDICATOR);
+    lv_obj_set_style_radius(g_state.overlay_progress, 6, 0);
+    lv_obj_set_style_radius(g_state.overlay_progress, 6, LV_PART_INDICATOR);
+    lv_obj_set_style_anim_duration(g_state.overlay_progress, 300, 0);
+    
+    // Percent label
+    g_state.overlay_percent = lv_label_create(g_state.update_overlay);
+    lv_label_set_text(g_state.overlay_percent, "0%");
+    lv_obj_set_style_text_font(g_state.overlay_percent, &lv_font_montserrat_28, 0);
+    lv_obj_set_style_text_color(g_state.overlay_percent, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_align(g_state.overlay_percent, LV_ALIGN_CENTER, 0, 150);
+    
+    // "Do not turn off" warning
+    lv_obj_t* warning = lv_label_create(g_state.update_overlay);
+    lv_label_set_text(warning, "Do not turn off the device");
+    lv_obj_set_style_text_font(warning, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_color(warning, lv_color_hex(STYLE_COLOR_WARNING), 0);
+    lv_obj_align(warning, LV_ALIGN_BOTTOM_MID, 0, -60);
+    
+    ESP_LOGI(TAG, "Update overlay shown");
+}
+
+void hide_update_overlay() {
+    if (g_state.update_overlay) {
+        lv_obj_delete(g_state.update_overlay);
+        g_state.update_overlay = nullptr;
+        g_state.overlay_logo = nullptr;
+        g_state.overlay_progress = nullptr;
+        g_state.overlay_status = nullptr;
+        g_state.overlay_percent = nullptr;
+        ESP_LOGI(TAG, "Update overlay hidden");
     }
-    if (g_state.progress_label) {
-        lv_label_set_text(g_state.progress_label, status);
+}
+
+// Progress callback from OTA service (called from OTA task - NOT LVGL safe!)
+// Just store values - the timer will update the UI
+void ota_progress_callback(int progress, const char* status) {
+    // Store progress atomically
+    g_ota_progress.store(progress);
+    
+    // Store status with mutex protection
+    if (g_status_mutex) {
+        if (xSemaphoreTake(g_status_mutex, pdMS_TO_TICKS(10)) == pdTRUE) {
+            strncpy(g_ota_status, status, sizeof(g_ota_status) - 1);
+            g_ota_status[sizeof(g_ota_status) - 1] = '\0';
+            xSemaphoreGive(g_status_mutex);
+        }
+    }
+}
+
+// Update overlay UI from LVGL context (called by timer)
+void update_overlay_progress() {
+    if (!g_state.update_overlay) return;
+    
+    int progress = g_ota_progress.load();
+    
+    // Only update progress bar if progress changed
+    if (progress != g_state.last_displayed_progress) {
+        g_state.last_displayed_progress = progress;
+        
+        if (g_state.overlay_progress) {
+            lv_bar_set_value(g_state.overlay_progress, progress, LV_ANIM_OFF);  // No animation to reduce glitching
+        }
+        if (g_state.overlay_percent) {
+            char buf[16];
+            snprintf(buf, sizeof(buf), "%d%%", progress);
+            lv_label_set_text(g_state.overlay_percent, buf);
+        }
+    }
+    
+    // Update status text only if changed
+    if (g_state.overlay_status && g_status_mutex) {
+        char status_copy[64];
+        if (xSemaphoreTake(g_status_mutex, pdMS_TO_TICKS(5)) == pdTRUE) {
+            strncpy(status_copy, g_ota_status, sizeof(status_copy));
+            xSemaphoreGive(g_status_mutex);
+            
+            // Only update if status actually changed
+            if (strcmp(status_copy, g_last_status) != 0) {
+                strncpy(g_last_status, status_copy, sizeof(g_last_status));
+                lv_label_set_text(g_state.overlay_status, status_copy);
+            }
+        }
     }
 }
 
 void update_ui_state() {
     ota_state_t state = ota_get_state();
     const ota_update_info_t* info = ota_get_update_info();
+    
+    // Only update UI if state changed
+    if (state == g_state.last_ota_state && state != OTA_STATE_DOWNLOADING && state != OTA_STATE_INSTALLING) {
+        return;  // No change, skip UI update
+    }
+    g_state.last_ota_state = state;
     
     // Hide all dynamic elements first
     lv_obj_add_flag(g_state.update_panel, LV_OBJ_FLAG_HIDDEN);
@@ -117,6 +256,12 @@ void update_ui_state() {
             
         case OTA_STATE_DOWNLOADING:
         case OTA_STATE_INSTALLING:
+            // Show fullscreen overlay during download/install
+            show_update_overlay();
+            if (g_state.overlay_status) {
+                lv_label_set_text(g_state.overlay_status, 
+                    state == OTA_STATE_DOWNLOADING ? "Downloading update..." : "Installing...");
+            }
             lv_label_set_text(g_state.status_label, 
                 state == OTA_STATE_DOWNLOADING ? "Downloading update..." : "Installing...");
             lv_obj_clear_flag(g_state.progress_bar, LV_OBJ_FLAG_HIDDEN);
@@ -125,16 +270,37 @@ void update_ui_state() {
             break;
             
         case OTA_STATE_SUCCESS:
-            lv_label_set_text(g_state.status_label, "Update complete!");
-            lv_obj_set_style_text_color(g_state.status_label, 
-                lv_color_hex(STYLE_COLOR_SUCCESS), 0);
-            lv_obj_clear_flag(g_state.reboot_btn, LV_OBJ_FLAG_HIDDEN);
-            lv_obj_add_flag(g_state.check_btn, LV_OBJ_FLAG_HIDDEN);
-            lv_label_set_text(g_state.progress_label, "Restart to apply update");
-            lv_obj_clear_flag(g_state.progress_label, LV_OBJ_FLAG_HIDDEN);
+            // Only handle success once
+            if (!g_state.success_handled) {
+                g_state.success_handled = true;
+                
+                // Update overlay to show success
+                if (g_state.overlay_status) {
+                    lv_label_set_text(g_state.overlay_status, "Update complete! Restarting...");
+                    lv_obj_set_style_text_color(g_state.overlay_status, 
+                        lv_color_hex(STYLE_COLOR_SUCCESS), 0);
+                }
+                if (g_state.overlay_percent) {
+                    lv_label_set_text(g_state.overlay_percent, LV_SYMBOL_OK);
+                    lv_obj_set_style_text_color(g_state.overlay_percent, 
+                        lv_color_hex(STYLE_COLOR_SUCCESS), 0);
+                }
+                
+                lv_label_set_text(g_state.status_label, "Update complete!");
+                lv_obj_set_style_text_color(g_state.status_label, 
+                    lv_color_hex(STYLE_COLOR_SUCCESS), 0);
+                lv_obj_add_flag(g_state.check_btn, LV_OBJ_FLAG_HIDDEN);
+                
+                // Auto-restart after 2 seconds
+                ESP_LOGI(TAG, "OTA successful, auto-restarting in 2 seconds...");
+                vTaskDelay(pdMS_TO_TICKS(2000));
+                esp_restart();
+            }
             break;
             
         case OTA_STATE_ERROR:
+            // Hide overlay on error
+            hide_update_overlay();
             lv_label_set_text(g_state.status_label, ota_get_error_message());
             lv_obj_set_style_text_color(g_state.status_label, 
                 lv_color_hex(STYLE_COLOR_ERROR), 0);
@@ -161,7 +327,11 @@ void on_check_click(lv_event_t* e) {
 
 void on_update_click(lv_event_t* e) {
     ESP_LOGI(TAG, "Starting update...");
+    show_update_overlay();  // Show fullscreen update UI
     lv_bar_set_value(g_state.progress_bar, 0, LV_ANIM_OFF);
+    if (g_state.overlay_progress) {
+        lv_bar_set_value(g_state.overlay_progress, 0, LV_ANIM_OFF);
+    }
     ota_start_update(ota_progress_callback);
 }
 
@@ -193,6 +363,18 @@ lv_obj_t* create_button(lv_obj_t* parent, const char* text, uint32_t color,
 
 lv_obj_t* update_screen_create(void) {
     ESP_LOGI(TAG, "Creating update screen");
+    
+    // Initialize mutex for thread-safe status updates
+    if (!g_status_mutex) {
+        g_status_mutex = xSemaphoreCreateMutex();
+    }
+    
+    // Reset progress tracking
+    g_ota_progress.store(0);
+    g_state.last_displayed_progress = -1;
+    g_state.last_ota_state = OTA_STATE_IDLE;
+    g_state.success_handled = false;
+    g_last_status[0] = '\0';
     
     // Initialize OTA service
     ota_service_init();

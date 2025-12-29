@@ -6,6 +6,7 @@
 #include <esp_ota_ops.h>
 #include <esp_system.h>
 #include <esp_crt_bundle.h>
+#include <esp_timer.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <cJSON.h>
@@ -206,15 +207,19 @@ void ota_update_task(void* param) {
         g_progress_cb(0, "Connecting...");
     }
     
-    // Configure HTTPS OTA
+    // Configure HTTPS OTA with larger buffer for GitHub redirects
     esp_http_client_config_t http_config = {};
     http_config.url = g_update_info.download_url;
     http_config.crt_bundle_attach = esp_crt_bundle_attach;
     http_config.timeout_ms = 30000;
     http_config.keep_alive_enable = true;
+    http_config.buffer_size = 1024;           // Receive buffer
+    http_config.buffer_size_tx = 1024;        // Transmit buffer  
+    http_config.max_redirection_count = 10;   // GitHub uses redirects to CDN
     
     esp_https_ota_config_t ota_config = {};
     ota_config.http_config = &http_config;
+    ota_config.bulk_flash_erase = false;      // Use sector erase for progress tracking
     
     esp_https_ota_handle_t ota_handle = nullptr;
     esp_err_t err = esp_https_ota_begin(&ota_config, &ota_handle);
@@ -233,6 +238,12 @@ void ota_update_task(void* param) {
     int bytes_read = 0;
     int last_progress = -1;
     
+    // Time tracking for ETA calculation
+    int64_t start_time = esp_timer_get_time();
+    int64_t last_update_time = start_time;
+    int last_bytes_read = 0;
+    float avg_speed = 0;  // bytes per second
+    
     ESP_LOGI(TAG, "Image size: %d bytes", image_size);
     
     // Download and write in chunks
@@ -243,15 +254,54 @@ void ota_update_task(void* param) {
             bytes_read = esp_https_ota_get_image_len_read(ota_handle);
             int progress = (image_size > 0) ? (bytes_read * 100 / image_size) : 0;
             
-            if (progress != last_progress) {
+            // Update every 1% or every 500ms for smoother feedback
+            int64_t now = esp_timer_get_time();
+            int64_t elapsed_us = now - last_update_time;
+            
+            if (progress != last_progress || elapsed_us > 500000) {
                 last_progress = progress;
-                char status[64];
-                snprintf(status, sizeof(status), "Downloading... %d%%", progress);
+                
+                // Calculate speed (exponential moving average for smoothness)
+                if (elapsed_us > 100000) {  // At least 100ms between calculations
+                    int bytes_delta = bytes_read - last_bytes_read;
+                    float current_speed = (float)bytes_delta * 1000000.0f / (float)elapsed_us;
+                    
+                    if (avg_speed == 0) {
+                        avg_speed = current_speed;
+                    } else {
+                        avg_speed = avg_speed * 0.7f + current_speed * 0.3f;  // Smooth the speed
+                    }
+                    
+                    last_bytes_read = bytes_read;
+                    last_update_time = now;
+                }
+                
+                // Calculate ETA
+                char status[96];
+                int remaining_bytes = image_size - bytes_read;
+                
+                if (avg_speed > 100 && remaining_bytes > 0) {
+                    int eta_seconds = (int)(remaining_bytes / avg_speed);
+                    int speed_kbps = (int)(avg_speed / 1024);
+                    
+                    if (eta_seconds < 60) {
+                        snprintf(status, sizeof(status), "%d%% • %d KB/s • %ds left", 
+                                 progress, speed_kbps, eta_seconds);
+                    } else {
+                        int eta_minutes = eta_seconds / 60;
+                        int eta_secs = eta_seconds % 60;
+                        snprintf(status, sizeof(status), "%d%% • %d KB/s • %dm %ds left", 
+                                 progress, speed_kbps, eta_minutes, eta_secs);
+                    }
+                } else {
+                    snprintf(status, sizeof(status), "Downloading... %d%%", progress);
+                }
                 
                 if (g_progress_cb) {
                     g_progress_cb(progress, status);
                 }
-                ESP_LOGD(TAG, "Progress: %d%% (%d/%d)", progress, bytes_read, image_size);
+                ESP_LOGD(TAG, "Progress: %d%% (%d/%d) Speed: %.0f B/s", 
+                         progress, bytes_read, image_size, avg_speed);
             }
             continue;
         }
