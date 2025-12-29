@@ -1,23 +1,15 @@
 #pragma once
 
 // Trimix Analyzer version information
-#define TRIMIX_ANALYZER_VERSION_MAJOR 1
-#define TRIMIX_ANALYZER_VERSION_MINOR 0
-#define TRIMIX_ANALYZER_VERSION_PATCH 0
-#define TRIMIX_ANALYZER_VERSION "0.1.0"
+#define TRIMIX_ANALYZER_VERSION_MAJOR 0
+#define TRIMIX_ANALYZER_VERSION_MINOR 1
+#define TRIMIX_ANALYZER_VERSION_PATCH 1
+#define TRIMIX_ANALYZER_VERSION "0.1.1"
 
-// Build information (these can be set during build process)
-#ifndef BUILD_DATE
-#define BUILD_DATE __DATE__
-#endif
-
-#ifndef BUILD_TIME
-#define BUILD_TIME __TIME__
-#endif
-
-#ifndef GIT_COMMIT
-#define GIT_COMMIT "unknown"
-#endif
+// Build information
+#define BUILD_DATE "2025-12-29"
+#define BUILD_TIME "CI"
+#define GIT_COMMIT "8b76e54"
 
 // GitHub repository information
 #define GITHUB_OWNER "magnus188"
