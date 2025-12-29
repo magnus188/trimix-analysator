@@ -6,11 +6,14 @@ idf_component_register(
         "services/wifi_service.cpp"          # WiFi management
         "services/battery_service.cpp"       # Battery monitoring
         "services/ota_service.cpp"           # OTA update service
+        "services/settings_service.cpp"      # Settings management
+        "services/backlight_service.cpp"     # Backlight PWM control
         "ui/screens/screen_manager.cpp"      # screen manager
         "ui/screens/home/home_screen.cpp"    # home screen (main menu)
         "ui/screens/settings/settings_screen.cpp"  # settings screen
         "ui/screens/settings/wifi_screen.cpp"      # WiFi settings screen
         "ui/screens/settings/update_screen.cpp"    # software update screen
+        "ui/screens/settings/device_screen.cpp"    # device settings screen
         "ui/screens/dive_planner/dive_planner_screen.cpp"  # dive planner screen
         "ui/screens/dive_planner/gas_calculator.cpp"       # gas calculations
         "ui/styles/styles.cpp"               # global styles

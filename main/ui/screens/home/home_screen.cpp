@@ -12,22 +12,42 @@ namespace {
 struct MenuButton {
     const char* label;
     const char* icon;  // LV_SYMBOL_* or custom
-    uint32_t color;
+    uint32_t color;         // Primary gradient color
+    uint32_t color_accent;  // Secondary gradient color
     screen_id_t target_screen;
 };
 
 constexpr MenuButton MENU_BUTTONS[] = {
-    { "Analyse",       LV_SYMBOL_EYE_OPEN,   STYLE_COLOR_ANALYSE,   SCREEN_ANALYSE },
-    { "Dive Planner",  LV_SYMBOL_LIST,       STYLE_COLOR_DIVE_PLAN, SCREEN_DIVE_PLANNER },
-    { "History",       LV_SYMBOL_DIRECTORY,  STYLE_COLOR_HISTORY,   SCREEN_HISTORY },
-    { "Settings",      LV_SYMBOL_SETTINGS,   STYLE_COLOR_SETTINGS,  SCREEN_SETTINGS },
+    { "Analyse",       LV_SYMBOL_EYE_OPEN,   STYLE_COLOR_ANALYSE,   STYLE_COLOR_ANALYSE_ACCENT,   SCREEN_ANALYSE },
+    { "Dive Planner",  LV_SYMBOL_LIST,       STYLE_COLOR_DIVE_PLAN, STYLE_COLOR_DIVE_PLAN_ACCENT, SCREEN_DIVE_PLANNER },
+    { "History",       LV_SYMBOL_DIRECTORY,  STYLE_COLOR_HISTORY,   STYLE_COLOR_HISTORY_ACCENT,   SCREEN_HISTORY },
+    { "Settings",      LV_SYMBOL_SETTINGS,   STYLE_COLOR_SETTINGS,  STYLE_COLOR_SETTINGS_ACCENT,  SCREEN_SETTINGS },
 };
 constexpr size_t MENU_BUTTON_COUNT = sizeof(MENU_BUTTONS) / sizeof(MENU_BUTTONS[0]);
 
 // Layout constants for 480x800 portrait
 constexpr lv_coord_t GRID_PAD = 16;
-constexpr lv_coord_t BUTTON_RADIUS = 16;
+constexpr lv_coord_t BUTTON_RADIUS = 20;  // More rounded corners
 constexpr lv_coord_t ICON_SIZE = 48;
+constexpr lv_coord_t ICON_CONTAINER_SIZE = 80;  // Circular icon background
+
+// Smooth transition properties for press animations
+static const lv_style_prop_t btn_transition_props[] = {
+    LV_STYLE_TRANSFORM_WIDTH, LV_STYLE_TRANSFORM_HEIGHT,
+    LV_STYLE_SHADOW_OPA, LV_STYLE_SHADOW_OFS_Y,
+    LV_STYLE_BG_COLOR, LV_STYLE_PROP_INV
+};
+static lv_style_transition_dsc_t btn_transition;
+static bool btn_transition_initialized = false;
+
+// Initialize transition (called once)
+static void init_btn_transition() {
+    if (!btn_transition_initialized) {
+        lv_style_transition_dsc_init(&btn_transition, btn_transition_props, 
+                                     lv_anim_path_ease_out, 150, 0, nullptr);
+        btn_transition_initialized = true;
+    }
+}
 
 void menu_button_event_cb(lv_event_t* e) {
     lv_event_code_t code = lv_event_get_code(e);
@@ -39,49 +59,77 @@ void menu_button_event_cb(lv_event_t* e) {
 }
 
 lv_obj_t* create_menu_button(lv_obj_t* parent, const MenuButton& cfg) {
-    // Button container
+    // Button container with beautiful gradient background
     lv_obj_t* btn = lv_obj_create(parent);
     lv_obj_remove_style_all(btn);
     // Size will be set by caller
     
-    // Background styling
+    // Gradient background effect using LVGL's built-in gradient
     lv_obj_set_style_bg_color(btn, lv_color_hex(cfg.color), 0);
+    lv_obj_set_style_bg_grad_color(btn, lv_color_hex(cfg.color_accent), 0);
+    lv_obj_set_style_bg_grad_dir(btn, LV_GRAD_DIR_VER, 0);
     lv_obj_set_style_bg_opa(btn, LV_OPA_COVER, 0);
     lv_obj_set_style_radius(btn, BUTTON_RADIUS, 0);
     
-    // Pressed state - darker shade
-    lv_obj_set_style_bg_color(btn, lv_color_darken(lv_color_hex(cfg.color), LV_OPA_30), LV_STATE_PRESSED);
-    lv_obj_set_style_transform_width(btn, -2, LV_STATE_PRESSED);
-    lv_obj_set_style_transform_height(btn, -2, LV_STATE_PRESSED);
+    // Subtle inner border for glass effect (top highlight)
+    lv_obj_set_style_border_color(btn, lv_color_white(), 0);
+    lv_obj_set_style_border_opa(btn, LV_OPA_10, 0);
+    lv_obj_set_style_border_width(btn, 1, 0);
+    lv_obj_set_style_border_side(btn, LV_BORDER_SIDE_TOP, 0);
     
-    // Shadow for depth
-    lv_obj_set_style_shadow_width(btn, 15, 0);
-    lv_obj_set_style_shadow_color(btn, lv_color_black(), 0);
-    lv_obj_set_style_shadow_opa(btn, LV_OPA_30, 0);
-    lv_obj_set_style_shadow_ofs_y(btn, 4, 0);
+    // Pressed state - subtle scale + brightness shift
+    lv_obj_set_style_bg_color(btn, lv_color_lighten(lv_color_hex(cfg.color), LV_OPA_10), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_grad_color(btn, lv_color_darken(lv_color_hex(cfg.color_accent), LV_OPA_20), LV_STATE_PRESSED);
+    lv_obj_set_style_transform_width(btn, -4, LV_STATE_PRESSED);
+    lv_obj_set_style_transform_height(btn, -4, LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_opa(btn, LV_OPA_50, LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_ofs_y(btn, 2, LV_STATE_PRESSED);
+    
+    // Beautiful shadow for depth and glow effect
+    lv_obj_set_style_shadow_width(btn, 25, 0);
+    lv_obj_set_style_shadow_color(btn, lv_color_hex(cfg.color), 0);  // Colored glow!
+    lv_obj_set_style_shadow_opa(btn, LV_OPA_40, 0);
+    lv_obj_set_style_shadow_ofs_y(btn, 8, 0);
+    lv_obj_set_style_shadow_spread(btn, 2, 0);
+    
+    // Smooth animation transitions
+    lv_obj_set_style_transition(btn, &btn_transition, 0);
+    lv_obj_set_style_transition(btn, &btn_transition, LV_STATE_PRESSED);
     
     // Layout
     lv_obj_set_flex_flow(btn, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(btn, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_set_style_pad_all(btn, 12, 0);
+    lv_obj_set_style_pad_all(btn, 16, 0);
+    lv_obj_set_style_pad_row(btn, 12, 0);  // Gap between icon and label
     lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
     
     // Make clickable
     lv_obj_add_flag(btn, LV_OBJ_FLAG_CLICKABLE);
     
-    // Icon
-    lv_obj_t* icon = lv_label_create(btn);
-    lv_label_set_text(icon, cfg.icon);
-    lv_obj_set_style_text_font(icon, &lv_font_montserrat_36, 0);
-    lv_obj_set_style_text_color(icon, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    // Icon container with circular glow background
+    lv_obj_t* icon_container = lv_obj_create(btn);
+    lv_obj_remove_style_all(icon_container);
+    lv_obj_set_size(icon_container, ICON_CONTAINER_SIZE, ICON_CONTAINER_SIZE);
+    lv_obj_set_style_bg_color(icon_container, lv_color_white(), 0);
+    lv_obj_set_style_bg_opa(icon_container, LV_OPA_20, 0);
+    lv_obj_set_style_radius(icon_container, LV_RADIUS_CIRCLE, 0);
+    lv_obj_clear_flag(icon_container, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_pad_all(icon_container, 0, 0);
     
-    // Label
+    // Icon with larger font and subtle shadow
+    lv_obj_t* icon = lv_label_create(icon_container);
+    lv_label_set_text(icon, cfg.icon);
+    lv_obj_set_style_text_font(icon, &lv_font_montserrat_48, 0);
+    lv_obj_set_style_text_color(icon, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_center(icon);
+    
+    // Label with refined typography
     lv_obj_t* label = lv_label_create(btn);
     lv_label_set_text(label, cfg.label);
     lv_obj_set_style_text_font(label, styles_get_font_button(), 0);
     lv_obj_set_style_text_color(label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
     lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, 0);
-    lv_obj_set_style_pad_top(label, 8, 0);
+    lv_obj_set_style_text_letter_space(label, 1, 0);  // Subtle letter spacing
     
     // Event handler
     lv_obj_add_event_cb(btn, menu_button_event_cb, LV_EVENT_CLICKED, 
@@ -94,6 +142,9 @@ lv_obj_t* create_menu_button(lv_obj_t* parent, const MenuButton& cfg) {
 
 lv_obj_t* home_screen_create(void) {
     ESP_LOGI(TAG, "Creating home screen");
+    
+    // Initialize button transition animation (once)
+    init_btn_transition();
     
     // Screen base - 480x800 portrait
     lv_obj_t* screen = lv_obj_create(nullptr);

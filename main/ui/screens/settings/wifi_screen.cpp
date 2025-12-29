@@ -69,20 +69,91 @@ void on_scan_click(lv_event_t* e);
 void on_disconnect_click(lv_event_t* e);
 void on_password_ok(lv_event_t* e);
 void on_password_cancel(lv_event_t* e);
+void on_screen_loaded(lv_event_t* e);
 void update_network_list();
 void update_connected_panel();
 void show_password_modal(const char* ssid);
 void hide_password_modal();
+void start_scan();
 
 // Scan check timer callback
 void scan_check_cb(lv_timer_t* timer) {
+    // Safety check - timer might fire after screen is destroyed
+    if (!g_state.screen || !g_state.status_label) {
+        lv_timer_del(timer);
+        g_state.scan_check_timer = nullptr;
+        return;
+    }
+    
     if (!wifi_service_is_scanning()) {
-        ESP_LOGI(TAG, "Scan complete, updating list");
+        ESP_LOGI(TAG, "Scan complete, updating list (count: %d)", wifi_service_get_scan_count());
         update_network_list();
-        lv_label_set_text(g_state.status_label, "");
+        if (g_state.status_label) {
+            uint16_t count = wifi_service_get_scan_count();
+            if (count == 0) {
+                lv_label_set_text(g_state.status_label, "No networks found");
+            } else {
+                lv_label_set_text(g_state.status_label, "");
+            }
+        }
         lv_timer_del(timer);
         g_state.scan_check_timer = nullptr;
     }
+}
+
+// Helper to start scanning with proper state management
+void start_scan() {
+    // Don't start if already scanning
+    if (wifi_service_is_scanning()) {
+        ESP_LOGI(TAG, "Scan already in progress");
+        return;
+    }
+    
+    // Check if WiFi service is ready
+    if (!wifi_service_is_ready()) {
+        ESP_LOGW(TAG, "WiFi service not ready, will retry");
+        if (g_state.status_label) {
+            lv_label_set_text(g_state.status_label, "WiFi initializing...");
+        }
+        // Retry after a short delay
+        lv_timer_create([](lv_timer_t* t) {
+            lv_timer_del(t);
+            start_scan();
+        }, 500, nullptr);
+        return;
+    }
+    
+    ESP_LOGI(TAG, "Starting WiFi scan");
+    
+    // Clean up any existing timer first
+    if (g_state.scan_check_timer) {
+        lv_timer_del(g_state.scan_check_timer);
+        g_state.scan_check_timer = nullptr;
+    }
+    
+    // Update UI
+    if (g_state.status_label) {
+        lv_label_set_text(g_state.status_label, "Scanning...");
+    }
+    
+    // Start the actual scan
+    wifi_service_start_scan();
+    
+    // Create timer to check for completion (check every 300ms for up to 15 seconds)
+    static int scan_checks = 0;
+    scan_checks = 0;
+    g_state.scan_check_timer = lv_timer_create(scan_check_cb, 300, nullptr);
+}
+
+// Screen loaded event - auto scan when entering the screen
+void on_screen_loaded(lv_event_t* e) {
+    ESP_LOGI(TAG, "WiFi screen loaded - starting auto scan");
+    
+    // Update connected panel first
+    update_connected_panel();
+    
+    // Start scan automatically
+    start_scan();
 }
 
 void update_connected_panel() {
@@ -144,6 +215,11 @@ void update_connected_panel() {
         lv_obj_clear_flag(g_state.connected_panel, LV_OBJ_FLAG_HIDDEN);
     } else {
         lv_obj_add_flag(g_state.connected_panel, LV_OBJ_FLAG_HIDDEN);
+    }
+    
+    // CRITICAL: Force reset scroll to prevent push-down bug after layout changes
+    if (g_state.screen) {
+        lv_obj_scroll_to(g_state.screen, 0, 0, LV_ANIM_OFF);
     }
 }
 
@@ -224,6 +300,8 @@ void update_network_list() {
         lv_obj_set_style_text_align(empty, LV_TEXT_ALIGN_CENTER, 0);
         lv_obj_set_width(empty, SCREEN_WIDTH - 64);
         lv_obj_align(empty, LV_ALIGN_TOP_MID, 0, 40);
+        // Reset scroll after layout update
+        if (g_state.screen) lv_obj_scroll_to(g_state.screen, 0, 0, LV_ANIM_OFF);
         return;
     }
     
@@ -236,6 +314,11 @@ void update_network_list() {
     
     // Update connected panel
     update_connected_panel();
+    
+    // CRITICAL: Force reset scroll to prevent push-down bug after layout changes
+    if (g_state.screen) {
+        lv_obj_scroll_to(g_state.screen, 0, 0, LV_ANIM_OFF);
+    }
 }
 
 void show_password_modal(const char* ssid) {
@@ -352,15 +435,7 @@ void on_network_click(lv_event_t* e) {
 }
 
 void on_scan_click(lv_event_t* e) {
-    ESP_LOGI(TAG, "Starting scan");
-    lv_label_set_text(g_state.status_label, "Scanning...");
-    wifi_service_start_scan();
-    
-    // Start timer to check scan completion
-    if (g_state.scan_check_timer) {
-        lv_timer_del(g_state.scan_check_timer);
-    }
-    g_state.scan_check_timer = lv_timer_create(scan_check_cb, 500, nullptr);
+    start_scan();
 }
 
 void on_disconnect_click(lv_event_t* e) {
@@ -397,7 +472,17 @@ lv_obj_t* wifi_screen_create(void) {
     // Create screen
     lv_obj_t* screen = lv_obj_create(nullptr);
     lv_obj_set_style_bg_color(screen, lv_color_hex(STYLE_COLOR_BACKGROUND), 0);
+    
+    // CRITICAL: Disable all scrolling on the screen itself to prevent overflow/wrap bug
+    lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLL_ELASTIC);
+    lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLL_MOMENTUM);
+    lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLL_CHAIN);
+    
     g_state.screen = screen;
+    
+    // Register screen loaded event for auto-scan when entering
+    lv_obj_add_event_cb(screen, on_screen_loaded, LV_EVENT_SCREEN_LOADED, nullptr);
     
     // Navbar with back button
     navbar_create_with_back(screen, "WiFi", wifi_back_cb);
@@ -408,7 +493,11 @@ lv_obj_t* wifi_screen_create(void) {
     lv_obj_set_size(content, SCREEN_WIDTH, CONTENT_HEIGHT);
     lv_obj_set_pos(content, 0, CONTENT_START_Y);
     lv_obj_set_style_pad_all(content, 16, 0);
+    // Disable all scrolling on content container
     lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLL_ELASTIC);
+    lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLL_MOMENTUM);
+    lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLL_CHAIN);
     
     // Status label (Scanning..., Connecting..., etc.)
     g_state.status_label = lv_label_create(content);
@@ -474,20 +563,21 @@ lv_obj_t* wifi_screen_create(void) {
     lv_obj_set_style_pad_row(g_state.network_list, 8, 0);
     lv_obj_add_flag(g_state.network_list, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_scroll_dir(g_state.network_list, LV_DIR_VER);
+    // Prevent elastic/bounce scroll and stop scroll from propagating to parent
+    lv_obj_clear_flag(g_state.network_list, LV_OBJ_FLAG_SCROLL_ELASTIC);
+    lv_obj_clear_flag(g_state.network_list, LV_OBJ_FLAG_SCROLL_MOMENTUM);
+    lv_obj_clear_flag(g_state.network_list, LV_OBJ_FLAG_SCROLL_CHAIN);
+    lv_obj_add_flag(g_state.network_list, LV_OBJ_FLAG_SCROLL_ONE);
+    lv_obj_set_scroll_snap_y(g_state.network_list, LV_SCROLL_SNAP_START);
     
-    // Start initial scan
-    wifi_service_start_scan();
-    lv_label_set_text(g_state.status_label, "Scanning...");
-    g_state.scan_check_timer = lv_timer_create(scan_check_cb, 500, nullptr);
-    
-    // Update connected panel
-    update_connected_panel();
+    // Initial scan and connected panel update will be triggered by LV_EVENT_SCREEN_LOADED
     
     return screen;
 }
 
 void wifi_screen_refresh(void) {
-    if (g_state.scan_btn) {
-        on_scan_click(nullptr);
+    if (g_state.screen) {
+        update_connected_panel();
+        start_scan();
     }
 }

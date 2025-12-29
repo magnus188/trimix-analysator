@@ -19,11 +19,15 @@ extern "C" {
 #define STYLE_COLOR_WARNING     0xFF9800  // Orange
 #define STYLE_COLOR_ERROR       0xF44336  // Red
 
-// Button colors for each menu item
-#define STYLE_COLOR_ANALYSE     0x2196F3  // Blue
-#define STYLE_COLOR_DIVE_PLAN   0x00BCD4  // Cyan
-#define STYLE_COLOR_HISTORY     0x9C27B0  // Purple
-#define STYLE_COLOR_SETTINGS    0x607D8B  // Blue-grey
+// Button colors for each menu item (gradient pairs: main + accent)
+#define STYLE_COLOR_ANALYSE         0x667EEA  // Vibrant blue-purple
+#define STYLE_COLOR_ANALYSE_ACCENT  0x764BA2  // Purple accent
+#define STYLE_COLOR_DIVE_PLAN       0x11998E  // Teal green
+#define STYLE_COLOR_DIVE_PLAN_ACCENT 0x38EF7D // Bright green accent
+#define STYLE_COLOR_HISTORY         0xFC466B  // Coral pink
+#define STYLE_COLOR_HISTORY_ACCENT  0x3F5EFB  // Blue accent
+#define STYLE_COLOR_SETTINGS        0x485563  // Slate
+#define STYLE_COLOR_SETTINGS_ACCENT 0x29323C  // Dark slate accent
 
 /**
  * Initialize global styles and load fonts

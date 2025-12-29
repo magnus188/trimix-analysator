@@ -129,6 +129,9 @@ lv_obj_t* settings_screen_create(void) {
     lv_obj_set_flex_flow(content, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_scroll_dir(content, LV_DIR_VER);
     lv_obj_set_scrollbar_mode(content, LV_SCROLLBAR_MODE_AUTO);
+    // Prevent elastic/bounce scroll and snap to edges
+    lv_obj_add_flag(content, LV_OBJ_FLAG_SCROLL_ONE);
+    lv_obj_set_scroll_snap_y(content, LV_SCROLL_SNAP_START);
     
     // Create settings items
     for (size_t i = 0; i < SETTINGS_ITEM_COUNT; i++) {
