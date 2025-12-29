@@ -57,12 +57,16 @@ void backlight_set(uint8_t percent) {
         }
     }
     
+    // Enforce safe brightness limits (10-100%)
+    if (percent < 10) percent = 10;
     if (percent > 100) percent = 100;
     s_brightness = percent;
     
     // Convert percent to duty cycle (0-1023)
     // LCD_BK_LIGHT_ON_LEVEL = 1 means high = on
+    // Minimum duty of ~102 (10%) ensures screen is always visible
     uint32_t duty = (percent * 1023) / 100;
+    ESP_LOGI(TAG, "Setting brightness to %d%% (duty: %lu)", percent, duty);
     
     esp_err_t err = ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, duty);
     if (err != ESP_OK) {

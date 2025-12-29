@@ -539,24 +539,24 @@ void show_numpad(LockTarget target, const char* title, float current_val, float 
     lv_obj_set_style_radius(np.modal, 0, 0);
     lv_obj_clear_flag(np.modal, LV_OBJ_FLAG_SCROLLABLE);
     
-    // Dialog container
+    // Dialog container - full width for better touch usability
     lv_obj_t* dialog = lv_obj_create(np.modal);
-    lv_obj_set_size(dialog, 280, 380);
+    lv_obj_set_size(dialog, 460, 700);
     lv_obj_center(dialog);
     lv_obj_set_style_bg_color(dialog, lv_color_hex(STYLE_COLOR_SURFACE), 0);
     lv_obj_set_style_bg_opa(dialog, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(dialog, 16, 0);
+    lv_obj_set_style_radius(dialog, 24, 0);
     lv_obj_set_style_border_width(dialog, 0, 0);
-    lv_obj_set_style_pad_all(dialog, 16, 0);
+    lv_obj_set_style_pad_all(dialog, 20, 0);
     lv_obj_clear_flag(dialog, LV_OBJ_FLAG_SCROLLABLE);
-    
+
     // Title
     np.title_label = lv_label_create(dialog);
     lv_label_set_text(np.title_label, title);
-    lv_obj_set_style_text_font(np.title_label, &lv_font_montserrat_18, 0);
+    lv_obj_set_style_text_font(np.title_label, &lv_font_montserrat_22, 0);
     lv_obj_set_style_text_color(np.title_label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
     lv_obj_align(np.title_label, LV_ALIGN_TOP_MID, 0, 0);
-    
+
     // Current value display
     np.input_label = lv_label_create(dialog);
     char buf[32];
@@ -566,10 +566,10 @@ void show_numpad(LockTarget target, const char* title, float current_val, float 
         snprintf(buf, sizeof(buf), "%.0f", current_val);
     }
     lv_label_set_text(np.input_label, buf);
-    lv_obj_set_style_text_font(np.input_label, &lv_font_montserrat_28, 0);
+    lv_obj_set_style_text_font(np.input_label, &lv_font_montserrat_36, 0);
     lv_obj_set_style_text_color(np.input_label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
-    lv_obj_align(np.input_label, LV_ALIGN_TOP_MID, 0, 35);
-    
+    lv_obj_align(np.input_label, LV_ALIGN_TOP_MID, 0, 50);
+
     // Range hint
     lv_obj_t* range_label = lv_label_create(dialog);
     if (decimals > 0) {
@@ -578,44 +578,44 @@ void show_numpad(LockTarget target, const char* title, float current_val, float 
         snprintf(buf, sizeof(buf), "(%.0f - %.0f)", min_val, max_val);
     }
     lv_label_set_text(range_label, buf);
-    lv_obj_set_style_text_font(range_label, &lv_font_montserrat_12, 0);
+    lv_obj_set_style_text_font(range_label, &lv_font_montserrat_16, 0);
     lv_obj_set_style_text_color(range_label, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
-    lv_obj_align(range_label, LV_ALIGN_TOP_MID, 0, 68);
-    
-    // Numpad button matrix
+    lv_obj_align(range_label, LV_ALIGN_TOP_MID, 0, 90);
+
+    // Numpad button matrix - large touch-friendly buttons
     lv_obj_t* btnm = lv_buttonmatrix_create(dialog);
     lv_buttonmatrix_set_map(btnm, numpad_map);
-    lv_obj_set_size(btnm, 248, 220);
-    lv_obj_align(btnm, LV_ALIGN_TOP_MID, 0, 90);
-    
+    lv_obj_set_size(btnm, 420, 420);
+    lv_obj_align(btnm, LV_ALIGN_TOP_MID, 0, 130);
+
     // Style the button matrix
     lv_obj_set_style_bg_color(btnm, lv_color_hex(STYLE_COLOR_SURFACE), LV_PART_MAIN);
     lv_obj_set_style_bg_opa(btnm, LV_OPA_TRANSP, LV_PART_MAIN);
     lv_obj_set_style_border_width(btnm, 0, LV_PART_MAIN);
-    lv_obj_set_style_pad_all(btnm, 4, LV_PART_MAIN);
-    
+    lv_obj_set_style_pad_all(btnm, 8, LV_PART_MAIN);
+
     lv_obj_set_style_bg_color(btnm, lv_color_hex(0x404040), LV_PART_ITEMS);
     lv_obj_set_style_bg_opa(btnm, LV_OPA_COVER, LV_PART_ITEMS);
     lv_obj_set_style_text_color(btnm, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), LV_PART_ITEMS);
-    lv_obj_set_style_text_font(btnm, &lv_font_montserrat_20, LV_PART_ITEMS);
-    lv_obj_set_style_radius(btnm, 8, LV_PART_ITEMS);
-    
+    lv_obj_set_style_text_font(btnm, &lv_font_montserrat_32, LV_PART_ITEMS);
+    lv_obj_set_style_radius(btnm, 16, LV_PART_ITEMS);
+
     lv_obj_add_event_cb(btnm, numpad_button_event_cb, LV_EVENT_VALUE_CHANGED, nullptr);
-    
-    // Cancel button
+
+    // Cancel button - large touch target
     lv_obj_t* cancel_btn = lv_btn_create(dialog);
-    lv_obj_set_size(cancel_btn, 100, 36);
-    lv_obj_align(cancel_btn, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+    lv_obj_set_size(cancel_btn, 180, 56);
+    lv_obj_align(cancel_btn, LV_ALIGN_BOTTOM_MID, 0, 0);
     lv_obj_set_style_bg_color(cancel_btn, lv_color_hex(STYLE_COLOR_ERROR), 0);
-    lv_obj_set_style_radius(cancel_btn, 8, 0);
-    
+    lv_obj_set_style_radius(cancel_btn, 12, 0);
+
     lv_obj_t* cancel_label = lv_label_create(cancel_btn);
     lv_label_set_text(cancel_label, "Cancel");
-    lv_obj_set_style_text_font(cancel_label, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(cancel_label, &lv_font_montserrat_22, 0);
     lv_obj_center(cancel_label);
-    
+
     lv_obj_add_event_cb(cancel_btn, numpad_cancel_event_cb, LV_EVENT_CLICKED, nullptr);
-    
+
     ESP_LOGI(TAG, "Numpad opened for %s", title);
 }
 

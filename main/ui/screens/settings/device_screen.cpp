@@ -14,21 +14,17 @@ namespace {
 // Layout constants
 constexpr int SCREEN_WIDTH = 480;
 constexpr int SCREEN_HEIGHT = 800;
-constexpr int ITEM_HEIGHT = 56;
-constexpr int SLIDER_ROW_HEIGHT = 80;
-constexpr int ITEM_PAD = 8;
+constexpr int ITEM_HEIGHT = 64;  // Larger touch targets
+constexpr int SLIDER_ROW_HEIGHT = 88;
+constexpr int ITEM_PAD = 6;
 constexpr int CONTENT_PAD = 16;
 
 // UI state
 struct DeviceScreenState {
     lv_obj_t* screen = nullptr;
-    lv_obj_t* brightness_slider = nullptr;
-    lv_obj_t* brightness_label = nullptr;
+    lv_obj_t* brightness_btns = nullptr;
     lv_obj_t* timeout_btns = nullptr;
     lv_obj_t* sound_switch = nullptr;
-    lv_obj_t* depth_btns = nullptr;
-    lv_obj_t* temp_btns = nullptr;
-    lv_obj_t* pressure_btns = nullptr;
 };
 
 DeviceScreenState g_state;
@@ -37,34 +33,20 @@ DeviceScreenState g_state;
 void on_brightness_change(lv_event_t* e);
 void on_timeout_change(lv_event_t* e);
 void on_sound_change(lv_event_t* e);
-void on_depth_unit_change(lv_event_t* e);
-void on_temp_unit_change(lv_event_t* e);
-void on_pressure_unit_change(lv_event_t* e);
 void on_reset_click(lv_event_t* e);
 void back_cb(lv_event_t* e);
 
-// Update brightness label
-void update_brightness_label(int value) {
-    if (g_state.brightness_label) {
-        char buf[16];
-        snprintf(buf, sizeof(buf), "%d%%", value);
-        lv_label_set_text(g_state.brightness_label, buf);
-    }
-}
-
 // Event handlers
 void on_brightness_change(lv_event_t* e) {
-    // Debounce to prevent rapid LEDC calls that crash the device
-    static uint32_t last_update = 0;
-    uint32_t now = lv_tick_get();
-    if (now - last_update < 50) return;  // 50ms debounce
-    last_update = now;
-    
-    lv_obj_t* slider = (lv_obj_t*)lv_event_get_target(e);
-    int value = lv_slider_get_value(slider);
-    update_brightness_label(value);
-    settings_set(SETTING_BRIGHTNESS, value);
-    backlight_set(value);  // Actually apply brightness!
+    lv_obj_t* btnm = (lv_obj_t*)lv_event_get_target(e);
+    uint32_t id = lv_buttonmatrix_get_selected_button(btnm);
+    if (id != LV_BUTTONMATRIX_BUTTON_NONE) {
+        // 0 = High (100%), 1 = Low (85%)
+        int brightness = (id == 0) ? 100 : 95;
+        settings_set(SETTING_BRIGHTNESS, brightness);
+        backlight_set(brightness);
+        ESP_LOGI(TAG, "Brightness: %s (%d%%)", id == 0 ? "Low" : "High", brightness);
+    }
 }
 
 void on_timeout_change(lv_event_t* e) {
@@ -84,42 +66,18 @@ void on_sound_change(lv_event_t* e) {
     ESP_LOGI(TAG, "Sound %s", enabled ? "enabled" : "disabled");
 }
 
-void on_depth_unit_change(lv_event_t* e) {
-    lv_obj_t* btnm = (lv_obj_t*)lv_event_get_target(e);
-    uint32_t id = lv_buttonmatrix_get_selected_button(btnm);
-    if (id != LV_BUTTONMATRIX_BUTTON_NONE) {
-        settings_set(SETTING_UNITS_DEPTH, id);
-        ESP_LOGI(TAG, "Depth units: %s", id == 0 ? "meters" : "feet");
-    }
-}
-
-void on_temp_unit_change(lv_event_t* e) {
-    lv_obj_t* btnm = (lv_obj_t*)lv_event_get_target(e);
-    uint32_t id = lv_buttonmatrix_get_selected_button(btnm);
-    if (id != LV_BUTTONMATRIX_BUTTON_NONE) {
-        settings_set(SETTING_UNITS_TEMP, id);
-        ESP_LOGI(TAG, "Temp units: %s", id == 0 ? "celsius" : "fahrenheit");
-    }
-}
-
-void on_pressure_unit_change(lv_event_t* e) {
-    lv_obj_t* btnm = (lv_obj_t*)lv_event_get_target(e);
-    uint32_t id = lv_buttonmatrix_get_selected_button(btnm);
-    if (id != LV_BUTTONMATRIX_BUTTON_NONE) {
-        settings_set(SETTING_UNITS_PRESSURE, id);
-        ESP_LOGI(TAG, "Pressure units: %s", id == 0 ? "bar" : "psi");
-    }
-}
-
 void on_reset_click(lv_event_t* e) {
     ESP_LOGI(TAG, "Resetting device settings to defaults");
     settings_reset_category(SETTINGS_CAT_DEVICE);
     
-    // Update UI
+    // Update UI - Brightness buttons
     int brightness = settings_get(SETTING_BRIGHTNESS);
-    lv_slider_set_value(g_state.brightness_slider, brightness, LV_ANIM_ON);
-    update_brightness_label(brightness);
     backlight_set(brightness);
+    for (uint32_t i = 0; i < 2; i++) {
+        lv_buttonmatrix_clear_button_ctrl(g_state.brightness_btns, i, LV_BUTTONMATRIX_CTRL_CHECKED);
+    }
+    // High=100, Low=85, so if brightness >= 100 select High, else Low
+    lv_buttonmatrix_set_button_ctrl(g_state.brightness_btns, brightness >= 100 ? 0 : 1, LV_BUTTONMATRIX_CTRL_CHECKED);
     
     // Timeout buttons
     for (uint32_t i = 0; i < 4; i++) {
@@ -133,16 +91,6 @@ void on_reset_click(lv_event_t* e) {
     } else {
         lv_obj_clear_state(g_state.sound_switch, LV_STATE_CHECKED);
     }
-    
-    // Reset unit buttons
-    for (uint32_t i = 0; i < 2; i++) {
-        lv_buttonmatrix_clear_button_ctrl(g_state.depth_btns, i, LV_BUTTONMATRIX_CTRL_CHECKED);
-        lv_buttonmatrix_clear_button_ctrl(g_state.temp_btns, i, LV_BUTTONMATRIX_CTRL_CHECKED);
-        lv_buttonmatrix_clear_button_ctrl(g_state.pressure_btns, i, LV_BUTTONMATRIX_CTRL_CHECKED);
-    }
-    lv_buttonmatrix_set_button_ctrl(g_state.depth_btns, settings_get(SETTING_UNITS_DEPTH), LV_BUTTONMATRIX_CTRL_CHECKED);
-    lv_buttonmatrix_set_button_ctrl(g_state.temp_btns, settings_get(SETTING_UNITS_TEMP), LV_BUTTONMATRIX_CTRL_CHECKED);
-    lv_buttonmatrix_set_button_ctrl(g_state.pressure_btns, settings_get(SETTING_UNITS_PRESSURE), LV_BUTTONMATRIX_CTRL_CHECKED);
 }
 
 void back_cb(lv_event_t* e) {
@@ -180,13 +128,18 @@ void style_btnmatrix(lv_obj_t* btnm) {
     lv_obj_set_style_text_color(btnm, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), checked);
 }
 
+// Make all buttons in a button matrix checkable
+void make_btnmatrix_checkable(lv_obj_t* btnm, uint32_t btn_count) {
+    for (uint32_t i = 0; i < btn_count; i++) {
+        lv_buttonmatrix_set_button_ctrl(btnm, i, LV_BUTTONMATRIX_CTRL_CHECKABLE);
+    }
+}
+
 }  // namespace
 
 // Static button maps
+static const char* brightness_map[] = {"High", "Low", ""};
 static const char* timeout_map[] = {"Never", "1m", "3m", "5m", ""};
-static const char* depth_map[] = {"m", "ft", ""};
-static const char* temp_map[] = {"C", "F", ""};
-static const char* pres_map[] = {"bar", "psi", ""};
 
 lv_obj_t* device_screen_create(void) {
     ESP_LOGI(TAG, "Creating device settings screen");
@@ -217,44 +170,39 @@ lv_obj_t* device_screen_create(void) {
     // === BRIGHTNESS SECTION ===
     create_section_header(content, "Display");
     
-    // Brightness row
+    // Brightness row - using button matrix like other options
     lv_obj_t* bright_row = lv_obj_create(content);
     lv_obj_remove_style_all(bright_row);
-    lv_obj_set_size(bright_row, LV_PCT(100), SLIDER_ROW_HEIGHT);
+    lv_obj_set_size(bright_row, LV_PCT(100), ITEM_HEIGHT);
     lv_obj_set_style_bg_color(bright_row, lv_color_hex(STYLE_COLOR_BG_CARD), 0);
     lv_obj_set_style_bg_opa(bright_row, LV_OPA_COVER, 0);
     lv_obj_set_style_radius(bright_row, 12, 0);
-    lv_obj_set_style_pad_all(bright_row, 16, 0);
+    lv_obj_set_style_pad_hor(bright_row, 16, 0);
     lv_obj_clear_flag(bright_row, LV_OBJ_FLAG_SCROLLABLE);
     
     lv_obj_t* bright_icon = lv_label_create(bright_row);
     lv_label_set_text(bright_icon, LV_SYMBOL_IMAGE);
     lv_obj_set_style_text_font(bright_icon, &lv_font_montserrat_20, 0);
     lv_obj_set_style_text_color(bright_icon, lv_color_hex(STYLE_COLOR_PRIMARY), 0);
-    lv_obj_align(bright_icon, LV_ALIGN_TOP_LEFT, 0, 0);
+    lv_obj_align(bright_icon, LV_ALIGN_LEFT_MID, 0, 0);
     
     lv_obj_t* bright_name = lv_label_create(bright_row);
     lv_label_set_text(bright_name, "Brightness");
     lv_obj_set_style_text_font(bright_name, styles_get_font_normal(), 0);
     lv_obj_set_style_text_color(bright_name, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
-    lv_obj_align(bright_name, LV_ALIGN_TOP_LEFT, 36, 2);
+    lv_obj_align(bright_name, LV_ALIGN_LEFT_MID, 36, 0);
     
-    g_state.brightness_label = lv_label_create(bright_row);
-    lv_obj_set_style_text_font(g_state.brightness_label, styles_get_font_normal(), 0);
-    lv_obj_set_style_text_color(g_state.brightness_label, lv_color_hex(STYLE_COLOR_ACCENT), 0);
-    lv_obj_align(g_state.brightness_label, LV_ALIGN_TOP_RIGHT, 0, 2);
-    
-    g_state.brightness_slider = lv_slider_create(bright_row);
-    lv_obj_set_size(g_state.brightness_slider, lv_pct(100), 6);
-    lv_obj_align(g_state.brightness_slider, LV_ALIGN_BOTTOM_MID, 0, -4);
-    lv_slider_set_range(g_state.brightness_slider, 10, 100);
-    lv_slider_set_value(g_state.brightness_slider, settings_get(SETTING_BRIGHTNESS), LV_ANIM_OFF);
-    lv_obj_set_style_bg_color(g_state.brightness_slider, lv_color_hex(0x3A3A3A), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(g_state.brightness_slider, lv_color_hex(STYLE_COLOR_PRIMARY), LV_PART_INDICATOR);
-    lv_obj_set_style_bg_color(g_state.brightness_slider, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), LV_PART_KNOB);
-    lv_obj_set_style_pad_all(g_state.brightness_slider, 6, LV_PART_KNOB);
-    lv_obj_add_event_cb(g_state.brightness_slider, on_brightness_change, LV_EVENT_VALUE_CHANGED, nullptr);
-    update_brightness_label(settings_get(SETTING_BRIGHTNESS));
+    g_state.brightness_btns = lv_buttonmatrix_create(bright_row);
+    lv_buttonmatrix_set_map(g_state.brightness_btns, brightness_map);
+    lv_obj_set_size(g_state.brightness_btns, 130, 44);
+    lv_obj_align(g_state.brightness_btns, LV_ALIGN_RIGHT_MID, 0, 0);
+    style_btnmatrix(g_state.brightness_btns);
+    make_btnmatrix_checkable(g_state.brightness_btns, 2);
+    lv_buttonmatrix_set_one_checked(g_state.brightness_btns, true);
+    // High=100, Low=85, so if brightness >= 100 select High (0), else Low (1)
+    int current_brightness = settings_get(SETTING_BRIGHTNESS);
+    lv_buttonmatrix_set_button_ctrl(g_state.brightness_btns, current_brightness >= 100 ? 0 : 1, LV_BUTTONMATRIX_CTRL_CHECKED);
+    lv_obj_add_event_cb(g_state.brightness_btns, on_brightness_change, LV_EVENT_VALUE_CHANGED, nullptr);
     
     // Screen timeout row
     lv_obj_t* timeout_row = lv_obj_create(content);
@@ -280,9 +228,10 @@ lv_obj_t* device_screen_create(void) {
     
     g_state.timeout_btns = lv_buttonmatrix_create(timeout_row);
     lv_buttonmatrix_set_map(g_state.timeout_btns, timeout_map);
-    lv_obj_set_size(g_state.timeout_btns, 180, 36);
+    lv_obj_set_size(g_state.timeout_btns, 200, 44);  // Larger touch targets
     lv_obj_align(g_state.timeout_btns, LV_ALIGN_RIGHT_MID, 0, 0);
     style_btnmatrix(g_state.timeout_btns);
+    make_btnmatrix_checkable(g_state.timeout_btns, 4);  // 4 timeout options
     lv_buttonmatrix_set_one_checked(g_state.timeout_btns, true);
     lv_buttonmatrix_set_button_ctrl(g_state.timeout_btns, settings_get(SETTING_SCREEN_TIMEOUT), LV_BUTTONMATRIX_CTRL_CHECKED);
     lv_obj_add_event_cb(g_state.timeout_btns, on_timeout_change, LV_EVENT_VALUE_CHANGED, nullptr);
@@ -313,7 +262,7 @@ lv_obj_t* device_screen_create(void) {
     
     g_state.sound_switch = lv_switch_create(sound_row);
     lv_obj_align(g_state.sound_switch, LV_ALIGN_RIGHT_MID, 0, 0);
-    lv_obj_set_size(g_state.sound_switch, 50, 26);
+    lv_obj_set_size(g_state.sound_switch, 56, 32);  // Larger touch target
     lv_obj_set_style_bg_color(g_state.sound_switch, lv_color_hex(0x3A3A3A), LV_PART_MAIN);
     lv_style_selector_t sw_checked = static_cast<lv_style_selector_t>(LV_PART_INDICATOR) | 
                                       static_cast<lv_style_selector_t>(LV_STATE_CHECKED);
@@ -323,48 +272,6 @@ lv_obj_t* device_screen_create(void) {
         lv_obj_add_state(g_state.sound_switch, LV_STATE_CHECKED);
     }
     lv_obj_add_event_cb(g_state.sound_switch, on_sound_change, LV_EVENT_VALUE_CHANGED, nullptr);
-    
-    // === UNITS SECTION ===
-    create_section_header(content, "Units");
-    
-    // Helper lambda for unit rows
-    auto create_unit_row = [&](const char* icon, const char* name, const char** map, int current, lv_event_cb_t cb) -> lv_obj_t* {
-        lv_obj_t* row = lv_obj_create(content);
-        lv_obj_remove_style_all(row);
-        lv_obj_set_size(row, LV_PCT(100), ITEM_HEIGHT);
-        lv_obj_set_style_bg_color(row, lv_color_hex(STYLE_COLOR_BG_CARD), 0);
-        lv_obj_set_style_bg_opa(row, LV_OPA_COVER, 0);
-        lv_obj_set_style_radius(row, 12, 0);
-        lv_obj_set_style_pad_hor(row, 16, 0);
-        lv_obj_clear_flag(row, LV_OBJ_FLAG_SCROLLABLE);
-        
-        lv_obj_t* ic = lv_label_create(row);
-        lv_label_set_text(ic, icon);
-        lv_obj_set_style_text_font(ic, &lv_font_montserrat_20, 0);
-        lv_obj_set_style_text_color(ic, lv_color_hex(STYLE_COLOR_PRIMARY), 0);
-        lv_obj_align(ic, LV_ALIGN_LEFT_MID, 0, 0);
-        
-        lv_obj_t* nm = lv_label_create(row);
-        lv_label_set_text(nm, name);
-        lv_obj_set_style_text_font(nm, styles_get_font_normal(), 0);
-        lv_obj_set_style_text_color(nm, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
-        lv_obj_align(nm, LV_ALIGN_LEFT_MID, 36, 0);
-        
-        lv_obj_t* btnm = lv_buttonmatrix_create(row);
-        lv_buttonmatrix_set_map(btnm, map);
-        lv_obj_set_size(btnm, 100, 32);
-        lv_obj_align(btnm, LV_ALIGN_RIGHT_MID, 0, 0);
-        style_btnmatrix(btnm);
-        lv_buttonmatrix_set_one_checked(btnm, true);
-        lv_buttonmatrix_set_button_ctrl(btnm, current, LV_BUTTONMATRIX_CTRL_CHECKED);
-        lv_obj_add_event_cb(btnm, cb, LV_EVENT_VALUE_CHANGED, nullptr);
-        
-        return btnm;
-    };
-    
-    g_state.depth_btns = create_unit_row(LV_SYMBOL_DOWN, "Depth", depth_map, settings_get(SETTING_UNITS_DEPTH), on_depth_unit_change);
-    g_state.temp_btns = create_unit_row(LV_SYMBOL_CHARGE, "Temperature", temp_map, settings_get(SETTING_UNITS_TEMP), on_temp_unit_change);
-    g_state.pressure_btns = create_unit_row(LV_SYMBOL_DOWNLOAD, "Pressure", pres_map, settings_get(SETTING_UNITS_PRESSURE), on_pressure_unit_change);
     
     // === RESET BUTTON ===
     lv_obj_t* reset_btn = lv_btn_create(content);

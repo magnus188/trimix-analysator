@@ -4,10 +4,15 @@
 #include <cstdio>
 #include <vector>
 #include <algorithm>
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 
 static const char* TAG = "STATUS_ICONS";
 
 namespace {
+
+// Mutex to protect shared state access
+SemaphoreHandle_t g_status_mutex = nullptr;
 
 // Track all status icon instances for global updates
 struct StatusInstance {
@@ -86,7 +91,7 @@ void update_wifi_for_instance(const StatusInstance& inst) {
             lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
         lv_obj_set_style_text_opa(inst.wifi_icon, LV_OPA_40, 0);
     }
-    lv_obj_clear_flag(inst.wifi_icon, LV_OBJ_FLAG_HIDDEN);
+    // Note: WiFi icon is never hidden - removed clear_flag call that triggered layout shifts
 }
 
 // Update a single instance's battery display
@@ -121,7 +126,24 @@ void update_all_battery() {
 
 }  // namespace
 
+// Async callback to update WiFi in LVGL context
+static void wifi_update_async_cb(void* user_data) {
+    (void)user_data;
+    update_all_wifi();
+}
+
+// Async callback to update battery in LVGL context
+static void battery_update_async_cb(void* user_data) {
+    (void)user_data;
+    update_all_battery();
+}
+
 lv_obj_t* status_icons_create(lv_obj_t* parent) {
+    // Initialize mutex on first call
+    if (!g_status_mutex) {
+        g_status_mutex = xSemaphoreCreateMutex();
+    }
+    
     ESP_LOGI(TAG, "Creating status icons (total instances: %d)", (int)g_instances.size());
     
     // Clean up any invalid instances first
@@ -153,13 +175,15 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
         lv_obj_set_style_text_opa(inst.wifi_icon, LV_OPA_40, 0);
     }
     
-    // Battery percentage
+    // Battery percentage - fixed width to prevent layout shifts when text changes
     inst.battery_pct = lv_label_create(cont);
     char buf[8];
     snprintf(buf, sizeof(buf), "%d%%", g_battery_percentage);
     lv_label_set_text(inst.battery_pct, buf);
     lv_obj_set_style_text_font(inst.battery_pct, &lv_font_montserrat_12, 0);
     lv_obj_set_style_text_color(inst.battery_pct, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_set_width(inst.battery_pct, 32);  // Fixed width for "100%"
+    lv_obj_set_style_text_align(inst.battery_pct, LV_TEXT_ALIGN_RIGHT, 0);
     
     // Battery icon
     inst.battery_icon = lv_label_create(cont);
@@ -176,18 +200,39 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
 }
 
 void status_set_wifi(bool connected, wifi_signal_level_t signal_level) {
+    // Update state (thread-safe)
+    if (g_status_mutex) {
+        xSemaphoreTake(g_status_mutex, portMAX_DELAY);
+    }
     g_wifi_connected = connected;
     g_wifi_signal = signal_level;
-    update_all_wifi();
+    if (g_status_mutex) {
+        xSemaphoreGive(g_status_mutex);
+    }
+    
+    // Schedule LVGL update in UI task context (thread-safe)
+    lv_async_call(wifi_update_async_cb, nullptr);
+    
     ESP_LOGI(TAG, "WiFi status: %s, signal: %d (updating %d instances)", 
              connected ? "connected" : "disconnected", signal_level, (int)g_instances.size());
 }
 
 void status_set_battery(uint8_t percentage, bool charging) {
     if (percentage > 100) percentage = 100;
+    
+    // Update state (thread-safe)
+    if (g_status_mutex) {
+        xSemaphoreTake(g_status_mutex, portMAX_DELAY);
+    }
     g_battery_percentage = percentage;
     g_battery_charging = charging;
-    update_all_battery();
+    if (g_status_mutex) {
+        xSemaphoreGive(g_status_mutex);
+    }
+    
+    // Schedule LVGL update in UI task context (thread-safe)
+    lv_async_call(battery_update_async_cb, nullptr);
+    
     ESP_LOGD(TAG, "Battery: %d%%, charging: %s (updating %d instances)", 
              percentage, charging ? "yes" : "no", (int)g_instances.size());
 }

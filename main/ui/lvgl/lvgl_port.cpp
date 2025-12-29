@@ -106,7 +106,8 @@ extern "C" void lvgl_port_init(void){
     static lv_display_t *disp; static lv_indev_t *indev; static esp_lcd_touch_handle_t tp; static esp_lcd_panel_handle_t panel=nullptr;
     
     // RGB panel configuration
-    // IMPORTANT: bounce_buffer_size_px is CRITICAL for PSRAM framebuffers to prevent screen tearing/rolling
+    // Using double framebuffer instead of bounce buffer to avoid conflicts with software rotation
+    // Double FB provides stable display without interfering with our rotation logic
     esp_lcd_rgb_panel_config_t panel_config = {
         .clk_src = LCD_CLK_SRC_DEFAULT,
         .timings = {
@@ -129,9 +130,9 @@ extern "C" void lvgl_port_init(void){
         },
         .data_width = 16,
         .bits_per_pixel = 0,
-        .num_fbs = 1,
+        .num_fbs = 2,  // Double framebuffer for stable display
         .bounce_buffer_size_px = 0,
-        .sram_trans_align = 0,
+        .sram_trans_align = 4,
         .psram_trans_align = 64,
         .hsync_gpio_num = LCD_PIN_HSYNC,
         .vsync_gpio_num = LCD_PIN_VSYNC,

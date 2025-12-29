@@ -32,6 +32,11 @@ void wifi_service_start_scan(void);
 bool wifi_service_is_scanning(void);
 
 /**
+ * Check if WiFi service is ready
+ */
+bool wifi_service_is_ready(void);
+
+/**
  * Get number of networks found in last scan
  */
 uint16_t wifi_service_get_scan_count(void);

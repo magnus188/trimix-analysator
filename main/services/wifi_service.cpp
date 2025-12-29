@@ -160,10 +160,12 @@ void wifi_service_init(void) {
 }
 
 void wifi_service_start_scan(void) {
-    if (!g_initialized || g_scanning) return;
+    if (!g_initialized || g_scanning) {
+        ESP_LOGW(TAG, "Cannot start scan: initialized=%d, scanning=%d", g_initialized, g_scanning);
+        return;
+    }
     
     ESP_LOGI(TAG, "Starting WiFi scan");
-    g_scanning = true;
     
     xEventGroupClearBits(g_wifi_event_group, WIFI_SCAN_DONE_BIT);
     
@@ -178,11 +180,23 @@ void wifi_service_start_scan(void) {
         }
     };
     
-    esp_wifi_scan_start(&scan_config, false);
+    esp_err_t err = esp_wifi_scan_start(&scan_config, false);
+    if (err == ESP_OK) {
+        g_scanning = true;
+        ESP_LOGI(TAG, "WiFi scan started successfully");
+    } else {
+        ESP_LOGE(TAG, "Failed to start WiFi scan: %s", esp_err_to_name(err));
+        // Set scan done bit so UI can handle the failure
+        xEventGroupSetBits(g_wifi_event_group, WIFI_SCAN_DONE_BIT);
+    }
 }
 
 bool wifi_service_is_scanning(void) {
     return g_scanning;
+}
+
+bool wifi_service_is_ready(void) {
+    return g_initialized;
 }
 
 uint16_t wifi_service_get_scan_count(void) {
