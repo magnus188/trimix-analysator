@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -12,8 +13,8 @@ extern "C" {
  * Key formulas:
  * - PPO2 = FO2 * (depth/10 + 1)  where FO2 is fraction (0.21 for air)
  * - MOD = (PPO2 / FO2 - 1) * 10
- * - EAD = ((1 - FHe) * (depth + 10) / 0.79) - 10  (Equivalent Air Depth)
- * - END = ((1 - FO2 - FHe) * (depth + 10) / 0.79) - 10  (Equivalent Narcotic Depth)
+ * - The current helium planning helper uses (1 - FHe) because O2 is not an input.
+ *   This is closer to an END-style narcotic fraction than a strict N2-only EAD.
  */
 
 /**
@@ -41,10 +42,10 @@ float calc_mod(float o2_percent, float ppo2);
 float calc_ppo2(float depth_m, float o2_percent);
 
 /**
- * Calculate Equivalent Air Depth (EAD) for trimix
+ * Calculate the current helium-adjusted narcotic depth helper.
  * @param depth_m Actual depth in meters
  * @param he_percent Helium percentage (0-70)
- * @return EAD in meters
+ * @return Equivalent depth in meters under the current app model
  */
 float calc_ead(float depth_m, float he_percent);
 
@@ -63,6 +64,28 @@ float calc_depth_for_ead(float ead_m, float he_percent);
  * @return Required helium percentage
  */
 float calc_helium_for_ead(float depth_m, float ead_m);
+
+typedef struct {
+    bool valid;
+    float oxygen_add_bar;
+    float helium_add_bar;
+    float air_add_bar;
+    float fill_pressure_bar;
+    float final_o2_percent;
+    float final_he_percent;
+    char status[96];
+} blend_topup_result_t;
+
+/**
+ * Calculate a partial-pressure top-up using pure O2, pure He, and air.
+ * Pressures are in bar. Gas percentages are 0-100.
+ */
+blend_topup_result_t calc_blend_topup(float current_pressure_bar,
+                                      float final_pressure_bar,
+                                      float current_o2_percent,
+                                      float current_he_percent,
+                                      float target_o2_percent,
+                                      float target_he_percent);
 
 /**
  * Clamp a value between min and max

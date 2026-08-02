@@ -5,7 +5,6 @@ static const char* TAG = "STYLES";
 
 // Declare external custom fonts from lv_conf.h
 LV_FONT_DECLARE(custom_font_normal_16);
-LV_FONT_DECLARE(custom_font_normal_20);
 LV_FONT_DECLARE(custom_font_bold_20);
 LV_FONT_DECLARE(custom_font_bold_24);
 

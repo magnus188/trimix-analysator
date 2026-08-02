@@ -7,6 +7,8 @@
 #include <nvs_flash.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/event_groups.h>
+#include <freertos/semphr.h>
+#include <cstdio>
 #include <cstring>
 
 static const char* TAG = "WIFI_SVC";
@@ -15,6 +17,7 @@ static const char* TAG = "WIFI_SVC";
 constexpr const char* NVS_NAMESPACE = "wifi_creds";
 constexpr const char* NVS_KEY_SSID = "ssid";
 constexpr const char* NVS_KEY_PASS = "password";
+constexpr uint16_t MAX_SCAN_RESULTS = 20;
 
 namespace {
 
@@ -25,16 +28,30 @@ constexpr int WIFI_SCAN_DONE_BIT = BIT2;
 
 // State
 EventGroupHandle_t g_wifi_event_group = nullptr;
+SemaphoreHandle_t g_wifi_mutex = nullptr;
 esp_netif_t* g_sta_netif = nullptr;
 bool g_initialized = false;
 bool g_scanning = false;
 bool g_connected = false;
 char g_connected_ssid[33] = {0};
-wifi_ap_record_t* g_scan_results = nullptr;
+wifi_ap_record_t g_scan_results[MAX_SCAN_RESULTS] = {};
 uint16_t g_scan_count = 0;
 
 int s_retry_num = 0;
+bool g_suppress_next_disconnect = false;
 constexpr int WIFI_MAXIMUM_RETRY = 3;
+
+void lock_wifi_state() {
+    if (g_wifi_mutex) {
+        xSemaphoreTake(g_wifi_mutex, portMAX_DELAY);
+    }
+}
+
+void unlock_wifi_state() {
+    if (g_wifi_mutex) {
+        xSemaphoreGive(g_wifi_mutex);
+    }
+}
 
 void wifi_event_handler(void* arg, esp_event_base_t event_base,
                         int32_t event_id, void* event_data) {
@@ -45,19 +62,30 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base,
                 break;
                 
             case WIFI_EVENT_STA_DISCONNECTED: {
-                g_connected = false;
-                g_connected_ssid[0] = '\0';
-                status_set_wifi(false, WIFI_SIGNAL_NONE);
-                
-                wifi_event_sta_disconnected_t* event = 
+                wifi_event_sta_disconnected_t* event =
                     (wifi_event_sta_disconnected_t*)event_data;
                 ESP_LOGI(TAG, "Disconnected from AP, reason: %d", event->reason);
-                
-                if (s_retry_num < WIFI_MAXIMUM_RETRY) {
-                    esp_wifi_connect();
+
+                lock_wifi_state();
+                g_connected = false;
+                g_connected_ssid[0] = '\0';
+                bool suppress_retry = g_suppress_next_disconnect;
+                if (suppress_retry) {
+                    g_suppress_next_disconnect = false;
+                }
+                bool should_retry = !suppress_retry && s_retry_num < WIFI_MAXIMUM_RETRY;
+                if (should_retry) {
                     s_retry_num++;
-                    ESP_LOGI(TAG, "Retrying connection (%d/%d)", s_retry_num, WIFI_MAXIMUM_RETRY);
-                } else {
+                }
+                int retry_num = s_retry_num;
+                unlock_wifi_state();
+
+                status_set_wifi(false, WIFI_SIGNAL_NONE);
+
+                if (should_retry) {
+                    esp_wifi_connect();
+                    ESP_LOGI(TAG, "Retrying connection (%d/%d)", retry_num, WIFI_MAXIMUM_RETRY);
+                } else if (!suppress_retry) {
                     xEventGroupSetBits(g_wifi_event_group, WIFI_FAIL_BIT);
                 }
                 break;
@@ -65,33 +93,32 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base,
             
             case WIFI_EVENT_SCAN_DONE: {
                 ESP_LOGI(TAG, "WiFi scan completed");
-                g_scanning = false;
                 
                 // Get scan results count
                 uint16_t ap_count = 0;
                 esp_wifi_scan_get_ap_num(&ap_count);
+                uint16_t result_count = ap_count > MAX_SCAN_RESULTS ? MAX_SCAN_RESULTS : ap_count;
                 
-                // Free previous results
-                if (g_scan_results) {
-                    free(g_scan_results);
-                    g_scan_results = nullptr;
-                }
-                
-                if (ap_count > 0) {
-                    g_scan_results = (wifi_ap_record_t*)malloc(sizeof(wifi_ap_record_t) * ap_count);
-                    if (g_scan_results) {
-                        esp_wifi_scan_get_ap_records(&ap_count, g_scan_results);
-                        g_scan_count = ap_count;
-                        ESP_LOGI(TAG, "Found %d networks", ap_count);
+                lock_wifi_state();
+                g_scanning = false;
+                g_scan_count = 0;
+                if (result_count > 0) {
+                    esp_err_t err = esp_wifi_scan_get_ap_records(&result_count, g_scan_results);
+                    if (err == ESP_OK) {
+                        g_scan_count = result_count;
+                    } else {
+                        ESP_LOGE(TAG, "Failed to read scan records: %s", esp_err_to_name(err));
                     }
-                } else {
-                    g_scan_count = 0;
                 }
-                
+                uint16_t stored_count = g_scan_count;
+                unlock_wifi_state();
+
+                ESP_LOGI(TAG, "Found %d networks (%d stored)", ap_count, stored_count);
+
                 xEventGroupSetBits(g_wifi_event_group, WIFI_SCAN_DONE_BIT);
                 break;
             }
-            
+
             default:
                 break;
         }
@@ -100,13 +127,19 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base,
             ip_event_got_ip_t* event = (ip_event_got_ip_t*)event_data;
             ESP_LOGI(TAG, "Got IP: " IPSTR, IP2STR(&event->ip_info.ip));
             
+            lock_wifi_state();
             g_connected = true;
             s_retry_num = 0;
+            g_suppress_next_disconnect = false;
+            unlock_wifi_state();
             
             // Get current SSID
             wifi_ap_record_t ap_info;
             if (esp_wifi_sta_get_ap_info(&ap_info) == ESP_OK) {
+                lock_wifi_state();
                 strncpy(g_connected_ssid, (char*)ap_info.ssid, sizeof(g_connected_ssid) - 1);
+                g_connected_ssid[sizeof(g_connected_ssid) - 1] = '\0';
+                unlock_wifi_state();
                 
                 // Update status icon with signal strength
                 int bars = wifi_service_rssi_to_bars(ap_info.rssi);
@@ -124,6 +157,13 @@ void wifi_service_init(void) {
     if (g_initialized) return;
     
     ESP_LOGI(TAG, "Initializing WiFi service");
+    if (!g_wifi_mutex) {
+        g_wifi_mutex = xSemaphoreCreateMutex();
+        if (!g_wifi_mutex) {
+            ESP_LOGE(TAG, "Failed to create WiFi mutex");
+            ESP_ERROR_CHECK(ESP_ERR_NO_MEM);
+        }
+    }
     
     // Initialize NVS (required for WiFi)
     esp_err_t ret = nvs_flash_init();
@@ -135,6 +175,10 @@ void wifi_service_init(void) {
     
     // Create event group
     g_wifi_event_group = xEventGroupCreate();
+    if (!g_wifi_event_group) {
+        ESP_LOGE(TAG, "Failed to create WiFi event group");
+        ESP_ERROR_CHECK(ESP_ERR_NO_MEM);
+    }
     
     // Initialize TCP/IP stack
     ESP_ERROR_CHECK(esp_netif_init());
@@ -155,13 +199,20 @@ void wifi_service_init(void) {
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_start());
     
+    lock_wifi_state();
     g_initialized = true;
+    unlock_wifi_state();
     ESP_LOGI(TAG, "WiFi initialized");
 }
 
 void wifi_service_start_scan(void) {
-    if (!g_initialized || g_scanning) {
-        ESP_LOGW(TAG, "Cannot start scan: initialized=%d, scanning=%d", g_initialized, g_scanning);
+    lock_wifi_state();
+    bool initialized = g_initialized;
+    bool scanning = g_scanning;
+    unlock_wifi_state();
+
+    if (!initialized || scanning) {
+        ESP_LOGW(TAG, "Cannot start scan: initialized=%d, scanning=%d", initialized, scanning);
         return;
     }
     
@@ -182,9 +233,14 @@ void wifi_service_start_scan(void) {
     
     esp_err_t err = esp_wifi_scan_start(&scan_config, false);
     if (err == ESP_OK) {
+        lock_wifi_state();
         g_scanning = true;
+        unlock_wifi_state();
         ESP_LOGI(TAG, "WiFi scan started successfully");
     } else {
+        lock_wifi_state();
+        g_scanning = false;
+        unlock_wifi_state();
         ESP_LOGE(TAG, "Failed to start WiFi scan: %s", esp_err_to_name(err));
         // Set scan done bit so UI can handle the failure
         xEventGroupSetBits(g_wifi_event_group, WIFI_SCAN_DONE_BIT);
@@ -192,20 +248,35 @@ void wifi_service_start_scan(void) {
 }
 
 bool wifi_service_is_scanning(void) {
-    return g_scanning;
+    lock_wifi_state();
+    bool scanning = g_scanning;
+    unlock_wifi_state();
+    return scanning;
 }
 
 bool wifi_service_is_ready(void) {
-    return g_initialized;
+    lock_wifi_state();
+    bool initialized = g_initialized;
+    unlock_wifi_state();
+    return initialized;
 }
 
 uint16_t wifi_service_get_scan_count(void) {
-    return g_scan_count;
+    lock_wifi_state();
+    uint16_t count = g_scan_count;
+    unlock_wifi_state();
+    return count;
 }
 
 uint16_t wifi_service_get_scan_results(wifi_network_info_t* networks, uint16_t max_count) {
-    if (!networks || !g_scan_results || g_scan_count == 0) return 0;
+    if (!networks || max_count == 0) return 0;
     
+    lock_wifi_state();
+    if (g_scan_count == 0) {
+        unlock_wifi_state();
+        return 0;
+    }
+
     uint16_t count = (g_scan_count < max_count) ? g_scan_count : max_count;
     
     for (uint16_t i = 0; i < count; i++) {
@@ -216,19 +287,36 @@ uint16_t wifi_service_get_scan_results(wifi_network_info_t* networks, uint16_t m
         networks[i].connected = (g_connected && 
             strcmp(networks[i].ssid, g_connected_ssid) == 0);
     }
+    unlock_wifi_state();
     
     return count;
 }
 
 bool wifi_service_connect(const char* ssid, const char* password) {
-    if (!g_initialized || !ssid) return false;
+    lock_wifi_state();
+    bool initialized = g_initialized;
+    bool connected = g_connected;
+    unlock_wifi_state();
+
+    if (!initialized || !ssid) return false;
     
     ESP_LOGI(TAG, "Connecting to '%s'", ssid);
     
     // Disconnect if already connected
-    if (g_connected) {
-        esp_wifi_disconnect();
+    if (connected) {
+        lock_wifi_state();
+        g_suppress_next_disconnect = true;
+        unlock_wifi_state();
+        esp_err_t disconnect_err = esp_wifi_disconnect();
+        if (disconnect_err != ESP_OK) {
+            lock_wifi_state();
+            g_suppress_next_disconnect = false;
+            unlock_wifi_state();
+            ESP_LOGW(TAG, "Disconnect before reconnect failed: %s", esp_err_to_name(disconnect_err));
+        }
+        lock_wifi_state();
         g_connected = false;
+        unlock_wifi_state();
     }
     
     // Configure
@@ -239,37 +327,74 @@ bool wifi_service_connect(const char* ssid, const char* password) {
     }
     wifi_config.sta.threshold.authmode = password ? WIFI_AUTH_WPA2_PSK : WIFI_AUTH_OPEN;
     
+    lock_wifi_state();
     s_retry_num = 0;
+    unlock_wifi_state();
     xEventGroupClearBits(g_wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT);
     
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
-    esp_wifi_connect();
+    esp_err_t err = esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to configure WiFi: %s", esp_err_to_name(err));
+        return false;
+    }
+
+    err = esp_wifi_connect();
+    if (err != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to start WiFi connection: %s", esp_err_to_name(err));
+        return false;
+    }
     
     return true;
 }
 
 void wifi_service_disconnect(void) {
-    if (!g_initialized) return;
+    lock_wifi_state();
+    bool initialized = g_initialized;
+    unlock_wifi_state();
+
+    if (!initialized) return;
     
     ESP_LOGI(TAG, "Disconnecting");
-    esp_wifi_disconnect();
+    lock_wifi_state();
+    g_suppress_next_disconnect = true;
+    unlock_wifi_state();
+    esp_err_t err = esp_wifi_disconnect();
+    if (err != ESP_OK) {
+        lock_wifi_state();
+        g_suppress_next_disconnect = false;
+        unlock_wifi_state();
+        ESP_LOGW(TAG, "WiFi disconnect failed: %s", esp_err_to_name(err));
+    }
+    lock_wifi_state();
     g_connected = false;
     g_connected_ssid[0] = '\0';
+    unlock_wifi_state();
     status_set_wifi(false, WIFI_SIGNAL_NONE);
 }
 
 bool wifi_service_is_connected(void) {
-    return g_connected;
+    lock_wifi_state();
+    bool connected = g_connected;
+    unlock_wifi_state();
+    return connected;
 }
 
 bool wifi_service_get_connected_ssid(char* ssid) {
-    if (!g_connected || !ssid) return false;
-    strcpy(ssid, g_connected_ssid);
+    if (!ssid) return false;
+
+    lock_wifi_state();
+    if (!g_connected) {
+        unlock_wifi_state();
+        return false;
+    }
+    strncpy(ssid, g_connected_ssid, 32);
+    ssid[32] = '\0';
+    unlock_wifi_state();
     return true;
 }
 
 int8_t wifi_service_get_rssi(void) {
-    if (!g_connected) return 0;
+    if (!wifi_service_is_connected()) return 0;
     
     wifi_ap_record_t ap_info;
     if (esp_wifi_sta_get_ap_info(&ap_info) == ESP_OK) {
@@ -288,11 +413,11 @@ int wifi_service_rssi_to_bars(int8_t rssi) {
 }
 
 bool wifi_service_get_ip(char* ip_str) {
-    if (!g_connected || !g_sta_netif || !ip_str) return false;
+    if (!ip_str || !wifi_service_is_connected() || !g_sta_netif) return false;
     
     esp_netif_ip_info_t ip_info;
     if (esp_netif_get_ip_info(g_sta_netif, &ip_info) == ESP_OK) {
-        sprintf(ip_str, IPSTR, IP2STR(&ip_info.ip));
+        snprintf(ip_str, 16, IPSTR, IP2STR(&ip_info.ip));
         return true;
     }
     return false;

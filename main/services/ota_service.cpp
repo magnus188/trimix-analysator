@@ -10,25 +10,44 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <cJSON.h>
+#include <atomic>
+#include <cstdio>
 #include <cstring>
-#include <cstdlib>
 
 static const char* TAG = "OTA_SERVICE";
 
 namespace {
 
 // State
-ota_state_t g_state = OTA_STATE_IDLE;
+std::atomic<ota_state_t> g_state{OTA_STATE_IDLE};
 ota_update_info_t g_update_info = {};
 char g_error_message[128] = {0};
 ota_progress_cb_t g_progress_cb = nullptr;
 TaskHandle_t g_ota_task = nullptr;
-volatile bool g_cancel_requested = false;
+std::atomic<bool> g_cancel_requested{false};
 
 // HTTP response buffer
-char* g_http_buffer = nullptr;
-int g_http_buffer_len = 0;
 constexpr int HTTP_BUFFER_SIZE = 4096;
+char g_http_buffer[HTTP_BUFFER_SIZE] = {};
+int g_http_buffer_len = 0;
+
+void set_state(ota_state_t state) {
+    g_state.store(state, std::memory_order_release);
+}
+
+ota_state_t get_state() {
+    return g_state.load(std::memory_order_acquire);
+}
+
+void set_error(const char* message) {
+    snprintf(g_error_message, sizeof(g_error_message), "%s", message);
+    set_state(OTA_STATE_ERROR);
+}
+
+void finish_task() {
+    g_ota_task = nullptr;
+    vTaskDelete(nullptr);
+}
 
 // Compare version strings (returns >0 if v1 > v2)
 int compare_versions(const char* v1, const char* v2) {
@@ -52,10 +71,12 @@ esp_err_t http_event_handler(esp_http_client_event_t* evt) {
     switch (evt->event_id) {
         case HTTP_EVENT_ON_DATA:
             if (!esp_http_client_is_chunked_response(evt->client)) {
-                if (g_http_buffer && g_http_buffer_len + evt->data_len < HTTP_BUFFER_SIZE - 1) {
+                if (g_http_buffer_len + evt->data_len < HTTP_BUFFER_SIZE - 1) {
                     memcpy(g_http_buffer + g_http_buffer_len, evt->data, evt->data_len);
                     g_http_buffer_len += evt->data_len;
                     g_http_buffer[g_http_buffer_len] = '\0';
+                } else {
+                    ESP_LOGW(TAG, "HTTP response truncated at %d bytes", HTTP_BUFFER_SIZE);
                 }
             }
             break;
@@ -79,15 +100,17 @@ bool parse_release_json(const char* json_str) {
     cJSON* tag_name = cJSON_GetObjectItem(root, "tag_name");
     if (tag_name && cJSON_IsString(tag_name)) {
         strncpy(g_update_info.version, tag_name->valuestring, sizeof(g_update_info.version) - 1);
+        g_update_info.version[sizeof(g_update_info.version) - 1] = '\0';
     }
     
     // Get release notes (body)
     cJSON* body = cJSON_GetObjectItem(root, "body");
     if (body && cJSON_IsString(body)) {
         strncpy(g_update_info.release_notes, body->valuestring, sizeof(g_update_info.release_notes) - 1);
+        g_update_info.release_notes[sizeof(g_update_info.release_notes) - 1] = '\0';
         // Truncate with ellipsis if too long
         if (strlen(body->valuestring) >= sizeof(g_update_info.release_notes) - 4) {
-            strcpy(g_update_info.release_notes + sizeof(g_update_info.release_notes) - 4, "...");
+            memcpy(g_update_info.release_notes + sizeof(g_update_info.release_notes) - 4, "...", 4);
         }
     }
     
@@ -106,6 +129,7 @@ bool parse_release_json(const char* json_str) {
                     if (url && cJSON_IsString(url)) {
                         strncpy(g_update_info.download_url, url->valuestring, 
                                 sizeof(g_update_info.download_url) - 1);
+                        g_update_info.download_url[sizeof(g_update_info.download_url) - 1] = '\0';
                     }
                     if (size && cJSON_IsNumber(size)) {
                         g_update_info.file_size = (uint32_t)size->valuedouble;
@@ -132,17 +156,11 @@ bool parse_release_json(const char* json_str) {
 
 // Check for update task
 void check_update_task(void* param) {
+    (void)param;
+
     ESP_LOGI(TAG, "Checking for updates...");
-    g_state = OTA_STATE_CHECKING;
-    
-    // Allocate HTTP buffer
-    g_http_buffer = (char*)malloc(HTTP_BUFFER_SIZE);
-    if (!g_http_buffer) {
-        strcpy(g_error_message, "Out of memory");
-        g_state = OTA_STATE_ERROR;
-        vTaskDelete(nullptr);
-        return;
-    }
+    set_state(OTA_STATE_CHECKING);
+    memset(g_http_buffer, 0, sizeof(g_http_buffer));
     g_http_buffer_len = 0;
     
     // Configure HTTP client
@@ -154,11 +172,8 @@ void check_update_task(void* param) {
     
     esp_http_client_handle_t client = esp_http_client_init(&config);
     if (!client) {
-        strcpy(g_error_message, "HTTP init failed");
-        g_state = OTA_STATE_ERROR;
-        free(g_http_buffer);
-        g_http_buffer = nullptr;
-        vTaskDelete(nullptr);
+        set_error("HTTP init failed");
+        finish_task();
         return;
     }
     
@@ -173,35 +188,33 @@ void check_update_task(void* param) {
     if (err == ESP_OK && status_code == 200) {
         if (parse_release_json(g_http_buffer)) {
             if (g_update_info.is_newer && strlen(g_update_info.download_url) > 0) {
-                g_state = OTA_STATE_UPDATE_AVAILABLE;
+                set_state(OTA_STATE_UPDATE_AVAILABLE);
                 ESP_LOGI(TAG, "Update available: %s", g_update_info.version);
             } else {
-                g_state = OTA_STATE_NO_UPDATE;
+                set_state(OTA_STATE_NO_UPDATE);
                 ESP_LOGI(TAG, "No update available");
             }
         } else {
-            strcpy(g_error_message, "No firmware in release");
-            g_state = OTA_STATE_ERROR;
+            set_error("No firmware in release");
         }
     } else {
         snprintf(g_error_message, sizeof(g_error_message), 
                  "HTTP error: %d (code %d)", err, status_code);
-        g_state = OTA_STATE_ERROR;
+        set_state(OTA_STATE_ERROR);
         ESP_LOGE(TAG, "%s", g_error_message);
     }
     
     esp_http_client_cleanup(client);
-    free(g_http_buffer);
-    g_http_buffer = nullptr;
     
-    g_ota_task = nullptr;
-    vTaskDelete(nullptr);
+    finish_task();
 }
 
 // OTA update task
 void ota_update_task(void* param) {
+    (void)param;
+
     ESP_LOGI(TAG, "Starting OTA update from: %s", g_update_info.download_url);
-    g_state = OTA_STATE_DOWNLOADING;
+    set_state(OTA_STATE_DOWNLOADING);
     
     if (g_progress_cb) {
         g_progress_cb(0, "Connecting...");
@@ -226,10 +239,9 @@ void ota_update_task(void* param) {
     
     if (err != ESP_OK) {
         snprintf(g_error_message, sizeof(g_error_message), "OTA begin failed: %s", esp_err_to_name(err));
-        g_state = OTA_STATE_ERROR;
+        set_state(OTA_STATE_ERROR);
         ESP_LOGE(TAG, "%s", g_error_message);
-        g_ota_task = nullptr;
-        vTaskDelete(nullptr);
+        finish_task();
         return;
     }
     
@@ -247,7 +259,7 @@ void ota_update_task(void* param) {
     ESP_LOGI(TAG, "Image size: %d bytes", image_size);
     
     // Download and write in chunks
-    while (!g_cancel_requested) {
+    while (!g_cancel_requested.load(std::memory_order_acquire)) {
         err = esp_https_ota_perform(ota_handle);
         
         if (err == ESP_ERR_HTTPS_OTA_IN_PROGRESS) {
@@ -312,63 +324,57 @@ void ota_update_task(void* param) {
         
         // Error occurred
         snprintf(g_error_message, sizeof(g_error_message), "OTA failed: %s", esp_err_to_name(err));
-        g_state = OTA_STATE_ERROR;
+        set_state(OTA_STATE_ERROR);
         ESP_LOGE(TAG, "%s", g_error_message);
         esp_https_ota_abort(ota_handle);
-        g_ota_task = nullptr;
-        vTaskDelete(nullptr);
+        finish_task();
         return;
     }
     
     // Check if cancelled
-    if (g_cancel_requested) {
+    if (g_cancel_requested.load(std::memory_order_acquire)) {
         ESP_LOGI(TAG, "OTA cancelled by user");
-        strcpy(g_error_message, "Update cancelled");
-        g_state = OTA_STATE_ERROR;
+        set_error("Update cancelled");
         esp_https_ota_abort(ota_handle);
-        g_cancel_requested = false;
-        g_ota_task = nullptr;
-        vTaskDelete(nullptr);
+        g_cancel_requested.store(false, std::memory_order_release);
+        finish_task();
         return;
     }
     
     // Verify and finish
-    g_state = OTA_STATE_INSTALLING;
+    set_state(OTA_STATE_INSTALLING);
     if (g_progress_cb) {
         g_progress_cb(100, "Verifying...");
     }
     
     if (!esp_https_ota_is_complete_data_received(ota_handle)) {
-        strcpy(g_error_message, "Incomplete download");
-        g_state = OTA_STATE_ERROR;
+        set_error("Incomplete download");
         esp_https_ota_abort(ota_handle);
-        g_ota_task = nullptr;
-        vTaskDelete(nullptr);
+        finish_task();
         return;
     }
     
     err = esp_https_ota_finish(ota_handle);
     if (err == ESP_OK) {
-        g_state = OTA_STATE_SUCCESS;
+        set_state(OTA_STATE_SUCCESS);
         ESP_LOGI(TAG, "OTA update successful! Reboot to apply.");
         if (g_progress_cb) {
             g_progress_cb(100, "Update complete!");
         }
     } else {
         snprintf(g_error_message, sizeof(g_error_message), "OTA finish failed: %s", esp_err_to_name(err));
-        g_state = OTA_STATE_ERROR;
+        set_state(OTA_STATE_ERROR);
         ESP_LOGE(TAG, "%s", g_error_message);
     }
     
-    g_ota_task = nullptr;
-    vTaskDelete(nullptr);
+    finish_task();
 }
 
 }  // namespace
 
 void ota_service_init(void) {
     ESP_LOGI(TAG, "OTA service initialized (current version: %s)", TRIMIX_ANALYZER_VERSION);
-    g_state = OTA_STATE_IDLE;
+    set_state(OTA_STATE_IDLE);
 }
 
 void ota_check_for_update(void) {
@@ -380,11 +386,15 @@ void ota_check_for_update(void) {
     memset(&g_update_info, 0, sizeof(g_update_info));
     memset(g_error_message, 0, sizeof(g_error_message));
     
-    xTaskCreate(check_update_task, "ota_check", 8192, nullptr, 5, &g_ota_task);
+    BaseType_t created = xTaskCreate(check_update_task, "ota_check", 8192, nullptr, 5, &g_ota_task);
+    if (created != pdPASS) {
+        g_ota_task = nullptr;
+        set_error("Failed to start update check");
+    }
 }
 
 void ota_start_update(ota_progress_cb_t progress_cb) {
-    if (g_state != OTA_STATE_UPDATE_AVAILABLE) {
+    if (get_state() != OTA_STATE_UPDATE_AVAILABLE) {
         ESP_LOGE(TAG, "No update available to install");
         return;
     }
@@ -395,13 +405,17 @@ void ota_start_update(ota_progress_cb_t progress_cb) {
     }
     
     g_progress_cb = progress_cb;
-    g_cancel_requested = false;
+    g_cancel_requested.store(false, std::memory_order_release);
     
-    xTaskCreate(ota_update_task, "ota_update", 8192, nullptr, 5, &g_ota_task);
+    BaseType_t created = xTaskCreate(ota_update_task, "ota_update", 8192, nullptr, 5, &g_ota_task);
+    if (created != pdPASS) {
+        g_ota_task = nullptr;
+        set_error("Failed to start OTA task");
+    }
 }
 
 ota_state_t ota_get_state(void) {
-    return g_state;
+    return get_state();
 }
 
 const ota_update_info_t* ota_get_update_info(void) {
@@ -417,8 +431,8 @@ const char* ota_get_current_version(void) {
 }
 
 void ota_cancel(void) {
-    if (g_state == OTA_STATE_DOWNLOADING) {
-        g_cancel_requested = true;
+    if (get_state() == OTA_STATE_DOWNLOADING) {
+        g_cancel_requested.store(true, std::memory_order_release);
     }
 }
 

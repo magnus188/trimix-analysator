@@ -7,6 +7,7 @@
 #include "../screen_manager.h"
 #include <esp_log.h>
 #include <esp_system.h>
+#include <esp_timer.h>
 #include <cstring>
 #include <cstdio>
 #include <atomic>
@@ -27,6 +28,7 @@ static std::atomic<int> g_ota_progress{0};
 static char g_ota_status[64] = "Installing update...";
 static char g_last_status[64] = "";
 static SemaphoreHandle_t g_status_mutex = nullptr;
+static esp_timer_handle_t g_restart_timer = nullptr;
 
 // Screen state
 struct UpdateScreenState {
@@ -65,6 +67,28 @@ void show_update_overlay();
 void hide_update_overlay();
 void update_overlay_progress();
 
+void restart_timer_cb(void* arg) {
+    (void)arg;
+    esp_restart();
+}
+
+void schedule_restart() {
+    if (!g_restart_timer) {
+        const esp_timer_create_args_t restart_args = {
+            .callback = restart_timer_cb,
+            .arg = nullptr,
+            .dispatch_method = ESP_TIMER_TASK,
+            .name = "ota_restart",
+            .skip_unhandled_events = true
+        };
+        ESP_ERROR_CHECK(esp_timer_create(&restart_args, &g_restart_timer));
+    }
+
+    if (!esp_timer_is_active(g_restart_timer)) {
+        ESP_ERROR_CHECK(esp_timer_start_once(g_restart_timer, 2000000));
+    }
+}
+
 // Back button callback
 void update_back_cb(lv_event_t* e) {
     screen_manager_show(SCREEN_SETTINGS);
@@ -74,6 +98,22 @@ void update_back_cb(lv_event_t* e) {
 void state_timer_cb(lv_timer_t* timer) {
     update_overlay_progress();  // Update progress bar from stored values
     update_ui_state();
+}
+
+void screen_visibility_cb(lv_event_t* event) {
+    if (!g_state.state_timer) return;
+
+    if (lv_event_get_code(event) == LV_EVENT_SCREEN_LOADED) {
+        update_overlay_progress();
+        update_ui_state();
+        lv_timer_resume(g_state.state_timer);
+        return;
+    }
+
+    ota_state_t state = ota_get_state();
+    if (state != OTA_STATE_DOWNLOADING && state != OTA_STATE_INSTALLING) {
+        lv_timer_pause(g_state.state_timer);
+    }
 }
 
 // Create fullscreen update overlay with logo and progress
@@ -293,8 +333,7 @@ void update_ui_state() {
                 
                 // Auto-restart after 2 seconds
                 ESP_LOGI(TAG, "OTA successful, auto-restarting in 2 seconds...");
-                vTaskDelay(pdMS_TO_TICKS(2000));
-                esp_restart();
+                schedule_restart();
             }
             break;
             
@@ -497,6 +536,9 @@ lv_obj_t* update_screen_create(void) {
     
     // Start state polling timer
     g_state.state_timer = lv_timer_create(state_timer_cb, 500, nullptr);
+    lv_timer_pause(g_state.state_timer);
+    lv_obj_add_event_cb(screen, screen_visibility_cb, LV_EVENT_SCREEN_LOADED, nullptr);
+    lv_obj_add_event_cb(screen, screen_visibility_cb, LV_EVENT_SCREEN_UNLOADED, nullptr);
     
     return screen;
 }

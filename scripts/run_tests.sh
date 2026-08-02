@@ -1,19 +1,18 @@
 #!/bin/bash
-# Simple test script for Trimix Analyzer
-# Runs compile checks and unit tests
+# Host-side validation for Trimix Analyzer firmware.
 
-set -e
-
-echo "=========================================="
-echo "  Trimix Analyzer Test Suite"
-echo "=========================================="
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 TEST_DIR="$PROJECT_DIR/tests"
-BUILD_DIR="$TEST_DIR/build"
+BUILD_ROOT="$TEST_DIR/build"
+mkdir -p "$BUILD_ROOT"
+BUILD_DIR="$(mktemp -d "$BUILD_ROOT/run.XXXXXX")"
+MATCH_FILE="$BUILD_DIR/pattern-match.txt"
+CREDS_MATCH_FILE="$BUILD_DIR/credential-match.txt"
+CXX="${CXX:-g++}"
 
-# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -22,34 +21,99 @@ NC='\033[0m'
 TESTS_PASSED=0
 TESTS_FAILED=0
 
+cleanup() {
+    rm -rf "$BUILD_DIR"
+}
+trap cleanup EXIT
+
 pass() {
-    echo -e "${GREEN}✓ $1${NC}"
+    echo -e "${GREEN}PASS${NC} $1"
     TESTS_PASSED=$((TESTS_PASSED + 1))
 }
 
 fail() {
-    echo -e "${RED}✗ $1${NC}"
+    echo -e "${RED}FAIL${NC} $1"
     TESTS_FAILED=$((TESTS_FAILED + 1))
 }
 
 warn() {
-    echo -e "${YELLOW}⚠ $1${NC}"
+    echo -e "${YELLOW}WARN${NC} $1"
 }
 
-# Create build directory
-mkdir -p "$BUILD_DIR"
+contains_pattern() {
+    local pattern="$1"
+    shift
+
+    if command -v rg >/dev/null 2>&1; then
+        rg -n "$pattern" "$@" >"$MATCH_FILE" 2>/dev/null
+    else
+        grep -RInE "$pattern" "$@" >"$MATCH_FILE" 2>/dev/null
+    fi
+}
+
+assert_no_pattern() {
+    local label="$1"
+    local pattern="$2"
+    shift 2
+
+    if contains_pattern "$pattern" "$@"; then
+        fail "$label"
+        sed -n '1,20p' "$MATCH_FILE"
+    else
+        pass "$label"
+    fi
+}
+
+run_binary_test() {
+    local label="$1"
+    local output="$2"
+    shift 2
+
+    if "$CXX" -std=c++17 -Wall -Wextra -Werror "$@" -o "$output"; then
+        if "$output"; then
+            pass "$label"
+        else
+            fail "$label"
+        fi
+    else
+        fail "Failed to compile $label"
+    fi
+}
+
+echo "=========================================="
+echo "  Trimix Analyzer Test Suite"
+echo "=========================================="
 
 echo ""
 echo "1. Source file validation"
-echo "--------------------------"
+echo "-------------------------"
 
-# Check that key source files exist
 KEY_FILES=(
     "main/main.cpp"
     "main/version.h"
     "main/version.cpp"
     "main/services/ota_service.cpp"
     "main/services/wifi_service.cpp"
+    "main/services/analysis_history.cpp"
+    "main/services/cylinder_profiles.cpp"
+    "main/services/mix_label_service.cpp"
+    "main/sensors/sensor_interface.cpp"
+    "main/analysis/analysis_calculator.cpp"
+    "main/ui/screens/analyse/analyse_screen.cpp"
+    "main/ui/screens/history/history_screen.cpp"
+    "main/ui/screens/cylinders/cylinders_screen.cpp"
+    "main/ui/screens/settings/calibrate_screen.cpp"
+    "main/ui/screens/settings/safety_screen.cpp"
+    "main/ui/screens/dive_planner/gas_calculator.cpp"
+    "tests/test_analysis_calculator.cpp"
+    "tests/test_sensor_interface.cpp"
+    "tests/test_analysis_history.cpp"
+    "tests/test_cylinder_profiles.cpp"
+    "tests/test_gas_calculator.cpp"
+    "tests/test_version.cpp"
+    "simulator/CMakeLists.txt"
+    "simulator/src/main.cpp"
+    "simulator/tests/test_ui_smoke.cpp"
 )
 
 for file in "${KEY_FILES[@]}"; do
@@ -61,162 +125,149 @@ for file in "${KEY_FILES[@]}"; do
 done
 
 echo ""
-echo "2. Code quality checks"
-echo "----------------------"
+echo "2. Static safety checks"
+echo "-----------------------"
 
-# Check for debug leftovers
-DEBUG_PATTERNS="TODO|FIXME|XXX|HACK|printf.*debug|ESP_LOG[IWED].*test"
-DEBUG_COUNT=$(grep -rE "$DEBUG_PATTERNS" "$PROJECT_DIR/main" --include="*.cpp" --include="*.h" 2>/dev/null | wc -l || echo "0")
-if [ "$DEBUG_COUNT" -lt 10 ]; then
-    pass "Debug markers within acceptable range ($DEBUG_COUNT found)"
-else
-    warn "Found $DEBUG_COUNT debug markers (TODO/FIXME/etc)"
-fi
+assert_no_pattern \
+    "No runtime scroll debug hook remains" \
+    "debug_log_screen_state|SCROLL CHANGED" \
+    "$PROJECT_DIR/main"
 
-# Check for hardcoded credentials (security)
-if grep -rE "(password|secret|api_key)\s*=\s*\"[^\"]+\"" "$PROJECT_DIR/main" --include="*.cpp" --include="*.h" 2>/dev/null | grep -v "example\|placeholder\|<" > /dev/null; then
-    fail "Potential hardcoded credentials found"
+assert_no_pattern \
+    "No unsafe strcpy/sprintf calls in firmware sources" \
+    "\\b(strcpy|sprintf)\\s*\\(" \
+    "$PROJECT_DIR/main"
+
+assert_no_pattern \
+    "No unchecked direct task creation calls" \
+    "^[[:space:]]*xTaskCreate(PinnedToCore)?\\s*\\(" \
+    "$PROJECT_DIR/main"
+
+assert_no_pattern \
+    "WiFi scan results do not use heap churn" \
+    "g_scan_results.*malloc|malloc\\(sizeof\\(wifi_ap_record_t\\)|free\\(g_scan_results\\)" \
+    "$PROJECT_DIR/main/services/wifi_service.cpp"
+
+assert_no_pattern \
+    "Host tests do not copy gas calculator implementation" \
+    "Copy gas calculator functions|namespace gas_calc" \
+    "$PROJECT_DIR/tests"
+
+if contains_pattern "(password|secret|api_key)[[:space:]]*=[[:space:]]*\\\"[^\\\"]+\\\"" "$PROJECT_DIR/main"; then
+    if grep -Ev "example|placeholder|<" "$MATCH_FILE" >"$CREDS_MATCH_FILE"; then
+        fail "Potential hardcoded credentials found"
+        sed -n '1,20p' "$CREDS_MATCH_FILE"
+    else
+        pass "No hardcoded credentials detected"
+    fi
 else
     pass "No hardcoded credentials detected"
 fi
 
-echo ""
-echo "3. Gas calculator unit tests"
-echo "----------------------------"
-
-# Create and compile gas calculator test
-cat > "$BUILD_DIR/test_gas_calc.cpp" << 'TESTCODE'
-#include <cstdio>
-#include <cmath>
-#include <cstdlib>
-
-// Copy gas calculator functions for host testing
-namespace gas_calc {
-    float calc_mod(float o2_percent, float ppo2_max) {
-        if (o2_percent <= 0) return 0;
-        return ((ppo2_max / (o2_percent / 100.0f)) - 1.0f) * 10.0f;
-    }
-    
-    float calc_ppo2(float depth_m, float o2_percent) {
-        float pressure_ata = 1.0f + (depth_m / 10.0f);
-        return pressure_ata * (o2_percent / 100.0f);
-    }
-    
-    float calc_o2_for_depth_ppo2(float depth_m, float ppo2) {
-        float pressure_ata = 1.0f + (depth_m / 10.0f);
-        return (ppo2 / pressure_ata) * 100.0f;
-    }
-    
-    float calc_ead(float depth_m, float o2_percent, float he_percent) {
-        float n2_percent = 100.0f - o2_percent - he_percent;
-        if (n2_percent <= 0) return 0;
-        float depth_ata = 1.0f + (depth_m / 10.0f);
-        float n2_partial = depth_ata * (n2_percent / 100.0f);
-        return ((n2_partial / 0.79f) - 1.0f) * 10.0f;
-    }
-    
-    float calc_gas_density(float depth_m, float o2_percent, float he_percent) {
-        float pressure_ata = 1.0f + (depth_m / 10.0f);
-        float n2_percent = 100.0f - o2_percent - he_percent;
-        // Densities at STP in g/L: O2=1.429, N2=1.251, He=0.179
-        float density = pressure_ata * (
-            (o2_percent / 100.0f) * 1.429f +
-            (n2_percent / 100.0f) * 1.251f +
-            (he_percent / 100.0f) * 0.179f
-        );
-        return density;
-    }
-}
-
-int tests_passed = 0;
-int tests_failed = 0;
-
-void assert_near(float actual, float expected, float tolerance, const char* test_name) {
-    if (fabs(actual - expected) <= tolerance) {
-        printf("  ✓ %s (%.2f ≈ %.2f)\n", test_name, actual, expected);
-        tests_passed++;
-    } else {
-        printf("  ✗ %s (got %.2f, expected %.2f)\n", test_name, actual, expected);
-        tests_failed++;
-    }
-}
-
-int main() {
-    printf("Gas Calculator Tests\n");
-    printf("====================\n\n");
-    
-    // MOD tests
-    printf("MOD calculations:\n");
-    assert_near(gas_calc::calc_mod(100, 1.6), 6.0, 0.1, "100% O2 @ 1.6 PPO2 = 6m");
-    assert_near(gas_calc::calc_mod(32, 1.4), 33.75, 0.5, "32% O2 @ 1.4 PPO2 = 33.75m");
-    assert_near(gas_calc::calc_mod(21, 1.4), 56.67, 0.5, "21% O2 @ 1.4 PPO2 = 56.67m");
-    
-    // PPO2 tests
-    printf("\nPPO2 calculations:\n");
-    assert_near(gas_calc::calc_ppo2(30, 32), 1.28, 0.01, "32% O2 @ 30m = 1.28 PPO2");
-    assert_near(gas_calc::calc_ppo2(0, 21), 0.21, 0.01, "21% O2 @ surface = 0.21 PPO2");
-    assert_near(gas_calc::calc_ppo2(40, 21), 1.05, 0.01, "Air @ 40m = 1.05 PPO2");
-    
-    // O2 for depth/PPO2 tests
-    printf("\nO2 percent for depth/PPO2:\n");
-    assert_near(gas_calc::calc_o2_for_depth_ppo2(30, 1.4), 35.0, 0.5, "1.4 PPO2 @ 30m = 35% O2");
-    assert_near(gas_calc::calc_o2_for_depth_ppo2(60, 1.4), 20.0, 0.5, "1.4 PPO2 @ 60m = 20% O2");
-    
-    // EAD tests
-    printf("\nEAD calculations:\n");
-    assert_near(gas_calc::calc_ead(40, 32, 0), 33.0, 1.0, "EAN32 @ 40m = ~33m EAD");
-    assert_near(gas_calc::calc_ead(60, 21, 35), 29.0, 1.0, "21/35 @ 60m = ~29m EAD");
-    assert_near(gas_calc::calc_ead(40, 21, 0), 40.0, 0.5, "Air @ 40m = 40m EAD");
-    
-    // Gas density tests
-    printf("\nGas density calculations:\n");
-    assert_near(gas_calc::calc_gas_density(0, 21, 0), 1.29, 0.05, "Air at surface = ~1.29 g/L");
-    assert_near(gas_calc::calc_gas_density(40, 21, 0), 6.45, 0.2, "Air at 40m = ~6.45 g/L");
-    assert_near(gas_calc::calc_gas_density(60, 18, 45), 5.6, 0.3, "18/45 at 60m = ~5.6 g/L");
-    
-    printf("\n====================\n");
-    printf("Results: %d passed, %d failed\n", tests_passed, tests_failed);
-    
-    return tests_failed > 0 ? 1 : 0;
-}
-TESTCODE
-
-# Compile and run test
-if command -v g++ &> /dev/null; then
-    if g++ -std=c++11 -o "$BUILD_DIR/test_gas_calc" "$BUILD_DIR/test_gas_calc.cpp" 2>/dev/null; then
-        if "$BUILD_DIR/test_gas_calc"; then
-            pass "Gas calculator tests passed"
-        else
-            fail "Gas calculator tests failed"
-        fi
-    else
-        fail "Failed to compile gas calculator tests"
-    fi
+TODO_COUNT=0
+if contains_pattern "TODO|FIXME|XXX|HACK" "$PROJECT_DIR/main"; then
+    TODO_COUNT="$(wc -l <"$MATCH_FILE" | tr -d ' ')"
+fi
+if [ "$TODO_COUNT" -le 10 ]; then
+    pass "Debug/TODO marker count within current baseline ($TODO_COUNT found)"
 else
-    warn "g++ not found, skipping unit tests"
+    warn "Found $TODO_COUNT TODO/FIXME/HACK markers"
 fi
 
 echo ""
-echo "4. Version consistency check"
-echo "----------------------------"
+echo "3. Production unit tests"
+echo "------------------------"
 
-# Check version.h has valid version
-if grep -q 'TRIMIX_ANALYZER_VERSION "' "$PROJECT_DIR/main/version.h"; then
-    VERSION=$(grep 'TRIMIX_ANALYZER_VERSION "' "$PROJECT_DIR/main/version.h" | sed 's/.*"\(.*\)".*/\1/')
-    if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        pass "Valid version format: $VERSION"
-    else
-        fail "Invalid version format: $VERSION"
-    fi
+if command -v "$CXX" >/dev/null 2>&1; then
+    run_binary_test \
+        "Gas calculator production tests passed" \
+        "$BUILD_DIR/test_gas_calculator" \
+        -I"$PROJECT_DIR/main/ui/screens/dive_planner" \
+        "$TEST_DIR/test_gas_calculator.cpp" \
+        "$PROJECT_DIR/main/ui/screens/dive_planner/gas_calculator.cpp"
+
+    run_binary_test \
+        "Analysis calculator tests passed" \
+        "$BUILD_DIR/test_analysis_calculator" \
+        -I"$PROJECT_DIR/main" \
+        -I"$PROJECT_DIR/simulator/stubs" \
+        "$TEST_DIR/test_analysis_calculator.cpp" \
+        "$PROJECT_DIR/main/analysis/analysis_calculator.cpp"
+
+    run_binary_test \
+        "Sensor simulation tests passed" \
+        "$BUILD_DIR/test_sensor_interface" \
+        -I"$PROJECT_DIR/main" \
+        -I"$PROJECT_DIR/simulator/stubs" \
+        "$TEST_DIR/test_sensor_interface.cpp" \
+        "$PROJECT_DIR/main/sensors/sensor_interface.cpp"
+
+    run_binary_test \
+        "Analysis history tests passed" \
+        "$BUILD_DIR/test_analysis_history" \
+        -DTRIMIX_SIMULATOR=1 \
+        -I"$PROJECT_DIR/main" \
+        -I"$PROJECT_DIR/simulator/stubs" \
+        "$TEST_DIR/test_analysis_history.cpp" \
+        "$PROJECT_DIR/main/services/analysis_history.cpp"
+
+    run_binary_test \
+        "Cylinder profile and label tests passed" \
+        "$BUILD_DIR/test_cylinder_profiles" \
+        -DTRIMIX_SIMULATOR=1 \
+        -I"$PROJECT_DIR/main" \
+        -I"$PROJECT_DIR/simulator/stubs" \
+        "$TEST_DIR/test_cylinder_profiles.cpp" \
+        "$PROJECT_DIR/main/services/cylinder_profiles.cpp" \
+        "$PROJECT_DIR/main/services/mix_label_service.cpp" \
+        "$PROJECT_DIR/main/analysis/analysis_calculator.cpp" \
+        "$PROJECT_DIR/main/services/analysis_history.cpp"
+
+    run_binary_test \
+        "Version consistency tests passed" \
+        "$BUILD_DIR/test_version" \
+        -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_version.cpp" \
+        "$PROJECT_DIR/main/version.cpp"
 else
-    fail "Version not found in version.h"
+    warn "$CXX not found, skipping host unit tests"
 fi
 
-# Check GitHub repo is configured
-if grep -q 'GITHUB_OWNER "magnus188"' "$PROJECT_DIR/main/version.h"; then
-    pass "GitHub owner configured"
+echo ""
+echo "4. Simulator CMake tests"
+echo "------------------------"
+
+HOST_BUILD_DIR="$BUILD_DIR/simulator"
+HOST_CONFIG_LOG="$BUILD_DIR/simulator-configure.log"
+HOST_BUILD_LOG="$BUILD_DIR/simulator-build.log"
+SIMULATOR_LVGL_CMAKE="$PROJECT_DIR/managed_components/lvgl__lvgl/CMakeLists.txt"
+
+if command -v cmake >/dev/null 2>&1 && command -v pkg-config >/dev/null 2>&1 && pkg-config --exists sdl2 && [ -f "$SIMULATOR_LVGL_CMAKE" ]; then
+    if cmake -S "$PROJECT_DIR/simulator" -B "$HOST_BUILD_DIR" >"$HOST_CONFIG_LOG" 2>&1; then
+        pass "Configured simulator CMake build"
+    else
+        fail "Failed to configure simulator CMake build"
+        sed -n '1,120p' "$HOST_CONFIG_LOG"
+    fi
+
+    if cmake --build "$HOST_BUILD_DIR" >"$HOST_BUILD_LOG" 2>&1; then
+        pass "Built simulator and CMake tests"
+    else
+        fail "Failed to build simulator and CMake tests"
+        sed -n '1,160p' "$HOST_BUILD_LOG"
+    fi
+
+    if ctest --test-dir "$HOST_BUILD_DIR" --output-on-failure; then
+        pass "Simulator CMake tests passed"
+    else
+        fail "Simulator CMake tests failed"
+    fi
 else
-    fail "GitHub owner not configured"
+    if [ "${TRIMIX_REQUIRE_SIMULATOR:-0}" = "1" ]; then
+        fail "Simulator dependencies unavailable"
+    else
+        warn "cmake/pkg-config/SDL2/LVGL managed component not available, skipping simulator CMake tests"
+    fi
 fi
 
 echo ""
@@ -227,13 +278,9 @@ echo -e "  Passed: ${GREEN}$TESTS_PASSED${NC}"
 echo -e "  Failed: ${RED}$TESTS_FAILED${NC}"
 echo "=========================================="
 
-# Cleanup
-rm -rf "$BUILD_DIR"
-
-if [ $TESTS_FAILED -gt 0 ]; then
-    echo -e "\n${RED}Tests failed!${NC}"
+if [ "$TESTS_FAILED" -gt 0 ]; then
+    echo -e "\n${RED}Tests failed.${NC}"
     exit 1
-else
-    echo -e "\n${GREEN}All tests passed!${NC}"
-    exit 0
 fi
+
+echo -e "\n${GREEN}All tests passed.${NC}"

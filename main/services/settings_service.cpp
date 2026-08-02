@@ -19,6 +19,11 @@ static const setting_def_t SETTING_DEFS[SETTING_COUNT] = {
     { SETTING_UNITS_DEPTH,      SETTINGS_CAT_DEVICE, "Depth Units",      "units_depth",   0,       0,     1 },
     { SETTING_UNITS_TEMP,       SETTINGS_CAT_DEVICE, "Temp Units",       "units_temp",    0,       0,     1 },
     { SETTING_UNITS_PRESSURE,   SETTINGS_CAT_DEVICE, "Pressure Units",   "units_pres",    0,       0,     1 },
+    { SETTING_PPO2_WORKING_X100,    SETTINGS_CAT_SAFETY, "PPO2 Working",    "ppo2_work",    140,     100,   200 },
+    { SETTING_PPO2_SECONDARY_X100,  SETTINGS_CAT_SAFETY, "PPO2 Secondary",  "ppo2_second",  160,     100,   200 },
+    { SETTING_DENSITY_ADVISORY_X10, SETTINGS_CAT_SAFETY, "Density Advisory","dens_adv",     52,      30,    90 },
+    { SETTING_DENSITY_ALARM_X10,    SETTINGS_CAT_SAFETY, "Density Alarm",   "dens_alarm",   63,      30,    90 },
+    { SETTING_CO2_ADVISORY_PPM,     SETTINGS_CAT_SAFETY, "CO2 Advisory",    "co2_adv",      500,     300,   2000 },
 };
 
 static const char* CATEGORY_NAMES[SETTINGS_CAT_COUNT] = {

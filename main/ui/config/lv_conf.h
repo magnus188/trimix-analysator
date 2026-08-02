@@ -399,13 +399,8 @@
  *E.g. #define LV_FONT_CUSTOM_DECLARE   LV_FONT_DECLARE(my_font_1) LV_FONT_DECLARE(my_font_2)*/
 #define LV_FONT_CUSTOM_DECLARE \
     LV_FONT_DECLARE(custom_font_normal_16) \
-    LV_FONT_DECLARE(custom_font_normal_20) \
-    LV_FONT_DECLARE(custom_font_normal_24) \
-    LV_FONT_DECLARE(custom_font_bold_16) \
     LV_FONT_DECLARE(custom_font_bold_20) \
-    LV_FONT_DECLARE(custom_font_bold_24) \
-    LV_FONT_DECLARE(custom_font_light_14) \
-    LV_FONT_DECLARE(custom_font_light_16)
+    LV_FONT_DECLARE(custom_font_bold_24)
 
 /*Always set a default font*/
 #define LV_FONT_DEFAULT &lv_font_montserrat_20

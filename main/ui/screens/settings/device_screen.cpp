@@ -45,7 +45,7 @@ void on_brightness_change(lv_event_t* e) {
         int brightness = (id == 0) ? 100 : 95;
         settings_set(SETTING_BRIGHTNESS, brightness);
         backlight_set(brightness);
-        ESP_LOGI(TAG, "Brightness: %s (%d%%)", id == 0 ? "Low" : "High", brightness);
+        ESP_LOGI(TAG, "Brightness: %s (%d%%)", id == 0 ? "High" : "Low", brightness);
     }
 }
 

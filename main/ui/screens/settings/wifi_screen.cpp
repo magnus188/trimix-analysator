@@ -70,6 +70,7 @@ void on_disconnect_click(lv_event_t* e);
 void on_password_ok(lv_event_t* e);
 void on_password_cancel(lv_event_t* e);
 void on_screen_loaded(lv_event_t* e);
+void on_network_item_delete(lv_event_t* e);
 void update_network_list();
 void update_connected_panel();
 void show_password_modal(const char* ssid);
@@ -239,9 +240,15 @@ lv_obj_t* create_network_item(lv_obj_t* parent, const wifi_network_info_t* netwo
     
     // Store SSID in user data
     char* ssid_copy = (char*)lv_malloc(33);
-    strcpy(ssid_copy, network->ssid);
+    if (!ssid_copy) {
+        lv_obj_delete(item);
+        return nullptr;
+    }
+    strncpy(ssid_copy, network->ssid, 32);
+    ssid_copy[32] = '\0';
     lv_obj_set_user_data(item, ssid_copy);
     lv_obj_add_event_cb(item, on_network_click, LV_EVENT_CLICKED, (void*)(intptr_t)network->authmode);
+    lv_obj_add_event_cb(item, on_network_item_delete, LV_EVENT_DELETE, nullptr);
     
     // Signal strength icon
     lv_obj_t* signal = lv_label_create(item);
@@ -323,6 +330,7 @@ void update_network_list() {
 
 void show_password_modal(const char* ssid) {
     strncpy(g_state.selected_ssid, ssid, sizeof(g_state.selected_ssid) - 1);
+    g_state.selected_ssid[sizeof(g_state.selected_ssid) - 1] = '\0';
     
     // Create modal backdrop
     g_state.password_modal = lv_obj_create(g_state.screen);
@@ -416,7 +424,7 @@ void hide_password_modal() {
 
 // Event handlers
 void on_network_click(lv_event_t* e) {
-    lv_obj_t* target = (lv_obj_t*)lv_event_get_target(e);
+    lv_obj_t* target = (lv_obj_t*)lv_event_get_current_target(e);
     char* ssid = (char*)lv_obj_get_user_data(target);
     uint8_t authmode = (uint8_t)(intptr_t)lv_event_get_user_data(e);
     
@@ -431,6 +439,15 @@ void on_network_click(lv_event_t* e) {
     } else {
         // Secured network - show password modal
         show_password_modal(ssid);
+    }
+}
+
+void on_network_item_delete(lv_event_t* e) {
+    lv_obj_t* target = (lv_obj_t*)lv_event_get_current_target(e);
+    char* ssid = (char*)lv_obj_get_user_data(target);
+    if (ssid) {
+        lv_free(ssid);
+        lv_obj_set_user_data(target, nullptr);
     }
 }
 

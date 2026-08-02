@@ -7,6 +7,10 @@ on:
     branches-ignore:
       - main
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build ESP32 Firmware
@@ -15,6 +19,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Install host test dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ cmake pkg-config libsdl2-dev
 
     - name: Run tests
       run: |
@@ -28,10 +37,30 @@ jobs:
         target: esp32s3
         path: '.'
 
-    - name: Report build size
+    - name: Run full host tests
+      run: |
+        TRIMIX_REQUIRE_SIMULATOR=1 ./scripts/run_tests.sh
+
+    - name: Check firmware size
+      run: |
+        chmod +x scripts/check_firmware_size.sh
+        ./scripts/check_firmware_size.sh
+
+    - name: Upload firmware artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: trimix-analyzer-firmware-${{ github.sha }}
+        if-no-files-found: error
+        path: |
+          build/Trimix_analyzer.bin
+          build/Trimix_analyzer.elf
+          build/Trimix_analyzer.map
+          build/flasher_args.json
+
+    - name: Report build
       run: |
         echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        ls -lh build/Trimix_analyzer.bin >> $GITHUB_STEP_SUMMARY
+        ls -lh build/Trimix_analyzer.bin build/Trimix_analyzer.elf build/Trimix_analyzer.map >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "✅ Firmware built successfully for ESP32-S3" >> $GITHUB_STEP_SUMMARY
+        echo "Firmware built successfully for ESP32-S3." >> $GITHUB_STEP_SUMMARY

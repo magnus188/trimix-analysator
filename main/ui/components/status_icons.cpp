@@ -30,6 +30,28 @@ wifi_signal_level_t g_wifi_signal = WIFI_SIGNAL_NONE;
 uint8_t g_battery_percentage = 100;
 bool g_battery_charging = false;
 
+struct StatusSnapshot {
+    bool wifi_connected;
+    wifi_signal_level_t wifi_signal;
+    uint8_t battery_percentage;
+    bool battery_charging;
+};
+
+StatusSnapshot snapshot_status() {
+    StatusSnapshot snapshot;
+    if (g_status_mutex) {
+        xSemaphoreTake(g_status_mutex, portMAX_DELAY);
+    }
+    snapshot.wifi_connected = g_wifi_connected;
+    snapshot.wifi_signal = g_wifi_signal;
+    snapshot.battery_percentage = g_battery_percentage;
+    snapshot.battery_charging = g_battery_charging;
+    if (g_status_mutex) {
+        xSemaphoreGive(g_status_mutex);
+    }
+    return snapshot;
+}
+
 // WiFi symbols based on connection state
 const char* get_wifi_symbol(bool connected) {
     return LV_SYMBOL_WIFI;
@@ -76,15 +98,20 @@ void cleanup_invalid_instances() {
     );
 }
 
+bool is_active_instance(const StatusInstance& inst) {
+    return inst.container && lv_obj_is_valid(inst.container) &&
+           lv_obj_get_screen(inst.container) == lv_screen_active();
+}
+
 // Update a single instance's WiFi display
-void update_wifi_for_instance(const StatusInstance& inst) {
+void update_wifi_for_instance(const StatusInstance& inst, const StatusSnapshot& snapshot) {
     if (!inst.wifi_icon || !lv_obj_is_valid(inst.wifi_icon)) return;
     
-    lv_label_set_text(inst.wifi_icon, get_wifi_symbol(g_wifi_connected));
+    lv_label_set_text(inst.wifi_icon, get_wifi_symbol(snapshot.wifi_connected));
     
-    if (g_wifi_connected) {
+    if (snapshot.wifi_connected) {
         lv_obj_set_style_text_color(inst.wifi_icon, 
-            lv_color_hex(get_wifi_color(g_wifi_signal)), 0);
+            lv_color_hex(get_wifi_color(snapshot.wifi_signal)), 0);
         lv_obj_set_style_text_opa(inst.wifi_icon, LV_OPA_COVER, 0);
     } else {
         lv_obj_set_style_text_color(inst.wifi_icon, 
@@ -95,32 +122,52 @@ void update_wifi_for_instance(const StatusInstance& inst) {
 }
 
 // Update a single instance's battery display
-void update_battery_for_instance(const StatusInstance& inst) {
+void update_battery_for_instance(const StatusInstance& inst, const StatusSnapshot& snapshot) {
     if (!inst.battery_icon || !inst.battery_pct ||
         !lv_obj_is_valid(inst.battery_icon) || !lv_obj_is_valid(inst.battery_pct)) return;
     
     lv_label_set_text(inst.battery_icon, 
-        get_battery_symbol(g_battery_percentage, g_battery_charging));
+        get_battery_symbol(snapshot.battery_percentage, snapshot.battery_charging));
     lv_obj_set_style_text_color(inst.battery_icon,
-        lv_color_hex(get_battery_color(g_battery_percentage, g_battery_charging)), 0);
+        lv_color_hex(get_battery_color(snapshot.battery_percentage, snapshot.battery_charging)), 0);
     
     char buf[8];
-    snprintf(buf, sizeof(buf), "%d%%", g_battery_percentage);
+    snprintf(buf, sizeof(buf), "%d%%", snapshot.battery_percentage);
     lv_label_set_text(inst.battery_pct, buf);
 }
 
-// Update all instances
+// Only the visible navbar can affect the current frame. Hidden screens receive
+// the latest snapshot when they become active.
 void update_all_wifi() {
+    StatusSnapshot snapshot = snapshot_status();
     cleanup_invalid_instances();
     for (const auto& inst : g_instances) {
-        update_wifi_for_instance(inst);
+        if (is_active_instance(inst)) {
+            update_wifi_for_instance(inst, snapshot);
+        }
     }
 }
 
 void update_all_battery() {
+    StatusSnapshot snapshot = snapshot_status();
     cleanup_invalid_instances();
     for (const auto& inst : g_instances) {
-        update_battery_for_instance(inst);
+        if (is_active_instance(inst)) {
+            update_battery_for_instance(inst, snapshot);
+        }
+    }
+}
+
+void screen_loaded_cb(lv_event_t* event) {
+    auto* container = static_cast<lv_obj_t*>(lv_event_get_user_data(event));
+    StatusSnapshot snapshot = snapshot_status();
+    cleanup_invalid_instances();
+    for (const auto& inst : g_instances) {
+        if (inst.container == container) {
+            update_wifi_for_instance(inst, snapshot);
+            update_battery_for_instance(inst, snapshot);
+            break;
+        }
     }
 }
 
@@ -194,6 +241,8 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
     
     // Track this instance for future updates
     g_instances.push_back(inst);
+    lv_obj_add_event_cb(lv_obj_get_screen(cont), screen_loaded_cb,
+                        LV_EVENT_SCREEN_LOADED, cont);
     
     ESP_LOGI(TAG, "Status icons created, now tracking %d instance(s)", (int)g_instances.size());
     return cont;
@@ -209,17 +258,17 @@ void status_set_wifi(bool connected, wifi_signal_level_t signal_level) {
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
     }
-    
+
     // Schedule LVGL update in UI task context (thread-safe)
     lv_async_call(wifi_update_async_cb, nullptr);
-    
-    ESP_LOGI(TAG, "WiFi status: %s, signal: %d (updating %d instances)", 
-             connected ? "connected" : "disconnected", signal_level, (int)g_instances.size());
+
+    ESP_LOGI(TAG, "WiFi status: %s, signal: %d",
+             connected ? "connected" : "disconnected", signal_level);
 }
 
 void status_set_battery(uint8_t percentage, bool charging) {
     if (percentage > 100) percentage = 100;
-    
+
     // Update state (thread-safe)
     if (g_status_mutex) {
         xSemaphoreTake(g_status_mutex, portMAX_DELAY);
@@ -229,18 +278,20 @@ void status_set_battery(uint8_t percentage, bool charging) {
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
     }
-    
+
     // Schedule LVGL update in UI task context (thread-safe)
     lv_async_call(battery_update_async_cb, nullptr);
-    
-    ESP_LOGD(TAG, "Battery: %d%%, charging: %s (updating %d instances)", 
-             percentage, charging ? "yes" : "no", (int)g_instances.size());
+
+    ESP_LOGD(TAG, "Battery: %d%%, charging: %s",
+             percentage, charging ? "yes" : "no");
 }
 
 bool status_get_wifi_connected(void) {
-    return g_wifi_connected;
+    StatusSnapshot snapshot = snapshot_status();
+    return snapshot.wifi_connected;
 }
 
 uint8_t status_get_battery_percentage(void) {
-    return g_battery_percentage;
+    StatusSnapshot snapshot = snapshot_status();
+    return snapshot.battery_percentage;
 }

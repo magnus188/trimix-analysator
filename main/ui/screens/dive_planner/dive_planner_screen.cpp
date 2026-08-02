@@ -91,6 +91,10 @@ struct DivePlannerState {
     lv_obj_t* result_mod = nullptr;
     lv_obj_t* result_mix = nullptr;
     lv_obj_t* result_density = nullptr;
+    lv_obj_t* blend_source = nullptr;
+    lv_obj_t* blend_pressure = nullptr;
+    lv_obj_t* blend_additions = nullptr;
+    lv_obj_t* blend_status = nullptr;
     
     // Numpad
     NumpadState numpad;
@@ -101,6 +105,9 @@ struct DivePlannerState {
     float o2 = 21.0f;         // percent
     float ead = 30.0f;        // meters
     float helium = 0.0f;      // percent
+    float blend_start_pressure = 50.0f;
+    float blend_final_pressure = 200.0f;
+    uint8_t blend_source_index = 0;
     
     // Lock state - two independent groups
     // Top group: DEPTH, PPO2, O2 (one lock allowed)
@@ -113,8 +120,22 @@ struct DivePlannerState {
 
 DivePlannerState g_state;
 
+struct SourceMix {
+    const char* name;
+    float o2;
+    float he;
+};
+
+constexpr SourceMix SOURCE_MIXES[] = {
+    {"Air", 20.9f, 0.0f},
+    {"EAN32", 32.0f, 0.0f},
+    {"18/45", 18.0f, 45.0f},
+};
+constexpr uint8_t SOURCE_MIX_COUNT = sizeof(SOURCE_MIXES) / sizeof(SOURCE_MIXES[0]);
+
 // Forward declarations
 void update_all_displays();
+void update_blend_result();
 void recalculate_from_depth();
 void recalculate_from_ppo2();
 void recalculate_from_ead();
@@ -228,6 +249,42 @@ void update_results() {
     }
 }
 
+void update_blend_result() {
+    if (!g_state.blend_source || !g_state.blend_pressure ||
+        !g_state.blend_additions || !g_state.blend_status) {
+        return;
+    }
+
+    const SourceMix& source = SOURCE_MIXES[g_state.blend_source_index % SOURCE_MIX_COUNT];
+    char buf[128];
+    snprintf(buf, sizeof(buf), "Source %s: O2 %.1f%% He %.0f%%",
+             source.name, source.o2, source.he);
+    lv_label_set_text(g_state.blend_source, buf);
+
+    snprintf(buf, sizeof(buf), "Top-up %.0f -> %.0f bar toward O2 %.0f%% He %.0f%%",
+             g_state.blend_start_pressure, g_state.blend_final_pressure,
+             g_state.o2, g_state.trimix_enabled ? g_state.helium : 0.0f);
+    lv_label_set_text(g_state.blend_pressure, buf);
+
+    blend_topup_result_t plan = calc_blend_topup(g_state.blend_start_pressure,
+                                                 g_state.blend_final_pressure,
+                                                 source.o2,
+                                                 source.he,
+                                                 g_state.o2,
+                                                 g_state.trimix_enabled ? g_state.helium : 0.0f);
+    if (plan.valid) {
+        snprintf(buf, sizeof(buf), "Add O2 %.0fb  He %.0fb  Air %.0fb",
+                 plan.oxygen_add_bar, plan.helium_add_bar, plan.air_add_bar);
+        lv_label_set_text(g_state.blend_additions, buf);
+        lv_label_set_text(g_state.blend_status, plan.status);
+        lv_obj_set_style_text_color(g_state.blend_status, lv_color_hex(STYLE_COLOR_SUCCESS), 0);
+    } else {
+        lv_label_set_text(g_state.blend_additions, "--");
+        lv_label_set_text(g_state.blend_status, plan.status);
+        lv_obj_set_style_text_color(g_state.blend_status, lv_color_hex(STYLE_COLOR_WARNING), 0);
+    }
+}
+
 void update_all_displays() {
     update_value_label(g_state.depth_value, "%.0f m", g_state.depth);
     update_value_label(g_state.ppo2_value, "%.2f bar", g_state.ppo2);
@@ -253,6 +310,7 @@ void update_all_displays() {
     }
     
     update_results();
+    update_blend_result();
 }
 
 // Recalculation functions based on which slider changed
@@ -665,6 +723,31 @@ void trimix_toggle_event_cb(lv_event_t* e) {
     ESP_LOGI(TAG, "Trimix mode: %s", g_state.trimix_enabled ? "enabled" : "disabled");
 }
 
+void blend_source_cb(lv_event_t*) {
+    g_state.blend_source_index = (g_state.blend_source_index + 1U) % SOURCE_MIX_COUNT;
+    update_blend_result();
+}
+
+void blend_pressure_cb(lv_event_t* e) {
+    intptr_t packed = reinterpret_cast<intptr_t>(lv_event_get_user_data(e));
+    bool final_pressure = packed > 1000;
+    int delta = static_cast<int>(final_pressure ? packed - 1000 : packed);
+    if (final_pressure) {
+        g_state.blend_final_pressure += static_cast<float>(delta);
+        g_state.blend_final_pressure = clamp_float(g_state.blend_final_pressure, 20.0f, 300.0f);
+        if (g_state.blend_final_pressure <= g_state.blend_start_pressure) {
+            g_state.blend_final_pressure = g_state.blend_start_pressure + 10.0f;
+        }
+    } else {
+        g_state.blend_start_pressure += static_cast<float>(delta);
+        g_state.blend_start_pressure = clamp_float(g_state.blend_start_pressure, 0.0f, 290.0f);
+        if (g_state.blend_start_pressure >= g_state.blend_final_pressure) {
+            g_state.blend_start_pressure = g_state.blend_final_pressure - 10.0f;
+        }
+    }
+    update_blend_result();
+}
+
 // Create a slider row with label, value, slider, and lock button
 lv_obj_t* create_slider_row(lv_obj_t* parent, const char* label_text, 
                             int min_val, int max_val, int initial_val,
@@ -817,6 +900,75 @@ lv_obj_t* create_result_card(lv_obj_t* parent) {
     return card;
 }
 
+lv_obj_t* create_blend_button(lv_obj_t* parent, const char* text, int x, int y, int w,
+                              lv_event_cb_t cb, void* data) {
+    lv_obj_t* btn = lv_btn_create(parent);
+    lv_obj_set_size(btn, w, 34);
+    lv_obj_set_pos(btn, x, y);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(STYLE_COLOR_BG_CARD), 0);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(STYLE_COLOR_DIVE_PLAN), LV_STATE_PRESSED);
+    lv_obj_set_style_radius(btn, 6, 0);
+    lv_obj_set_style_shadow_width(btn, 0, 0);
+    lv_obj_add_event_cb(btn, cb, LV_EVENT_CLICKED, data);
+    lv_obj_t* label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_font(label, &lv_font_montserrat_14, 0);
+    lv_obj_center(label);
+    return btn;
+}
+
+lv_obj_t* create_blend_card(lv_obj_t* parent) {
+    lv_obj_t* card = lv_obj_create(parent);
+    lv_obj_set_size(card, SCREEN_WIDTH - 2 * CONTENT_PAD, 178);
+    lv_obj_set_style_bg_color(card, lv_color_hex(STYLE_COLOR_SURFACE), 0);
+    lv_obj_set_style_bg_opa(card, LV_OPA_COVER, 0);
+    lv_obj_set_style_radius(card, CARD_RADIUS, 0);
+    lv_obj_set_style_border_width(card, 0, 0);
+    lv_obj_set_style_pad_all(card, 12, 0);
+    lv_obj_clear_flag(card, LV_OBJ_FLAG_SCROLLABLE);
+
+    lv_obj_t* title = lv_label_create(card);
+    lv_label_set_text(title, "Blend top-up");
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_18, 0);
+    lv_obj_set_style_text_color(title, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_align(title, LV_ALIGN_TOP_LEFT, 0, 0);
+
+    g_state.blend_source = lv_label_create(card);
+    lv_label_set_text(g_state.blend_source, "--");
+    lv_obj_set_style_text_font(g_state.blend_source, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_color(g_state.blend_source, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
+    lv_obj_align(g_state.blend_source, LV_ALIGN_TOP_LEFT, 0, 30);
+
+    g_state.blend_pressure = lv_label_create(card);
+    lv_label_set_text(g_state.blend_pressure, "--");
+    lv_obj_set_style_text_font(g_state.blend_pressure, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_color(g_state.blend_pressure, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
+    lv_obj_align(g_state.blend_pressure, LV_ALIGN_TOP_LEFT, 0, 54);
+
+    g_state.blend_additions = lv_label_create(card);
+    lv_label_set_text(g_state.blend_additions, "--");
+    lv_obj_set_style_text_font(g_state.blend_additions, &lv_font_montserrat_16, 0);
+    lv_obj_set_style_text_color(g_state.blend_additions, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    lv_obj_align(g_state.blend_additions, LV_ALIGN_TOP_LEFT, 0, 82);
+
+    g_state.blend_status = lv_label_create(card);
+    lv_label_set_text(g_state.blend_status, "--");
+    lv_obj_set_style_text_font(g_state.blend_status, &lv_font_montserrat_14, 0);
+    lv_obj_set_width(g_state.blend_status, SCREEN_WIDTH - 2 * CONTENT_PAD - 24);
+    lv_label_set_long_mode(g_state.blend_status, LV_LABEL_LONG_DOT);
+    lv_obj_align(g_state.blend_status, LV_ALIGN_TOP_LEFT, 0, 108);
+
+    create_blend_button(card, "Source", 0, 132, 84, blend_source_cb, nullptr);
+    create_blend_button(card, "Start -10", 92, 132, 92, blend_pressure_cb,
+                        reinterpret_cast<void*>(static_cast<intptr_t>(-10)));
+    create_blend_button(card, "Start +10", 192, 132, 92, blend_pressure_cb,
+                        reinterpret_cast<void*>(static_cast<intptr_t>(10)));
+    create_blend_button(card, "Final +10", 292, 132, 100, blend_pressure_cb,
+                        reinterpret_cast<void*>(static_cast<intptr_t>(1010)));
+
+    return card;
+}
+
 }  // namespace
 
 lv_obj_t* dive_planner_screen_create(void) {
@@ -844,7 +996,9 @@ lv_obj_t* dive_planner_screen_create(void) {
     lv_obj_set_style_pad_row(content, 12, 0);
     lv_obj_set_flex_flow(content, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(content, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-    lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLLABLE);  // Disable scrolling completely
+    lv_obj_add_flag(content, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scroll_dir(content, LV_DIR_VER);
+    lv_obj_set_scrollbar_mode(content, LV_SCROLLBAR_MODE_AUTO);
     
     // Result card at top
     create_result_card(content);
@@ -885,6 +1039,8 @@ lv_obj_t* dive_planner_screen_create(void) {
     create_slider_row(g_state.trimix_section, "Helium", HELIUM_MIN, HELIUM_MAX, (int)g_state.helium,
                       &g_state.helium_slider, &g_state.helium_value, &g_state.helium_lock,
                       helium_slider_event_cb, LockTarget::HELIUM);
+
+    create_blend_card(content);
     
     // Initial display update
     update_all_displays();
