@@ -10,6 +10,7 @@ typedef enum {
     SCREEN_ANALYSE,
     SCREEN_DIVE_PLANNER,
     SCREEN_HISTORY,
+    SCREEN_CYLINDERS,
     SCREEN_SETTINGS,
     SCREEN_WIFI,
     SCREEN_UPDATE,
@@ -18,14 +19,6 @@ typedef enum {
     SCREEN_DEVICE,
     SCREEN_COUNT
 } screen_id_t;
-
-typedef struct {
-    float oxygen_percent;
-    float co2_ppm;
-    float temperature_c;
-    float pressure_bar;
-    float humidity_pct;
-} sensor_readings_t;
 
 void screen_manager_init(void);
 void screen_manager_show(screen_id_t screen);

@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 // Settings version - increment when adding/changing settings
-#define SETTINGS_VERSION 1
+#define SETTINGS_VERSION 2
 
 // =============================================================================
 // Setting Categories
@@ -30,6 +30,11 @@ typedef enum {
     SETTING_UNITS_DEPTH,          // 0=meters, 1=feet
     SETTING_UNITS_TEMP,           // 0=celsius, 1=fahrenheit
     SETTING_UNITS_PRESSURE,       // 0=bar, 1=psi
+    SETTING_PPO2_WORKING_X100,    // e.g. 140 = 1.40 bar
+    SETTING_PPO2_SECONDARY_X100,  // e.g. 160 = 1.60 bar
+    SETTING_DENSITY_ADVISORY_X10, // e.g. 52 = 5.2 g/L
+    SETTING_DENSITY_ALARM_X10,    // e.g. 63 = 6.3 g/L
+    SETTING_CO2_ADVISORY_PPM,     // e.g. 500 ppm
     
     SETTING_COUNT
 } setting_key_t;

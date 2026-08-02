@@ -17,6 +17,7 @@ struct SettingsItem {
 };
 
 constexpr SettingsItem SETTINGS_ITEMS[] = {
+    { "Cylinder Profiles",  LV_SYMBOL_EDIT,      STYLE_COLOR_PRIMARY,  SCREEN_CYLINDERS },
     { "Calibrate Sensors",  LV_SYMBOL_REFRESH,   STYLE_COLOR_ACCENT,   SCREEN_CALIBRATE },
     { "Software Update",    LV_SYMBOL_DOWNLOAD,  STYLE_COLOR_PRIMARY,  SCREEN_UPDATE },
     { "WiFi Settings",      LV_SYMBOL_WIFI,      STYLE_COLOR_PRIMARY,  SCREEN_WIFI },
@@ -138,6 +139,6 @@ lv_obj_t* settings_screen_create(void) {
         create_settings_item(content, SETTINGS_ITEMS[i], i);
     }
     
-    ESP_LOGI(TAG, "Settings screen created with %d items", SETTINGS_ITEM_COUNT);
+    ESP_LOGI(TAG, "Settings screen created with %zu items", SETTINGS_ITEM_COUNT);
     return screen;
 }

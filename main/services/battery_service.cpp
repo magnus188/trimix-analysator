@@ -4,6 +4,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <esp_timer.h>
+#include <atomic>
 // TODO: Uncomment when implementing I2C for MAX17048G
 // #include <driver/i2c.h>
 
@@ -27,7 +28,7 @@ constexpr uint8_t MAX17048_REG_CRATE   = 0x16;  // Charge rate register
 
 // State
 TaskHandle_t g_monitoring_task = nullptr;
-volatile bool g_monitoring_active = false;
+std::atomic<bool> g_monitoring_active{false};
 uint32_t g_last_voltage_mv = BATTERY_FULL_MV;
 bool g_is_charging = false;
 battery_hw_type_t g_hw_type = BATTERY_HW_MOCK;
@@ -124,7 +125,7 @@ uint8_t voltage_to_percentage(uint32_t voltage_mv) {
 void monitoring_task(void* param) {
     ESP_LOGI(TAG, "Battery monitoring task started (hw_type=%d)", g_hw_type);
     
-    while (g_monitoring_active) {
+    while (g_monitoring_active.load(std::memory_order_acquire)) {
         uint8_t percentage;
         
         if (g_hw_type == BATTERY_HW_MAX17048) {
@@ -209,8 +210,8 @@ void battery_start_monitoring(void) {
         return;
     }
     
-    g_monitoring_active = true;
-    xTaskCreate(
+    g_monitoring_active.store(true, std::memory_order_release);
+    BaseType_t created = xTaskCreate(
         monitoring_task,
         "battery_mon",
         2048,
@@ -218,10 +219,15 @@ void battery_start_monitoring(void) {
         1,  // Low priority
         &g_monitoring_task
     );
+    if (created != pdPASS) {
+        g_monitoring_active.store(false, std::memory_order_release);
+        g_monitoring_task = nullptr;
+        ESP_LOGE(TAG, "Failed to create battery monitoring task");
+    }
 }
 
 void battery_stop_monitoring(void) {
-    g_monitoring_active = false;
+    g_monitoring_active.store(false, std::memory_order_release);
     // Task will self-terminate
 }
 
