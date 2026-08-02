@@ -249,18 +249,23 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
 }
 
 void status_set_wifi(bool connected, wifi_signal_level_t signal_level) {
+    bool changed = false;
+
     // Update state (thread-safe)
     if (g_status_mutex) {
         xSemaphoreTake(g_status_mutex, portMAX_DELAY);
     }
+    changed = g_wifi_connected != connected || g_wifi_signal != signal_level;
     g_wifi_connected = connected;
     g_wifi_signal = signal_level;
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
     }
 
-    // Schedule LVGL update in UI task context (thread-safe)
-    lv_async_call(wifi_update_async_cb, nullptr);
+    // Schedule LVGL work only when the visible value can actually change.
+    if (changed) {
+        lv_async_call(wifi_update_async_cb, nullptr);
+    }
 
     ESP_LOGI(TAG, "WiFi status: %s, signal: %d",
              connected ? "connected" : "disconnected", signal_level);
@@ -268,19 +273,23 @@ void status_set_wifi(bool connected, wifi_signal_level_t signal_level) {
 
 void status_set_battery(uint8_t percentage, bool charging) {
     if (percentage > 100) percentage = 100;
+    bool changed = false;
 
     // Update state (thread-safe)
     if (g_status_mutex) {
         xSemaphoreTake(g_status_mutex, portMAX_DELAY);
     }
+    changed = g_battery_percentage != percentage || g_battery_charging != charging;
     g_battery_percentage = percentage;
     g_battery_charging = charging;
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
     }
 
-    // Schedule LVGL update in UI task context (thread-safe)
-    lv_async_call(battery_update_async_cb, nullptr);
+    // Schedule LVGL work only when the visible value can actually change.
+    if (changed) {
+        lv_async_call(battery_update_async_cb, nullptr);
+    }
 
     ESP_LOGD(TAG, "Battery: %d%%, charging: %s",
              percentage, charging ? "yes" : "no");

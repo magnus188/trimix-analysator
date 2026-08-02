@@ -106,6 +106,7 @@ void screen_visibility_cb(lv_event_t* event) {
     if (lv_event_get_code(event) == LV_EVENT_SCREEN_LOADED) {
         update_overlay_progress();
         update_ui_state();
+        lv_timer_reset(g_state.state_timer);
         lv_timer_resume(g_state.state_timer);
         return;
     }

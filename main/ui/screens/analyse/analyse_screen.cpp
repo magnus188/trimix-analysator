@@ -385,6 +385,7 @@ void screen_visibility_cb(lv_event_t* event) {
 
     if (lv_event_get_code(event) == LV_EVENT_SCREEN_LOADED) {
         sample_once();
+        lv_timer_reset(g_state.sample_timer);
         lv_timer_resume(g_state.sample_timer);
     } else {
         lv_timer_pause(g_state.sample_timer);
