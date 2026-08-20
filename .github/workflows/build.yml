@@ -13,54 +13,112 @@ concurrency:
 
 jobs:
   build:
-    name: Build ESP32 Firmware
+    name: Build ESP32-P4 Firmware
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install host test dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y g++ cmake pkg-config libsdl2-dev
+      - name: Install host test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ cmake pkg-config libsdl2-dev
 
-    - name: Run tests
-      run: |
-        chmod +x scripts/run_tests.sh
-        ./scripts/run_tests.sh
+      - name: Run host unit and static tests
+        run: ./scripts/run_tests.sh
 
-    - name: Build with ESP-IDF
-      uses: espressif/esp-idf-ci-action@v1
-      with:
-        esp_idf_version: v5.1.6
-        target: esp32s3
-        path: '.'
+      - name: Build pre-v3 ESP32-P4 firmware
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.4
+          target: esp32p4
+          path: .
+          command: >-
+            idf.py -B build/esp32p4-pre3
+            -D IDF_TARGET=esp32p4
+            -D SDKCONFIG=build/esp32p4-pre3/sdkconfig
+            -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.esp32p4;sdkconfig.defaults.esp32p4.pre3"
+            build
 
-    - name: Run full host tests
-      run: |
-        TRIMIX_REQUIRE_SIMULATOR=1 ./scripts/run_tests.sh
+      - name: Run full simulator tests
+        env:
+          TRIMIX_REQUIRE_SIMULATOR: "1"
+        run: ./scripts/run_tests.sh
 
-    - name: Check firmware size
-      run: |
-        chmod +x scripts/check_firmware_size.sh
-        ./scripts/check_firmware_size.sh
+      - name: Check pre-v3 firmware size
+        env:
+          BUILD_DIR: ${{ github.workspace }}/build/esp32p4-pre3
+        run: ./scripts/check_firmware_size.sh
 
-    - name: Upload firmware artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: trimix-analyzer-firmware-${{ github.sha }}
-        if-no-files-found: error
-        path: |
-          build/Trimix_analyzer.bin
-          build/Trimix_analyzer.elf
-          build/Trimix_analyzer.map
-          build/flasher_args.json
+      - name: Build v3+ ESP32-P4 firmware
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.4
+          target: esp32p4
+          path: .
+          command: >-
+            idf.py -B build/esp32p4-v3
+            -D IDF_TARGET=esp32p4
+            -D SDKCONFIG=build/esp32p4-v3/sdkconfig
+            -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.esp32p4;sdkconfig.defaults.esp32p4.v3"
+            build
 
-    - name: Report build
-      run: |
-        echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        ls -lh build/Trimix_analyzer.bin build/Trimix_analyzer.elf build/Trimix_analyzer.map >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Firmware built successfully for ESP32-S3." >> $GITHUB_STEP_SUMMARY
+      - name: Check v3+ firmware size
+        env:
+          BUILD_DIR: ${{ github.workspace }}/build/esp32p4-v3
+        run: ./scripts/check_firmware_size.sh
+
+      - name: Create pre-v3 factory image
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.4
+          target: esp32p4
+          path: .
+          command: >-
+            esptool.py --chip esp32p4 merge_bin
+            --flash_mode dio --flash_freq 80m --flash_size 16MB
+            -o Trimix_analyzer_esp32p4_pre3_factory_${{ github.sha }}.bin
+            0x2000 build/esp32p4-pre3/bootloader/bootloader.bin
+            0x20000 build/esp32p4-pre3/Trimix_analyzer.bin
+            0x8000 build/esp32p4-pre3/partition_table/partition-table.bin
+            0x10000 build/esp32p4-pre3/ota_data_initial.bin
+
+      - name: Create v3+ factory image
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.4
+          target: esp32p4
+          path: .
+          command: >-
+            esptool.py --chip esp32p4 merge_bin
+            --flash_mode dio --flash_freq 80m --flash_size 32MB
+            -o Trimix_analyzer_esp32p4_v3_factory_${{ github.sha }}.bin
+            0x2000 build/esp32p4-v3/bootloader/bootloader.bin
+            0x20000 build/esp32p4-v3/Trimix_analyzer.bin
+            0x8000 build/esp32p4-v3/partition_table/partition-table.bin
+            0x10000 build/esp32p4-v3/ota_data_initial.bin
+
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: trimix-analyzer-esp32p4-${{ github.sha }}
+          if-no-files-found: error
+          path: |
+            build/esp32p4-pre3/Trimix_analyzer.bin
+            build/esp32p4-pre3/Trimix_analyzer.elf
+            build/esp32p4-pre3/Trimix_analyzer.map
+            build/esp32p4-pre3/flasher_args.json
+            build/esp32p4-v3/Trimix_analyzer.bin
+            build/esp32p4-v3/Trimix_analyzer.elf
+            build/esp32p4-v3/Trimix_analyzer.map
+            build/esp32p4-v3/flasher_args.json
+            Trimix_analyzer_esp32p4_pre3_factory_${{ github.sha }}.bin
+            Trimix_analyzer_esp32p4_v3_factory_${{ github.sha }}.bin
+
+      - name: Report build
+        run: |
+          echo "## ESP32-P4 Build Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Built native 480x800 firmware for pre-v3 and v3+ ESP32-P4 silicon." >> "$GITHUB_STEP_SUMMARY"
+          ls -lh build/esp32p4-pre3/Trimix_analyzer.bin build/esp32p4-v3/Trimix_analyzer.bin >> "$GITHUB_STEP_SUMMARY"

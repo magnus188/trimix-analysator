@@ -64,6 +64,18 @@ assert_no_pattern() {
     fi
 }
 
+assert_pattern() {
+    local label="$1"
+    local pattern="$2"
+    shift 2
+
+    if contains_pattern "$pattern" "$@"; then
+        pass "$label"
+    else
+        fail "$label"
+    fi
+}
+
 run_binary_test() {
     local label="$1"
     local output="$2"
@@ -105,6 +117,18 @@ KEY_FILES=(
     "main/ui/screens/settings/calibrate_screen.cpp"
     "main/ui/screens/settings/safety_screen.cpp"
     "main/ui/screens/dive_planner/gas_calculator.cpp"
+    "main/ui/lvgl/lvgl_port.cpp"
+    "main/ui/lvgl/lvgl_port.h"
+    "main/ui/components/status_icons.cpp"
+    "main/idf_component.yml"
+    "sdkconfig.defaults.esp32p4"
+    "sdkconfig.defaults.esp32p4.pre3"
+    "sdkconfig.defaults.esp32p4.v3"
+    "partitions.esp32p4.pre3.csv"
+    "partitions.csv"
+    "dependencies.lock"
+    "scripts/detect_p4_revision.sh"
+    "scripts/set_version.sh"
     "tests/test_analysis_calculator.cpp"
     "tests/test_sensor_interface.cpp"
     "tests/test_analysis_history.cpp"
@@ -142,6 +166,66 @@ assert_no_pattern \
     "No unchecked direct task creation calls" \
     "^[[:space:]]*xTaskCreate(PinnedToCore)?\\s*\\(" \
     "$PROJECT_DIR/main"
+
+assert_no_pattern \
+    "Background services do not schedule LVGL work" \
+    "lv_async_call" \
+    "$PROJECT_DIR/main"
+
+assert_no_pattern \
+    "Application no longer runs a custom LVGL timer loop" \
+    "lv_timer_handler\\s*\\(" \
+    "$PROJECT_DIR/main/main.cpp"
+
+assert_no_pattern \
+    "Removed ESP32-S3 display backend is not referenced by firmware" \
+    "esp32s3|ESP32S3|ESP32-S3|ESP32-8048S043" \
+    "$PROJECT_DIR/main" \
+    "$PROJECT_DIR/Makefile" \
+    "$PROJECT_DIR/sdkconfig.defaults" \
+    "$PROJECT_DIR/sdkconfig.defaults.esp32p4" \
+    "$PROJECT_DIR/sdkconfig.defaults.esp32p4.pre3" \
+    "$PROJECT_DIR/sdkconfig.defaults.esp32p4.v3"
+
+assert_pattern \
+    "Display backend uses native rotation without PPA" \
+    "ESP_LV_ADAPTER_ROTATE_0" \
+    "$PROJECT_DIR/main/ui/lvgl/lvgl_port.cpp"
+
+assert_pattern \
+    "Display backend uses triple-partial tear avoidance" \
+    "ESP_LV_ADAPTER_TEAR_AVOID_MODE_TRIPLE_PARTIAL" \
+    "$PROJECT_DIR/main/ui/lvgl/lvgl_port.cpp"
+
+assert_pattern \
+    "Firmware target is ESP32-P4" \
+    'TARGET := esp32p4' \
+    "$PROJECT_DIR/Makefile"
+
+assert_pattern \
+    "Dependency lock targets ESP32-P4" \
+    '^target: esp32p4$' \
+    "$PROJECT_DIR/dependencies.lock"
+
+assert_pattern \
+    "Dependency lock pins ESP-IDF 5.5.4" \
+    'version: 5\.5\.4' \
+    "$PROJECT_DIR/dependencies.lock"
+
+assert_pattern \
+    "Dependency lock pins LVGL 9.4.0" \
+    'version: 9\.4\.0' \
+    "$PROJECT_DIR/dependencies.lock"
+
+assert_pattern \
+    "OTA rollback remains enabled" \
+    'CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y' \
+    "$PROJECT_DIR/sdkconfig.defaults"
+
+assert_pattern \
+    "New OTA images are validated after application startup" \
+    'esp_ota_mark_app_valid_cancel_rollback' \
+    "$PROJECT_DIR/main/main.cpp"
 
 assert_no_pattern \
     "WiFi scan results do not use heap churn" \

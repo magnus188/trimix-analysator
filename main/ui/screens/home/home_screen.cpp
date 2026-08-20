@@ -31,23 +31,6 @@ constexpr lv_coord_t GRID_PAD = 16;
 constexpr lv_coord_t BUTTON_RADIUS = 8;
 constexpr lv_coord_t ICON_CONTAINER_SIZE = 54;
 
-// Keep press feedback cheap: geometry transforms force both grid cells and
-// their children to be redrawn on every animation frame.
-static const lv_style_prop_t btn_transition_props[] = {
-    LV_STYLE_BG_COLOR, LV_STYLE_PROP_INV
-};
-static lv_style_transition_dsc_t btn_transition;
-static bool btn_transition_initialized = false;
-
-// Initialize transition (called once)
-static void init_btn_transition() {
-    if (!btn_transition_initialized) {
-        lv_style_transition_dsc_init(&btn_transition, btn_transition_props, 
-                                     lv_anim_path_ease_out, 80, 0, nullptr);
-        btn_transition_initialized = true;
-    }
-}
-
 void menu_button_event_cb(lv_event_t* e) {
     lv_event_code_t code = lv_event_get_code(e);
     if (code == LV_EVENT_CLICKED) {
@@ -72,10 +55,6 @@ lv_obj_t* create_menu_button(lv_obj_t* parent, const MenuButton& cfg) {
     
     lv_obj_set_style_bg_color(btn, lv_color_hex(STYLE_COLOR_BG_CARD), LV_STATE_PRESSED);
     lv_obj_set_style_shadow_width(btn, 0, 0);
-    
-    // Smooth animation transitions
-    lv_obj_set_style_transition(btn, &btn_transition, 0);
-    lv_obj_set_style_transition(btn, &btn_transition, LV_STATE_PRESSED);
     
     // Layout
     lv_obj_set_flex_flow(btn, LV_FLEX_FLOW_COLUMN);
@@ -119,9 +98,6 @@ lv_obj_t* create_menu_button(lv_obj_t* parent, const MenuButton& cfg) {
 
 lv_obj_t* home_screen_create(void) {
     ESP_LOGI(TAG, "Creating home screen");
-    
-    // Initialize button transition animation (once)
-    init_btn_transition();
     
     // Screen base - 480x800 portrait
     lv_obj_t* screen = lv_obj_create(nullptr);

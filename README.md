@@ -1,12 +1,13 @@
 # Trimix Analyzer ESP32 Firmware
 
-ESP32-S3/LVGL firmware for the Trimix Analyzer with a 480x800 capacitive touch display, WiFi settings, OTA update support, NVS-backed settings, and mock sensor readings while hardware sensor drivers are completed.
+ESP32-P4/LVGL firmware for the Trimix Analyzer on the native-portrait Guition JC4880P443C_I_W (JC-ESP32P4-M3). The application includes WiFi settings, revision-safe OTA updates, NVS-backed settings, and mock sensor readings while the analyzer hardware drivers are completed.
 
 ## Quick Start with ESP-IDF
 
 ### Prerequisites
-- [ESP-IDF v5.1+](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/) installed and configured
-- ESP32-S3 development board with 480x800 touch display
+- [ESP-IDF v5.5.4](https://github.com/espressif/esp-idf/releases/tag/v5.5.4); `make setup-idf` installs the pinned environment
+- Python 3.13
+- Guition JC4880P443C_I_W: ESP32-P4 rev v1.3, 16 MB flash, 32 MB PSRAM, and ESP32-C6 coprocessor
 - `g++`, CMake, pkg-config, and SDL2 development headers for full host validation
 
 ### Build and Upload
@@ -17,7 +18,14 @@ make help
 # Run host-side validation
 make test
 
-# Build and flash (PORT is optional when only one device is connected)
+# Install/check the exact ESP-IDF toolchain
+make setup-idf
+make doctor
+
+# Identify whether the attached P4 is pre-v3 or v3+
+make board-info PORT=/dev/cu.usbserial-110
+
+# Build and flash; the port is required so the revision can be verified safely
 make push PORT=/dev/cu.usbserial-110
 
 # Build, flash, and monitor serial output
@@ -27,15 +35,17 @@ make push-monitor PORT=/dev/cu.usbserial-110
 make sim ZOOM=0.75
 ```
 
-Run `make devices` to find likely serial ports and `make doctor` to check ESP-IDF, CMake, the C++ compiler, SDL2, and LVGL. The Makefile uses `idf.py` from `PATH`; otherwise it looks for ESP-IDF v5.1.6 under `~/esp/v5.1.6/esp-idf`. Override that location with `ESP_IDF_DIR=/path/to/esp-idf`.
+The first ESP32-P4 installation must be flashed over USB. An ESP32-S3 cannot
+install this firmware through OTA because the chips and images are incompatible.
+
+Run `make devices` to find likely serial ports. Firmware commands always source the pinned ESP-IDF v5.5.4 installation under `~/esp/v5.5.4/esp-idf`; an unrelated `idf.py` in `PATH` is never used. Override the installation location with `ESP_IDF_DIR=/path/to/esp-idf`.
 
 The equivalent raw ESP-IDF commands remain available:
 
 ```bash
-idf.py set-target esp32s3
-idf.py build
-idf.py flash
-idf.py monitor
+idf.py -B build/esp32p4-pre3 -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.esp32p4;sdkconfig.defaults.esp32p4.pre3" set-target esp32p4
+idf.py -B build/esp32p4-pre3 build
+idf.py -B build/esp32p4-pre3 -p /dev/cu.usbserial-110 flash monitor
 ```
 
 ## Browser Demo
@@ -62,7 +72,7 @@ Open `http://localhost:8080`. The generated site must be served over HTTP rather
 ├── CMakeLists.txt           # Main CMake configuration
 ├── sdkconfig.defaults       # ESP-IDF configuration defaults
 ├── main/                    # Main component source files
-│   ├── main.cpp            # Application entry point and UI task
+│   ├── main.cpp            # Application entry point and service startup
 │   ├── services/           # WiFi, OTA, settings, battery, backlight
 │   ├── sensors/            # Sensor abstraction and mock readings
 │   ├── ui/                 # LVGL port, screens, styles, components
@@ -75,12 +85,12 @@ Open `http://localhost:8080`. The generated site must be served over HTTP rather
 
 ## Hardware Requirements
 
-The current hardware reference is the project BOM at `../BOM.md`. Keep this README in sync with that file when hardware choices change. The BOM describes the full analyzer electronics, while the firmware currently targets the ESP32-S3/Sunton display-board pinout in `main/board/hardware.h`.
+The current hardware reference is the project BOM at `../BOM.md`. The BOM describes the full analyzer electronics, while the firmware target is the Guition JC4880P443 board.
 
 ### Controller and Display
-- **ESP32** main MCU in the BOM; firmware target is currently **ESP32-S3**.
-- **Sunton ESP32-8048S043** development board or compatible display target while the custom board is finalized.
-- **480x800 pixel capacitive touch display** with GT911 touch controller.
+- **ESP32-P4NRW32** application processor with 32 MB in-package PSRAM. Original pre-v3 boards are configured for their detected 16 MB flash; the v3 profile retains the 32 MB layout used by newer hardware.
+- Onboard **ESP32-C6** WiFi 6/BLE coprocessor connected over SDIO.
+- Native **480x800 MIPI-DSI IPS display** with ST7701 controller and GT911 capacitive touch.
 
 ### Power, Charging, and Battery
 - **USB-C 5 V sink input** with CC1/CC2 5.1 kOhm pulldowns, 1.5 A PPTC fuse, SMAJ5.0A VBUS TVS diode, and 10 uF VBUS bulk capacitance.
@@ -110,24 +120,24 @@ Analog gas inputs | R17JJ-CCR O2 and MD62 He routed through ADS1115
 3.3 V rail        | ESP32, ADS1115, BMP280, MAX17048, display/touch logic
 3.0 V rail        | MD62 helium sensor through SPX3819M5-L-3-0TR
 USB-C VBUS        | BQ24074 input through PPTC and TVS protection
-Touch I2C         | GT911 pins defined in main/board/hardware.h
+Board I2C         | GPIO8 SCL / GPIO7 SDA; GT911 and future sensor devices share the bus
 ```
 
-Final custom-board GPIO and ADS1115 channel mapping should be documented in `main/board/hardware.h` when the schematic is locked.
+Final sensor connector and ADS1115 channel mapping should be documented in a dedicated sensor-board configuration when the analyzer schematic is locked. Display pins, timings, and the manual ST7701S initialization table live in `main/board/`.
 
 ## Software Architecture
 
 ### Key Components
 
 #### 1. Main Application (`main/main.cpp`)
-- Service startup
-- LVGL task loop
-- Screen manager initialization
+- Persistent service startup
+- Native display and screen initialization under the LVGL adapter lock
+- Background service startup after the UI is ready
 
 #### 2. LVGL Port (`main/ui/lvgl/lvgl_port.cpp`)
-- RGB LCD panel initialization
-- GT911 touch setup
-- LVGL display flush and tick integration
+- Guition MIPI-DSI/ST7701S manual startup sequence
+- Native GT911 touch registration
+- Triple-buffered tear avoidance and LVGL adapter locking
 
 #### 3. Sensor Interface (`main/sensors/sensor_interface.cpp/h`)
 - Abstracted sensor reading functions
@@ -145,16 +155,15 @@ Final custom-board GPIO and ADS1115 channel mapping should be documented in `mai
 - Settings, battery status, and backlight control
 - Analysis history, persistent cylinder profiles, and export-ready gas label payloads
 
-#### 6. Hardware Configuration (`main/board/hardware.h`)
-- GPIO pin definitions
-- Display timing parameters
-- I2C bus configuration
-- Touch screen settings
+#### 6. Board Support
+- In-tree Guition JC4880P443 display, backlight, and touch layer
+- Separate pre-v3 and v3+ ESP32-P4 build profiles
+- Native backlight, display, touch, and onboard ESP32-C6 integration
 
 ## Display Configuration
 
-### ESP32 Display
-- **ESP32**: 480x800 portrait
+### ESP32-P4 Display
+- **Panel**: 480x800 native portrait
 - **Framework**: LVGL
 - **Touch**: Capacitive (GT911)
 
@@ -205,39 +214,39 @@ Final custom-board GPIO and ADS1115 channel mapping should be documented in `mai
 ## Building and Flashing
 
 ### Prerequisites
-- **ESP-IDF v5.1+** installed and configured
-- **ESP32-S3** toolchain
+- **ESP-IDF v5.5.4** installed with `make setup-idf`
+- **ESP32-P4** toolchain and Python 3.13
 - **Host validation tools**: `g++`, CMake, pkg-config, SDL2 development headers
 - USB-C cable for programming
 
 ### Build Steps
 ```bash
-# Set target (if not set globally)
-idf.py set-target esp32s3
+# Inspect the attached chip and select the safe image family
+make board-info PORT=/dev/cu.usbserial-110
 
 # Run host tests
 ./scripts/run_tests.sh
 
-# Configure project (optional)
-idf.py menuconfig
-
-# Build project
-idf.py build
+# Build both incompatible P4 revision profiles
+make build-all
 
 # Validate firmware size against partitions.csv
-./scripts/check_firmware_size.sh
+make size-check P4_REV=pre3
+make size-check P4_REV=v3
 
 # Flash to device
-idf.py flash
+make push PORT=/dev/cu.usbserial-110
 
 # Monitor output
-idf.py monitor
+make monitor PORT=/dev/cu.usbserial-110
 ```
 
 ### Dependencies
 The project uses ESP-IDF component manager for dependencies (defined in `main/idf_component.yml`):
-- `lvgl/lvgl` 9.3.0 - Graphics library
-- `espressif/esp_lcd_touch_gt911` 1.1.3 - Touch controller driver
+- `lvgl/lvgl` 9.4.0 - Graphics library
+- `espressif/esp_lcd_touch_gt911` 1.2.x - capacitive touch controller
+- `espressif/esp_lvgl_adapter` 0.1.4 - task, input, and tear-safe display integration
+- `espressif/esp_wifi_remote` 1.6.0 and `espressif/esp_hosted` 2.12.9 - onboard C6 networking
 
 Dependencies are automatically downloaded during the build process.
 
@@ -249,15 +258,11 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 
 ## Performance Characteristics
 
-### Memory Usage
-- **Flash**: ~2MB (application + LVGL)
-- **RAM**: ~500KB (display buffers + application)
-- **PSRAM**: ~384KB (LVGL buffers)
-
-### Update Rates
-- **Sensor readings**: 2 seconds
-- **Display refresh**: 30 FPS
-- **Touch response**: <50ms
+### Display Pipeline
+- **Panel**: native 480x800 RGB565 over two-lane MIPI-DSI
+- **Tear avoidance**: three full panel framebuffers with partial LVGL rendering
+- **LVGL refresh period**: 15 ms
+- **Rotation**: none; pixels and touch coordinates stay in native portrait orientation
 
 ### Power Consumption
 - **Active display**: ~300mA @ 5V
@@ -269,7 +274,7 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 ### Enhanced Features
 1. **480x800 portrait touch display**
 2. **Capacitive touch**
-3. **Hardware acceleration** (RGB parallel interface)
+3. **Tear-safe MIPI-DSI output** with no full-frame software rotation
 4. **Lower power consumption** (compared to the prior full-computer platform)
 5. **Faster boot time** (<5 seconds vs ~30 seconds)
 
@@ -284,12 +289,12 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 - Sensor interface abstraction allows host tests and later hardware drivers.
 - Modular screen design keeps LVGL screens separated by workflow.
 - Services isolate WiFi, OTA, settings, battery, and backlight behavior.
-- Hardware definitions live in `main/board/hardware.h`.
+- Board-level display and touch details are implemented in `main/board/guition_jc4880p443.c`.
 
 ### Testing Strategy
 - `./scripts/run_tests.sh` runs static safety checks, production gas calculator tests, version consistency tests, and the host LVGL simulator smoke test when SDL2 is available.
 - `./scripts/check_firmware_size.sh` validates the built app binary against the configured factory/OTA app partition.
-- Hardware smoke testing should cover boot, Home/Settings/WiFi/Software Update/Dive Planner navigation, two WiFi scans, password modal open/close, status icon updates, and at least 5 minutes of heap-stable idle time.
+- Hardware acceptance covers touch corners and drag axes, 100 navigation operations, a one-hour active UI/WiFi soak, an eight-hour idle soak, and two consecutive OTA upgrades.
 
 ## Troubleshooting
 
@@ -298,11 +303,12 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 1. **Display not working**
    - Check power supply (5V, 2A minimum)
    - Verify display cable connections
-   - Check GPIO pin assignments
+   - Confirm the PCB/module markings read `Guition JC4880P443` / `JC-ESP32P4-M3`
+   - Confirm `make board-info` and the selected build profile agree
 
 2. **Touch not responding**
-   - Verify GT911 I2C connections
-   - Check touch calibration in code
+   - Check the GT911 I2C bus on GPIO7 SDA / GPIO8 SCL
+   - Confirm the board is physically mounted in native portrait orientation
    - Ensure proper grounding
 
 3. **Sensors not reading**
@@ -311,9 +317,9 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
    - Check power supply to sensors
 
 4. **Build errors**
-   - Update ESP-IDF to v5.1+
-   - Clean build directory
-   - Check component dependencies
+   - Run `make doctor` and confirm ESP-IDF v5.5.4 with Python 3.13
+   - Run `make clean`, then rebuild the correct P4 revision profile
+   - Check that Git dependencies and `dependencies.lock` are available
 
 ### Debug Commands
 ```bash
@@ -332,7 +338,7 @@ idf.py monitor --decode-crashes
 
 When adding new features:
 1. Follow ESP-IDF coding standards
-2. Update hardware.h for new GPIO assignments
+2. Keep display/touch changes inside the board-port boundary; do not add manual rotation
 3. Add screen navigation in `main/ui/screens/screen_manager.cpp`
 4. Test with both real and mock sensors
 5. Update documentation
