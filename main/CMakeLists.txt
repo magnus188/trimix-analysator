@@ -2,12 +2,14 @@ idf_component_register(
     SRCS
         "main.cpp"                           # app_main
         "version.cpp"                        # version information
+        "board/guition_jc4880p443.c"         # Guition display and touch hardware
         "analysis/analysis_calculator.cpp"   # analysis calculations
         "sensors/sensor_interface.cpp"       # sensors (mock)
         "services/analysis_history.cpp"      # captured analysis history
         "services/cylinder_profiles.cpp"     # cylinder profile storage
         "services/mix_label_service.cpp"     # export-ready mix labels
         "services/wifi_service.cpp"          # WiFi management
+        "services/c6_update_service.c"       # Guition C6 recovery/update
         "services/battery_service.cpp"       # Battery monitoring
         "services/ota_service.cpp"           # OTA update service
         "services/settings_service.cpp"      # Settings management
@@ -51,6 +53,7 @@ idf_component_register(
         driver
         lvgl
         esp_lcd_touch_gt911
+        esp_lvgl_adapter
         esp_wifi
         nvs_flash
         esp_netif
@@ -62,5 +65,5 @@ idf_component_register(
         mbedtls
 )
 
-# Ensure C++ standard (ESP-IDF sets default; enforce at least C++17 for future needs)
+# The Guition board layer and the application compile cleanly as GNU C++17.
 set_target_properties(${COMPONENT_LIB} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)

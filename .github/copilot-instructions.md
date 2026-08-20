@@ -1,26 +1,23 @@
 # Trimix Analyzer - Repository Instructions
 
-Trimix Analyzer is an ESP32-S3 firmware project built with ESP-IDF and LVGL. The target device is a 480x800 portrait touch display with GT911 touch, WiFi, OTA update support, settings in NVS, and mock sensor readings while hardware drivers are still being completed.
+Trimix Analyzer is an ESP32-P4 firmware project built with ESP-IDF and LVGL. It targets the native 480x800 Guition JC4880P443C_I_W with GT911 touch and an onboard ESP32-C6 Wi-Fi coprocessor.
 
 ## Working Effectively
 
 ### Prerequisites
-- ESP-IDF v5.1.6 or compatible v5.1.x environment.
-- ESP32-S3 toolchain.
+- The pinned ESP-IDF v5.5.4 environment installed by `make setup-idf`.
+- ESP32-P4 toolchain and Python 3.13.
 - `g++` for host-side unit tests.
 
 ### Core Commands
 ```bash
-./scripts/run_tests.sh
-idf.py set-target esp32s3
-idf.py build
-./scripts/check_firmware_size.sh
+make test
+make build-all
+make size-check P4_REV=pre3
+make size-check P4_REV=v3
 ```
 
-If `idf.py` is not on PATH, source the local ESP-IDF export script before building:
-```bash
-. "$IDF_PATH/export.sh"
-```
+Use Makefile targets for firmware commands. They source the pinned environment and isolate pre-v3 and v3+ builds.
 
 ## Validation Rules
 - Always run `./scripts/run_tests.sh` after code changes.
@@ -32,7 +29,7 @@ If `idf.py` is not on PATH, source the local ESP-IDF export script before buildi
 ## Project Structure
 ```text
 main/
-  main.cpp                         # app_main and UI task
+  main.cpp                         # startup ordering
   services/                        # WiFi, OTA, settings, battery, backlight
   sensors/                         # sensor abstraction and mock readings
   ui/
@@ -53,10 +50,12 @@ scripts/check_firmware_size.sh     # app partition budget check
 - The app partition budget is defined by `partitions.csv`; firmware must fit in the configured factory/OTA app partition.
 
 ## Hardware Smoke Test
-After firmware-level changes, test on the ESP32-S3 device:
+After firmware-level changes, test on the Guition JC4880P443C_I_W device:
 1. Boot to Home.
 2. Navigate Home, Settings, WiFi, Software Update, and Dive Planner.
 3. Run WiFi scan twice.
 4. Open and close the WiFi password modal.
 5. Verify WiFi and battery status icons update.
-6. Leave the device idle for at least 5 minutes and check for crashes, UI stalls, or obvious heap instability.
+6. Exercise 100 navigations and verify no touch takes more than 150 ms to show its destination.
+7. Run the one-hour active soak and eight-hour idle soak without flicker, tearing, resets, or heap loss.
+8. Perform two consecutive OTA upgrades to exercise both OTA slots.

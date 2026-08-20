@@ -34,6 +34,9 @@ bool g_initialized = false;
 bool g_scanning = false;
 bool g_connected = false;
 char g_connected_ssid[33] = {0};
+bool g_pending_credentials = false;
+char g_pending_ssid[33] = {0};
+char g_pending_password[65] = {0};
 wifi_ap_record_t g_scan_results[MAX_SCAN_RESULTS] = {};
 uint16_t g_scan_count = 0;
 
@@ -86,6 +89,9 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base,
                     esp_wifi_connect();
                     ESP_LOGI(TAG, "Retrying connection (%d/%d)", retry_num, WIFI_MAXIMUM_RETRY);
                 } else if (!suppress_retry) {
+                    lock_wifi_state();
+                    g_pending_credentials = false;
+                    unlock_wifi_state();
                     xEventGroupSetBits(g_wifi_event_group, WIFI_FAIL_BIT);
                 }
                 break;
@@ -144,6 +150,20 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base,
                 // Update status icon with signal strength
                 int bars = wifi_service_rssi_to_bars(ap_info.rssi);
                 status_set_wifi(true, (wifi_signal_level_t)bars);
+            }
+
+            char pending_ssid[33] = {0};
+            char pending_password[65] = {0};
+            lock_wifi_state();
+            const bool save_pending_credentials = g_pending_credentials;
+            if (save_pending_credentials) {
+                memcpy(pending_ssid, g_pending_ssid, sizeof(pending_ssid));
+                memcpy(pending_password, g_pending_password, sizeof(pending_password));
+                g_pending_credentials = false;
+            }
+            unlock_wifi_state();
+            if (save_pending_credentials) {
+                wifi_service_save_credentials(pending_ssid, pending_password);
             }
             
             xEventGroupSetBits(g_wifi_event_group, WIFI_CONNECTED_BIT);
@@ -220,16 +240,11 @@ void wifi_service_start_scan(void) {
     
     xEventGroupClearBits(g_wifi_event_group, WIFI_SCAN_DONE_BIT);
     
-    wifi_scan_config_t scan_config = {
-        .ssid = nullptr,
-        .bssid = nullptr,
-        .channel = 0,
-        .show_hidden = false,
-        .scan_type = WIFI_SCAN_TYPE_ACTIVE,
-        .scan_time = {
-            .active = { .min = 100, .max = 300 }
-        }
-    };
+    wifi_scan_config_t scan_config = {};
+    scan_config.show_hidden = false;
+    scan_config.scan_type = WIFI_SCAN_TYPE_ACTIVE;
+    scan_config.scan_time.active.min = 100;
+    scan_config.scan_time.active.max = 300;
     
     esp_err_t err = esp_wifi_scan_start(&scan_config, false);
     if (err == ESP_OK) {
@@ -329,17 +344,28 @@ bool wifi_service_connect(const char* ssid, const char* password) {
     
     lock_wifi_state();
     s_retry_num = 0;
+    strncpy(g_pending_ssid, ssid, sizeof(g_pending_ssid) - 1);
+    g_pending_ssid[sizeof(g_pending_ssid) - 1] = '\0';
+    strncpy(g_pending_password, password ? password : "", sizeof(g_pending_password) - 1);
+    g_pending_password[sizeof(g_pending_password) - 1] = '\0';
+    g_pending_credentials = true;
     unlock_wifi_state();
     xEventGroupClearBits(g_wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT);
     
     esp_err_t err = esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
     if (err != ESP_OK) {
+        lock_wifi_state();
+        g_pending_credentials = false;
+        unlock_wifi_state();
         ESP_LOGE(TAG, "Failed to configure WiFi: %s", esp_err_to_name(err));
         return false;
     }
 
     err = esp_wifi_connect();
     if (err != ESP_OK) {
+        lock_wifi_state();
+        g_pending_credentials = false;
+        unlock_wifi_state();
         ESP_LOGE(TAG, "Failed to start WiFi connection: %s", esp_err_to_name(err));
         return false;
     }
@@ -368,6 +394,7 @@ void wifi_service_disconnect(void) {
     lock_wifi_state();
     g_connected = false;
     g_connected_ssid[0] = '\0';
+    g_pending_credentials = false;
     unlock_wifi_state();
     status_set_wifi(false, WIFI_SIGNAL_NONE);
 }

@@ -21,6 +21,66 @@ constexpr int MAX_NETWORKS = 20;
 constexpr int ITEM_HEIGHT = 70;
 constexpr int ITEM_PADDING = 12;
 
+// Portrait keyboard: unlike LVGL's desktop-oriented default, no letter row
+// also has to share its width with mode and editing controls.  The widest row
+// is ten keys, while shift/backspace/space/confirm receive extra width.
+constexpr lv_buttonmatrix_ctrl_t KEY_1 = static_cast<lv_buttonmatrix_ctrl_t>(
+    LV_BUTTONMATRIX_CTRL_POPOVER | LV_BUTTONMATRIX_CTRL_WIDTH_1);
+constexpr lv_buttonmatrix_ctrl_t KEY_6 = static_cast<lv_buttonmatrix_ctrl_t>(
+    LV_BUTTONMATRIX_CTRL_WIDTH_6);
+constexpr lv_buttonmatrix_ctrl_t ACTION_2 = static_cast<lv_buttonmatrix_ctrl_t>(
+    LV_KEYBOARD_CTRL_BUTTON_FLAGS | LV_BUTTONMATRIX_CTRL_WIDTH_2);
+constexpr lv_buttonmatrix_ctrl_t BACKSPACE_2 = static_cast<lv_buttonmatrix_ctrl_t>(
+    LV_BUTTONMATRIX_CTRL_CHECKED | LV_BUTTONMATRIX_CTRL_WIDTH_2);
+
+const char* const PASSWORD_KB_LOWER_MAP[] = {
+    "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\n",
+    "a", "s", "d", "f", "g", "h", "j", "k", "l", "\n",
+    "ABC", "z", "x", "c", "v", "b", "n", "m", LV_SYMBOL_BACKSPACE, "\n",
+    "1#", "@", " ", ".", LV_SYMBOL_OK, ""
+};
+
+const lv_buttonmatrix_ctrl_t PASSWORD_KB_LOWER_CTRL[] = {
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    ACTION_2, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, BACKSPACE_2,
+    ACTION_2, KEY_1, KEY_6, KEY_1, ACTION_2
+};
+
+const char* const PASSWORD_KB_UPPER_MAP[] = {
+    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "\n",
+    "A", "S", "D", "F", "G", "H", "J", "K", "L", "\n",
+    "abc", "Z", "X", "C", "V", "B", "N", "M", LV_SYMBOL_BACKSPACE, "\n",
+    "1#", "@", " ", ".", LV_SYMBOL_OK, ""
+};
+
+const lv_buttonmatrix_ctrl_t PASSWORD_KB_UPPER_CTRL[] = {
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    ACTION_2, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, BACKSPACE_2,
+    ACTION_2, KEY_1, KEY_6, KEY_1, ACTION_2
+};
+
+const char* const PASSWORD_KB_SYMBOL_MAP[] = {
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "\n",
+    "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "\n",
+    "-", "_", "+", "=", "/", "\\", ":", ";", "'", "\"", "\n",
+    ",", ".", "<", ">", "?", "[", "]", "{", "}", "`", "\n",
+    "abc", "~", " ", LV_SYMBOL_BACKSPACE, LV_SYMBOL_OK, ""
+};
+
+const lv_buttonmatrix_ctrl_t PASSWORD_KB_SYMBOL_CTRL[] = {
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1, KEY_1,
+    ACTION_2, KEY_1, KEY_6, BACKSPACE_2, ACTION_2
+};
+
+static_assert(sizeof(PASSWORD_KB_LOWER_CTRL) / sizeof(PASSWORD_KB_LOWER_CTRL[0]) == 33);
+static_assert(sizeof(PASSWORD_KB_UPPER_CTRL) / sizeof(PASSWORD_KB_UPPER_CTRL[0]) == 33);
+static_assert(sizeof(PASSWORD_KB_SYMBOL_CTRL) / sizeof(PASSWORD_KB_SYMBOL_CTRL[0]) == 45);
+
 // Screen state
 struct WifiScreenState {
     lv_obj_t* screen = nullptr;
@@ -32,6 +92,8 @@ struct WifiScreenState {
     lv_obj_t* password_ta = nullptr;
     char selected_ssid[33] = {0};
     lv_timer_t* scan_check_timer = nullptr;
+    lv_timer_t* connection_check_timer = nullptr;
+    uint8_t connection_checks = 0;
 };
 
 WifiScreenState g_state;
@@ -59,16 +121,13 @@ uint32_t get_signal_color(int8_t rssi) {
     }
 }
 
-const char* get_lock_icon(uint8_t authmode) {
-    return (authmode == WIFI_AUTH_OPEN) ? "" : LV_SYMBOL_EYE_CLOSE;
-}
-
 // Forward declarations
 void on_network_click(lv_event_t* e);
 void on_scan_click(lv_event_t* e);
 void on_disconnect_click(lv_event_t* e);
 void on_password_ok(lv_event_t* e);
 void on_password_cancel(lv_event_t* e);
+void on_keyboard_event(lv_event_t* e);
 void on_screen_loaded(lv_event_t* e);
 void on_network_item_delete(lv_event_t* e);
 void update_network_list();
@@ -76,6 +135,7 @@ void update_connected_panel();
 void show_password_modal(const char* ssid);
 void hide_password_modal();
 void start_scan();
+void start_connection_watch();
 
 // Scan check timer callback
 void scan_check_cb(lv_timer_t* timer) {
@@ -141,9 +201,37 @@ void start_scan() {
     wifi_service_start_scan();
     
     // Create timer to check for completion (check every 300ms for up to 15 seconds)
-    static int scan_checks = 0;
-    scan_checks = 0;
     g_state.scan_check_timer = lv_timer_create(scan_check_cb, 300, nullptr);
+}
+
+void connection_check_cb(lv_timer_t* timer) {
+    if (!g_state.screen || !g_state.status_label) {
+        lv_timer_del(timer);
+        g_state.connection_check_timer = nullptr;
+        return;
+    }
+
+    if (wifi_service_is_connected()) {
+        lv_label_set_text(g_state.status_label, "Connected");
+        update_connected_panel();
+        lv_timer_del(timer);
+        g_state.connection_check_timer = nullptr;
+        return;
+    }
+
+    if (++g_state.connection_checks >= 60) {
+        lv_label_set_text(g_state.status_label, "Connection failed - check the password");
+        lv_timer_del(timer);
+        g_state.connection_check_timer = nullptr;
+    }
+}
+
+void start_connection_watch() {
+    if (g_state.connection_check_timer) {
+        lv_timer_del(g_state.connection_check_timer);
+    }
+    g_state.connection_checks = 0;
+    g_state.connection_check_timer = lv_timer_create(connection_check_cb, 500, nullptr);
 }
 
 // Screen loaded event - auto scan when entering the screen
@@ -332,60 +420,55 @@ void show_password_modal(const char* ssid) {
     strncpy(g_state.selected_ssid, ssid, sizeof(g_state.selected_ssid) - 1);
     g_state.selected_ssid[sizeof(g_state.selected_ssid) - 1] = '\0';
     
-    // Create modal backdrop
+    // Use an opaque full-screen password view.  A translucent, nested dialog
+    // forces LVGL to retain and blend many more draw tasks at once, which is
+    // unnecessary on this embedded portrait display.
     g_state.password_modal = lv_obj_create(g_state.screen);
     lv_obj_set_size(g_state.password_modal, SCREEN_WIDTH, SCREEN_HEIGHT);
     lv_obj_set_pos(g_state.password_modal, 0, 0);
-    lv_obj_set_style_bg_color(g_state.password_modal, lv_color_hex(0x000000), 0);
-    lv_obj_set_style_bg_opa(g_state.password_modal, LV_OPA_70, 0);
+    lv_obj_set_style_bg_color(g_state.password_modal, lv_color_hex(STYLE_COLOR_BACKGROUND), 0);
+    lv_obj_set_style_bg_opa(g_state.password_modal, LV_OPA_COVER, 0);
+    lv_obj_set_style_border_width(g_state.password_modal, 0, 0);
+    lv_obj_set_style_pad_all(g_state.password_modal, 0, 0);
     lv_obj_clear_flag(g_state.password_modal, LV_OBJ_FLAG_SCROLLABLE);
-    
-    // Modal dialog
-    lv_obj_t* dialog = lv_obj_create(g_state.password_modal);
-    lv_obj_set_size(dialog, SCREEN_WIDTH - 40, 280);
-    lv_obj_center(dialog);
-    lv_obj_set_style_bg_color(dialog, lv_color_hex(STYLE_COLOR_SURFACE), 0);
-    lv_obj_set_style_radius(dialog, 16, 0);
-    lv_obj_set_style_border_width(dialog, 0, 0);
-    lv_obj_clear_flag(dialog, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_add_flag(g_state.password_modal, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_move_foreground(g_state.password_modal);
     
     // Title
-    lv_obj_t* title = lv_label_create(dialog);
+    lv_obj_t* title = lv_label_create(g_state.password_modal);
     lv_label_set_text(title, "Enter Password");
     lv_obj_set_style_text_font(title, &lv_font_montserrat_20, 0);
     lv_obj_set_style_text_color(title, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
-    lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 16);
+    lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 28);
     
     // Network name
-    lv_obj_t* ssid_label = lv_label_create(dialog);
+    lv_obj_t* ssid_label = lv_label_create(g_state.password_modal);
     lv_label_set_text(ssid_label, ssid);
     lv_obj_set_style_text_font(ssid_label, &lv_font_montserrat_16, 0);
     lv_obj_set_style_text_color(ssid_label, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
-    lv_obj_align(ssid_label, LV_ALIGN_TOP_MID, 0, 46);
+    lv_obj_set_width(ssid_label, SCREEN_WIDTH - 48);
+    lv_obj_set_style_text_align(ssid_label, LV_TEXT_ALIGN_CENTER, 0);
+    lv_label_set_long_mode(ssid_label, LV_LABEL_LONG_DOT);
+    lv_obj_align(ssid_label, LV_ALIGN_TOP_MID, 0, 62);
     
     // Password text area
-    g_state.password_ta = lv_textarea_create(dialog);
-    lv_obj_set_size(g_state.password_ta, SCREEN_WIDTH - 80, 50);
-    lv_obj_align(g_state.password_ta, LV_ALIGN_TOP_MID, 0, 80);
+    g_state.password_ta = lv_textarea_create(g_state.password_modal);
+    lv_obj_set_size(g_state.password_ta, SCREEN_WIDTH - 48, 56);
+    lv_obj_align(g_state.password_ta, LV_ALIGN_TOP_MID, 0, 100);
     lv_textarea_set_placeholder_text(g_state.password_ta, "Password");
     lv_textarea_set_password_mode(g_state.password_ta, true);
     lv_textarea_set_one_line(g_state.password_ta, true);
+    lv_textarea_set_max_length(g_state.password_ta, 64);
     lv_obj_set_style_bg_color(g_state.password_ta, lv_color_hex(0x2A2A2A), 0);
     lv_obj_set_style_border_color(g_state.password_ta, lv_color_hex(STYLE_COLOR_PRIMARY), LV_STATE_FOCUSED);
     lv_obj_set_style_border_width(g_state.password_ta, 2, LV_STATE_FOCUSED);
     lv_obj_set_style_text_color(g_state.password_ta, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
     
-    // Create keyboard
-    lv_obj_t* kb = lv_keyboard_create(g_state.password_modal);
-    lv_keyboard_set_textarea(kb, g_state.password_ta);
-    lv_obj_set_size(kb, SCREEN_WIDTH, 280);
-    lv_obj_align(kb, LV_ALIGN_BOTTOM_MID, 0, 0);
-    
     // Buttons row
-    lv_obj_t* btn_row = lv_obj_create(dialog);
+    lv_obj_t* btn_row = lv_obj_create(g_state.password_modal);
     lv_obj_remove_style_all(btn_row);
-    lv_obj_set_size(btn_row, SCREEN_WIDTH - 80, 50);
-    lv_obj_align(btn_row, LV_ALIGN_TOP_MID, 0, 150);
+    lv_obj_set_size(btn_row, SCREEN_WIDTH - 48, 52);
+    lv_obj_align(btn_row, LV_ALIGN_TOP_MID, 0, 178);
     lv_obj_set_flex_flow(btn_row, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(btn_row, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     
@@ -412,6 +495,40 @@ void show_password_modal(const char* ssid) {
     lv_label_set_text(connect_label, "Connect");
     lv_obj_set_style_text_font(connect_label, &lv_font_montserrat_16, 0);
     lv_obj_center(connect_label);
+
+    // Keep the keyboard completely below the controls and explicitly handle
+    // its checkmark/cancel keys as connect/cancel actions.
+    lv_obj_t* kb = lv_keyboard_create(g_state.password_modal);
+    lv_keyboard_set_map(kb, LV_KEYBOARD_MODE_TEXT_LOWER,
+                        PASSWORD_KB_LOWER_MAP, PASSWORD_KB_LOWER_CTRL);
+    lv_keyboard_set_map(kb, LV_KEYBOARD_MODE_TEXT_UPPER,
+                        PASSWORD_KB_UPPER_MAP, PASSWORD_KB_UPPER_CTRL);
+    lv_keyboard_set_map(kb, LV_KEYBOARD_MODE_SPECIAL,
+                        PASSWORD_KB_SYMBOL_MAP, PASSWORD_KB_SYMBOL_CTRL);
+    lv_keyboard_set_mode(kb, LV_KEYBOARD_MODE_TEXT_LOWER);
+    lv_keyboard_set_textarea(kb, g_state.password_ta);
+    lv_keyboard_set_popovers(kb, true);
+    lv_obj_set_size(kb, SCREEN_WIDTH, 540);
+    lv_obj_align(kb, LV_ALIGN_BOTTOM_MID, 0, 0);
+    lv_obj_set_style_bg_color(kb, lv_color_hex(0x171A1F), LV_PART_MAIN);
+    lv_obj_set_style_bg_opa(kb, LV_OPA_COVER, LV_PART_MAIN);
+    lv_obj_set_style_pad_all(kb, 6, LV_PART_MAIN);
+    lv_obj_set_style_pad_row(kb, 8, LV_PART_MAIN);
+    lv_obj_set_style_pad_column(kb, 4, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(kb, lv_color_hex(0x343942), LV_PART_ITEMS);
+    lv_obj_set_style_bg_opa(kb, LV_OPA_COVER, LV_PART_ITEMS);
+    lv_obj_set_style_radius(kb, 10, LV_PART_ITEMS);
+    lv_obj_set_style_border_width(kb, 1, LV_PART_ITEMS);
+    lv_obj_set_style_border_color(kb, lv_color_hex(0x555B66), LV_PART_ITEMS);
+    lv_obj_set_style_text_color(kb, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), LV_PART_ITEMS);
+    lv_obj_set_style_text_font(kb, &lv_font_montserrat_20, LV_PART_ITEMS);
+    lv_obj_set_style_bg_color(kb, lv_color_hex(STYLE_COLOR_PRIMARY),
+                              static_cast<lv_style_selector_t>(
+                                  static_cast<uint32_t>(LV_PART_ITEMS) |
+                                  static_cast<uint32_t>(LV_STATE_PRESSED)));
+    lv_obj_add_event_cb(kb, on_keyboard_event, LV_EVENT_ALL, nullptr);
+
+    lv_obj_add_state(g_state.password_ta, LV_STATE_FOCUSED);
 }
 
 void hide_password_modal() {
@@ -434,8 +551,12 @@ void on_network_click(lv_event_t* e) {
     
     if (authmode == WIFI_AUTH_OPEN) {
         // Open network - connect directly
-        wifi_service_connect(ssid, nullptr);
-        lv_label_set_text(g_state.status_label, "Connecting...");
+        if (wifi_service_connect(ssid, nullptr)) {
+            lv_label_set_text(g_state.status_label, "Connecting...");
+            start_connection_watch();
+        } else {
+            lv_label_set_text(g_state.status_label, "Could not start connection");
+        }
     } else {
         // Secured network - show password modal
         show_password_modal(ssid);
@@ -465,15 +586,28 @@ void on_password_ok(lv_event_t* e) {
     const char* password = lv_textarea_get_text(g_state.password_ta);
     
     ESP_LOGI(TAG, "Connecting to %s", g_state.selected_ssid);
-    wifi_service_connect(g_state.selected_ssid, password);
-    wifi_service_save_credentials(g_state.selected_ssid, password);
-    
+    const bool started = wifi_service_connect(g_state.selected_ssid, password);
+
     hide_password_modal();
-    lv_label_set_text(g_state.status_label, "Connecting...");
+    if (started) {
+        lv_label_set_text(g_state.status_label, "Connecting...");
+        start_connection_watch();
+    } else {
+        lv_label_set_text(g_state.status_label, "Could not start connection");
+    }
 }
 
 void on_password_cancel(lv_event_t* e) {
     hide_password_modal();
+}
+
+void on_keyboard_event(lv_event_t* e) {
+    const lv_event_code_t code = lv_event_get_code(e);
+    if (code == LV_EVENT_READY) {
+        on_password_ok(e);
+    } else if (code == LV_EVENT_CANCEL) {
+        on_password_cancel(e);
+    }
 }
 
 // Back button callback for navbar

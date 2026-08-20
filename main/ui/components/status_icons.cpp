@@ -29,12 +29,16 @@ bool g_wifi_connected = false;
 wifi_signal_level_t g_wifi_signal = WIFI_SIGNAL_NONE;
 uint8_t g_battery_percentage = 100;
 bool g_battery_charging = false;
+uint32_t g_status_generation = 1;
+uint32_t g_applied_generation = 0;
+lv_timer_t* g_status_timer = nullptr;
 
 struct StatusSnapshot {
     bool wifi_connected;
     wifi_signal_level_t wifi_signal;
     uint8_t battery_percentage;
     bool battery_charging;
+    uint32_t generation;
 };
 
 StatusSnapshot snapshot_status() {
@@ -46,6 +50,7 @@ StatusSnapshot snapshot_status() {
     snapshot.wifi_signal = g_wifi_signal;
     snapshot.battery_percentage = g_battery_percentage;
     snapshot.battery_charging = g_battery_charging;
+    snapshot.generation = g_status_generation;
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
     }
@@ -138,24 +143,26 @@ void update_battery_for_instance(const StatusInstance& inst, const StatusSnapsho
 
 // Only the visible navbar can affect the current frame. Hidden screens receive
 // the latest snapshot when they become active.
-void update_all_wifi() {
-    StatusSnapshot snapshot = snapshot_status();
+void update_active_instances(const StatusSnapshot& snapshot) {
     cleanup_invalid_instances();
     for (const auto& inst : g_instances) {
         if (is_active_instance(inst)) {
             update_wifi_for_instance(inst, snapshot);
+            update_battery_for_instance(inst, snapshot);
         }
     }
 }
 
-void update_all_battery() {
+// This timer always runs in the LVGL adapter task. Background services only
+// change the protected state above, so no LVGL API crosses task boundaries.
+void status_timer_cb(lv_timer_t*) {
     StatusSnapshot snapshot = snapshot_status();
-    cleanup_invalid_instances();
-    for (const auto& inst : g_instances) {
-        if (is_active_instance(inst)) {
-            update_battery_for_instance(inst, snapshot);
-        }
+    if (snapshot.generation == g_applied_generation) {
+        return;
     }
+
+    update_active_instances(snapshot);
+    g_applied_generation = snapshot.generation;
 }
 
 void screen_loaded_cb(lv_event_t* event) {
@@ -173,23 +180,16 @@ void screen_loaded_cb(lv_event_t* event) {
 
 }  // namespace
 
-// Async callback to update WiFi in LVGL context
-static void wifi_update_async_cb(void* user_data) {
-    (void)user_data;
-    update_all_wifi();
-}
-
-// Async callback to update battery in LVGL context
-static void battery_update_async_cb(void* user_data) {
-    (void)user_data;
-    update_all_battery();
-}
-
 lv_obj_t* status_icons_create(lv_obj_t* parent) {
     // Initialize mutex on first call
     if (!g_status_mutex) {
         g_status_mutex = xSemaphoreCreateMutex();
     }
+    if (!g_status_timer) {
+        g_status_timer = lv_timer_create(status_timer_cb, 100, nullptr);
+    }
+
+    StatusSnapshot snapshot = snapshot_status();
     
     ESP_LOGI(TAG, "Creating status icons (total instances: %d)", (int)g_instances.size());
     
@@ -214,8 +214,8 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
     inst.wifi_icon = lv_label_create(cont);
     lv_label_set_text(inst.wifi_icon, LV_SYMBOL_WIFI);
     lv_obj_set_style_text_font(inst.wifi_icon, &lv_font_montserrat_16, 0);
-    if (g_wifi_connected) {
-        lv_obj_set_style_text_color(inst.wifi_icon, lv_color_hex(get_wifi_color(g_wifi_signal)), 0);
+    if (snapshot.wifi_connected) {
+        lv_obj_set_style_text_color(inst.wifi_icon, lv_color_hex(get_wifi_color(snapshot.wifi_signal)), 0);
         lv_obj_set_style_text_opa(inst.wifi_icon, LV_OPA_COVER, 0);
     } else {
         lv_obj_set_style_text_color(inst.wifi_icon, lv_color_hex(STYLE_COLOR_TEXT_DIM), 0);
@@ -225,7 +225,7 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
     // Battery percentage - fixed width to prevent layout shifts when text changes
     inst.battery_pct = lv_label_create(cont);
     char buf[8];
-    snprintf(buf, sizeof(buf), "%d%%", g_battery_percentage);
+    snprintf(buf, sizeof(buf), "%d%%", snapshot.battery_percentage);
     lv_label_set_text(inst.battery_pct, buf);
     lv_obj_set_style_text_font(inst.battery_pct, &lv_font_montserrat_12, 0);
     lv_obj_set_style_text_color(inst.battery_pct, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
@@ -234,10 +234,11 @@ lv_obj_t* status_icons_create(lv_obj_t* parent) {
     
     // Battery icon
     inst.battery_icon = lv_label_create(cont);
-    lv_label_set_text(inst.battery_icon, get_battery_symbol(g_battery_percentage, g_battery_charging));
+    lv_label_set_text(inst.battery_icon,
+                      get_battery_symbol(snapshot.battery_percentage, snapshot.battery_charging));
     lv_obj_set_style_text_font(inst.battery_icon, &lv_font_montserrat_16, 0);
     lv_obj_set_style_text_color(inst.battery_icon, 
-        lv_color_hex(get_battery_color(g_battery_percentage, g_battery_charging)), 0);
+        lv_color_hex(get_battery_color(snapshot.battery_percentage, snapshot.battery_charging)), 0);
     
     // Track this instance for future updates
     g_instances.push_back(inst);
@@ -258,13 +259,11 @@ void status_set_wifi(bool connected, wifi_signal_level_t signal_level) {
     changed = g_wifi_connected != connected || g_wifi_signal != signal_level;
     g_wifi_connected = connected;
     g_wifi_signal = signal_level;
+    if (changed) {
+        ++g_status_generation;
+    }
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
-    }
-
-    // Schedule LVGL work only when the visible value can actually change.
-    if (changed) {
-        lv_async_call(wifi_update_async_cb, nullptr);
     }
 
     ESP_LOGI(TAG, "WiFi status: %s, signal: %d",
@@ -282,13 +281,11 @@ void status_set_battery(uint8_t percentage, bool charging) {
     changed = g_battery_percentage != percentage || g_battery_charging != charging;
     g_battery_percentage = percentage;
     g_battery_charging = charging;
+    if (changed) {
+        ++g_status_generation;
+    }
     if (g_status_mutex) {
         xSemaphoreGive(g_status_mutex);
-    }
-
-    // Schedule LVGL work only when the visible value can actually change.
-    if (changed) {
-        lv_async_call(battery_update_async_cb, nullptr);
     }
 
     ESP_LOGD(TAG, "Battery: %d%%, charging: %s",

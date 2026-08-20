@@ -5,6 +5,7 @@
 #include <esp_https_ota.h>
 #include <esp_ota_ops.h>
 #include <esp_system.h>
+#include <esp_chip_info.h>
 #include <esp_crt_bundle.h>
 #include <esp_timer.h>
 #include <freertos/FreeRTOS.h>
@@ -66,6 +67,29 @@ int compare_versions(const char* v1, const char* v2) {
     return patch1 - patch2;
 }
 
+const char* ota_asset_prefix() {
+    esp_chip_info_t chip_info = {};
+    esp_chip_info(&chip_info);
+    return chip_info.revision >= 300
+        ? "Trimix_analyzer_esp32p4_v3_v"
+        : "Trimix_analyzer_esp32p4_pre3_v";
+}
+
+bool is_compatible_ota_asset(const char* name) {
+    if (!name) {
+        return false;
+    }
+
+    const char* prefix = ota_asset_prefix();
+    const size_t name_len = strlen(name);
+    constexpr char BIN_SUFFIX[] = ".bin";
+    constexpr size_t BIN_SUFFIX_LEN = sizeof(BIN_SUFFIX) - 1;
+
+    return strncmp(name, prefix, strlen(prefix)) == 0 &&
+           name_len > BIN_SUFFIX_LEN &&
+           strcmp(name + name_len - BIN_SUFFIX_LEN, BIN_SUFFIX) == 0;
+}
+
 // HTTP event handler for version check
 esp_err_t http_event_handler(esp_http_client_event_t* evt) {
     switch (evt->event_id) {
@@ -114,15 +138,15 @@ bool parse_release_json(const char* json_str) {
         }
     }
     
-    // Find firmware binary in assets
+    // Select only the OTA application image for this mutually incompatible P4
+    // silicon family. Factory images and the other P4 revision are ignored.
     cJSON* assets = cJSON_GetObjectItem(root, "assets");
     if (assets && cJSON_IsArray(assets)) {
         cJSON* asset = nullptr;
         cJSON_ArrayForEach(asset, assets) {
             cJSON* name = cJSON_GetObjectItem(asset, "name");
             if (name && cJSON_IsString(name)) {
-                // Look for .bin file
-                if (strstr(name->valuestring, ".bin") != nullptr) {
+                if (is_compatible_ota_asset(name->valuestring)) {
                     cJSON* url = cJSON_GetObjectItem(asset, "browser_download_url");
                     cJSON* size = cJSON_GetObjectItem(asset, "size");
                     
@@ -149,6 +173,9 @@ bool parse_release_json(const char* json_str) {
         ESP_LOGI(TAG, "Found release: %s (current: %s, newer: %s)", 
                  g_update_info.version, TRIMIX_ANALYZER_VERSION,
                  g_update_info.is_newer ? "yes" : "no");
+    } else {
+        ESP_LOGW(TAG, "Release has no compatible OTA asset with prefix %s",
+                 ota_asset_prefix());
     }
     
     return success;
