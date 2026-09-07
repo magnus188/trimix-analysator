@@ -1,0 +1,10 @@
+# KiCad local UI state, locks, and automatic history
+*.kicad_prl
+~*.lck
+_autosave-*
+*-backups/
+.history/
+.DS_Store
+.mcp-backups/
+__pycache__/
+*.pyc
