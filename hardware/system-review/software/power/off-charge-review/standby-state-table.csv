@@ -1,0 +1,12 @@
+state,host,acquisition,backlight,usb_permission,charger,acceptance
+Production commissioning Running,on,running,saved,source policy,software inhibited and J104 OPEN,implemented
+Production commissioning short press,off requested,stopped,zero if CPU remains alive,LOW,verified inhibit attempted,hardware cutoff pending physical test
+Unaccepted startup short press,off requested,stopped,zero,LOW,never enabled by standby,implemented
+Future qualified Preparing,on,stopped,zero,LOW during maintenance,inhibited,software implemented only synthetic qualified tests
+Future qualified Qualifying,on,stopped,zero,fresh requalification,inhibited,software implemented only synthetic qualified tests
+Future qualified Standby,on,stopped,zero,verified higher source,explicit verified profile enabled,real profile and positive net charging unqualified
+Future qualified Wake,on,restarted after inhibit,saved,source policy resumes,inhibited,software implemented only synthetic qualified tests
+Standby detach or fault,off requested,stopped,zero,LOW,inhibit attempted and fault retained,physical transients pending
+OffPending with external Guition USB,may remain on,stays stopped,zero retry,LOW,inhibit retry without false confirmation,service power hardware exception unqualified
+True hardware off,no host,off,off,nominal50mA branch only,retained or cold BQ state,not solved by standby
+Depleted or protection disconnected,no usable host,off,off,nominal50mA branch only,cold recovery not proved,hardware feasibility hold

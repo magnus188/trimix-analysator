@@ -1,0 +1,768 @@
+{
+  "status": "EL11_OPEN_NOT_A_DEMONSTRATED_FAILURE",
+  "date": "2026-09-08",
+  "method": "Closed-form conditional charge balance; no SPICE/IC model or physical test.",
+  "source_manifest": [
+    {
+      "path": "hardware/system-review/electrical/routing-candidate/permission-links-proposal/host-shared-bridge/r115-local/complete-controls-frozen.kicad_pcb",
+      "sha256": "b305a4c3ce2de15ec42ec1ddef622cf50f9166c37a5fa0958b50593f753eddb2"
+    },
+    {
+      "path": "hardware/system-review/electrical/usb-protection-research/upstream-ovp-review.json",
+      "sha256": "a63f5614efd9b7526c9670e5a008d192f0b35c8922c2c8f915f2bb0279749a51"
+    },
+    {
+      "path": "main/sensors/usb_input_policy.cpp",
+      "sha256": "b8de6b5f1d6c2a491c21c70655b4f4a66a284e29c4a1b8bd59000a7e14b4bf22"
+    },
+    {
+      "path": "main/sensors/power_monitor.cpp",
+      "sha256": "ca351643335adef72374fd7eb67f8d8a5c7e9c0fe32f784c0e8869ef71630ca3"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/review_calculations.py",
+      "sha256": "98407f161d396480f01a7b9b77646b83dce6a6191bcf33b80db4ea2081bdb683"
+    }
+  ],
+  "board_source_unchanged_after_read": true,
+  "board_inventory": {
+    "C101": {
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "fields": {
+        "Reference": "C101",
+        "Value": "1u / 16V X7R / 10%",
+        "Datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU",
+        "Description": "Unpolarized capacitor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "C0603C105K4RACTU",
+        "Manufacturer": "KEMET / YAGEO",
+        "Maximum_body_height_mm": "0.9",
+        "Effective_capacitance_review": "Nominal1uF as TI BQ VBUS recommendation; typical5.5V bias retains~90%; combined tolerance/temp/aging estimate~0.620uF, not guaranteed; physical startup/ripple pending",
+        "Purpose": "Short F-side VBUS bypass beside BQ25895; exact smaller purchased0603 package, not scaled0805"
+      },
+      "position": [
+        8.3,
+        82.3,
+        180
+      ],
+      "layer": "F.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_CHG_5V"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "U114": {
+      "footprint": "Trimix_Power:TI_DDC0006A",
+      "fields": {
+        "Reference": "U114",
+        "Value": "TPS22950CQDDCRQ1",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps22950-q1.pdf",
+        "Description": "",
+        "MPN": "TPS22950CQDDCRQ1",
+        "Manufacturer": "Texas Instruments",
+        "Maximum_body_height_mm": "1.1",
+        "Assembly": "Factory SMT preferred; accessible leaded DDC6 package"
+      },
+      "position": [
+        7.5,
+        90.5,
+        180
+      ],
+      "layer": "F.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_5V"
+        },
+        {
+          "pin": "2",
+          "net": "USB_OVP_5V"
+        },
+        {
+          "pin": "3",
+          "net": "GND"
+        },
+        {
+          "pin": "4",
+          "net": "USB_LIMIT_SET"
+        },
+        {
+          "pin": "5",
+          "net": "USB_CHG_5V"
+        },
+        {
+          "pin": "6",
+          "net": "USB_LIMIT_FAULT_N"
+        }
+      ]
+    },
+    "R116": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R116",
+        "Value": "1k / 0.1%",
+        "Datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "RT0603BRD071KL",
+        "Manufacturer": "YAGEO"
+      },
+      "position": [
+        7.75,
+        94.75
+      ],
+      "layer": "F.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_LIMIT_SET"
+        },
+        {
+          "pin": "2",
+          "net": "USB_ILIM_BRANCH"
+        }
+      ]
+    },
+    "U101": {
+      "footprint": "Trimix_Power:TI_RTW24_4x4_ThermalVias_ServicePad",
+      "fields": {
+        "Reference": "U101",
+        "Value": "BQ25895RTWR",
+        "Datasheet": "http://www.ti.com/lit/ds/symlink/bq25895.pdf",
+        "Description": "I2C Controlled Single Cell (Li-Ion / Li-Polymer) 5A Fast Charger with MaxCharge, USB BC1.2 Detection, 3.9..14V VBUS, 3.840..4.608V charge voltage range, 1.5 MHz (buck mode) and 500 kHz /1.5 MHz (boost mode), WQFN-24",
+        "KiLib_Generator": "package/no_lead",
+        "MPN": "BQ25895RTWR",
+        "Manufacturer": "Texas Instruments"
+      },
+      "position": [
+        13,
+        84
+      ],
+      "layer": "F.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "",
+          "net": null
+        },
+        {
+          "pin": "",
+          "net": null
+        },
+        {
+          "pin": "",
+          "net": null
+        },
+        {
+          "pin": "",
+          "net": null
+        },
+        {
+          "pin": "1",
+          "net": "USB_CHG_5V"
+        },
+        {
+          "pin": "2",
+          "net": "unconnected-(U101-D+-Pad2)"
+        },
+        {
+          "pin": "3",
+          "net": "unconnected-(U101-D--Pad3)"
+        },
+        {
+          "pin": "4",
+          "net": "/01  CHARGING + BATTERY/CHG_STAT_N"
+        },
+        {
+          "pin": "5",
+          "net": "I2C_SCL"
+        },
+        {
+          "pin": "6",
+          "net": "I2C_SDA"
+        },
+        {
+          "pin": "7",
+          "net": "CHG_INT_N"
+        },
+        {
+          "pin": "8",
+          "net": "GND"
+        },
+        {
+          "pin": "9",
+          "net": "/01  CHARGING + BATTERY/CHG_CE_N"
+        },
+        {
+          "pin": "10",
+          "net": "BQ_ILIM"
+        },
+        {
+          "pin": "11",
+          "net": "/01  CHARGING + BATTERY/PACK_TS"
+        },
+        {
+          "pin": "12",
+          "net": "/01  CHARGING + BATTERY/BQ_QON_N"
+        },
+        {
+          "pin": "13",
+          "net": "PACK_P"
+        },
+        {
+          "pin": "14",
+          "net": "PACK_P"
+        },
+        {
+          "pin": "15",
+          "net": "VSYS"
+        },
+        {
+          "pin": "16",
+          "net": "VSYS"
+        },
+        {
+          "pin": "17",
+          "net": "GND"
+        },
+        {
+          "pin": "18",
+          "net": "GND"
+        },
+        {
+          "pin": "19",
+          "net": "/01  CHARGING + BATTERY/BQ_SW"
+        },
+        {
+          "pin": "20",
+          "net": "/01  CHARGING + BATTERY/BQ_SW"
+        },
+        {
+          "pin": "21",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST"
+        },
+        {
+          "pin": "22",
+          "net": "/01  CHARGING + BATTERY/BQ_REGN"
+        },
+        {
+          "pin": "23",
+          "net": "/01  CHARGING + BATTERY/BQ_PMID"
+        },
+        {
+          "pin": "24",
+          "net": "unconnected-(U101-DSEL-Pad24)"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        },
+        {
+          "pin": "25",
+          "net": "GND"
+        }
+      ]
+    },
+    "R121": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R121",
+        "Value": "34k / 0.1% / 10ppm",
+        "Datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "TNPW060334K0BYEA",
+        "Manufacturer": "Vishay",
+        "Maximum_body_height_mm": ".6"
+      },
+      "position": [
+        8.75,
+        84.8,
+        90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_5V"
+        },
+        {
+          "pin": "2",
+          "net": "USB_OVP_UPPER"
+        }
+      ]
+    },
+    "R119": {
+      "footprint": "Resistor_SMD:R_0402_1005Metric",
+      "fields": {
+        "Reference": "R119",
+        "Value": "19.1k / 0.1%",
+        "Datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "RT0402BRD0719K1L",
+        "Manufacturer": "YAGEO"
+      },
+      "position": [
+        5.15,
+        88.15
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_LIMIT_SET"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "R126": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R126",
+        "Value": "1.65k / 0.1%",
+        "Datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "TNPW06031K65BEEA",
+        "Manufacturer": "Vishay",
+        "Maximum_body_height_mm": ".6"
+      },
+      "position": [
+        18.75,
+        90,
+        90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_ILM"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "C115": {
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "fields": {
+        "Reference": "C115",
+        "Value": "100n / 50V X7R",
+        "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA",
+        "Description": "Unpolarized capacitor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "C1608X7R1H104K080AA",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": ".9"
+      },
+      "position": [
+        12,
+        92.75,
+        -90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_5V"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "R122": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R122",
+        "Value": "649R / 0.1% / 10ppm",
+        "Datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "TNPW0603649RBYEA",
+        "Manufacturer": "Vishay",
+        "Maximum_body_height_mm": ".6"
+      },
+      "position": [
+        10.45,
+        87.8
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_UPPER"
+        },
+        {
+          "pin": "2",
+          "net": "USB_OVP_SET"
+        }
+      ]
+    },
+    "R124": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R124",
+        "Value": "21.5k / 0.1% / 25ppm",
+        "Datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "TNPW060321K5BEEA",
+        "Manufacturer": "Vishay",
+        "Maximum_body_height_mm": ".6"
+      },
+      "position": [
+        16,
+        86.35,
+        90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_5V"
+        },
+        {
+          "pin": "2",
+          "net": "USB_OVP_UVLO"
+        }
+      ]
+    },
+    "C116": {
+      "footprint": "Capacitor_SMD:C_0402_1005Metric",
+      "fields": {
+        "Reference": "C116",
+        "Value": "3.3n / 50V C0G / 5%",
+        "Datasheet": "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM1555C1H332JE01-01A.pdf",
+        "Description": "Unpolarized capacitor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "GRM1555C1H332JE01D",
+        "Manufacturer": "Murata",
+        "Maximum_body_height_mm": ".9"
+      },
+      "position": [
+        16.5,
+        89.05,
+        -90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_DVDT"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "R123": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R123",
+        "Value": "10k / 0.1% / 10ppm",
+        "Datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "TNPW060310K0BYEA",
+        "Manufacturer": "Vishay",
+        "Maximum_body_height_mm": ".6"
+      },
+      "position": [
+        13.725,
+        87.6
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_SET"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "C114": {
+      "footprint": "Capacitor_SMD:C_1206_3216Metric",
+      "fields": {
+        "Reference": "C114",
+        "Value": "4.7u / 25V X7R / 10%",
+        "Datasheet": "https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3216x7r1e475k160ac.pdf",
+        "Description": "Unpolarized capacitor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "C3216X7R1E475K160AC",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": "1.8",
+        "Effective_capacitance_review": "5.5V engineering estimate .9708u > TPS7A20 .47u effective minimum; at3V more margin; not a guaranteed production corner"
+      },
+      "position": [
+        9.9,
+        90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_5V"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "R125": {
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "fields": {
+        "Reference": "R125",
+        "Value": "10k / 0.1% / 25ppm",
+        "Datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+        "Description": "Resistor",
+        "KiLib_Generator": "SMD_2terminal_chip_molded",
+        "MPN": "TNPW060310K0BEEA",
+        "Manufacturer": "Vishay",
+        "Maximum_body_height_mm": ".6"
+      },
+      "position": [
+        17.75,
+        86.95,
+        90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_UVLO"
+        },
+        {
+          "pin": "2",
+          "net": "GND"
+        }
+      ]
+    },
+    "U115": {
+      "footprint": "Trimix_Power:TI_RPW0010A",
+      "fields": {
+        "Reference": "U115",
+        "Value": "TPS259470ARPWR",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps25947.pdf",
+        "Description": "",
+        "MPN": "TPS259470ARPWR",
+        "Manufacturer": "Texas Instruments",
+        "Maximum_body_height_mm": "1.0",
+        "Assembly": "Factory reflow required; asymmetric HotRod RPW10 land/paste pattern"
+      },
+      "position": [
+        14.5,
+        90
+      ],
+      "layer": "B.Cu",
+      "physical_pad_nets": [
+        {
+          "pin": "1",
+          "net": "USB_OVP_UVLO"
+        },
+        {
+          "pin": "1",
+          "net": "USB_OVP_UVLO"
+        },
+        {
+          "pin": "2",
+          "net": "USB_OVP_SET"
+        },
+        {
+          "pin": "3",
+          "net": "USB_CC_INT_N"
+        },
+        {
+          "pin": "4",
+          "net": "unconnected-(U115-FLT-Pad4)"
+        },
+        {
+          "pin": "4",
+          "net": "unconnected-(U115-FLT-Pad4)"
+        },
+        {
+          "pin": "5",
+          "net": "USB_5V"
+        },
+        {
+          "pin": "6",
+          "net": "USB_OVP_5V"
+        },
+        {
+          "pin": "7",
+          "net": "USB_OVP_DVDT"
+        },
+        {
+          "pin": "7",
+          "net": "USB_OVP_DVDT"
+        },
+        {
+          "pin": "8",
+          "net": "GND"
+        },
+        {
+          "pin": "9",
+          "net": "USB_OVP_ILM"
+        },
+        {
+          "pin": "10",
+          "net": "unconnected-(U115-ITIMER-Pad10)"
+        },
+        {
+          "pin": "10",
+          "net": "unconnected-(U115-ITIMER-Pad10)"
+        }
+      ]
+    }
+  },
+  "existing_illustration": {
+    "start_V": 5.489549936726078,
+    "net_current_A": 2.2,
+    "duration_us": 1.2,
+    "assumed_effective_capacitance_uF": 2.9123550000000002,
+    "conditional_peak_V": 6.396032834587087
+  },
+  "headroom": [
+    {
+      "start_V": 5.0,
+      "ceiling_V": 5.5,
+      "available_charge_uC": 1.4561775000000001,
+      "max_time_at_assumed_2_2A_us": 0.6618988636363636,
+      "effective_capacitance_required_at_2_2A_1_2us_uF": 5.28
+    },
+    {
+      "start_V": 5.0,
+      "ceiling_V": 6.0,
+      "available_charge_uC": 2.9123550000000002,
+      "max_time_at_assumed_2_2A_us": 1.3237977272727273,
+      "effective_capacitance_required_at_2_2A_1_2us_uF": 2.64
+    },
+    {
+      "start_V": 5.25,
+      "ceiling_V": 5.5,
+      "available_charge_uC": 0.7280887500000001,
+      "max_time_at_assumed_2_2A_us": 0.3309494318181818,
+      "effective_capacitance_required_at_2_2A_1_2us_uF": 10.56
+    },
+    {
+      "start_V": 5.25,
+      "ceiling_V": 6.0,
+      "available_charge_uC": 2.1842662500000003,
+      "max_time_at_assumed_2_2A_us": 0.9928482954545454,
+      "effective_capacitance_required_at_2_2A_1_2us_uF": 3.52
+    },
+    {
+      "start_V": 5.489549936726078,
+      "ceiling_V": 5.5,
+      "available_charge_uC": 0.030434294026122317,
+      "max_time_at_assumed_2_2A_us": 0.01383377001187378,
+      "effective_capacitance_required_at_2_2A_1_2us_uF": 252.63004929244354
+    },
+    {
+      "start_V": 5.489549936726078,
+      "ceiling_V": 6.0,
+      "available_charge_uC": 1.4866117940261223,
+      "max_time_at_assumed_2_2A_us": 0.6757326336482374,
+      "effective_capacitance_required_at_2_2A_1_2us_uF": 5.171906499663421
+    }
+  ],
+  "source_receipts": [
+    {
+      "path": "hardware/system-review/electrical/usb-protection-research/tps25947-ovp-review-datasheet.pdf",
+      "sha256": "8f96de389903091650d4f462dcfad3210071c3ae7093623a7978f34baf8a65b4",
+      "url": "https://www.ti.com/lit/ds/symlink/tps25947.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/usb-protection-research/tps22950-q1-review-datasheet.pdf",
+      "sha256": "68091fcd2738730173eabceefe5845683be207605672ee3cf7774670574be08d",
+      "url": "https://www.ti.com/lit/ds/symlink/tps22950-q1.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/usb-protection-research/c3216x7r1e475k160ac-ovp.pdf",
+      "sha256": "10189f4cac2dd484fd2b96c5ca4b2f4ca8ed649203ae7dc740b7524fffc8bc30",
+      "url": "https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3216x7r1e475k160ac.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/usb-protection-research/transient-options/sources/tps1641.pdf",
+      "sha256": "3791e8cc9ee557bbd76ab543a30c4fa602237d1deeef0f443d35764c9f55560c",
+      "url": "https://www.ti.com/lit/ds/symlink/tps1641.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/bq25895.pdf",
+      "sha256": "2667a8d185cbf9138aed63f47616d35c0d0d29da877702b32b301caa55f8d404",
+      "url": "https://www.ti.com/lit/ds/symlink/bq25895.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/sources/tps25200.pdf",
+      "sha256": "fafdb867c456a2b24ef4fe5908e7d6da75703c0f24a36f984864d1d2daf9cd4a",
+      "url": "https://www.ti.com/lit/ds/symlink/tps25200.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/sources/fpf2286ucx-d.pdf",
+      "sha256": "5e03524e9b914dc7ba0953d097f7e78e4c917404fe0d1322443329adf7af7aa0",
+      "url": "https://www.onsemi.com/download/data-sheet/pdf/fpf2286ucx-d.pdf"
+    }
+  ],
+  "limitations": [
+    "2.2 A is not a guaranteed instantaneous source-current cap.",
+    "1.2 us is a typical-only OVLO response to VOUT beginning to fall, not a guaranteed zero-current interval.",
+    "2.912355 uF combines an estimated DC-bias factor and engineering aging allowance; it is not a guaranteed combined minimum.",
+    "No specified input waveform/impedance, current waveform, switch control model, ESR/ESL, cable/trace inductance or ceramic nonlinear-capacitance integration.",
+    "Starting at the high DC threshold is one conditional state, not the initial voltage of every 5 V input step.",
+    "Additional downstream capacitance through U114 and load current may help but are not credited as unconditional local shunt capacitance.",
+    "Finite capacitor growth improves assumed charge headroom but cannot supply the missing maximum response and surge-current bounds.",
+    "No authoritative EDA, routed source, firmware, component selection or charge permission modified."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "samtec-htsw-series.pdf": "https://suddendocs.samtec.com/prints/htsw-xxx-xx-xxx-x-xx-xx-xx-mkt.pdf",
+  "samtec-htsw-solderheat.pdf": "https://suddendocs.samtec.com/testreports/tc0310-leadfree-0120rev01web.pdf",
+  "samtec-tsw-series.pdf": "https://suddendocs.samtec.com/prints/tsw-xxx-xx-xxx-x-xx-xxx-mkt.pdf",
+  "samtec-tsw-footprint.pdf": "https://suddendocs.samtec.com/prints/tsw-xxx-xx-x-x-xx-xxx-footprint.pdf",
+  "samtec-tsw-catalog.pdf": "https://suddendocs.samtec.com/catalog_english/tsw_th.pdf",
+  "samtec-idss-catalog.pdf": "https://suddendocs.samtec.com/catalog_english/idss.pdf",
+  "samtec-idsx-series.pdf": "https://suddendocs.samtec.com/prints/idsx-xx-x-xx.xx-xxx-xxx-mkt.pdf",
+  "samtec-cable.pdf": "https://suddendocs.samtec.com/prints/cb-xx-28-7-36-xxx-x.pdf",
+  "harwin-m20-998.pdf": "https://content.harwin.com/asset/1590d228-db5c-4836-ab0c-0f146730b624/DRG-00478-Technical-Drawing-Datasheet-M20-998-pdf.pdf",
+  "harwin-tin-plating.pdf": "DOWNLOAD FAILED HTTP 403; web primary source https://cdn.harwin.com/pdfs/Pure_Tin_The_choice_for_connectors.pdf",
+  "samtec-idsd-qualification.pdf": "https://suddendocs.samtec.com/testreports/112488_report_rev_1_qua.pdf",
+  "harwin-gold-product": "https://www.harwin.com/products/M20-9981345",
+  "harwin-tin-product": "https://www.harwin.com/products/M20-9981346",
+  "samtec-gold-code-primary-list": "https://www.samtec.com/products/idsd-13-s-04.75-g",
+  "belden-reference-cable.pdf": "DOWNLOAD FAILED; HTML response, no PDF saved. Old attempted URL https://catalog.belden.com/techdatam/9L28050.pdf",
+  "samtec-htsw-footprint.pdf": "https://suddendocs.samtec.com/prints/htsw-xxx-xx-xxx-x-xx-xx-xx-footprint.pdf",
+  "samtec-htsw-exact-product": "https://www.samtec.com/products/htsw-113-07-l-d",
+  "belden-reference-current-web-only": "https://catalog.belden.com/techdata/EN/9L28026_techdata.pdf"
+}

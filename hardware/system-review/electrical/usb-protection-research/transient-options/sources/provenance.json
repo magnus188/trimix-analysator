@@ -1,0 +1,22 @@
+[
+  {
+    "file": "tps1641.pdf",
+    "url": "https://www.ti.com/lit/ds/symlink/tps1641.pdf",
+    "sha256": "3791e8cc9ee557bbd76ab543a30c4fa602237d1deeef0f443d35764c9f55560c"
+  },
+  {
+    "file": "ltc4231.pdf",
+    "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/LTC4231.pdf",
+    "error": "The read operation timed out"
+  },
+  {
+    "file": "ltc4210.pdf",
+    "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/421012fa.pdf",
+    "error": "The read operation timed out"
+  },
+  {
+    "file": "max17613.pdf",
+    "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17613A-MAX17613C.pdf",
+    "error": "The read operation timed out"
+  }
+]

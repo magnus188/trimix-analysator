@@ -1,0 +1,18 @@
+{
+  "status": "pass_exact_structure_except_two_values",
+  "changed_properties": [
+    {
+      "ref": "R507",
+      "old": "100R / 0.1%",
+      "new": "680R / 0.1%"
+    },
+    {
+      "ref": "R506",
+      "old": "100R / 0.1%",
+      "new": "680R / 0.1%"
+    }
+  ],
+  "before_sha256": "dbbc314435b5fbcc38f3aa1db0aee66d9c0baca076e6bac13775945592c80dcb",
+  "after_sha256": "56bb45eac6cf1cf9e7b81b0e5ace205fd2b89d2ad9325efc26ea2ddc739c7ca7",
+  "protected": "All other AST nodes including coordinates, copper, outline, models, netlists, reference silkscreen and rules are identical."
+}

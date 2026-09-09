@@ -1,0 +1,13 @@
+{
+  "status": "passed digitally",
+  "scope": "Independent binding check of final SD software receipt; no new firmware execution or physical testing",
+  "receipt_sha256": "481973271ecb77056cdce5c7441fab4f06f57d394d5fd0df7a52d8e7a940b684",
+  "bindings_checked": 344,
+  "mismatches": [],
+  "counts": {
+    "host_ctest": 53,
+    "sanitizer_ctest": 53,
+    "repository_checks": 98,
+    "portable_static_units": 22
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "qualified_region_pcb_mm": [
+    7.5,
+    84,
+    20,
+    94.5
+  ],
+  "max_extension_below_board_mm": 1.95,
+  "carrier_pocket_world_min_Z": 18.55,
+  "parts": {
+    "U115": {
+      "xy_mm": [
+        14.5,
+        90.0
+      ],
+      "rotation_deg": 0.0,
+      "side": "B.Cu",
+      "courtyard": [
+        13.005,
+        88.505,
+        15.995,
+        91.495
+      ]
+    },
+    "C114": {
+      "xy_mm": [
+        10.5,
+        90.0
+      ],
+      "rotation_deg": 0.0,
+      "side": "B.Cu",
+      "courtyard": [
+        8.155,
+        88.805,
+        12.845,
+        91.195
+      ]
+    },
+    "C115": {
+      "xy_mm": [
+        17.0,
+        90.0
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        16.225,
+        88.475,
+        17.775,
+        91.525
+      ]
+    },
+    "C116": {
+      "xy_mm": [
+        12.0,
+        92.75
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        11.225,
+        91.225,
+        12.775,
+        94.275
+      ]
+    },
+    "R121": {
+      "xy_mm": [
+        10.5,
+        85.75
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        9.725,
+        84.225,
+        11.275,
+        87.275
+      ]
+    },
+    "R122": {
+      "xy_mm": [
+        8.75,
+        86.9
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        7.975,
+        85.375,
+        9.525,
+        88.425
+      ]
+    },
+    "R123": {
+      "xy_mm": [
+        13.5,
+        86.5
+      ],
+      "rotation_deg": 0.0,
+      "side": "B.Cu",
+      "courtyard": [
+        11.975,
+        85.725,
+        15.025,
+        87.275
+      ]
+    },
+    "R124": {
+      "xy_mm": [
+        16.0,
+        86.9
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        15.225,
+        85.375,
+        16.775,
+        88.425
+      ]
+    },
+    "R125": {
+      "xy_mm": [
+        17.75,
+        86.95
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        16.975,
+        85.425,
+        18.525,
+        88.475
+      ]
+    },
+    "R126": {
+      "xy_mm": [
+        18.75,
+        90.0
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        17.975,
+        88.475,
+        19.525,
+        91.525
+      ]
+    },
+    "R127": {
+      "xy_mm": [
+        10.25,
+        92.75
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        9.475,
+        91.225,
+        11.025,
+        94.275
+      ]
+    },
+    "R128": {
+      "xy_mm": [
+        8.5,
+        92.75
+      ],
+      "rotation_deg": 90.0,
+      "side": "B.Cu",
+      "courtyard": [
+        7.725,
+        91.225,
+        9.275,
+        94.275
+      ]
+    }
+  },
+  "root_CAD_pocket_qualification": "localized carrier top opening extension authorized; exact final BRep check pending",
+  "native_DRC_required": true
+}

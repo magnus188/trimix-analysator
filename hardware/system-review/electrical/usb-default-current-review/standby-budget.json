@@ -1,0 +1,180 @@
+{
+  "status": "missing evidence; conditional current budget only",
+  "topology_assertions_passed": 12,
+  "source_net_members": {
+    "USB_5V": [
+      "C115",
+      "D901",
+      "J101",
+      "J901",
+      "J902",
+      "R110",
+      "R121",
+      "R124",
+      "TP1002",
+      "U115"
+    ],
+    "USB_CHG_5V": [
+      "C101",
+      "U101",
+      "U114"
+    ],
+    "USB_OVP_5V": [
+      "C114",
+      "R113",
+      "R127",
+      "U114",
+      "U115"
+    ]
+  },
+  "cases": [
+    {
+      "VBUS_V": 5.0,
+      "terms": [
+        {
+          "path": "U115 supply",
+          "A": 0.00061,
+          "basis": "TI maximum at VIN=12V/OUT open; application at 5V is not a new guaranteed limit"
+        },
+        {
+          "path": "U115 OVLO upper leg",
+          "A": 0.00014473852450016506,
+          "basis": "R121+R122; 0.3% independent tolerance/TCR/drift allowance"
+        },
+        {
+          "path": "U115 UVLO upper leg",
+          "A": 0.00023360938175277118,
+          "basis": "R124; 0.45% allowance"
+        },
+        {
+          "path": "Protected-node bleed",
+          "A": 0.0005107252298263534,
+          "basis": "R127; 2.1% allowance"
+        },
+        {
+          "path": "Supervisor sense upper leg",
+          "A": 5.1461083070538737e-05,
+          "basis": "R113; 0.45% allowance"
+        },
+        {
+          "path": "Raw VBUS detect upper leg",
+          "A": 5.757894361063736e-06,
+          "basis": "R110; 2.1% allowance"
+        },
+        {
+          "path": "U114 supply",
+          "A": 6e-05,
+          "basis": "TI ON-state maximum; OUT open"
+        },
+        {
+          "path": "U114 ON pin",
+          "A": 5e-08,
+          "basis": "TI ON leakage maximum"
+        },
+        {
+          "path": "D901 leakage reference",
+          "A": 1e-07,
+          "basis": "TI maximum at 5V; no full-temperature/5.5V extrapolation claimed"
+        }
+      ],
+      "conditional_upstream_subtotal_A": 0.0016164421135108921,
+      "with_BQ_35uA_reference_A": 0.0016514421135108922,
+      "remaining_to_2_5mA_before_unbounded_terms_A": 0.0008485578864891079,
+      "with_BQ_non_HIZ_3mA_reference_A": 0.004616442113510892
+    },
+    {
+      "VBUS_V": 5.5,
+      "terms": [
+        {
+          "path": "U115 supply",
+          "A": 0.00061,
+          "basis": "TI maximum at VIN=12V/OUT open; application at 5V is not a new guaranteed limit"
+        },
+        {
+          "path": "U115 OVLO upper leg",
+          "A": 0.00015921237695018154,
+          "basis": "R121+R122; 0.3% independent tolerance/TCR/drift allowance"
+        },
+        {
+          "path": "U115 UVLO upper leg",
+          "A": 0.00025697031992804833,
+          "basis": "R124; 0.45% allowance"
+        },
+        {
+          "path": "Protected-node bleed",
+          "A": 0.0005617977528089888,
+          "basis": "R127; 2.1% allowance"
+        },
+        {
+          "path": "Supervisor sense upper leg",
+          "A": 5.660719137759261e-05,
+          "basis": "R113; 0.45% allowance"
+        },
+        {
+          "path": "Raw VBUS detect upper leg",
+          "A": 6.33368379717011e-06,
+          "basis": "R110; 2.1% allowance"
+        },
+        {
+          "path": "U114 supply",
+          "A": 6e-05,
+          "basis": "TI ON-state maximum; OUT open"
+        },
+        {
+          "path": "U114 ON pin",
+          "A": 5e-08,
+          "basis": "TI ON leakage maximum"
+        },
+        {
+          "path": "D901 leakage reference",
+          "A": 1e-07,
+          "basis": "TI maximum at 5V; no full-temperature/5.5V extrapolation claimed"
+        }
+      ],
+      "conditional_upstream_subtotal_A": 0.0017110713248619813,
+      "with_BQ_35uA_reference_A": 0.0017460713248619814,
+      "remaining_to_2_5mA_before_unbounded_terms_A": 0.0007539286751380188,
+      "with_BQ_non_HIZ_3mA_reference_A": 0.004711071324861982
+    }
+  ],
+  "conditions": [
+    "Normal DC polarity, healthy components and nonnegative divider-input pin voltages; no fault clamp current or inrush.",
+    "BQ EN_HIZ must be verified, ADC inactive, and watchdog/reset behaviour managed. Charge disable alone is insufficient.",
+    "Host and external CC/BC detector supplies originate from the battery while isolated, not from VBUS.",
+    "BQ 35uA maximum is specified at 5V with no battery and battery monitor disabled. Battery-present and 5.5V behaviour are not bounded here."
+  ],
+  "unbounded_terms_and_exclusions": [
+    "Whole-board temperature, PCB contamination/leakage, MLCC insulation and assembled connector leakage.",
+    "U115 supply-current voltage/test-condition transfer and active-ramp/fault behaviour.",
+    "HIZ/ADC transitions, source reclassification, USB attach/inrush, POR/watchdog and firmware-stall windows.",
+    "Host-off or depleted-pack recovery; no firmware can enforce this mode while the host is unpowered.",
+    "CC/data-line signalling current is separate from this VBUS-only sum."
+  ],
+  "acceptance": "Neither the residual numerical margin nor matching topology establishes a 2.5mA average-current compliance result. Bench and missing manufacturer bounds remain required.",
+  "sources": [
+    {
+      "path": "analyzer-netlist.xml",
+      "sha256": "e63de8b7c7aa6b2e4429779e0dfd505191ec9a4e18d6459d323c22bebeae81b1"
+    },
+    {
+      "path": "usb-default-current-review/standby_budget.py",
+      "sha256": "9e6288f33b2829d7c87e84d08722b5919ae138204b23cf161f66cc5b27d1754b"
+    },
+    {
+      "path": "sources/bq25895.pdf",
+      "sha256": "2667a8d185cbf9138aed63f47616d35c0d0d29da877702b32b301caa55f8d404"
+    },
+    {
+      "path": "usb-protection-research/tpd1e10b06.pdf",
+      "sha256": "6ffe72cb5f5e607fcafd05eef9809632402241eb44cd859a3652f43a35323da9"
+    },
+    {
+      "path": "usb-protection-research/tps22950-q1-review-datasheet.pdf",
+      "sha256": "68091fcd2738730173eabceefe5845683be207605672ee3cf7774670574be08d"
+    },
+    {
+      "path": "usb-protection-research/tps25947-ovp-review-datasheet.pdf",
+      "sha256": "8f96de389903091650d4f462dcfad3210071c3ae7093623a7978f34baf8a65b4"
+    }
+  ]
+}

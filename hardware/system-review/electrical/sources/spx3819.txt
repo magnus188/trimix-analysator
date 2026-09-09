@@ -1,0 +1,432 @@
+                                                                                           SPX3819
+                                                500mA Low-Noise LDO Voltage Regulator
+
+December 2019                                                                                   Rev. 2.0.5
+
+GENERAL DESCRIPTION                                         APPLICATIONS
+The SPX3819 is a positive voltage regulator                 • Portable Consumer Equipment
+with a low dropout voltage and low noise
+                                                            • Portable Instrumentation
+output. In addition, this device offers a very low
+ground current of 800μA at 100mA output. The                • Industrial Equipment
+SPX3819 has an initial tolerance of less than
+                                                            • SMPS Post Regulators
+1% max and a logic compatible ON/OFF
+switched    input.    When     disabled,    power
+consumption drops to nearly zero. Other key                 FEATURES
+features include reverse battery protection,
+                                                            • Low Noise: 40μV Possible
+current limit, and thermal shutdown. The
+SPX3819 includes a reference bypass pin for                 • High Accuracy: 1%
+optimal low noise output performance. With its
+                                                            • Reverse Battery Protection
+very low output temperature coefficient, this
+device also makes a superior low power voltage              • Low Dropout: 340mV at Full Load
+reference.
+                                                            • Low Quiescent Current: 90μA
+The SPX3819 is an excellent choice for use in
+                                                            • Zero Off-Mode Current
+battery-powered applications such as cordless
+telephones, radio control systems, and portable             • Fixed & Adjustable Output Voltages:
+computers. It is available in several fixed                   − 1.2V, 1.5V, 1.8V, 2.5V, 3.0V, 3.3V & 5.0V
+output voltage options or with an adjustable                    Fixed Output Voltages
+output voltage.
+                                                              − ≥1.235V Adjustable Output Voltages
+This device is offered in 8 pin NSOIC, 8 pin DFN
+                                                            • Available in RoHS Compliant, Lead Free
+and 5-pin SOT-23 packages.
+                                                              Packages:
+                                                              − 5-pin SOT-23, 8-pin SOIC and 8-pin DFN
+
+
+
+
+TYPICAL APPLICATION DIAGRAM
+
+
+
+
+                                      Fig. 1: SPX3819 Application Circuit
+
+                                                     1/13                                      Rev. 2.0.5
+                                                                                                                                       SPX3819
+                                                                     500mA Low-Noise LDO Voltage Regulator
+
+ABSOLUTE MAXIMUM RATINGS                                                            OPERATING RATINGS
+These are stress ratings only and functional operation of                           Input Voltage Range VIN ................................ 2.5V to 16V
+the device at these ratings or any other above those                                Enable Pin EN ............................................... 0.0V to VIN
+indicated in the operation sections of the specifications
+                                                                                    Junction Temperature Range ................. -40°C to +125°C
+below is not implied. Exposure to absolute maximum rating
+conditions for extended periods of time may affect                                  Thermal Resistance1 .....................................................
+reliability.                                                                          θJA (SOT23-5)...............................................191°C/W
+                                                                                      θJA (NSOIC-8)............................................ 128.4°C/W
+VIN, EN ..................................................... -20V to +20V
+                                                                                      θJA (DFN-8) ................................................... 59°C/W
+Storage Temperature .............................. -65°C to 150°C
+Junction Temperature .......................................... 150°C               Note 1: The maximum allowable power dissipation is a
+Power Dissipation ................................ Internally Limited               function of maximum operating junction temperature,
+                                                                                    TJ(max) the junction to ambient thermal resistance, and the
+Lead Temperature (Soldering, 5 sec) ..................... 260°C
+                                                                                    ambient θJA, and the ambient temperature TA. The
+ESD Rating (HBM - Human Body Model) .................... 1kV                        maximum allowable power dissipation at any ambient
+                                                                                    temperature is given: PD(max) = (TJ(max)-TA)/θJA, exceeding
+                                                                                    the maximum allowable power limit will result in excessive
+                                                                                    die temperature; thus, the regulator will go into thermal
+                                                                                    shutdown.
+
+
+ELECTRICAL SPECIFICATIONS
+Specifications with standard type are for an Operating Junction Temperature of TJ = 25°C only; limits applying over the full
+Operating Junction Temperature range are denoted by a “•”. Minimum and Maximum limits are guaranteed through test,
+design, or statistical correlation. Typical values represent the most likely parametric norm at TJ = 25°C, and are provided for
+reference purposes only. Unless otherwise indicated, VIN = VOUT + 1V (VIN = VOUT + 1.2V for 1.2V option), IL = 100µA, CL =
+1µF, VEN ≥ 2.5V, TA= TJ = 25°C.
+
+             Parameter                        Min.         Typ.         Max.           Units                               Conditions
+                                               -1                            +1
+Output Voltage Tolerance                                                                 %
+                                               -2                            +2                    •
+Output Voltage Temperature
+                                                             57                      ppm/°C
+Coefficient
+                                                           0.04              0.1                        VIN = VOUT +1 to 16V and VEN ≤ 6V
+                                                                             0.2                   •    VIN = VEN = VOUT +1 ≤ 8V
+Line Regulation                                                                        %/V
+                                                                                                        VIN = VEN = VOUT +1 ≤16V
+                                                                             0.2
+                                                                                                        TA = 25°C to 85°C
+Load Regulation                                            0.05          0.4             %              IL = 0.1mA to 500mA
+                                                            10           60
+                                                                                                        IL = 100µA
+                                                                         80                        •
+                                                            125          175
+                                                                                                        IL = 50mA
+                                                                         250                       •
+Dropout Voltage (VIN-VOUT) 2                                                            mV
+                                                            180          350
+                                                                                                        IL = 150mA
+                                                                         450                       •
+                                                            340          550
+                                                                                                        IL = 500mA
+                                                                         700                       •
+                                                           0.05           3                             VENABLE ≤ 0.4V
+Quiescent Current (IGND)                                                                 µA
+                                                                          8                        •    VENABLE = 0.25V
+                                                             90          150
+                                                                                                        IL = 100µA
+                                                                         190                       •
+                                                                                         µA
+                                                            250          650
+                                                                                                        IL = 50mA
+                                                                         900                       •
+Ground Pin Current (IGND)
+                                                            1.0          2.0
+                                                                                                        IL = 150mA
+                                                                         2.5                       •
+                                                                                        mA
+                                                            6.5          25.0
+                                                                                                        IL = 500mA
+                                                                         30.0                      •
+Ripple Rejection (PSRR)                                      70                          dB
+
+
+
+
+                                                                             2/13                                                             Rev. 2.0.5
+                                                                                                             SPX3819
+                                                        500mA Low-Noise LDO Voltage Regulator
+
+           Parameter                    Min.     Typ.     Max.      Units                            Conditions
+                                                 800
+Current Limit (ILIMIT)                                                mA             VOUT=0V
+                                                           950                   •
+                                                                                     IL = 10mA, CL = 1.0µF, CIN = 1µF,
+                                                 300                  µVRMS
+                                                                                     (10Hz – 100kHz)
+Output Noise (eNO)
+                                                                                     IL = 10mA, CL = 1.0µF, CBYP = 1µF,
+                                                  40                  µVRMS
+                                                                                     CIN = 1µF, (10Hz – 100kHz)
+Input Voltage Level Logic Low
+                                                           0.4          V            OFF
+(VIL)
+Input Voltage Level Logic High
+                                           2                            V            ON
+(VIH)
+                                                 0.01        2                       VIL ≤ 0.4V
+ENABLE Input Current                                                    µA
+                                                  3         20                       VIH ≥ 2.0V
+
+Note 2: Not applicable to output voltage 2V or less.
+
+
+PIN ASSIGNMENT
+
+
+
+
+                                                Fig. 2: SPX3819 Pin Assignment
+
+
+PIN DESCRIPTION
+                   Pin #         Pin #         Pin #
+   Name                                                                                Description
+                  nSOIC           DFN          SOT-23
+
+     VIN                 2         3             1       Supply Input
+    GND          5, 6, 7, 8        7             2       Ground
+    VOUT                 3         5             5       Regulator Output
+                                                         Enable(input). CMOS compatible control input. Logic high – enable;
+     EN                  1         1             3
+                                                         logic low or open = shutdown
+                                                         Adjustable part only. Feedback input. Connect to resistive voltage-
+     ADJ
+                                                         divider network
+                         4         8             4
+                                                         Fixed version only. Internal reference bypass pin. Connect 10nF
+     BYP
+                                                         to ground to reduce thermal noise on the output.
+     NC                  -       2, 4, 6         -       No Connect
+
+
+
+
+                                                            3/13                                                  Rev. 2.0.5
+                                                                                                     SPX3819
+                                                      500mA Low-Noise LDO Voltage Regulator
+
+ORDERING INFORMATION(1)
+    Part Number             Operating Temperature Range            Lead-Free           Package    Packaging Method
+SPX3819M5-L/TR
+SPX3819M5-L-1-2/TR
+SPX3819M5-L-1-5/TR
+SPX3819M5-L-1-8/TR
+                                                                                       SOT-23-5
+SPX3819M5-L-2-5/TR
+SPX3819M5-L-3-0/TR
+SPX3819M5-L-3-3/TR                  -40°C≤TJ≤+125°C                   Yes(2)                         Tape & Reel
+SPX3819M5-L-5-0/TR
+SPX3819R2-L/TR
+                                                                                        DFN-8
+SPX3819R2-L-1-2/TR
+SPX3819S-L/TR
+                                                                                       NSOIC-8
+SPX3819S-L-5-0/TR
+
+NOTES:
+   1.    Refer to www.maxlinear.com/SPX3819 for most up-to-date Ordering Information
+   2.    Visit www.maxlinear.com for additional information on Environmental Rating.
+
+
+
+
+                                                          4/13                                             Rev. 2.0.5
+                                                                                             SPX3819
+                                                  500mA Low-Noise LDO Voltage Regulator
+
+TYPICAL PERFORMANCE CHARACTERISTICS
+
+
+
+
+       Fig. 3: Ground Current vs Load Current                Fig. 4: Ground Current vs Input Voltage
+
+
+
+
+   Fig. 5 Ground Current vs Load Current in Dropout          Fig. 6 Output Voltage vs Input Voltage
+
+
+
+
+        Fig. 7 Dropout Voltage vs Load Current               Fig. 8 Output Voltage vs Load Current
+
+
+
+
+                                                      5/13                                            Rev. 2.0.5
+                                                                                                       SPX3819
+                                                  500mA Low-Noise LDO Voltage Regulator
+
+
+
+
+Fig. 9 Ground Current vs Temperature with 100μA Load            Fig. 10 Ground Current vs Temperature with 50mA Load
+
+
+
+
+Fig. 11 Ground Current vs Temperature with 500mA Load             Fig. 12 Ground Current vs Temperature in Dropout
+
+
+
+
+Fig. 13 ENABLE Voltage, ON threshold, vs Input Voltage                  Fig. 14 Output Voltage vs Temperature
+
+
+
+
+                                                         6/13                                                   Rev. 2.0.5
+                                                                                                      SPX3819
+                                                    500mA Low-Noise LDO Voltage Regulator
+
+
+
+
+ Fig. 15 Output Noise vs Bypass Capacitor Value IL = 10mA,        Fig. 16 Line Transient Response for 3.3V Device
+                      10Hz - 100kHz
+
+
+
+
+      Fig. 17 Load Transient Response for 3.3V Device
+
+
+
+APPLICATION INFORMATION
+The SPX3819 requires an output capacitor for                   capacitor works in most application circuits, but
+device stability. Its value depends upon the                   the same stability often can be obtained with a
+application circuit. In general, linear regulator              1μF tantalum electrolytic.
+stability decreases with higher output currents.               With the SPX3819 adjustable version, the
+In applications where the SPX3819 is sourcing                  minimum value of output capacitance is a
+less current, a lower output capacitance may be                function of the output voltage. The value
+sufficient. For example, a regulator outputting                decreases with higher output voltages, since
+only 10mA, requires approximately half the                     closed loop gain is increased.
+capacitance as the same regulator sourcing
+150mA.
+                                                               TYPICAL APPLICATIONS CIRCUITS
+Bench testing is the best method for
+                                                               For fixed voltage options only. A 10nF capacitor
+determining the proper type and value of the
+                                                               on the BYP pin will significantly reduce output
+capacitor     since   the     high    frequency
+                                                               noise, but it may be left unconnected if the
+characteristics of electrolytic capacitors vary
+                                                               output noise is not a major concern. The
+widely, depending on type and manufacturer. A
+                                                               SPX3819      start-up   speed     is   inversely
+high quality 2.2μF aluminum electrolytic
+                                                               proportional to the size of the BYP capacitor.
+                                                        7/13                                                Rev. 2.0.5
+                                                                                                   SPX3819
+                                                 500mA Low-Noise LDO Voltage Regulator
+
+Applications requiring a slow rampup of the                 The SPX3819 in Figure 19 illustrates a typical
+output voltage should use a larger CBYP.                    adjustable output voltage configuration. Two
+However, if a rapid turn-on is necessary, the               resistors (R1 and R2) set the output voltage.
+BYP capacitor can be omitted.                               The output voltage is calculated using the
+                                                            formula:
+The SPX3819’s internal reference is available
+through the BYP pin.                                                 VOUT = 1.235V x [1 + R1/R2]
+Figure 18 represents a SPX3819 standard                     R2 must be >10kΩ and for best results, R2
+application circuit. The EN (enable) pin is pulled          should be between 22kΩ and 47kΩ.
+high (>2.0V) to enable the regulator. To disable
+the regulator, EN < 0.4V.
+
+
+
+
+                                                            Fig. 19: Typical Adjustable Output Voltage Configuration
+
+
+         Fig. 18: Standard Application Circuit
+
+
+
+
+                                                     8/13                                                Rev. 2.0.5
+                                                   SPX3819
+                        500mA Low-Noise LDO Voltage Regulator
+
+MECHANICAL DIMENSIONS                             8-PIN SOICN
+
+
+
+
+                          9/13                        Rev. 2.0.5
+                                                         SPX3819
+                              500mA Low-Noise LDO Voltage Regulator
+
+MECHANICAL DIMENSIONS (CONTINUED)                      8-PIN 2X3 DFN
+
+
+
+
+                                10/13                       Rev. 2.0.5
+                                                             SPX3819
+                                  500mA Low-Noise LDO Voltage Regulator
+
+RECOMMENDED LAND PATTERN AND STENCIL                       8-PIN 2X3 DFN
+
+
+
+
+                                       11/13                    Rev. 2.0.5
+                                                         SPX3819
+                              500mA Low-Noise LDO Voltage Regulator
+
+MECHANICAL DIMENSIONS (CONTINUED)                       5-PIN SOT-23
+
+
+
+
+                                12/13                        Rev. 2.0.5
+                                                                                                                    SPX3819
+                                                            500mA Low-Noise LDO Voltage Regulator
+
+REVISION HISTORY
+    Revision              Date                                                  Description
+                                       Reformat of Datasheet
+      2.0.0            08/23/12
+                                       Addition of SPX3819R2-L and SPX3819R2-L/TR part numbers
+      2.0.1            12/02/13        Added Storage Temperature Range and Junction Temperature in ABS MAX Ratings.
+                                       Updated package drawings and corrected DFN-8 package marking information
+      2.0.2            05/20/14
+                                       [ECN 1423-03 6/3/14]
+      2.0.3            08/31/16        Updated logo and Ordering Information table.
+                                       Update to MaxLinear logo. Updated format and Ordering Information. Clarified ADJ and
+      2.0.4            07/19/18
+                                       BYP pin. Correct y-axis on Figure 14. Updated ESD rating.
+      2.0.5            12/05/19        Corrected table alignment on last 5 specs of the Electrical Specifications table.
+
+
+
+
+CORPORATE HEADQUARTERS:
+5966 La Place Court
+Suite 100
+Carlsbad, CA 92008
+Tel.: +1 (760) 692-0711
+Fax: +1 (760) 444-8598
+www.maxlinear.com
+
+
+The content of this document is furnished for informational use only, is subject to change without notice, and should not be
+construed as a commitment by Maxlinear, Inc. Maxlinear, Inc. Assumes no responsibility or liability for any errors or inaccuracies
+that may appear in the informational content contained in this guide. Complying with all applicable copyright laws is the
+responsibility of the user. Without limiting the rights under copyright, no part of this document may be reproduced into, stored in, or
+introduced into a retrieval system, or transmitted in any form or by any means (electronic, mechanical, photocopying, recording, or
+otherwise), or for any purpose, without the express written permission of Maxlinear, Inc.
+
+Maxlinear, Inc. Does not recommend the use of any of its products in life support applications where the failure or malfunction of the
+product can reasonably be expected to cause failure of the life support system or to significantly affect its safety or effectiveness.
+Products are not authorized for use in such applications unless Maxlinear, Inc. Receives, in writing, assurances to its satisfaction
+that: (a) the risk of injury or damage has been minimized; (b) the user assumes all such risks; (c) potential liability of Maxlinear,
+Inc. Is adequately protected under the circumstances.
+
+Maxlinear, Inc. May have patents, patent applications, trademarks, copyrights, or other intellectual property rights covering subject
+matter in this document. Except as expressly provided in any written license agreement from Maxlinear, Inc., the furnishing of this
+document does not give you any license to these patents, trademarks, copyrights, or other intellectual property.
+
+Maxlinear, the Maxlinear logo, and any Maxlinear trademarks, MxL, Full-Spectrum Capture, FSC, G.now, AirPHY and the Maxlinear
+logo are all on the products sold, are all trademarks of Maxlinear, Inc. or one of Maxlinear’s subsidiaries in the U.S.A. and other
+countries. All rights reserved. Other company trademarks and product names appearing herein are the property of their respective
+owners.
+
+© 2012 - 2019 Maxlinear, Inc. All rights reserved.
+
+
+
+                                                               13/13                                                      Rev. 2.0.5
+

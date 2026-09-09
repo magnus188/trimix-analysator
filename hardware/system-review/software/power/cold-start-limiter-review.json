@@ -1,0 +1,71 @@
+{
+  "generated_utc": "2026-09-07T12:11:39.158956+00:00",
+  "physical_hardware_tested": false,
+  "status": "Candidate selected by electrical owner; implementation/physical qualification separate",
+  "withdrawn_claim": "BQ25895 RILIM4.02k guarantees98mA; unsupported below500mA perRevC pin table",
+  "candidate": "TPS22950YBHR",
+  "excluded_substitutions": [
+    "TPS22950C",
+    "TPS22950L"
+  ],
+  "primary_sources": [
+    "https://www.ti.com/lit/ds/symlink/bq25895.pdf",
+    "https://www.ti.com/lit/ds/symlink/tps22950.pdf",
+    "https://www.ti.com/product/TPS22950/part-details/TPS22950YBHR",
+    "https://www.ti.com/lit/ds/symlink/tps2553.pdf",
+    "https://www.ti.com/lit/ds/symlink/tps22946.pdf"
+  ],
+  "datasheet_download_sha256": "e0f4f5766ba30309af96287e20345b34b38986da59bb0e644bf5401e009c0c66",
+  "inspected_page6_sha256": "6febe72f8caee57b25386d6b70558ba1ca6f957fad346ec6098a96e18abdae56",
+  "TPS22950_testpoint": {
+    "RILIM_ohms": 19200,
+    "VIN_minus_VOUT_volts": 0.5,
+    "temperature_C": [
+      -40,
+      125
+    ],
+    "current_min_typ_max_mA": [
+      34,
+      50,
+      66
+    ],
+    "resistor_tolerance_included_in_spec": false,
+    "Iq_max_uA": 60,
+    "response_us_typical_only": 5,
+    "ILIM_open_short_safe_behavior_specified": false
+  },
+  "proposed_circuit": {
+    "default_resistor_ohms": 19200,
+    "default_resistor_tolerance_percent": 0.1,
+    "permission_parallel_resistor_ohms": 1000,
+    "permission_parallel_tolerance_percent": 0.1,
+    "BQ_fixed_ILIM_ohms": 300,
+    "BQ_resistor_tolerance_percent": 1,
+    "typical_high_current_A": 1.2460049228468515,
+    "BQ_published_KILIM_max_Aohm": 390,
+    "BQ_resistor_corner_current_A": 1.3131313131313131,
+    "programming_pin_open_short_fault_proven_safe": false
+  },
+  "ball_map": {
+    "A1": "ON",
+    "A2": "FLT",
+    "B1": "VIN",
+    "B2": "VOUT",
+    "C1": "GND",
+    "C2": "ILIM"
+  },
+  "manufacturer_input_cap_recommendation_uF": 1,
+  "output_cap_value_mandated": false,
+  "package_mm": [
+    1.106,
+    0.706
+  ],
+  "factory_assembly_acceptance_required": true,
+  "documentation_sha256": "4b6be7f53dbab694e7fd4dd8f7c697f5199c8c3215e5ab13a307589d75cc1293",
+  "pending": [
+    "All physical current/inrush/thermal/cable/battery/protection-holder tests.",
+    "Final resistor, switching leakage and actual regulator loop tolerance assessment.",
+    "Factory WCSP footprint/stencil/process acceptance.",
+    "Qualified off-device precharge and deeply depleted pack recovery; commissioning charging stays inhibited."
+  ]
+}

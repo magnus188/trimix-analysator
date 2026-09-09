@@ -1,0 +1,49 @@
+{
+  "status": "Exact manufacturer part-specific datasheet verified; layout adoption and factory quote pending",
+  "reference": "R115",
+  "manufacturer": "YAGEO",
+  "MPN": "RT0402BRD0710KL",
+  "source_url": "https://yageogroup.com/component-documentation/download/specsheet/RT0402BRD0710KL",
+  "source_generated_date": "2026-09-06",
+  "checked_date": "2026-09-08",
+  "resistance_ohm": 10000,
+  "tolerance_percent": 0.1,
+  "TCR_ppm_per_C": 25,
+  "power_W_at_70C": 0.063,
+  "maximum_continuous_voltage_V": 50,
+  "voltage_limit_caveat": "Actual permissible voltage is bounded by both maximum continuous voltage and derated rated power; 50V across10k would exceed0.063W.",
+  "temperature_C": [
+    -55,
+    155
+  ],
+  "termination": "tin",
+  "package": "0402/1005",
+  "nominal_dimensions_mm": [
+    1,
+    0.5,
+    0.3
+  ],
+  "dimensional_tolerances_mm": [
+    0.1,
+    0.05,
+    0.05
+  ],
+  "maximum_dimensions_mm": [
+    1.1,
+    0.55,
+    0.35
+  ],
+  "conditional_pullup_stress": {
+    "assumed_rail_V": 3.6,
+    "assumed_resistor_temperature_C": 70,
+    "tolerance_and_linear_TCR_minimum_ohm": 9978.76125,
+    "current_A": 0.00036076622236051595,
+    "power_W": 0.0012987584004978574,
+    "power_fraction_of_70C_rating": 0.020615212706315198,
+    "limitations": "3.6V is an explicit stress assumption, not a measured Guition rail maximum. No aging or assembly damage inferred. At temperatures above70C use manufacturer derating; no thermal qualification."
+  },
+  "native_files_changed": false,
+  "proposed_assembly": "Factory reflow 0402; user may inspect under microscope",
+  "supplier_stock_or_factory_quote_confirmed": false,
+  "order_release": false
+}

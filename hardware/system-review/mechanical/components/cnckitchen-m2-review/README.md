@@ -1,0 +1,9 @@
+# Short M2 heat-set insert candidate
+
+**TC-M2x3.0 remains a candidate; it has not been adopted in Fusion or purchased.** The official [CNC Kitchen product page](https://cnckitchen.store/products/heat-set-insert-m2-x-3-100-pieces) identifies this part and EAN 4262391010013. The [manufacturer download page](https://cnckitchen.store/pages/insert-cad-models) supplies the archived STEP/STL bundle. Only the M2 files and its poster were extracted. [The source receipt](source-review.json) records provenance and hashes.
+
+The manufacturer's poster was rendered and visually inspected: length 3 mm, crest diameter 3.6 mm, pilot diameter 3.2 mm and minimum wall 1.3 mm measured from the pilot. Its blind-hole guidance requires at least 4 mm depth. It separately permits a through-hole with at least the insert's length; the [installation guide](https://www.cnckitchen.com/blog/tips-and-tricks-for-heat-set-inserts) confirms that distinction. These are nominal design data, not a full dimensional tolerance specification.
+
+For the project, a 7.6 mm support diameter provides a nominal 2 mm radial wall beyond the crest. A through-pilot in a non-gas housing post could remove the unqualified thin bottom membrane without extending into the screen frame. That proposal still needs actual native solid checks, screw-tip clearance at PCB thickness extremes, alignment, support ligaments and installation/removal access. Gas-chamber posts must retain their sealed blind arrangement. Install heat sets with purchased electronics removed.
+
+The shorter insert does not inherit the old 4 mm model's thread-engagement result. Full thread engagement, protruding screw tips, thermal installation and printed retention must be assessed explicitly. Physical coupons and strength/fit testing remain pending. Manufacturer CAD and documents retain their original terms.

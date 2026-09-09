@@ -1,0 +1,28 @@
+{
+  "status": "fresh final simulator captures visually inspected after all handler/provenance corrections",
+  "source_capture_sha256": "d1041a709c0ed6756fab9d0d8c96cd1a6f1227ea5e3714cc026b38e2d0212b5a",
+  "capture_log_sha256": "21bd9d5f90e1d2a0f06971d8bf3cfbb90d431b9ad455ead72dfe44a483791745",
+  "images": [
+    {
+      "path": "hardware/system-review/software/sd-card/evidence/ui/sd-analysis-status.png",
+      "sha256": "8ff01db801d20d4d7af72cb76d933230d09041477f142e14e0df8623282a3c02"
+    },
+    {
+      "path": "hardware/system-review/software/sd-card/evidence/ui/sd-device-status.png",
+      "sha256": "34fae120d9e892a358dd10f921ab1a9416fd4d7f58f204fcd6bff938da3c2628"
+    },
+    {
+      "path": "hardware/system-review/software/sd-card/evidence/ui/calibration-overview.png",
+      "sha256": "b98b20eb886e3b7bdedd0a128281feb12e31c34b14c0b0c275b095acf00fa980"
+    }
+  ],
+  "findings": [
+    "SD unavailable label fits the analysis status panel",
+    "Device status, explicit missing rows and both eject/retry controls fit without overlap",
+    "Calibration status is visible alongside simulation provenance; setup/record controls remain legible"
+  ],
+  "limits": [
+    "Simulator has no physical card; these are not physical insertion or ejection tests",
+    "Long calibration and analysis pages remain scrollable by design"
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "status": "passed digitally",
+  "scope": "Source and documentation consistency; no physical fit, wiring, charging or gas tests",
+  "checks": [
+    {
+      "check": "Archived owner photograph matches recorded original digest",
+      "passed": true,
+      "detail": "867f6220b1a6c27a98dfface8bef685d9fbe23a2dc351ea9fc20ac13ca1dda81"
+    },
+    {
+      "check": "Hole registration reproduces its declared anchors",
+      "passed": true,
+      "detail": {
+        "maximum_residual_mm": 4.0194366942304644e-14,
+        "scope": "Numeric reproduction; positions remain reference"
+      }
+    },
+    {
+      "check": "Independent header-span arithmetic reproduces record",
+      "passed": true,
+      "detail": {
+        "span_mm": 30.572471245290544,
+        "expected_mm": 30.48,
+        "relative_difference_percent": 0.3033833506907557
+      }
+    },
+    {
+      "check": "Owner bare-header datum retained",
+      "passed": true,
+      "detail": {
+        "datum": "front glass surface",
+        "target": "tips of tall26-pinheader",
+        "distance_mm": 13.4,
+        "source": "Owner reply2026-09-08",
+        "instrument_and_uncertainty": "not specified",
+        "mated_socket_included": false
+      }
+    },
+    {
+      "check": "Manufacturer extracted PDF hashes match retrieval receipt",
+      "passed": true,
+      "detail": {
+        "files": 3,
+        "scope": "Local hashes; no network retrieval repeated"
+      }
+    },
+    {
+      "check": "Both PCB layouts preserved byte-for-byte",
+      "passed": true,
+      "detail": {
+        "hardware/pcb/analyzer/Trimix_Analyzer.kicad_pcb": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788",
+        "hardware/pcb/usb-input/Trimix_USB_Input.kicad_pcb": "63d5742a1f8a2598a80c5d6a962a5551b9bebfa1a59c6780a00ab8ba3dd15ea7"
+      }
+    },
+    {
+      "check": "Current J301 inward pose audit is source-bound",
+      "passed": true,
+      "detail": {
+        "checks": {
+          "all_26_pins_keep_logical_contract": true,
+          "current_standard_exit_is_inward_minus_X": true,
+          "main_pin7_remains_electrically_unused": true,
+          "native_board_preserved": true
+        },
+        "scope": "Native main-board pose and logical pin audit; no remote mating, cable or power qualification"
+      }
+    },
+    {
+      "check": "Interface packet source and PDF hashes match",
+      "passed": true,
+      "detail": {
+        "source_bindings": 13
+      }
+    },
+    {
+      "check": "Six-page packet has recorded visual render inspection",
+      "passed": true,
+      "detail": "reference packet; all six pages rendered and inspected; revised page 2 inspected and other five content streams unchanged from inspected predecessor"
+    }
+  ],
+  "passed": 9,
+  "failed": 0,
+  "script_sha256": "96fe2aea47760e33b8602282fbd9ebf200d3314080a111b225bda2c9ce69362c"
+}

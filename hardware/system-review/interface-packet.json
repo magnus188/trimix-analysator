@@ -1,0 +1,118 @@
+{
+  "status": "reference packet; all six pages rendered and inspected; revised page 2 inspected and other five content streams unchanged from inspected predecessor",
+  "pages": 6,
+  "sources": [
+    {
+      "path": "electrical/connector-testpoint-pinmap.csv",
+      "sha256": "aa6853cdb23a4d7b02a6377e500fa34fd277cf7e3abf5d70509b25e68ab7894f"
+    },
+    {
+      "path": "electrical/host-interface.csv",
+      "sha256": "782ee5475728c493f75e85c4a46e140999543f9edbea33677007dc3b03bbc16b"
+    },
+    {
+      "path": "mechanical/MEASUREMENTS.md",
+      "sha256": "dcab9fa93e48de9f3aa00fc371535669acf732dfa441662674a4034f8f06ce49"
+    },
+    {
+      "path": "first-power.md",
+      "sha256": "c502e4b8ce032552d4c54edbc7f4f08f59fa6e242c03d444f7ec43a995ec5e4e"
+    },
+    {
+      "path": "lab-equipment.md",
+      "sha256": "e411d2b0beb75e4898a1748f16130b91dc8101a1d09eca86109563ab72d73b2e"
+    },
+    {
+      "path": "integration-photo/README.md",
+      "sha256": "06bee91780c05953965fd2cec81bed2040e22f0c81b7c29ed42d95866c48551f"
+    },
+    {
+      "path": "integration-photo/registration.json",
+      "sha256": "2388f4c147c8191b0a32a7873efc5265c07cfcdbca2005ae39bb1a8ac589ed96"
+    },
+    {
+      "path": "integration-photo/current-host-pose.json",
+      "sha256": "e6db31c7078f0a05394dde16399eb159d8e2718f6bb9f1754b91f4a50535c4b9"
+    },
+    {
+      "path": "electrical/measurement-and-bringup.md",
+      "sha256": "c418bb4a17784fd7d9c489dc8efdc3d6ddf3d69bdfac82f9eabe62cd6c854de2"
+    },
+    {
+      "path": "electrical/host-harness-review/contract.json",
+      "sha256": "8e5828426a0d674ec5840418bf00d44985f33bb4e11efb39e52846efee7e9cee"
+    },
+    {
+      "path": "electrical/host-power-review/sources.json",
+      "sha256": "da30f1c646982487f12565b04dd47c23d4e2af9ae96e72fc6543a07915bde878"
+    },
+    {
+      "path": "electrical/co-module-use-review.md",
+      "sha256": "7872e3009b9f78e3b474fc0ddd145e177e075821ec29042057f076ed9afd9276"
+    },
+    {
+      "path": "build_interface_packet.py",
+      "sha256": "31e03e4ad41404436b60f4b0cbd227ff5170f1f2c6abb82bd043943ea465d94c"
+    }
+  ],
+  "pdf_sha256": "b074545b25a6abcd05ce9bc51e7effec1836260eaec84ae58287856deb751e21",
+  "render_inspection": {
+    "renderer": "pdftoppm, scale-to1500, PNG",
+    "revised_page": 2,
+    "revised_page_render_sha256": "4961ab7b134fb2a59ca85d537dff70cedf628465ad41d75886ec82716df889db",
+    "previous_inspected_pdf_sha256": "9ec8f479de241bc3ed2d23baeb98c536d44be13c64a2cf55f5a42b12db50c089",
+    "content_stream_comparison": [
+      {
+        "page": 1,
+        "same_content_stream": true
+      },
+      {
+        "page": 2,
+        "same_content_stream": false
+      },
+      {
+        "page": 3,
+        "same_content_stream": true
+      },
+      {
+        "page": 4,
+        "same_content_stream": true
+      },
+      {
+        "page": 5,
+        "same_content_stream": true
+      },
+      {
+        "page": 6,
+        "same_content_stream": true
+      }
+    ],
+    "scope": "Readable table, orientation note, bounds, line spacing and footers checked; logical reference only",
+    "final_render_hashes": [
+      {
+        "page": 1,
+        "sha256": "024f2c63d6a3fcab08d0d85eee8b6d816966415b554ed0da9b715429d708e26c"
+      },
+      {
+        "page": 2,
+        "sha256": "4961ab7b134fb2a59ca85d537dff70cedf628465ad41d75886ec82716df889db"
+      },
+      {
+        "page": 3,
+        "sha256": "5fb33b0ca33b6bb73798558bb462fc5d73cd24bc1433402af2eb485d25b5c071"
+      },
+      {
+        "page": 4,
+        "sha256": "de5c3a50e4afdff148a92ace7cd40ccb0fd9c30c23d1a0a53d4b0ce18748b82f"
+      },
+      {
+        "page": 5,
+        "sha256": "f94fdcc5653a3248febcb29b1fe88f39d3e963ac965d91d91e1bbe082772b71a"
+      },
+      {
+        "page": 6,
+        "sha256": "c56238c75c2b10eeb9ba2b00cef54a47193a7f38b29a1f82d43c6a7907b0f765"
+      }
+    ]
+  }
+}

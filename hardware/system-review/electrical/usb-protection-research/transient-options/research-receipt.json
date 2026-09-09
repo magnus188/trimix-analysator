@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-07",
+  "scope": "primary-source review and arithmetic; no native or production changes",
+  "files": {
+    "README.md": "b17a50586f34d6ab066a78bbd470f470b2faf71d78ccb5a0ef7befb1c34b67a8",
+    "sources/tps1641.pdf": "3791e8cc9ee557bbd76ab543a30c4fa602237d1deeef0f443d35764c9f55560c",
+    "sources/tps1641-package-36.png": "ba89fc82d35edc57f03bb17dae3f97e37f0657209ec4b93d8a43f8b70aa5a983",
+    "sources/tps1641-package-37.png": "47cbd37a728b283cb0c64b1b3af5572153b8631ed3532d376d21389225509804",
+    "sources/fpf2495c.pdf": "01aecadf2b4daef8b067f8bd6f30877a724687c4884bfb67a553fdae52846757"
+  }
+}

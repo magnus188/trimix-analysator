@@ -264,6 +264,59 @@ echo "------------------------"
 
 if command -v "$CXX" >/dev/null 2>&1; then
     run_binary_test \
+        "Charge profile, standby and charger driver tests passed" \
+        "$BUILD_DIR/test_charge_standby" \
+        -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_charge_standby.cpp" \
+        "$PROJECT_DIR/main/services/charge_profile.cpp" \
+        "$PROJECT_DIR/main/services/charge_standby_policy.cpp" \
+        "$PROJECT_DIR/main/sensors/power_monitor.cpp"
+
+    run_binary_test \
+        "Production BQ input-isolation tests passed" \
+        "$BUILD_DIR/test_usb_input_path" \
+        -I"$PROJECT_DIR/simulator/stubs" -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_usb_input_path.cpp" \
+        "$PROJECT_DIR/main/sensors/power_monitor.cpp" \
+        "$PROJECT_DIR/main/services/charge_profile.cpp"
+
+    run_binary_test \
+        "Production backlight standby tests passed" \
+        "$BUILD_DIR/test_backlight_standby" \
+        -pthread \
+        -I"$TEST_DIR/backlight_stubs" \
+        -I"$PROJECT_DIR/simulator/stubs" \
+        -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_backlight_standby.cpp" \
+        "$PROJECT_DIR/main/services/backlight_service.cpp"
+
+    # Each scenario starts the real ESP worker in a fresh process. The fixture
+    # includes the production profile encoder and substitutes only its provider.
+    if "$CXX" -std=c++17 -Wall -Wextra -Werror -pthread -DESP_PLATFORM=1 \
+        -I"$TEST_DIR/power_worker_stubs" -I"$TEST_DIR/backlight_stubs" \
+        -I"$PROJECT_DIR/simulator/stubs" -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_power_worker_standby.cpp" "$TEST_DIR/sd_log_optional_stubs.cpp" \
+        "$PROJECT_DIR/main/services/system_power.cpp" \
+        "$PROJECT_DIR/main/services/charge_standby_policy.cpp" \
+        "$PROJECT_DIR/main/services/maintenance_service.cpp" \
+        "$PROJECT_DIR/main/services/backlight_service.cpp" \
+        "$PROJECT_DIR/main/sensors/power_monitor.cpp" \
+        "$PROJECT_DIR/main/sensors/usb_input_policy.cpp" \
+        "$PROJECT_DIR/main/sensors/usb_source_monitor.cpp" \
+        "$PROJECT_DIR/main/sensors/bc12_monitor.cpp" \
+        -o "$BUILD_DIR/test_power_worker_standby"; then
+        for power_case in normal maintenance maintenance-last bus-loss probation charger-irq kill-retry hiz-requalify hiz-ignored hiz-maintenance hiz-maintenance-wait hiz-delay hiz-timeout hiz-adc-ignored legacy-dcp legacy-cdp legacy-gap legacy-detach legacy-replug legacy-reset legacy-before-detection legacy-during-detection legacy-after-collection; do
+            if "$BUILD_DIR/test_power_worker_standby" "$power_case"; then
+                pass "Production ESP power worker: $power_case"
+            else
+                fail "Production ESP power worker: $power_case"
+            fi
+        done
+    else
+        fail "Failed to compile production ESP power worker fixture"
+    fi
+
+    run_binary_test \
         "Gas calculator production tests passed" \
         "$BUILD_DIR/test_gas_calculator" \
         -I"$PROJECT_DIR/main/ui/screens/dive_planner" \
@@ -284,7 +337,47 @@ if command -v "$CXX" >/dev/null 2>&1; then
         -I"$PROJECT_DIR/main" \
         -I"$PROJECT_DIR/simulator/stubs" \
         "$TEST_DIR/test_sensor_interface.cpp" \
-        "$PROJECT_DIR/main/sensors/sensor_interface.cpp"
+        "$PROJECT_DIR/main/sensors/sensor_interface.cpp" \
+        "$PROJECT_DIR/main/services/gas_calibration_core.cpp" \
+        "$PROJECT_DIR/main/services/gas_calibration_journal.cpp" \
+        "$PROJECT_DIR/main/services/gas_calibration_service.cpp" \
+        "$PROJECT_DIR/main/services/oxygen_selection_core.cpp" \
+        "$PROJECT_DIR/main/services/oxygen_selection_service.cpp" \
+        "$PROJECT_DIR/main/services/storage_service.cpp" \
+        "$PROJECT_DIR/main/services/blob_journal.cpp"
+
+    run_binary_test \
+        "ADC, calibration and CO decoder tests passed" \
+        "$BUILD_DIR/test_gas_acquisition" \
+        -I"$PROJECT_DIR/main" \
+        -I"$PROJECT_DIR/simulator/stubs" \
+        "$TEST_DIR/test_gas_acquisition.cpp" \
+        "$PROJECT_DIR/main/sensors/ads122c04.cpp" \
+        "$PROJECT_DIR/main/sensors/ze07_co.cpp" \
+        "$PROJECT_DIR/main/services/gas_calibration_core.cpp" \
+        "$PROJECT_DIR/main/services/gas_calibration_journal.cpp"
+
+    run_binary_test \
+        "CO environmental qualification production tests passed" \
+        "$BUILD_DIR/test_co_qualification" \
+        -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_co_qualification.cpp" \
+        "$PROJECT_DIR/main/sensors/co_qualification.cpp" \
+        "$PROJECT_DIR/main/sensors/ze07_co.cpp"
+
+    if "${CC:-cc}" -std=c11 -I"$TEST_DIR/third_party/cjson" -c "$TEST_DIR/third_party/cjson/cJSON.c" -o "$BUILD_DIR/co-cjson.o" && \
+       "$CXX" -std=c++17 -Wall -Wextra -Werror -pthread -DESP_PLATFORM=1 \
+        -I"$TEST_DIR/co_worker_stubs" -I"$TEST_DIR/power_worker_stubs" -I"$TEST_DIR/backlight_stubs" \
+        -I"$PROJECT_DIR/simulator/stubs" -I"$TEST_DIR/third_party/cjson" -I"$PROJECT_DIR/main" \
+        "$TEST_DIR/test_co_hardware_worker.cpp" "$TEST_DIR/sd_log_optional_stubs.cpp" "$PROJECT_DIR/main/sensors/sensor_hardware.cpp" \
+        "$PROJECT_DIR/main/sensors/acquisition_engine.cpp" "$PROJECT_DIR/main/sensors/ads122c04.cpp" \
+        "$PROJECT_DIR/main/sensors/co_qualification.cpp" "$PROJECT_DIR/main/sensors/ze07_co.cpp" \
+        "$PROJECT_DIR/main/services/ota_core.cpp" "$BUILD_DIR/co-cjson.o" -o "$BUILD_DIR/test_co_hardware_worker"; then
+        for co_case in normal missing-uart; do
+            if "$BUILD_DIR/test_co_hardware_worker" "$co_case"; then pass "Production CO worker: $co_case";
+            else fail "Production CO worker: $co_case"; fi
+        done
+    else fail "Failed to compile production CO worker fixture"; fi
 
     run_binary_test \
         "Analysis history tests passed" \
@@ -318,6 +411,12 @@ else
 fi
 
 echo ""
+if python3 "$TEST_DIR/test_release_validation.py"; then
+    pass "Release artifact and publication validation tests passed"
+else
+    fail "Release artifact and publication validation tests failed"
+fi
+
 echo "4. Simulator CMake tests"
 echo "------------------------"
 
@@ -356,6 +455,12 @@ fi
 
 echo ""
 echo "=========================================="
+run_binary_test "SD logging queue, failures and real files" "$BUILD_DIR/test_sd_log" -pthread -I"$PROJECT_DIR/main" -I"$PROJECT_DIR/simulator/stubs" "$PROJECT_DIR/main/services/sd_log_format.cpp" "$TEST_DIR/test_sd_log.cpp" "$PROJECT_DIR/main/services/sd_log_core.cpp" "$PROJECT_DIR/main/services/sd_log_files.cpp"
+
+run_binary_test "SD with production NVS/maintenance" "$BUILD_DIR/test_sd_maintenance" -pthread -I"$PROJECT_DIR/main" "$TEST_DIR/test_sd_maintenance.cpp" "$PROJECT_DIR/main/services/sd_log_core.cpp" "$PROJECT_DIR/main/services/maintenance_service.cpp" "$PROJECT_DIR/main/services/storage_service.cpp" "$PROJECT_DIR/main/services/blob_journal.cpp"
+
+if python3 "$TEST_DIR/test_guition_sdmmc.py"; then pass "Shared SDMMC controller and checked Hosted patch"; else fail "Shared SDMMC controller and checked Hosted patch"; fi
+
 echo "  Test Summary"
 echo "=========================================="
 echo -e "  Passed: ${GREEN}$TESTS_PASSED${NC}"

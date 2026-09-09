@@ -1,0 +1,684 @@
+{
+  "local_returns": [
+    {
+      "pad": "C403.2",
+      "via_position_mm": [
+        7.675,
+        31.3
+      ],
+      "via_uuid": "c39fc164-a0aa-4723-8275-7877a650fadf",
+      "trace_uuid": "1d8f9ff4-b2e2-4ccd-8079-e12954c535e2",
+      "length_mm": 0.999998999999999
+    },
+    {
+      "pad": "C107.2",
+      "via_position_mm": [
+        8.0,
+        71.775
+      ],
+      "via_uuid": "363d73d3-c575-4b7b-b749-6e72d13c1465",
+      "trace_uuid": "e81d5527-6110-45f2-b4d1-7f8854ae3985",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C503.2",
+      "via_position_mm": [
+        9.275,
+        45.3
+      ],
+      "via_uuid": "0db71dc2-f43e-4e26-92cc-33b3308ff8db",
+      "trace_uuid": "8e62c5a9-47ce-4cef-95a6-dd1e18e8e209",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C802.2",
+      "via_position_mm": [
+        15.775,
+        58.5
+      ],
+      "via_uuid": "c35ff123-e05b-454b-9cc7-613d2dd584c5",
+      "trace_uuid": "771f5b29-d0c5-4be3-bf39-23043d71e083",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "R703.2",
+      "via_position_mm": [
+        22.0,
+        62.425
+      ],
+      "via_uuid": "99f72e95-d466-4e23-9413-05cb8a64ff52",
+      "trace_uuid": "9daf5cb6-d104-47d5-beb5-c69a09b07d5e",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "R119.2",
+      "via_position_mm": [
+        10.425,
+        90.5
+      ],
+      "via_uuid": "ea3dbbbe-7042-422c-9a8e-e7790e411e7b",
+      "trace_uuid": "077d3f3e-9fe6-477f-bf51-5967ec42405a",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C105.2",
+      "via_position_mm": [
+        7.75,
+        85.525
+      ],
+      "via_uuid": "9aad60db-95d8-48c6-b598-7ed2b9511140",
+      "trace_uuid": "9eca0e8a-fd0c-4a8e-838b-4c6a9f755041",
+      "length_mm": 1.6007810593582121
+    },
+    {
+      "pad": "R410.2",
+      "via_position_mm": [
+        16.325,
+        37.4
+      ],
+      "via_uuid": "3f757aed-e6cc-4caf-bc35-e7df8c34c68a",
+      "trace_uuid": "a56c0bc6-8b64-4111-a107-8a42a528a95b",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C509.2",
+      "via_position_mm": [
+        13.025,
+        39.4
+      ],
+      "via_uuid": "8146ea32-3d0c-4381-a058-bfe829e705b2",
+      "trace_uuid": "483aa4c3-c8dc-42b0-8a50-b0184f8b25a0",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C504.2",
+      "via_position_mm": [
+        9.275,
+        49.1
+      ],
+      "via_uuid": "138ab7fd-2975-47b0-9570-cf47f2aa8d5f",
+      "trace_uuid": "89e43729-2c14-4f94-afb5-c4a05dd8276a",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C701.2",
+      "via_position_mm": [
+        15.1,
+        47.775
+      ],
+      "via_uuid": "f298bfad-211c-4363-bdd4-a65922fe1331",
+      "trace_uuid": "0d8a2b28-efb3-4398-aec5-80df10255978",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "SW101.2",
+      "via_position_mm": [
+        3.7,
+        87.75
+      ],
+      "via_uuid": "31818ad0-0390-41b5-9b10-526ae4392d6f",
+      "trace_uuid": "fa5b941b-ced8-4234-8ff2-b6e7a81f30e6",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C803.2",
+      "via_position_mm": [
+        13.2,
+        68.25
+      ],
+      "via_uuid": "a5895cf8-675c-4086-a998-abcb57bd9998",
+      "trace_uuid": "c67beac5-be37-4295-a33d-d49581678ef4",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C303.2",
+      "via_position_mm": [
+        12.775,
+        46.9
+      ],
+      "via_uuid": "94dab1bf-3268-441a-9b9e-26a42a9dbc4a",
+      "trace_uuid": "a90152c9-3076-4921-be3c-30992331c642",
+      "length_mm": 2.75
+    },
+    {
+      "pad": "C801.2",
+      "via_position_mm": [
+        6.525,
+        57.0
+      ],
+      "via_uuid": "f24ae356-16bf-4d5b-a5bb-4228e0ed445f",
+      "trace_uuid": "3642769c-be44-4410-928e-1349eb7678b4",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C301.2",
+      "via_position_mm": [
+        18.95,
+        68.25
+      ],
+      "via_uuid": "f439ad83-485e-41bb-b35b-01132dbaf5d5",
+      "trace_uuid": "87948e90-dd89-42bc-8e40-a80a03948abd",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "R117.2",
+      "via_position_mm": [
+        27.2,
+        96.175
+      ],
+      "via_uuid": "c4881020-6e8d-4343-b191-bec1d9d94848",
+      "trace_uuid": "4088b1c7-f862-4b67-9629-7868c1bffc72",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "R102.2",
+      "via_position_mm": [
+        10.5,
+        88.425
+      ],
+      "via_uuid": "6f7f9967-65dc-4aad-b5bd-880479670c98",
+      "trace_uuid": "55806d58-89d2-45c4-b6e1-c306a625a5e3",
+      "length_mm": 1.4142135623730951
+    },
+    {
+      "pad": "C705.2",
+      "via_position_mm": [
+        4.95,
+        59.25
+      ],
+      "via_uuid": "ba63b583-06e8-44d9-8187-8b98e24bb827",
+      "trace_uuid": "1ceb5285-fb87-4d6d-ab4f-72ff5b02eda3",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C113.2",
+      "via_position_mm": [
+        28.5,
+        79.425
+      ],
+      "via_uuid": "8198215a-f109-4b19-8a00-48a08a88088d",
+      "trace_uuid": "96e224bd-c3ff-4b1d-b457-96aa6b084bea",
+      "length_mm": 1.0307764064044151
+    },
+    {
+      "pad": "U501.2",
+      "via_position_mm": [
+        4.0,
+        45.5875
+      ],
+      "via_uuid": "8c05436a-bfe6-4d90-bec0-994fe0ecc552",
+      "trace_uuid": "b9687612-b208-48a3-ade9-847af9b2712a",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C502.2",
+      "via_position_mm": [
+        4.775,
+        49.7
+      ],
+      "via_uuid": "fad239d3-8037-4340-acec-c9359e383f4b",
+      "trace_uuid": "9e3f1813-1e9e-45d3-811e-6232a5e19dc6",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "Q101.2",
+      "via_position_mm": [
+        19.0625,
+        78.7
+      ],
+      "via_uuid": "254da6a0-ab26-4158-8447-de2776e5560a",
+      "trace_uuid": "b146f065-af63-464a-8618-7f04e10bb3b6",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "R505.2",
+      "via_position_mm": [
+        22.0,
+        42.925
+      ],
+      "via_uuid": "d022261c-7e5d-44fd-8222-eb6b6ccf4b1d",
+      "trace_uuid": "f1419fa9-3a50-4041-9e3f-c68b74024883",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C804.2",
+      "via_position_mm": [
+        18.275,
+        64.0
+      ],
+      "via_uuid": "e68cf42d-32dd-4aab-b6c5-3d4e6ce9abd6",
+      "trace_uuid": "b3c1b308-722d-41ca-9749-ede3474caca5",
+      "length_mm": 1.118033988749895
+    },
+    {
+      "pad": "R118.2",
+      "via_position_mm": [
+        8.575,
+        95.75
+      ],
+      "via_uuid": "1b99f9bd-eb85-49de-9f59-54f5fcf378c0",
+      "trace_uuid": "eea3dff5-dbe0-4208-baac-cada675bf886",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "R105.2",
+      "via_position_mm": [
+        5.75,
+        82.425
+      ],
+      "via_uuid": "189cbff2-94a1-4b87-b581-69d56e2c2614",
+      "trace_uuid": "e6ee6505-47c6-4533-bce3-287b3805df7a",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C203.2",
+      "via_position_mm": [
+        11.075,
+        55.95
+      ],
+      "via_uuid": "40d20710-b829-4fb1-b10c-f66ee8db939e",
+      "trace_uuid": "56489076-0f6f-46f4-bf38-e68681ab6e7f",
+      "length_mm": 2.3048861143232218
+    },
+    {
+      "pad": "C101.2",
+      "via_position_mm": [
+        3.95,
+        82.75
+      ],
+      "via_uuid": "e1eef9ee-2ca5-41b4-bc22-8715d36e2cbd",
+      "trace_uuid": "faa0c89f-515e-4006-a696-f8d2ace6174a",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C508.2",
+      "via_position_mm": [
+        17.275,
+        38.4
+      ],
+      "via_uuid": "0d6c2ab9-2fbd-44b5-ad21-eeeb0f091caa",
+      "trace_uuid": "11464432-c9c8-471b-b993-3dd90970bfd3",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C408.2",
+      "via_position_mm": [
+        15.925,
+        28.5
+      ],
+      "via_uuid": "c8ddb6af-04a7-418c-9bda-b9ff9b9b3fa2",
+      "trace_uuid": "4a89622d-ce37-475a-baa7-eb2390979392",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C704.2",
+      "via_position_mm": [
+        1.0,
+        56.05
+      ],
+      "via_uuid": "6c672bd8-0e78-4950-8627-8417b80ef898",
+      "trace_uuid": "5776a6f5-89ac-4afe-af35-35aa3f99c253",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "U701.4",
+      "via_position_mm": [
+        20.4625,
+        57.8
+      ],
+      "via_uuid": "94c2f70e-4a9f-4411-9940-47ea5aef2cf3",
+      "trace_uuid": "a4f7a06c-44fc-4be8-bab6-fb03e98db169",
+      "length_mm": 1.0307764064044151
+    },
+    {
+      "pad": "C206.2",
+      "via_position_mm": [
+        8.375,
+        68.9
+      ],
+      "via_uuid": "23b9566e-f259-4fa7-94c0-fe8d8fc07a15",
+      "trace_uuid": "3ab70b1a-3929-4557-82dc-9e5d582338a5",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "U114.3",
+      "via_position_mm": [
+        6.9,
+        92.45
+      ],
+      "via_uuid": "59626be4-2d20-452c-b0f4-9bdf5814a652",
+      "trace_uuid": "a8edebe3-05c0-42c6-bac9-fe475c23ddcc",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "U113.2",
+      "via_position_mm": [
+        22.6125,
+        85.8
+      ],
+      "via_uuid": "fec6a56d-fa09-44ed-af6c-3d9e26404b15",
+      "trace_uuid": "3a3caa41-f863-4618-86a8-bae5c82ac2fb",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "U801.4",
+      "via_position_mm": [
+        10.4625,
+        56.475
+      ],
+      "via_uuid": "fa9ca75d-ad32-4a38-b824-992aece74a8b",
+      "trace_uuid": "bb8442e0-b081-4211-a29f-e1d14b64d07f",
+      "length_mm": 2.0615528128088303
+    },
+    {
+      "pad": "C707.2",
+      "via_position_mm": [
+        20.5,
+        66.8
+      ],
+      "via_uuid": "ae31644a-a54c-448c-8bc9-a84ef6c7ddea",
+      "trace_uuid": "f3600da9-6850-4495-a0a1-bd1efb18f785",
+      "length_mm": 1.3462912017836262
+    },
+    {
+      "pad": "C506.2",
+      "via_position_mm": [
+        16.65,
+        32.25
+      ],
+      "via_uuid": "25e3d555-73e9-48a4-bfeb-a3b84ca532fb",
+      "trace_uuid": "f5cbaed7-40bc-439b-b1d7-b777040b6553",
+      "length_mm": 1.0000000000005
+    },
+    {
+      "pad": "C106.2",
+      "via_position_mm": [
+        3.175,
+        90.75
+      ],
+      "via_uuid": "f9782dd2-88cb-46af-b1db-960c62e886e2",
+      "trace_uuid": "3b5a5fd7-e241-4689-b60f-f3983cf5a0ec",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C102.2",
+      "via_position_mm": [
+        8.1,
+        80.775
+      ],
+      "via_uuid": "554c659c-270b-44a0-a9e7-29afe3843d80",
+      "trace_uuid": "d0b30069-c78d-46e1-ab88-170696e889a9",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C703.2",
+      "via_position_mm": [
+        20.45,
+        59.6
+      ],
+      "via_uuid": "633a907e-e108-43f6-b2dc-d606f421688a",
+      "trace_uuid": "cdb8cdf1-2407-4581-b88f-576124883c38",
+      "length_mm": 1.6770509831248424
+    },
+    {
+      "pad": "U702.2",
+      "via_position_mm": [
+        16.6125,
+        45.4
+      ],
+      "via_uuid": "1c8e4ddf-dde0-4e40-9383-866101e62c10",
+      "trace_uuid": "43341e32-ce00-4f25-a7cd-95b9f5aa42bf",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "U301.1",
+      "via_position_mm": [
+        17.5125,
+        68.3
+      ],
+      "via_uuid": "ccb3b581-ffcc-47c2-8135-8d4a432f3e37",
+      "trace_uuid": "3b44066a-9803-43df-a29d-66f00c180b9c",
+      "length_mm": 0.9013878188659974
+    },
+    {
+      "pad": "C112.2",
+      "via_position_mm": [
+        28.0,
+        84.225
+      ],
+      "via_uuid": "ffbbd688-8850-4ef6-a1a1-9baeb0ddd8c5",
+      "trace_uuid": "6f3be7ea-f642-4312-9e95-42ffefee041a",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C204.2",
+      "via_position_mm": [
+        8.375,
+        62.35
+      ],
+      "via_uuid": "6e0b804e-c4d1-4067-9ad4-7fb1b83ec488",
+      "trace_uuid": "a68c7ce9-fcb1-4a31-ace6-2e4547855782",
+      "length_mm": 1.2747548783981963
+    },
+    {
+      "pad": "C601.2",
+      "via_position_mm": [
+        20.45,
+        43.35
+      ],
+      "via_uuid": "8864537e-5713-460d-a90f-e74a4ebae2b8",
+      "trace_uuid": "076ec212-f624-4f09-9343-00d7e5b106ea",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C110.2",
+      "via_position_mm": [
+        22.0,
+        77.125
+      ],
+      "via_uuid": "d7e9e2b2-c262-4ca2-8cf1-e2e51ae0fefc",
+      "trace_uuid": "ccb8b764-03c2-4904-b6a0-7c12ec80ee42",
+      "length_mm": 1.118033988749895
+    },
+    {
+      "pad": "C205.2",
+      "via_position_mm": [
+        8.375,
+        65.5
+      ],
+      "via_uuid": "7f84d003-2114-475e-b378-9b2b108f4a8d",
+      "trace_uuid": "72b32c82-80b6-49de-88ab-c1f197e0a5c1",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "Q111.2",
+      "via_position_mm": [
+        19.0625,
+        85.95
+      ],
+      "via_uuid": "1bdd72d2-2334-4ac7-a2e7-79f51c9278b6",
+      "trace_uuid": "0abe0a36-d111-4160-a98a-5bd2c8cb1624",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "C104.2",
+      "via_position_mm": [
+        19.825,
+        75.25
+      ],
+      "via_uuid": "d5c53796-c373-48fd-83d9-f88c62f41403",
+      "trace_uuid": "d32c4c2e-259d-4b96-8a6d-12318e4855e2",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "Q112.2",
+      "via_position_mm": [
+        23.8125,
+        96.7
+      ],
+      "via_uuid": "c5d4b4b8-727c-4aea-b750-2537c8b13675",
+      "trace_uuid": "dbe0a1f0-9491-475d-ac6f-cfb6424c058c",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "U112.4",
+      "via_position_mm": [
+        24.3,
+        82.0
+      ],
+      "via_uuid": "08b2ca05-dfcf-4016-9d96-045823f9095c",
+      "trace_uuid": "4fde0754-886d-4ca8-bfbb-f809476417fa",
+      "length_mm": 0.9013878188659974
+    },
+    {
+      "pad": "R114.2",
+      "via_position_mm": [
+        20.75,
+        91.925
+      ],
+      "via_uuid": "f89108a5-3ab1-4b4d-ade5-d960bedad9fc",
+      "trace_uuid": "0647ec20-8022-431f-9671-617cf9c367e9",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "R501.2",
+      "via_position_mm": [
+        4.025,
+        54.2
+      ],
+      "via_uuid": "27356bb9-95dd-4767-b979-bdea38389a8d",
+      "trace_uuid": "9eadc446-7931-4321-bad5-7455b7a15c83",
+      "length_mm": 1.0000000000000004
+    },
+    {
+      "pad": "U101.17",
+      "via_position_mm": [
+        15.2125,
+        82.0
+      ],
+      "via_uuid": "f4dd9c0e-ad2d-4f56-a029-46658c29d8ce",
+      "trace_uuid": "6c71aa7c-a190-42b1-bf54-5c3768ea7a8b",
+      "length_mm": 1.2747548783981963
+    },
+    {
+      "pad": "U101.18",
+      "via_position_mm": [
+        15.2125,
+        81.25
+      ],
+      "via_uuid": "b2796751-4186-4f2f-b072-cac161a7ae69",
+      "trace_uuid": "29166e77-0abe-4c7c-83d0-6a6e86635c27",
+      "length_mm": 1.5206906325745546
+    },
+    {
+      "pad": "C201.2",
+      "via_position_mm": [
+        16.7,
+        59.025
+      ],
+      "via_uuid": "fffd7ef0-3d40-43fc-b045-af278b7e9ce8",
+      "trace_uuid": "4c07eb80-c72d-42b3-9186-522135914092",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C202.2",
+      "via_position_mm": [
+        19.925,
+        72.25
+      ],
+      "via_uuid": "44d6de11-b256-44f8-8d94-9a5bd822e347",
+      "trace_uuid": "c552b396-4e8d-4491-a730-87085ec52f5c",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C405.2",
+      "via_position_mm": [
+        14.375,
+        34.85
+      ],
+      "via_uuid": "def84668-1048-45db-90b0-10ea8ea512ff",
+      "trace_uuid": "f2f3f696-c859-432c-ba43-590092558b67",
+      "length_mm": 1.0307764064044151
+    },
+    {
+      "pad": "C406.2",
+      "via_position_mm": [
+        9.2,
+        32.225
+      ],
+      "via_uuid": "200c786f-d088-4bb4-bb81-ec233851cbff",
+      "trace_uuid": "d4abfc4d-c2a6-4d64-82c4-594160894a45",
+      "length_mm": 1.0
+    },
+    {
+      "pad": "U111.9",
+      "via_position_mm": [
+        28.3,
+        71.725
+      ],
+      "via_uuid": "4558b5c8-b9c2-48fc-ab62-e5a1b4e88dd9",
+      "trace_uuid": "0b55af0c-b788-4726-aa6f-bfdfd0080a05",
+      "length_mm": 1.952562418976664
+    },
+    {
+      "pad": "C111.2",
+      "via_position_mm": [
+        27.5,
+        72.175
+      ],
+      "via_uuid": "e535def6-fed8-417d-abc0-87e0fdae048b",
+      "trace_uuid": "ada50cf1-4087-4f7e-9eb7-00d75fc3a964",
+      "length_mm": 1.25
+    },
+    {
+      "pad": "C702.2",
+      "via_position_mm": [
+        20.45,
+        54.25
+      ],
+      "via_uuid": "070b8830-4bda-47a9-aae7-18551a9442c0",
+      "trace_uuid": "d3bb91ad-c666-4281-a0b7-04a43ed520af",
+      "length_mm": 1.25
+    }
+  ],
+  "manual_ground_returns_remaining": [
+    "C407.2",
+    "C507.2",
+    "TP1001.1",
+    "C402.2",
+    "C409.2",
+    "R103.2",
+    "R702.2",
+    "C706.2",
+    "RN501.3",
+    "R202.2",
+    "U110.3",
+    "U110.5",
+    "U110.10",
+    "U110.11",
+    "C708.2",
+    "U703.2",
+    "C501.2",
+    "U301.4",
+    "U301.6",
+    "U301.9",
+    "U201.2",
+    "U401.1",
+    "U401.2",
+    "U401.4",
+    "U401.5",
+    "U502.2",
+    "U502.4",
+    "U502.5",
+    "C302.2",
+    "U101.8",
+    "U111.10",
+    "U111.11",
+    "U302.2",
+    "U302.5"
+  ],
+  "continuous_plane": "In1.Cu",
+  "zone_uuid": "531f7a80-57bf-49da-926b-ee1da1066b2c",
+  "physical_tests": false,
+  "native_DRC_required": true
+}

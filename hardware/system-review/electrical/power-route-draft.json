@@ -1,0 +1,468 @@
+{
+  "tracks": [
+    {
+      "uuid": "43f70a9c-0ac7-4e6c-89cf-edb85d8eb059",
+      "net": "Net-(L201-Pad2)",
+      "start": [
+        11.6,
+        62
+      ],
+      "end": [
+        11.1,
+        62
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "a92e3c33-fc45-4dba-8a43-e283f9a5090b",
+      "net": "Net-(L201-Pad2)",
+      "start": [
+        11.6,
+        62.5
+      ],
+      "end": [
+        11.1,
+        62.5
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "29f8d2ef-1024-41ca-afbc-d08b2e749aa8",
+      "net": "Net-(L201-Pad2)",
+      "start": [
+        11.1,
+        62.3
+      ],
+      "end": [
+        11.1,
+        64.65
+      ],
+      "width_mm": 0.5
+    },
+    {
+      "uuid": "966d2d69-fd88-4b04-aced-53c20ee90184",
+      "net": "Net-(L201-Pad2)",
+      "start": [
+        11.1,
+        64.65
+      ],
+      "end": [
+        11.815,
+        65.365
+      ],
+      "width_mm": 0.5
+    },
+    {
+      "uuid": "5db8c1b0-aed6-490c-9c3a-6b1e85ae2ec6",
+      "net": "Net-(L201-Pad2)",
+      "start": [
+        11.815,
+        65.365
+      ],
+      "end": [
+        11.815,
+        66
+      ],
+      "width_mm": 0.5
+    },
+    {
+      "uuid": "c6e2857f-ac38-4f4f-8943-de1cc7e2583b",
+      "net": "Net-(L201-Pad1)",
+      "start": [
+        14.4,
+        62.5
+      ],
+      "end": [
+        14.8,
+        62.5
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "7380c70e-230e-41f9-ab72-f321fac92d74",
+      "net": "Net-(L201-Pad1)",
+      "start": [
+        14.4,
+        62
+      ],
+      "end": [
+        14.8,
+        62
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "a4c4554a-1a97-4e98-a471-9c6b5ab2218d",
+      "net": "Net-(L201-Pad1)",
+      "start": [
+        14.8,
+        62.3
+      ],
+      "end": [
+        14.8,
+        64.7
+      ],
+      "width_mm": 0.5
+    },
+    {
+      "uuid": "8acb74ea-f52f-49ba-b538-3f182306e483",
+      "net": "Net-(L201-Pad1)",
+      "start": [
+        14.8,
+        64.7
+      ],
+      "end": [
+        14.185,
+        65.315
+      ],
+      "width_mm": 0.5
+    },
+    {
+      "uuid": "d7b4e33c-63dd-42da-b452-b96dd85b2521",
+      "net": "Net-(L201-Pad1)",
+      "start": [
+        14.185,
+        65.315
+      ],
+      "end": [
+        14.185,
+        66
+      ],
+      "width_mm": 0.5
+    },
+    {
+      "uuid": "f284a26e-9f8e-405e-91f9-0c439a11706e",
+      "net": "Net-(L201-Pad2)",
+      "start": [
+        11.1,
+        62
+      ],
+      "end": [
+        11.1,
+        62.3
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "7ef9901a-b91c-44a8-921f-a50cc986c6b8",
+      "net": "Net-(L201-Pad1)",
+      "start": [
+        14.8,
+        62
+      ],
+      "end": [
+        14.8,
+        62.3
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "ef2082b8-9ee6-4ef8-810a-c69f28369190",
+      "net": "VSYS",
+      "start": [
+        14.4,
+        61.5
+      ],
+      "end": [
+        15.6,
+        61.5
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "861974d2-2948-4b36-9e69-6401b484f7cf",
+      "net": "VSYS",
+      "start": [
+        14.4,
+        61
+      ],
+      "end": [
+        15.1,
+        61
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "c4124238-d550-4f86-a409-93418a9bce8c",
+      "net": "VSYS",
+      "start": [
+        15.1,
+        61
+      ],
+      "end": [
+        15.6,
+        61.5
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "4c8486fd-7d7f-4502-b7cc-1397340b7356",
+      "net": "VSYS",
+      "start": [
+        15.6,
+        61.5
+      ],
+      "end": [
+        16.7,
+        62.6
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "554e9001-2687-4b60-b705-9502d5ece02e",
+      "net": "VSYS",
+      "start": [
+        16.7,
+        62.6
+      ],
+      "end": [
+        16.7,
+        63.225
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "fbd059d1-2f90-4945-af8e-1fe78b62d69b",
+      "net": "VOUT_5V",
+      "start": [
+        11.6,
+        61
+      ],
+      "end": [
+        10.8,
+        61
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "20384798-2ca4-419f-a315-5f301f762af9",
+      "net": "VOUT_5V",
+      "start": [
+        10.8,
+        61
+      ],
+      "end": [
+        10.8,
+        61.25
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "b6bd4193-a0c3-4ac8-91fe-a5884fab42c8",
+      "net": "VOUT_5V",
+      "start": [
+        11.6,
+        61.5
+      ],
+      "end": [
+        10.8,
+        61.5
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "46d69ef0-bbb2-4b0c-a876-4a75813bd339",
+      "net": "VOUT_5V",
+      "start": [
+        10.8,
+        61.5
+      ],
+      "end": [
+        10.8,
+        61.25
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "dea8133c-7213-40f5-a8d1-b791633a0141",
+      "net": "VOUT_5V",
+      "via_mm": [
+        10.8,
+        61.25
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "uuid": "5cd9d5f4-e7cd-4416-b0f0-2e703d8f03ff",
+      "net": "VOUT_5V",
+      "via_mm": [
+        6.675,
+        60.25
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "uuid": "b9494d4c-bd18-4565-8a22-f4e4699655f8",
+      "net": "VOUT_5V",
+      "via_mm": [
+        6.675,
+        59.55
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "uuid": "8783775a-ef86-4011-a44d-56409d9d0b12",
+      "net": "VOUT_5V",
+      "start": [
+        6.675,
+        59.55
+      ],
+      "end": [
+        6.675,
+        68.9
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "64d168dc-9fde-4266-9944-be2ecf927473",
+      "net": "VOUT_5V",
+      "layer": "In2.Cu",
+      "start": [
+        10.8,
+        61.25
+      ],
+      "end": [
+        7.675,
+        61.25
+      ],
+      "width_mm": 0.8
+    },
+    {
+      "uuid": "49e27ed5-fe07-41e7-bd7b-91af5e311c4c",
+      "net": "VOUT_5V",
+      "layer": "In2.Cu",
+      "start": [
+        7.675,
+        61.25
+      ],
+      "end": [
+        6.675,
+        60.25
+      ],
+      "width_mm": 0.8
+    },
+    {
+      "uuid": "b395a0a6-9598-4ea5-a0ba-544ac1fe60a3",
+      "net": "VOUT_5V",
+      "layer": "In2.Cu",
+      "start": [
+        6.675,
+        60.25
+      ],
+      "end": [
+        6.675,
+        59.55
+      ],
+      "width_mm": 0.8
+    },
+    {
+      "uuid": "94cdd1b6-fef0-44d3-9b85-d6a30a7149b0",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "start": [
+        14.25,
+        82.0375
+      ],
+      "end": [
+        14.25,
+        81.2
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "401d4a0b-abf2-476d-9058-9ee8e620651e",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "start": [
+        13.75,
+        82.0375
+      ],
+      "end": [
+        13.75,
+        81.2
+      ],
+      "width_mm": 0.2
+    },
+    {
+      "uuid": "393eb96d-6cff-4d5b-a9bb-f310d5033d5d",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "start": [
+        13.75,
+        81.2
+      ],
+      "end": [
+        14.25,
+        81.2
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "0c09680f-fa5f-4704-b014-c5af7dede27c",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "start": [
+        14.25,
+        81.2
+      ],
+      "end": [
+        14.25,
+        80.1
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "29f28362-4c4b-4566-810a-3848019f3b00",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "start": [
+        14.25,
+        80.1
+      ],
+      "end": [
+        13.5,
+        79.35
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "01b149d6-7b66-4518-94e1-6fd37d3aae94",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "start": [
+        13.5,
+        79.35
+      ],
+      "end": [
+        13.5,
+        79.225
+      ],
+      "width_mm": 0.6
+    },
+    {
+      "uuid": "34499d48-183d-4546-ac8c-dbde1287e09b",
+      "net": "VSYS",
+      "start": [
+        13.5,
+        73.775
+      ],
+      "end": [
+        16.65,
+        73.775
+      ],
+      "width_mm": 1
+    },
+    {
+      "uuid": "a113d770-f138-462d-8842-d5c1b7d696f2",
+      "net": "VSYS",
+      "start": [
+        16.65,
+        73.775
+      ],
+      "end": [
+        18.125,
+        75.25
+      ],
+      "width_mm": 1
+    }
+  ],
+  "status": "native DRC required; current/thermal/complete-loop ground connections pending",
+  "order_release": false
+}

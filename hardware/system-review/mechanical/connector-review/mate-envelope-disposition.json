@@ -1,0 +1,144 @@
+{
+  "status": "scoped_interpretation_of_raw_mate_envelope_results",
+  "input": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/mechanical/connector-review/intended-mate-allowances.json",
+  "rows": [
+    {
+      "reference": "J103",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+PinHeader_1x02_P2.54mm_Vertical (6):2+PinHeader_1x02_P254mm_Vertical (6):1 / Body1",
+      "intersection_mm3": 6.5310091322668145,
+      "intersection_bounds_mm": [
+        [
+          53.13000000000001,
+          38.464999999999996,
+          24.540000000000003
+        ],
+        [
+          55.67,
+          43.545,
+          30.6721
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    },
+    {
+      "reference": "J401",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+PinHeader_1x03_P2.54mm_Vertical (6):2+PinHeader_1x03_P254mm_Vertical (6):1 / Body1",
+      "intersection_mm3": 9.79651369839995,
+      "intersection_bounds_mm": [
+        [
+          54.03,
+          89.19,
+          24.540000000000003
+        ],
+        [
+          56.57,
+          96.81,
+          30.6721
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    },
+    {
+      "reference": "J501",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+PinHeader_1x03_P2.54mm_Vertical (6):1+PinHeader_1x03_P254mm_Vertical (6):1 / Body1",
+      "intersection_mm3": 9.796513698399941,
+      "intersection_bounds_mm": [
+        [
+          53.13000000000001,
+          78.69,
+          24.540000000000003
+        ],
+        [
+          55.67,
+          86.31,
+          30.6721
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    },
+    {
+      "reference": "J601",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical (6):2+JST_B4B_XH_A (6):1 / Body1",
+      "intersection_mm3": 118.45890426014056,
+      "intersection_bounds_mm": [
+        [
+          66.9,
+          96.125,
+          24.4
+        ],
+        [
+          79.30000000000001,
+          101.875,
+          29.1321
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    },
+    {
+      "reference": "J701",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical (6):1+JST_B4B_XH_A (6):1 / Body1",
+      "intersection_mm3": 118.45890426014056,
+      "intersection_bounds_mm": [
+        [
+          66.9,
+          88.125,
+          24.4
+        ],
+        [
+          79.30000000000001,
+          93.875,
+          29.1321
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    },
+    {
+      "reference": "J801",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+PinHeader_1x02_P2.54mm_Vertical (6):1+PinHeader_1x02_P254mm_Vertical (6):1 / Body1",
+      "intersection_mm3": 6.531009132266836,
+      "intersection_bounds_mm": [
+        [
+          52.85499900000001,
+          67.23,
+          24.540000000000003
+        ],
+        [
+          57.934999000000005,
+          69.77,
+          30.6721
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    },
+    {
+      "reference": "J802",
+      "raw_collision_status_preserved": "blocked",
+      "imported_header_body": "PCB A3 - main four-layer placement:1+Trimix_Analyzer_Local_Refinement 1:1+PinHeader_1x02_P2.54mm_Vertical (6):4+PinHeader_1x02_P254mm_Vertical (6):1 / Body1",
+      "intersection_mm3": 6.531009132266876,
+      "intersection_bounds_mm": [
+        [
+          54.855000000000004,
+          63.43,
+          24.540000000000003
+        ],
+        [
+          59.935,
+          65.97,
+          30.6721
+        ]
+      ],
+      "interpretation": "The solid candidate socket envelope includes the imported mating header geometry. This raw overlap is retained; no contact geometry, insertion or stand-off qualification is implied. No other native installed-body overlap was reported in this nominal test."
+    }
+  ],
+  "no_raw_test_reclassified": true,
+  "limitations": [
+    "Candidate socket envelopes are solid occupied-space allocations, not hollow detailed mating CAD.",
+    "All wire turns, withdrawal, actual part identity, longest-post seating and retention remain unqualified."
+  ]
+}

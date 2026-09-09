@@ -1,0 +1,10 @@
+state,host_powered,measurement,usb_input_limit,charging,classification
+Current run / ARM open,yes,active,qualified1400mA request or100mA register / nominal50mA hardware,disabled,implemented commissioning
+Current normal shutdown,no,stopped,nominal50mA hardware,disabled register may persist,implemented
+Future enabled profile + existing true off,no,stopped,nominal50mA hardware,possible slow autonomous charge only,unimplemented / unqualified
+Proposed standby / qualified source,yes,deliberately stopped,fresh verified higher-source grant,positive net charging requires profile and measured load,unimplemented software
+Proposed standby / unknown or failed source,yes until fallback,stopped,nominal50mA hardware,not assured; do not drain indefinitely,unimplemented fallback
+True off / newly inserted USB,no until button,stopped,nominal50mA hardware,retained or cold BQ state dependent,unqualified
+Depleted / protection disconnected,no,off,nominal50mA hardware,cold-start/holder/timer interaction unproven,hardware feasibility gate
+Forced long press,no,off,nominal50mA hardware,may stop / slow; no high current with host off,independent hardware; bench test pending
+Standby USB removal,briefly battery supported,stopped,LOW immediately,none; orderly off unless explicitly woken,unimplemented transition

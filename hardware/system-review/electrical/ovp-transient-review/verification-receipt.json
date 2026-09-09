@@ -1,0 +1,45 @@
+{
+  "status": "COMPLETE_READ_ONLY_REVIEW_EL11_REMAINS_OPEN",
+  "board_sha256": "b305a4c3ce2de15ec42ec1ddef622cf50f9166c37a5fa0958b50593f753eddb2",
+  "checks": {
+    "conditional_sweep_rows": 45,
+    "source_board_unchanged": true,
+    "chain_part_identity_checked": true,
+    "no_physical_tests": true,
+    "no_substitution_approved": true
+  },
+  "files": [
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/README.md",
+      "sha256": "ecbbecb6227a8d67a36eb7881669557c0979fc529eee0929e15b1908a889f429"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/calculation-run.log",
+      "sha256": "145f2139f3cda31d631c84a0d99e69a0e746a0b340a502599d6f763f8b3f8aef"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/conditional-charge-sweep.csv",
+      "sha256": "6f25612d9dd156cbde15d2689d52890695af86f9ce8ecce37e2d9b063e267dcf"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/review-calculations.json",
+      "sha256": "c7800ec18bc039efb2316d518e48b2a976935b454acdac82a21e22b4250f9a28"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/review_calculations.py",
+      "sha256": "98407f161d396480f01a7b9b77646b83dce6a6191bcf33b80db4ea2081bdb683"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/sources/fpf2286ucx-d.pdf",
+      "sha256": "5e03524e9b914dc7ba0953d097f7e78e4c917404fe0d1322443329adf7af7aa0"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/sources/fpf2286ucx-d.txt",
+      "sha256": "c949267f233be42701916d402f708ba2e149713975fe368e7a884155be3cbe49"
+    },
+    {
+      "path": "hardware/system-review/electrical/ovp-transient-review/sources/tps25200.pdf",
+      "sha256": "fafdb867c456a2b24ef4fe5908e7d6da75703c0f24a36f984864d1d2daf9cd4a"
+    }
+  ]
+}

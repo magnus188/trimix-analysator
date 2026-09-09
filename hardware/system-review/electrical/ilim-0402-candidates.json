@@ -1,0 +1,32 @@
+{
+  "status": "Placement candidate only; no schematic or footprint adoption",
+  "primary_source": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l",
+  "revision": "YAGEO RT V17, 2026-02-12",
+  "references": {
+    "R116": "RT0402BRD071KL",
+    "R119": "RT0402BRD0719K2L"
+  },
+  "selection_basis": {
+    "size": "0402",
+    "tolerance_percent": 0.1,
+    "TCR_ppm_per_C": 25,
+    "power_W_at70C": 0.0625,
+    "voltage_V_max": 50,
+    "package_max_mm": [
+      1.1,
+      0.55,
+      0.35
+    ],
+    "allowed_resistance_ohm": [
+      4.7,
+      240000
+    ]
+  },
+  "orderability": "Codes follow manufacturer ordering grammar. The19.2k value is E192; manufacturer states E192 on request. Neither configured stock nor assembly acceptance is verified. Existing0603 selection has same nonstandard-value procurement issue.",
+  "assembly": "Factory reflow candidate. Use real0402 footprint and max envelope; never scale existing0603 geometry.",
+  "not_changed": [
+    "values",
+    "tolerances",
+    "USB current policy"
+  ]
+}

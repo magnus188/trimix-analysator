@@ -1,0 +1,27 @@
+contact,ribbon_conductor,remote_JP1_logical_pin,net,host_gpio_reference,use,pcb_x_mm,pcb_y_mm,remote_mating_status
+1,1,1,HOST_3V3,,connected,24.725,38.765,physical JP1 connector and termination unverified
+2,2,2,HOST_5V,,connected,27.265,38.765,physical JP1 connector and termination unverified
+3,3,3,HOST_3V3,,connected,24.725,41.305,physical JP1 connector and termination unverified
+4,4,4,HOST_5V,,connected,27.265,41.305,physical JP1 connector and termination unverified
+5,5,5,GND,,connected,24.725,43.845,physical JP1 connector and termination unverified
+6,6,6,GND,,connected,27.265,43.845,physical JP1 connector and termination unverified
+7,7,7,NC,52,polarization candidate; electrically unused,24.725,46.385,physical JP1 connector and termination unverified
+8,8,8,POWER_KILL_N,33,connected,27.265,46.385,physical JP1 connector and termination unverified
+9,9,9,CO_UART_EN,51,connected,24.725,48.925,physical JP1 connector and termination unverified
+10,10,10,CO_UART_RX,31,connected,27.265,48.925,physical JP1 connector and termination unverified
+11,11,11,USB_ILIM_AUTH,50,connected,24.725,51.465,physical JP1 connector and termination unverified
+12,12,12,CO_UART_TX,30,connected,27.265,51.465,physical JP1 connector and termination unverified
+13,13,13,CHG_INT_N,49,connected,24.725,54.005,physical JP1 connector and termination unverified
+14,14,14,I2C_SCL,29,connected,27.265,54.005,physical JP1 connector and termination unverified
+15,15,15,NC,,unused,24.725,56.545,physical JP1 connector and termination unverified
+16,16,16,GND,,connected,27.265,56.545,physical JP1 connector and termination unverified
+17,17,17,HE_ENABLE,34,connected,24.725,59.085,physical JP1 connector and termination unverified
+18,18,18,HOST_3V3,,connected,27.265,59.085,physical JP1 connector and termination unverified
+19,19,19,POWER_INT_N,32,connected,24.725,61.625,physical JP1 connector and termination unverified
+20,20,20,NC,,unused,27.265,61.625,physical JP1 connector and termination unverified
+21,21,21,I2C_SDA,28,connected,24.725,64.16499999999999,physical JP1 connector and termination unverified
+22,22,22,NC,,unused,27.265,64.16499999999999,physical JP1 connector and termination unverified
+23,23,23,NC,,unused,24.725,66.705,physical JP1 connector and termination unverified
+24,24,24,NC,,unused,27.265,66.705,physical JP1 connector and termination unverified
+25,25,25,NC,,unused,24.725,69.245,physical JP1 connector and termination unverified
+26,26,26,NC,,unused,27.265,69.245,physical JP1 connector and termination unverified

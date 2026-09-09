@@ -1,0 +1,47 @@
+{
+  "checked_at_utc": "2026-09-07T11:43:46.412439+00:00",
+  "ordinary_references": 28,
+  "repository_edits_outside_research": false,
+  "sources": [
+    {
+      "file": "kemet-47n-0805.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C0805C473K5RACTU",
+      "sha256": "82b7cc9b9c996c50919840a87d308239254510333affb6b727f800f466bf8e89"
+    },
+    {
+      "file": "kemet-33n-0805.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C0805C333K5RACTU",
+      "sha256": "43e860443b78655cc45cf0e1173671e7142a79dc22676890c84bcc2bf1671884"
+    },
+    {
+      "file": "kemet-22u-25v-1210.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C1210C226K3RACTU",
+      "sha256": "0b8e746414bd125177e40108ebb17a1704cce18b313e608494efd79e39199365"
+    },
+    {
+      "file": "C0603C105K4RACTU.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU",
+      "sha256": "3d9a3f797337faa37211d9a2d400738997886e85092c6fabd7c8e37472812c94"
+    },
+    {
+      "file": "C0805C104K5RACTU.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C0805C104K5RACTU",
+      "sha256": "42b9a9314dbdf0d4d196e23f9c65ed4697aebf29438d3094d82f8ee56b98ba20"
+    },
+    {
+      "file": "C0805C103K5RACTU.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C0805C103K5RACTU",
+      "sha256": "ce7f2d27fbe7c1f02395dc2b5ffc3e787e654e19eb249eb670fd984c795e125c"
+    },
+    {
+      "file": "c3225x7r1c226m250ac.pdf",
+      "url": "https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3225x7r1c226m250ac.pdf",
+      "sha256": "ced8303a667c7ed30dae6a9d329d2d538c4eb99f10c6b22077d6827f6001de2d"
+    },
+    {
+      "file": "kemet-47u-16v-1210.pdf",
+      "url": "https://search.kemet.com/component-documentation/download/specsheet/C1210C476M4PACTU",
+      "sha256": "9d744bfb940d66bc3eb0f6c763f5f5da578a53573529a5261dc8e78f8e6a57a8"
+    }
+  ]
+}

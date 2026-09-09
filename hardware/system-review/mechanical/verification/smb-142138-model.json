@@ -1,0 +1,281 @@
+{
+  "status": "pass",
+  "geometry_kind": "Drawing-derived nominal mounting reconstruction; undimensioned mating details reference-only; not manufacturer CAD.",
+  "origin": {
+    "x_y": "Centre signal tail / footprint pad 1",
+    "z_mm": 0,
+    "z_plane": "PCB top / connector seating plane",
+    "nose_direction": "+Z",
+    "tail_direction": "-Z",
+    "scale_xyz": [
+      1,
+      1,
+      1
+    ],
+    "rotation_xyz_deg": [
+      0,
+      0,
+      0
+    ]
+  },
+  "files": {
+    "step": {
+      "file": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/mechanical/components/Amphenol_RF_142138_Drawing_Reconstruction.step",
+      "bytes": 41961,
+      "sha256": "1b454d768735a28d870a187c0c7d5908a16f0a72fc5eafbdbe0723979a22e5ef"
+    },
+    "upper_envelope_step": {
+      "file": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/mechanical/components/Amphenol_RF_142138_Nominal_Upper_Envelope.step",
+      "bytes": 9346,
+      "sha256": "d1fbbe478f9e9b458496b6c759a47793516f278c78506e9109ed6644e3bfe408"
+    },
+    "native": {
+      "file": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/mechanical/components/Amphenol_RF_142138_Drawing_Reconstruction.f3d",
+      "bytes": 164732,
+      "sha256": "625ee9a6b29cead93991cf2392874cc515799e18858f18c50663bb471f5bd944"
+    }
+  },
+  "native_summary": {
+    "placed_solid_count": 3,
+    "non_solid_count": 0,
+    "bounds_mm": {
+      "min": [
+        -3.5,
+        -3.5,
+        -3.9
+      ],
+      "max": [
+        3.5,
+        3.5,
+        7.6
+      ],
+      "size": [
+        7.0,
+        7.0,
+        11.5
+      ]
+    },
+    "sum_placed_solid_volume_mm3": 161.6272055177062
+  },
+  "imported_summary": {
+    "placed_solid_count": 3,
+    "non_solid_count": 0,
+    "bounds_mm": {
+      "min": [
+        -3.5,
+        -3.5,
+        -3.9
+      ],
+      "max": [
+        3.5,
+        3.5,
+        7.6
+      ],
+      "size": [
+        7.0,
+        7.0,
+        11.5
+      ]
+    },
+    "sum_placed_solid_volume_mm3": 161.62720551770607
+  },
+  "roundtrip": {
+    "placed_solid_count_matches": true,
+    "maximum_bound_coordinate_error_mm": 0.0,
+    "length_tolerance_mm": 0.02,
+    "bounds_pass": true,
+    "total_volume_absolute_error_mm3": 1.1368683772161603e-13,
+    "total_volume_tolerance_mm3": 0.01,
+    "total_volume_pass": true,
+    "size_ratio_imported_to_expected": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "volume_ratio_imported_to_expected": 0.9999999999999993,
+    "pass": true
+  },
+  "native_bodies": [
+    {
+      "component": "Amphenol RF 142138 - drawing reconstruction; mating details reference",
+      "occurrence": "Amphenol RF 142138 - drawing reconstruction; mating details reference:1",
+      "body_index": 0,
+      "name": "Brass shell and four 1.02 mm square tails - barrel profile reference",
+      "solid": true,
+      "bounds_mm": {
+        "min": [
+          -3.5,
+          -3.5,
+          -3.9
+        ],
+        "max": [
+          3.5,
+          3.5,
+          7.6
+        ],
+        "size": [
+          7.0,
+          7.0,
+          11.5
+        ]
+      },
+      "volume_mm3": 141.1819361419317,
+      "physical_properties_accuracy": 3,
+      "area_mm2": 322.5345843208326
+    },
+    {
+      "component": "Amphenol RF 142138 - drawing reconstruction; mating details reference",
+      "occurrence": "Amphenol RF 142138 - drawing reconstruction; mating details reference:1",
+      "body_index": 1,
+      "name": "Signal contact - exact solder tail; mating end reference",
+      "solid": true,
+      "bounds_mm": {
+        "min": [
+          -0.48,
+          -0.48,
+          -3.9
+        ],
+        "max": [
+          0.48,
+          0.48,
+          6.9
+        ],
+        "size": [
+          0.96,
+          0.96,
+          10.8
+        ]
+      },
+      "volume_mm3": 5.159474057465079,
+      "physical_properties_accuracy": 3,
+      "area_mm2": 26.777679142137963
+    },
+    {
+      "component": "Amphenol RF 142138 - drawing reconstruction; mating details reference",
+      "occurrence": "Amphenol RF 142138 - drawing reconstruction; mating details reference:1",
+      "body_index": 2,
+      "name": "PTFE insulator reference - internal dimensions unverified",
+      "solid": true,
+      "bounds_mm": {
+        "min": [
+          -1.0364,
+          -1.0364,
+          0.0
+        ],
+        "max": [
+          1.0364,
+          1.0364,
+          5.8
+        ],
+        "size": [
+          2.0728,
+          2.0728,
+          5.8
+        ]
+      },
+      "volume_mm3": 15.285795318309422,
+      "physical_properties_accuracy": 3,
+      "area_mm2": 60.71454503565508
+    }
+  ],
+  "parameters": {
+    "BaseSide": {
+      "expression": "7 mm",
+      "value_mm": 7.000000000000001,
+      "comment": "Rev B: square base side."
+    },
+    "OverallLength": {
+      "expression": "11.5 mm",
+      "value_mm": 11.500000000000002,
+      "comment": "Rev B: nose to tail tip."
+    },
+    "TailProjection": {
+      "expression": "3.9 mm",
+      "value_mm": 3.9000000000000004,
+      "comment": "Rev B: PCB seating plane to tail tip."
+    },
+    "BarrelLength": {
+      "expression": "5.8 mm",
+      "value_mm": 5.8,
+      "comment": "Rev B: front base face to nose."
+    },
+    "BaseThickness": {
+      "expression": "OverallLength - TailProjection - BarrelLength",
+      "value_mm": 1.8000000000000016,
+      "comment": "Derived, not independently toleranced: 1.8 mm."
+    },
+    "AbovePCB": {
+      "expression": "OverallLength - TailProjection",
+      "value_mm": 7.600000000000001,
+      "comment": "Derived nominal above-PCB height: 7.6 mm."
+    },
+    "ShellPitch": {
+      "expression": "5.08 mm",
+      "value_mm": 5.08,
+      "comment": "Rev B: square shell-leg centre pitch."
+    },
+    "ShellLegSide": {
+      "expression": "1.02 mm",
+      "value_mm": 1.02,
+      "comment": "Rev B: four square shell legs."
+    },
+    "SignalTailDiameter": {
+      "expression": "0.96 mm",
+      "value_mm": 0.96,
+      "comment": "Rev B: signal solder tail diameter."
+    },
+    "BarrelReferenceDiameter": {
+      "expression": "3.7084 mm",
+      "value_mm": 3.7084000000000006,
+      "comment": "REFERENCE ONLY. Generic SMB interface maximum, extended as a simplified visual barrel; complete 142138 profile is undimensioned."
+    },
+    "BoreReferenceDiameter": {
+      "expression": "2.0828 mm",
+      "value_mm": 2.0828,
+      "comment": "REFERENCE ONLY. Generic SMB interface minimum; axial bore extent is unverified."
+    },
+    "MatingPinReferenceDiameter": {
+      "expression": "0.508 mm",
+      "value_mm": 0.508,
+      "comment": "REFERENCE ONLY. Midpoint of generic SMB .019-.021 inch pin range."
+    },
+    "MatingPinReferenceTop": {
+      "expression": "6.9 mm",
+      "value_mm": 6.9,
+      "comment": "REFERENCE ONLY. Pin projection not dimensioned by Rev B; not a mating/clearance datum."
+    },
+    "InsulatorReferenceTop": {
+      "expression": "5.8 mm",
+      "value_mm": 5.8,
+      "comment": "REFERENCE ONLY. Internal PTFE extent not dimensioned by Rev B."
+    }
+  },
+  "source": {
+    "part": "Amphenol RF 142138",
+    "revision": "B",
+    "date": "2011-11-21",
+    "drawing": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/smb-research/amphenol-142138-drawing.pdf",
+    "sha256": "2f7ac0a3c7bd072ff08ca070da6b44f3e991bbaa37e3fb885ed243e78c261c9c",
+    "manufacturer_url": "https://www.amphenolrf.com/en-us/part/142138/883/",
+    "drawing_mirror": "https://assets.testequity.com/te1/Documents/pdf/amphenol/amphenol_142138-connector_customer-drawing.pdf",
+    "generic_interface": "https://www.amphenolrf.com/en-us/assets/file/4067456646/",
+    "manufacturer_step": "https://www.amphenolrf.com/en-us/assets/file/4066922863/",
+    "manufacturer_step_status": "Public listing found; file download HTTP 403; not obtained."
+  },
+  "limitations": [
+    "Barrel OD, snap groove, shoulders, bore registration, PTFE shape and mating pin projection are not dimensioned by the product drawing. Simplified visual geometry is explicitly reference-only; it cannot qualify mating clearance.",
+    "The nominal upper envelope contains the body footprint and full nominal above-PCB height. It excludes manufacturing tolerances, mated cable/elbow and wire bends.",
+    "Undimensioned underside base recess and lead chamfers are omitted conservatively; 1.02 square shell tails and 0.96 centre tail retain exact drawing nominal sizes.",
+    "Derived 7.6 mm above-PCB and 1.8 mm base thickness are nominal differences, not separately toleranced dimensions.",
+    "Existing J402 board pose, footprint and nets are not edited. Shell remains O2_B_RAW_N, not chassis or ground.",
+    "No exact owned cable identity, seating force, mated envelope, solder allowance, plating thickness, mass or manufacturing fit is qualified."
+  ],
+  "source_preservation": {
+    "geometry": true,
+    "poses": true,
+    "timeline": true,
+    "modified_flag": true,
+    "other_documents": true,
+    "reactivated": true
+  }
+}

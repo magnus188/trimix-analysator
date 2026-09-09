@@ -1,0 +1,111 @@
+{
+  "status": "passed digital allocation/no active GPIO overlap",
+  "gpio_groups": {
+    "card": [
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "c6": [
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      54
+    ],
+    "external_main": [
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      49,
+      50,
+      51
+    ],
+    "display_touch": [
+      3,
+      5,
+      7,
+      8,
+      23
+    ]
+  },
+  "sdmmc_slots": {
+    "card": 0,
+    "c6": 1
+  },
+  "ldo_channels": {
+    "display_phy": 3,
+    "card": 4
+  },
+  "gpio52": "reserved unused; never configured/driven",
+  "card_detect": "not wired in manufacturer schematic",
+  "gpio45": "unfitted R10 gate link; unused by firmware",
+  "configs": [
+    {
+      "family": "pre3",
+      "path": "build/esp32p4-pre3/sdkconfig",
+      "sha256": "97561babf3599ed7d88e9baa1bccc0ca63016a70349b526f129f9a661a35fffd",
+      "c6": {
+        "ESP_HOSTED_SDIO_SLOT": 1,
+        "ESP_HOSTED_SDIO_PIN_CLK": 18,
+        "ESP_HOSTED_SDIO_PIN_CMD": 19,
+        "ESP_HOSTED_SDIO_PIN_D0": 14,
+        "ESP_HOSTED_SDIO_PIN_D1": 15,
+        "ESP_HOSTED_SDIO_PIN_D2": 16,
+        "ESP_HOSTED_SDIO_PIN_D3": 17,
+        "ESP_HOSTED_SDIO_GPIO_RESET_SLAVE": 54
+      }
+    },
+    {
+      "family": "v3",
+      "path": "build/esp32p4-v3/sdkconfig",
+      "sha256": "b23049e40710accda74814e84e2f6e71f7eaad601a35a5b3358df60199a0e93c",
+      "c6": {
+        "ESP_HOSTED_SDIO_SLOT": 1,
+        "ESP_HOSTED_SDIO_PIN_CLK": 18,
+        "ESP_HOSTED_SDIO_PIN_CMD": 19,
+        "ESP_HOSTED_SDIO_PIN_D0": 14,
+        "ESP_HOSTED_SDIO_PIN_D1": 15,
+        "ESP_HOSTED_SDIO_PIN_D2": 16,
+        "ESP_HOSTED_SDIO_PIN_D3": 17,
+        "ESP_HOSTED_SDIO_GPIO_RESET_SLAVE": 54
+      }
+    }
+  ],
+  "sources": [
+    {
+      "path": "main/hardware_contract.h",
+      "sha256": "112a0e382d360a8ba1eb4d71fbbd50edb30c313a6d86f09121d921f902cb18bb"
+    },
+    {
+      "path": "main/board/guition_sdmmc.c",
+      "sha256": "218006d98b915913e49faaa04b7da1ccee7b747c6aa4e9be13116cd00ebf4025"
+    },
+    {
+      "path": "main/board/guition_jc4880p443.c",
+      "sha256": "235884824fa571bf3e050aee7ce87b484e55290afd1b58d6b8f9ae3be2ae81d2"
+    },
+    {
+      "path": "hardware/pcb/analyzer/Trimix_Analyzer.kicad_pcb",
+      "sha256": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788"
+    },
+    {
+      "path": "hardware/pcb/usb-input/Trimix_USB_Input.kicad_pcb",
+      "sha256": "63d5742a1f8a2598a80c5d6a962a5551b9bebfa1a59c6780a00ab8ba3dd15ea7"
+    },
+    {
+      "path": "hardware/system-review/integration-photo/guition-manufacturer/JC4880P443_V1.0.pdf",
+      "sha256": "c7edaaff96dba106fc53f924db0c3054b0b2b81ec9807d59787778cc6fa48c05"
+    }
+  ],
+  "scope": "No new SD footprint or native PCB modification. Actual unit revision/population and signals remain physical checks."
+}

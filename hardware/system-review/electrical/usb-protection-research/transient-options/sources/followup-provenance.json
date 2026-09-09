@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://www.onsemi.com/download/data-sheet/pdf/fpf2495c-d.pdf",
+    "file": "fpf2495c.pdf",
+    "bytes": 715952,
+    "sha256": "01aecadf2b4daef8b067f8bd6f30877a724687c4884bfb67a553fdae52846757"
+  },
+  {
+    "url": "https://www.diodes.com/datasheet/download/DMN2056U.pdf",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

@@ -1,125 +1,120 @@
-# USB charging compatibility — A2.2
+# USB input and charging — system-review revision
 
-The selected input is now **GCT USB4720-03-A**, with two explicit CC
-resistors on a separate USB daughterboard. The unknown AliExpress socket
-is superseded; its low price alone does not establish whether it is faulty.
+**Engineering draft; order and charging remain on hold.** The selected port is
+GCT USB4720-03-A on a separate 0.60 mm daughterboard. Its six-wire harness
+connects to the main PCB. Earlier two-wire/passive-Rd instructions are
+[superseded and archived](system-review/baseline-docs/USB_CHARGING.md).
 
-The complete analyser shows this circuit on **sheet 10, USB_Input**.
-A separate editable project is `kicad/usb-input/Trimix_USB_Input.kicad_pro`.
-J901/J902/R901/R902 are excluded from the main-board BOM and included in the
-USB-board project. The existing charger input J101 remains two wires.
+## Connections
 
-## Circuit and assembly
+| Daughter J902 → main J101 | Net | Function |
+|---:|---|---|
+| 1 → 1 | USB_5V | Input VBUS |
+| 2 → 2 | GND | Protected common return |
+| 3 → 3 | USB_CC1 | Separate Type-C CC1 |
+| 4 → 4 | USB_CC2 | Separate Type-C CC2 |
+| 5 → 5 | USB_D_P | D+ to BC1.2 detector |
+| 6 → 6 | USB_D_M | D− to BC1.2 detector |
 
-| Connection | Required part / destination |
+The actual GCT contact mapping and solder-pad views are in the native schematic
+and [interface packet](system-review/interface-packet.pdf). Do not confuse a
+mating-face view with a rear solder view. Proposed power/signal wire gauges
+and strain relief still require the measured harness route.
+
+TUSB320LAI supplies the sink CC terminations and reports source-current
+advertisement; the old external R901/R902 pull-downs are removed. CC1 and CC2
+remain separate. PI3USB9201 handles BC1.2 detection on D+/D−. BQ25895 pins 2/3
+remain unconnected, avoiding its autonomous high-voltage source request.
+This design does not negotiate USB-PD voltage above 5 V.
+[TI TUSB320LAI](https://www.ti.com/lit/ds/symlink/tusb320lai.pdf),
+[Diodes PI3USB9201](https://www.diodes.com/assets/Datasheets/PI3USB9201.pdf),
+[TI BQ25895](https://www.ti.com/lit/ds/symlink/bq25895.pdf)
+
+## Current permission and charging are separate
+
+A hardware low-current limiter precedes the charger. The selected accessible
+variant is **TPS22950CQDDCRQ1**, SOT-23-THIN. Its exact Q1 specification supports
+the 50 mA nominal startup setting; the ordinary industrial C variant is not an
+automatic substitute. The 19.2 kΩ setting has published 34/50/66 mA limits under
+specified conditions. A latched permission circuit allows a higher limit
+only after a fresh software-controlled edge; source loss and CC events clear
+permission independently of a stalled processor. See the exact evolving
+native circuit and [Q1 audit](system-review/electrical/usb-protection-research/tps22950-q1-review.md).
+
+Firmware starts with BQ input isolation (`EN_HIZ=1`) verified by readback and
+a 100 mA register ceiling. It reconnects input and can raise that ceiling to
+1400 mA after consistent Type-C 1.5/3 A advertisement or a matching BC1.2
+CDP/DCP classification with fresh attachment health. Default, SDP, proprietary
+and unknown sources remain isolated; no USB enumeration is implemented.
+The low register setting is a ceiling, not permission to draw that current.
+[Input isolation and source limits](system-review/software/power/input-isolation/README.md). The lower of the
+upstream limiter, charger hardware limit and register setting governs actual
+current. A 1400 mA register value is not a promise of 1400 mA delivered power.
+
+GPIO50/J301.11 now controls current permission. The gauge alert is polled.
+The software removes permission during faults, stale source evidence, source
+changes, maintenance and shutdown. Source classification is refreshed before
+permission is asserted, and maintenance epochs invalidate previously cached
+permission even if maintenance finishes between worker polls. GPIO49/J301.13
+now reads the shared charger IRQ and inverted latch feedback. A sustained LOW
+triggers fresh qualification; brief charger IRQ pulses receive a settling
+interval. The software distinguishes commanded from confirmed permission.
+[Feedback review](system-review/software/power/usb-latch-feedback-review.md)
+
+The low-current default cannot run the whole touchscreen/heater load. A charged
+pack may supplement insufficient USB power. The implemented standby path can
+keep the host's source worker running with a dark screen and stopped heater,
+but requires startup acceptance, battery reserve and a future qualified charge
+profile. Recovery of an empty/protection-disconnected pack from true off remains
+unverified; firmware cannot bootstrap it simply by requesting more current.
+[Standby implementation and fault tests](system-review/software/power/off-charge-review/standby-implementation.md)
+
+**J104 remains open and cell charging is inhibited in the current firmware.**
+Exact cell charging limits, pack NTC, holder/protection ratings, connector
+polarity and charging fault behaviour must be qualified before arming.
+Successful USB attachment or current detection does not establish cell safety.
+
+## Mechanical and protection checks
+
+GCT specifies 0.60 ± 0.10 mm PCB thickness. The daughterboard has concealed
+mechanical support and a gasket interface; final land/cutout edge clearance,
+assembly fixture, plug insertion and sealing still need acceptance. The
+connector's component IP rating is not an enclosure rating or charging result.
+[GCT drawing](https://www.mouser.com/pdfDocs/USB4720-ProductDrawing.pdf),
+[GCT product](https://gct.co/connector/usb4720)
+
+The review specifies four-line ESD suppression for CC and data plus VBUS ESD
+suppression beside the connector. Standoff voltage is not clamp voltage.
+The upstream TPS259470ARPWR adds a DC overvoltage disconnect and clears
+current permission through AUXOFF. Its calculated threshold is an engineering
+check; its typical response time does not prove transient survival. A reviewed
+2.2 A hot-plug example can exceed the downstream limiter’s 6 V absolute maximum.
+Transient protection therefore remains a release hold. See the
+[overvoltage bounds and limitations](system-review/electrical/usb-protection-research/upstream-ovp-review.md).
+
+The original GCT lands/cutout leave approximately 0.10/0.15 mm copper-to-edge
+clearances. They have not been qualified against a manufacturing process. The
+DRC exceptions remain visible; a fabrication agreement or approved geometry
+change is required before ordering the daughterboard.
+
+## Physical acceptance — all pending
+
+Keep cells and external modules disconnected and J104 open for initial tests.
+Inspect solder, pin mapping and protected-ground continuity with power removed.
+Use a controlled source and load; record instruments and source/cable identity.
+A multimeter cannot capture hot-plug overshoot, inrush or brief bus faults.
+
+| Test | Required observation |
 |---|---|
-| J901 CC1, A5 | R901, 5.1 kΩ 1%, to GND |
-| J901 CC2, B5 | R902, 5.1 kΩ 1%, to GND |
-| J901 VBUS, A4/A9/B4/B9 | J902 pin 1 → positive wire → main-board J101 pin 1 |
-| J901 GND, A1/A12/B1/B12 | J902 pin 2 → return wire → main-board J101 pin 2 |
-| J901 shell | GND |
-| J901 data and SBU pins | Individually unused |
+| A-to-C, both C orientations | Correct attachment, source classification and permitted current |
+| C-to-C, all end orientations and marked cable | Correct attachment and CC advertisement |
+| No battery / host off | Hardware attachment and conservative input behaviour without firmware |
+| Default/SDP/unknown source | No high-current permission |
+| Native 1.5/3 A or qualified CDP/DCP | Fresh evidence and bounded permission sequence |
+| Disconnect, source swap, controller reset, stale evidence | Permission removed; stalled-high GPIO cannot silently rearm |
+| Hot plug, weak cable, brownout, overvoltage | Bounded input current/voltage, no unsafe transient or reset loop |
+| Cell charging after separate qualification | Correct current, voltage, termination, temperature and fault inhibition |
 
-The GCT part is a bare connector: **fit R901 and R902 on our USB board**.
-Keep CC1 and CC2 separate. These passive resistors remain present with no
-battery or host power; no firmware is needed for source attachment.
-A compliant A-to-C cable already supplies the source-side Rp in its Type-C
-plug. Do not add Rp to this sink.
-[TI sink-wiring guidance](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1287225/bq24075t-charging-li-ion-battery-from-usb-c)
-
-GCT specifies a mid-mount footprint and **0.60 ±0.10 mm PCB thickness**.
-Use a dedicated thin USB board instead of fitting it to the 1.60 mm main
-board. Support the assembly against plug forces and provide wire strain
-relief. The manufacturer also provides a panel/gasket drawing; the final
-cutout, support and sealing need mechanical verification.
-[GCT manufacturer drawing, sheets 1–2](https://www.mouser.com/pdfDocs/USB4720-ProductDrawing.pdf)
-
-The connector is IP67 rated, including mated and unmated states. That
-component rating does not establish the enclosure rating or validate the
-battery circuit. Charge only with the connector clean and dry; IP67 does
-not authorize wet charging. The BQ25895, protected holder, thermistor and
-qualified charging profile still determine charging safety.
-[GCT product information](https://gct.co/connector/usb4720),
-[GCT IP67 statement](https://gct.co/news/usb4720_30)
-
-## How to check the old socket
-
-1. Disconnect it from the charger, battery and every USB source.
-2. Use a bare USB-C test plug/breakout that exposes CC and has **no fitted
-   pull-up/pull-down resistors, PD trigger or other active circuitry**.
-   Otherwise the fixture can hide missing resistors in the socket.
-3. Measure resistance from the plug's CC test point to socket GND, then
-   reverse the plug to reach the other receptacle CC contact. Expect about
-   **5.1 kΩ in both orientations** for a simple passive sink assembly.
-4. If CC1 and CC2 are independently accessible, check that they are not
-   shorted together. Two independent 5.1 kΩ resistors give about 10.2 kΩ
-   between CC1 and CC2 through GND. Internal electronics can change these
-   readings, so unusual results require inspection rather than guesswork.
-
-The two power wires alone cannot reveal both CC connections. An open
-CC-to-GND path would fail the required passive circuit. A basic functional
-check is whether a known-good C charger/cable supplies nominal 5 V with the
-plug both ways up; that alone does not prove the wiring is correct. Never
-measure resistance while powered or poke a meter probe into live USB pins.
-
-## Power limits
-
-This is a dataless 5 V input. The BQ25895 data-detection pins remain separately
-unconnected, selecting its nominal 500 mA input setting; its actual battery
-charge current depends on available input power and system load. The 620 Ω
-hardware ILIM resistor is a separate backup ceiling, not a precise 500 mA
-limit. No USB PD contract or 1.5/3 A CC-current detection is implemented.
-[TI BQ25895 floating-data-pin confirmation](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/784019/bq25895-bq25895-current-limit)
-
-USB Type-C Release 2.5 §4.6.2.1 permits a dataless Power Sinking Device to
-consume up to 500 mA with Default-current advertisement, subject to USB 2.0
-inrush requirements. Sections 4.5.2.2.3 and 4.8.5 cover unpowered attachment;
-Table 4-28 specifies Rd. This does not establish universal compatibility with
-every old computer port, noncompliant cable or proprietary charger. Qualify
-the charging adapters/power banks intended for use, including actual input
-current tolerance, startup and inrush.
-[USB-IF Type-C Release 2.5, March 2026](https://www.usb.org/sites/default/files/USB%20Type-C%202.5%20Release%20202603.zip)
-
-A high-wattage USB-C PD charger can provide its default 5 V to a compliant
-sink without a PD request. Its wattage label does not authorize this design
-to draw higher current or request a higher voltage. Full device operation
-plus charging can still exceed the available input power; battery assistance
-or reduced charging is expected. The two cells remain 1S2P, 6800 mAh nominal.
-
-## Physical acceptance checks — not yet performed
-
-On the assembled USB board, verify each CC-to-GND resistance before
-applying power. Check component values, solder bridges, harness polarity
-and strain relief. The old-socket checks above are optional investigation;
-that socket is no longer part of the selected design.
-
-Keep charge ARM J104 **open** for the initial VBUS checks. Inspect polarity,
-then use the intended charger and a known-good cable. Measure at J101 while
-checking source turn-on; a power meter/test fixture and controlled load are
-needed for current, cable-drop and inrush checks. Do not connect the Guition's
-own USB power during these tests.
-
-| Test | Required observation | Status |
-|---|---|---|
-| A charger → A-to-C cable, C plug each way up | Correct-polarity nominal 5 V at J101 | Not tested |
-| C charger → C-to-C cable, all four end-orientation combinations | Source enables nominal 5 V every time | Not tested |
-| C-to-C with an electronically marked cable | Same attachment behavior | Not tested |
-| Above tests with battery disconnected and host off | CC attachment still works; no firmware dependency | Not tested |
-| Controlled load near the intended input limit | Voltage/current within the qualified source and charger limits; no repeated resets | Not tested |
-| Plug-in/startup/inrush | Meets source and USB inrush constraints; no transient overvoltage | Not tested |
-| Charge ARM enabled after cell/NTC qualification, host off | Stable charging from both adapter types; correct pack voltage/current/temperature | Not tested |
-
-Do not close ARM until cell charging limits, holder protection, polarity and
-the pack thermistor have been verified. A successful USB attachment test is
-not a validation of the battery charging profile.
-
-## Saved checks
-
-The ten-page schematic passes KiCad ERC with zero errors and zero warnings.
-The CLI netlist independently confirms two separate CC nets, each containing
-only its socket contact and resistor; both resistor returns join GND. All
-existing main-board pin-net memberships are preserved. Results and explicit
-physical-test status are in `verification/analyzer/usb-compatibility.json`.
-The existing 3D board remains a main-board placement study. The USB
-daughterboard is a separate assembly; its footprint and mounting need
-mechanical review before PCB fabrication.
+The full [measurement and first-power checklist](system-review/electrical/measurement-and-bringup.md)
+also covers reverse current, Guition dual supplies, shutdown and pack NTC faults.
+No USB or charging result has been physically verified in this review.

@@ -1,221 +1,120 @@
-# Trimix analyser — A2.2 engineering review
+# Trimix analyser — whole-system review
 
-Open `kicad/analyzer/Trimix_Analyzer.kicad_pro`. The root schematic is a
-numbered overview; double-click a block to open its circuit. A2 integrates
-the power system, two oxygen inputs, MD62 bridge, wired BME280, experimental
-ZE07-CO, and a momentary-button power controller. P1 in `kicad/power` and
-the original EasyEDA import are preserved as historical references.
+**Order status: HOLD.** Open `pcb/analyzer/Trimix_Analyzer.kicad_pro` for the
+current main design and `pcb/usb-input/Trimix_USB_Input.kicad_pro` for the
+thin USB daughterboard. The [system-review package](system-review/README.md)
+contains current electrical, software and mechanical evidence. Earlier designs
+are preserved, including this document's
+[previous version](system-review/baseline-docs/ANALYZER_DESIGN.md).
 
-A2.2 selects GCT USB4720-03-A on a separate 0.60 mm USB daughterboard,
-with two fitted CC resistors shown on sheet 10, `USB_Input`. Read
-[USB_CHARGING.md](USB_CHARGING.md) for the wiring and pending physical tests.
+The approved A3 exterior remains 85 × 180 × 43 mm. The separate Fusion design
+is `Trimix_Enclosure_A3_SystemReview`; earlier PCBFit geometry is a preserved
+baseline. A clear placement or CAD check is not a routed fabrication release.
 
-This is a schematic review and an **unrouted placement preview**, not a
-released PCB or a validated breathing-gas instrument. Electrical rules and
-pin/net audits check the drawing; they do not establish gas accuracy,
-charging safety, component authenticity, or thermal performance.
+## Installed modules and supply domains
 
-## Owner-confirmed configuration
-
-| Item | A2 basis |
+| Assembly | Current basis |
 |---|---|
-| Host | Guition JC4880P443C_I_W / ESP32-P4 touchscreen board |
-| Cells | **Two 3400 mAh, 3.7 V 18650 cells in parallel: 6800 mAh nominal** |
-| Capacity evidence | Owner explicitly confirmed 3400 mAh on 2026-09-05, overriding the 2200 mAh listing image and earlier 3700 mAh estimate |
-| Protected holder | FMA FPML1S2P050C; retain its red two-pin RCY/BEC-style plug |
-| USB input | GCT USB4720-03-A + two 5.1 kΩ CC resistors on a separate 0.60 mm board; two-wire output to charger |
-| Oxygen | AO2 with its three-pin cable; separate R17JJ-CCR on SMB, connected only to this analyser |
-| Chamber sensors | MD62, GYBMEP/BME280, ZE07-CO; harnesses up to 30 cm in a vented, regulated chamber near atmospheric pressure |
-| Button | Owned green illuminated 12 mm, momentary 1NO, 3–6 V LED variant |
-| Off state | Guition and gas sensors off; battery charging remains possible after commissioning |
+| Host | Guition JC4880P443C_I_W, 4.3-inch portrait ESP32-P4 display |
+| Pack | Two owner-confirmed 3400 mAh 18650 cells, 1S2P, 6800 mAh nominal; exact cell ratings remain unverified |
+| Holder | Protected FMA FPML1S2P050C; retain its actual protected plug, identify mate and polarity before wiring |
+| USB | GCT USB4720-03-A, 0.60 mm daughterboard, six-wire connection to main board |
+| Oxygen | One installed AO₂ or R17JJ-CCR; separate J401/J402 differential input paths |
+| Other sensors | MD62, actual BME280 humidity module, ZE07-CO |
+| User button | Owned illuminated momentary 1NO button; hardware long-press shutdown retained |
 
-Capacity alone does not establish the cells' maximum charge current or
-allowed charging-voltage tolerance. The physical cell markings, reliable
-cell specifications, matched-cell condition, holder protection behavior,
-wire size and connector polarity remain commissioning inputs.
+All ground returns use protected holder P−, never raw cell negative. BQ25895,
+MAX17048 and LTC2954 remain in the always-connected domain. LTC2954 controls
+the TPS63020 switched 5 V supply. LM66100 provides reverse blocking on the host
+5 V output, but the Guition's own USB/IP5306 power arrangement still needs
+qualification before simultaneous external supplies are connected.
 
-## Power, charging and shutdown
+J104 charge ARM remains **open** and current firmware inhibits cell charging.
+This stays in force until actual cell limits, holder ratings, pack NTC and
+charging behaviour are qualified. USB input-current permission is separate
+from permission to charge the cells. SW101 is an internal charger QON service
+switch, not the normal user power button. The NTC must thermally contact the
+pack; the chamber humidity sensor cannot substitute for it.
 
-The always-connected domain contains the protected pack, BQ25895,
-MAX17048 and LTC2954. The LTC2954-1 controls TPS63020 EN, switching the
-5 V domain that supplies the host and sensors. No second MCU is required.
+Read [USB charging integration](USB_CHARGING.md) for the CC/BC1.2 controllers,
+independent low-current startup limiter and unresolved transient checks.
 
-The charge ARM connection is **open by default**. Closing it permits the
-BQ25895 to charge autonomously even with the P4 off. The external pack NTC
-must contact the cells; the chamber BME280 is not a battery-temperature
-sensor. All PCB ground returns go to the protected holder's P−, never
-directly to raw cell negatives.
+## Measurement paths
 
-BQ25895's cold-start defaults include 4.208 V regulation and a 2.048 A
-fast-charge register setting. The stated voltage accuracy at this setting
-is ±0.5%; this spans about 4.187–4.229 V. The programmed charge-current
-setting is further limited by available input power. Separately floating
-D+ and D− select the chip's nominal 500 mA source limit. A2's 620 Ω ILIM
-resistor is a backup ceiling, approximately 511–635 mA including its 1%
-tolerance and TI's K-factor range; it is not a precise 500 mA clamp.
-Qualify the cell, protection and USB source before closing ARM.
-[BQ25895 datasheet](https://www.ti.com/lit/ds/symlink/bq25895.pdf),
-[TI autonomous-operation guidance](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/704475/bq25895-is-an-i2c-buss-required-to-use-this),
-[TI floating-data-pin guidance](https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/784019/bq25895-bq25895-current-limit)
+U401 and U502 are **ADS122C04IPWR**, TSSOP-16, at 0x40 and 0x41. Both use the
+internal 2.048 V reference and 20 SPS conversion setting with excitation-current
+outputs disabled. Oxygen uses gain 8/PGA; helium gain 1/bypass. Diagnostics have
+separate settings. Sequential conversions and settling make the delivered
+rate lower than 20 samples per channel per second.
+[TI ADC datasheet](https://www.ti.com/lit/ds/symlink/ads122c04.pdf)
 
-The P4 may configure a lower profile and disable the watchdog before
-shutting down. Such settings survive while the charger retains valid power;
-they do **not** replace qualification of cold-start defaults. Precharge,
-termination and safety-timer behavior must also be checked with this pack.
-Sheet 10 uses GCT USB4720-03-A with two fitted 5.1 kΩ CC pull-downs
-on a separate 0.60 mm USB board. Its output reaches J101 through two wires.
-The old socket is superseded. The connector is passive and does not supply
-CC resistors or certify battery safety. Follow the manufacturer mounting
-and gasket drawing, and qualify both cable types before use. See
-[USB_CHARGING.md](USB_CHARGING.md).
+J401/J402 retain the approved positions. The SMB shell is the negative sensor
+signal, **not ground or chassis**, and must not receive a 50 Ω termination.
+The newly selected J402 part is Amphenol RF 142138; its drawing-derived model
+does not identify or qualify the owned 90° cable. The common thread and
+relative sensor dimensions are owner measurements; seal/shoulder/cable bounds
+are still required. AO₂'s larger diameter and JJ-CCR's extra 2 mm length govern
+the alternative chamber envelopes.
 
-The LTC2954 uses a filtered panel-button input, 33 nF ONT and 1 µF PDT.
-A normal press produces an interrupt; firmware can stop measurements, save
-state and pull KILL low. A sustained press forces power off independently
-of firmware. The KILL pull-up is on the switched host 3.3 V rail, whose
-startup rise must satisfy the controller's 400–650 ms blanking interval;
-this does not require firmware to boot within that time.
-[LTC2954 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/2954fb.pdf)
+MD62 retains regulated 3.0 V excitation through TPS7A2030PDBVR. RN501 is the
+fixed matched 2 kΩ/2 kΩ reference divider. U502 measures **HE_REF−HE_SENSE**;
+R506/R507 are 680 Ω. The selected supply must meet the sensor's 3.0 ± 0.1 V
+requirement at its actual leads under load. Helium interpretation of MD62
+remains experimental and must be characterized with reference mixtures.
+[Winsen MD62 manual](https://www.winsen-sensor.com/d/files/thermal/md62.pdf)
 
-**Disconnect the Guition's own USB power while testing this power system.**
-Its onboard IP5306/5 V path can otherwise keep the host powered or create a
-second supply path. Do not connect this pack to Guition CN4 in parallel with
-the BQ charger. Source isolation must be resolved before allowing both USB
-inputs together. The schematic's shutdown behavior assumes this condition.
+The humidity driver verifies a BME280, including its factory trim; a BMP280
+does not provide humidity. ZE07-CO stays distinct from CO₂ and receives no
+invented calibration commands. Its humidity/use restrictions and the absence
+of a specified startup-current maximum remain qualification inputs.
 
-The 5 V stage's 1 A figure is a design target, not a measured capability.
-Guition's approximate 320 mA plus MD62's up-to-120 mA through its LDO already
-use about 440 mA at 5 V before CO, other loads and conversion losses. A
-500 mA USB input cannot guarantee full operation and charging simultaneously.
-Test battery assistance, load steps, USB-only startup, and thermal behavior.
+## Software and harness contract
 
-The red holder connector is modeled as a **wire-to-wire mating pigtail**.
-RCY has no official PCB-mounted mate; the board needs a soldered pigtail or
-another verified board-side connection with strain relief. Do not interpret
-the preview's wire pads as a replacement battery plug. JST rates RCY at 3 A
-with AWG22, and lower current with finer wire; the seller's holder rating
-does not prove the entire assembled path meets 5 A.
-[JST RCY specification](https://www.jst-mfg.com/product/pdf/eng/eRCY.pdf)
+The authoritative logical mapping is
+[`main/hardware_contract.h`](../main/hardware_contract.h), checked against
+the [schematic contract](system-review/electrical/interface-contract.md).
+JP1 physical pitch, orientation and mating height are still unconfirmed.
 
-## Oxygen inputs
+| Signal | J301/Guition logical pin | P4 GPIO |
+|---|---:|---:|
+| Sensor I²C SDA/SCL | 21 / 14 | 28 / 29 |
+| CO UART TX/RX | 12 / 10 | 30 / 31 |
+| Power interrupt/KILL | 19 / 8 | 32 / 33 |
+| MD62 enable | 17 | 34 |
+| Charger IRQ / USB latch feedback | 13 | 49 |
+| USB current permission | 11 | 50 |
+| CO translator enable | 9 | 51 |
+| Unused | 7 | 52 |
 
-AO2 and the standalone JJ sensor have separate differential signal paths
-into one ADS1115 at address 0x48. They are multiplexed, not sampled
-simultaneously and not independent redundant electronics. Calibrate each
-cell and report its own validity and age.
+The managed 100 kHz sensor bus serves gauge 0x36, oxygen 0x40, helium 0x41,
+charger 0x6A, CC controller 0x47, BC1.2 detector 0x5F and BME280 0x76/0x77.
+Touch GPIO7/8 uses its own bus. Gauge alert is polled; GPIO50 is now the USB
+permission output. Hardware builds report unavailable data when reads fail;
+they do not replace it with simulator readings.
 
-The circuit biases both leads of each cell around half the 3.3 V supply
-through high-value resistors and filters each pair symmetrically. This lets
-a reversed cell produce a signed fault reading without intentionally
-driving the ADC below ground. Use the ±0.256 V range after checking all
-input limits; its nominal LSB is 7.8125 µV. At 8 samples/s, alternating the
-two channels gives approximately four conversions/s per channel.
+Oxygen selection, calibration, diagnostics and normal operating policies are
+software-defined. Selection persists across compatible OTA updates, never
+changes automatically during measurement, and keeps separate calibration
+identities. The known-air screen currently remains manual/inconclusive
+because exact owned-sensor response bounds are missing. See
+[software calibration](SOFTWARE_CALIBRATION.md).
 
-AO2's manufacturer specifies 9–13 mV in air and an external load of at least
-10 kΩ. The intended input loading is much lighter, but actual ADC loading,
-filter settling, leakage while off and noise must be measured. The schematic
-does not apply excitation across either galvanic cell. Do not fit a 50 Ω
-termination to the coax. The SMB shell is a **signal return**, isolated from
-ground and chassis. Verify both sensor cable polarities before connection.
-[Honeywell AO2 datasheet](https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/gas-sensors/automotive-and-emissions/documents/hon-ia-hss-automotive-ao2-o2-gas-sensor-dts-en.pdf),
-[TI ADS1115 datasheet](https://www.ti.com/lit/ds/symlink/ads1115.pdf)
+OTA and shutdown share a maintenance coordinator that stops acquisition,
+disables heating and drains or rejects pending storage writes. Storage is
+centralized and versioned without automatic whole-partition erasure. The
+firmware retains application-only HTTPS OTA and separate P4 pre-v3/v3 builds.
+No device was flashed or updated during the review.
 
-## MD62 bridge
+## Acceptance
 
-Winsen specifies **3.0 ±0.1 V constant-voltage excitation** and consumption
-up to 120 mA. The SPX3819 3.0 V LDO is fed from switched 5 V for dropout
-margin. Its enable has a default-low bias. Keep this heater/LDO and the
-switching converters thermally separated from the chamber's humidity sensor.
+Use the [verification receipt](system-review/verification/README.md), fresh
+native ERC/DRC/netlist checks and final CAD imports together. Unsupported
+models, unresolved mates, component tolerances and unfinished routing remain
+visible release gates. Physical charging, thermal, fit, seal and reference-gas
+tests remain pending. The ±0.2-point O₂ and ±0.5-point He figures are unproven
+targets. Showcase, production print preparation and purchasing remain paused.
 
-At the MD62, connect the outer detector lead marked with a black square to
-ground, the outer compensator lead to 3.0 V, and **join the two inner leads
-to form HE_SENSE**. The manufacturer drawing does not assign pin numbers;
-the harness numbers are our assembly convention, not sensor pin numbers.
-The other bridge arm is 2 kΩ + 500 Ω multiturn trim + 2 kΩ. A second
-ADS1115, at 0x49, measures the difference between the trim wiper and sensor
-midpoint. Start at ±2.048 V range, establish polarity with known gas, then
-select a narrower range if justified. Verify 3.0 ±0.1 V at the actual sensor
-under load, not only at the regulator.
-[Winsen MD62 manual, circuit drawing](https://www.winsen-sensor.com/d/files/PDF/Thermal%20Conductor%20Gas%20Sensor/MD62%20Manual%20V1.3.pdf),
-[SPX3819 datasheet](https://www.maxlinear.com/ds/spx3819.pdf)
-
-MD62 is sold as a thermal-conductivity CO₂ sensor. Using it for helium is an
-experimental inference from conductivity, affected by gas composition,
-temperature, pressure, flow and humidity. Its output does not directly
-encode helium percent. Establish warm-up stability and calibration using
-known He/O₂ mixtures over the intended conditions. Do not copy an arbitrary
-millivolt-to-percent constant from the inspiration project.
-
-## BME280 and CO harnesses
-
-The pictured GYBMEP board uses VIN, GND, SCL and SDA. Its shared BME/BMP
-silkscreen and a seller's “5 V” name do not prove chip identity or I/O levels.
-A2 defaults to 3.3 V module power and includes an I2C level interface. Before
-selecting another module supply, inspect its regulator and pull-ups, measure
-logic voltage, and confirm BME280 ID **0x60** at 0x76 or 0x77. BMP280 does
-not measure humidity. Use 100 kHz and verify rise time with the actual short
-harness and combined pull-ups. Keep the module dry and away from heat sources.
-[Bosch BME280 datasheet](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf)
-
-ZE07-CO measures carbon monoxide, **not CO₂**. Its 5–12 V requirement is
-handled with a separate nominal 5.28 V boost supply, leaving Guition's 5 V
-rail unchanged. Measure voltage at the module, including ripple and cable
-drop. Its 3.0 V UART is translated using TXU0202 and a separate 3.0 V logic
-supply; module pin 1 is reserved and is not a power source. The harness maps
-VIN to pin 15, return to pins 5/14, TX to pin 8 and RX to pin 7.
-
-This is an experimental indication only. Winsen excludes use in systems
-related to human safety, and specifies 15–90% RH; dry cylinder gas can be
-outside that range. No maximum/startup current is published in the reviewed
-manual, so measure it. Validate warm-up, frame checksum, timestamps and
-unplugged/stale-data faults. A zero warm-up reading is not a clean-gas result.
-[ZE07-CO manual](https://www.winsen-sensor.com/d/files/manual/ze07-co.pdf),
-[TI TXU0202](https://www.ti.com/lit/ds/symlink/txu0202.pdf),
-[TI TPS61023](https://www.ti.com/lit/ds/symlink/tps61023.pdf)
-
-## Firmware interface contract — implementation still pending
-
-The present firmware uses simulated sensors and battery readings. This
-hardware revision does not implement real drivers or the shutdown sequence.
-
-| Signal | Guition JP1 | P4 GPIO / purpose |
-|---|---:|---|
-| I2C_SDA | 21 | GPIO28, dedicated sensor bus |
-| I2C_SCL | 14 | GPIO29, dedicated sensor bus |
-| CO_UART_TX | 12 | GPIO30, host transmit |
-| CO_UART_RX | 10 | GPIO31, host receive |
-| POWER_INT_N | 19 | GPIO32, button interrupt |
-| POWER_KILL_N | 8 | GPIO33, open-drain shutdown assertion |
-| HE_ENABLE | 17 | GPIO34, enable after ADC is powered |
-| CHG_INT_N | 13 | GPIO49 |
-| GAUGE_ALERT_N | 11 | GPIO50 |
-| CO_UART_EN | 9 | GPIO51, enable after CO rails are valid |
-
-I2C addresses: MAX17048 **0x36**, O₂ ADS1115 **0x48**, He ADS1115 **0x49**,
-BQ25895 **0x6A**, BME280 **0x76 or 0x77**. The old power draft's 0x6B note
-was incorrect. Do not reuse the touch bus (GPIO7/8, JP1 pins23/25) for the
-new external harnesses. Confirm the actual Guition board revision and JP1
-orientation before assembly.
-[Guition vendor schematic mirror](https://github.com/ultramcu/guition-jc4880p443c-i-w/tree/master/schematic)
-
-Shutdown software should stop conversions, disable MD62 and CO translation,
-save state, then drive POWER_KILL_N low. Initial commissioning should check
-that a long held button removes switched power even if firmware is stalled.
-Keep `co_ppm` separate from the existing `co2_ppm`; add per-oxygen-channel
-readings, calibration and faults rather than silently averaging them.
-
-## Evidence and next engineering steps
-
-The exported PDF, ERC result, intended pin maps, CLI netlist, BOM and
-connectivity audit are in `verification/analyzer`. The preview manifest
-records all provisional footprints and 3D models. Verify component markings,
-footprint drawings, connector orientation, capacitor effective capacitance,
-inductor saturation current and regulator thermal layout before routing.
-Do not order boards from an unrouted placement preview.
-
-The project is inspired by
+The project remains inspired by
 [captainigloo/Trimix-analyzer](https://github.com/captainigloo/Trimix-analyzer).
-A2 uses manufacturer pin drawings for the new circuits. No firmware or
-schematic artwork from that repository was copied into A2. Its repository
-declares CC BY-NC-SA 4.0; preserve appropriate attribution and review that
-license if copying its material in a future revision.
+Existing attribution and licensing remain unchanged; manufacturer evidence
+and third-party software retain their own terms.

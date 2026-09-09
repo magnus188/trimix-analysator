@@ -1,0 +1,148 @@
+[
+  {
+    "file": "hardware/system-review/electrical/usb-default-current-review/sources/usb-type-c-r2.4.pdf",
+    "url": "https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/196/USB-Type_2D00_C-Spec-R2.4-_2D00_-October-2024.pdf",
+    "bytes": 15164400,
+    "sha256": "f5407e6120db1e28137e7fee60f3125f4284e2252b1240d271ce6e40c0ba3121"
+  },
+  {
+    "file": "hardware/system-review/electrical/usb-default-current-review/sources/usb-type-c-r2.0.pdf",
+    "url": "https://www.usb.org/sites/default/files/USB%20Type-C%20Spec%20R2.0%20-%20August%202019.pdf",
+    "bytes": 10980886,
+    "sha256": "87d15160bf8bd25129b27e0b7c5e261ed0b1806b3b0d3a7b5d8b1eb783dc9981"
+  },
+  {
+    "file": "hardware/system-review/electrical/usb-default-current-review/sources/bc1.2-errata-2012.pdf",
+    "url": "https://e2e.ti.com/cfs-file/__key/communityserver-discussions-components-files/138/BC1.2-plus-errata-2012_2D00_3_2D00_15.pdf",
+    "bytes": 501114,
+    "sha256": "f76a1d13545a9e6ff78cdf7b100f16d96b6218e1038b4f54f6d57d54aa481bd9"
+  },
+  {
+    "file": "hardware/system-review/electrical/usb-default-current-review/sources/usb-type-c-r2.5.zip",
+    "url": "https://www.usb.org/sites/default/files/USB%20Type-C%202.5%20Release%20202603.zip",
+    "bytes": 29756254,
+    "sha256": "603c2cb0ea356d367fea61f8747a21981f0da9abae4d8ec15556e0063edb81b5",
+    "members": [
+      "USB Type-C 2.5 Release 202603/",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Attached.SRC Clarification on Vbus duration.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Clarify Assured and Shared Capacity Definitions 20250403.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Clarify PDP in Section 4.6.2.4 20260205.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN LRD Cleanup r2.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Ra Requirements 20250313.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Section 4.5.2.4 Updates 20250313.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Sink CC Pin Voltages Revised_11-25.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Sink with Accessory Support State Transition.pdf",
+      "USB Type-C 2.5 Release 202603/Release 2.4 ECNs incorporated into Release 2.5/USB Type-C R2.4 ECN Source Rp Clarification r1.pdf",
+      "USB Type-C 2.5 Release 202603/USB 3_0 Adopters Agreement PDF Submission Update 20230219.pdf",
+      "USB Type-C 2.5 Release 202603/USB Type-C Spec R2.5 - March 2026 Compared to R2.4.pdf",
+      "USB Type-C 2.5 Release 202603/USB Type-C Spec R2.5 - March 2026.pdf"
+    ],
+    "selected": [
+      "USB Type-C 2.5 Release 202603/USB Type-C Spec R2.5 - March 2026 Compared to R2.4.pdf",
+      "USB Type-C 2.5 Release 202603/USB Type-C Spec R2.5 - March 2026.pdf"
+    ],
+    "extracted": [
+      {
+        "file": "hardware/system-review/electrical/usb-default-current-review/sources/USB Type-C Spec R2.5 - March 2026 Compared to R2.4.pdf",
+        "sha256": "34c01559cd9f804dfd06b79057d027e6b3606eb12e08d34830605e8c73a274b2"
+      },
+      {
+        "file": "hardware/system-review/electrical/usb-default-current-review/sources/USB Type-C Spec R2.5 - March 2026.pdf",
+        "sha256": "6636cd61387a2f78b0fa96c8ea86ccc0f39ec59f98821cdb57b206d31445a328"
+      }
+    ]
+  },
+  {
+    "file": "hardware/system-review/electrical/usb-default-current-review/sources/bc1.2-official.zip",
+    "url": "https://www.usb.org/sites/default/files/BCv1.2_070312_0.zip",
+    "bytes": 1371538,
+    "sha256": "ea4fa630c609a2ff90c548782a10d46170d435ae6d9693be8cad23e7f66289a2",
+    "members": [
+      "BCv1.2_070312/BCv1.2_070312/",
+      "BCv1.2_070312/BCv1.2_070312/Battery Charging V1_2 ADOPTERS AGREEMENT - Device Class Spec.pdf",
+      "BCv1.2_070312/BCv1.2_070312/Battery_Charging_Errata_Rev_1.2.pdf",
+      "BCv1.2_070312/BCv1.2_070312/Battery_Charging_Errata_Rev_1.2_2012-03-15.pdf",
+      "BCv1.2_070312/BCv1.2_070312/BC1.2 plus errata 2012-3-15.pdf",
+      "BCv1.2_070312/BCv1.2_070312/BC1.2_without errata 2010-12-7.pdf"
+    ],
+    "selected": [
+      "BCv1.2_070312/BCv1.2_070312/BC1.2 plus errata 2012-3-15.pdf",
+      "BCv1.2_070312/BCv1.2_070312/BC1.2_without errata 2010-12-7.pdf"
+    ],
+    "extracted": [
+      {
+        "file": "hardware/system-review/electrical/usb-default-current-review/sources/BC1.2 plus errata 2012-3-15.pdf",
+        "sha256": "f76a1d13545a9e6ff78cdf7b100f16d96b6218e1038b4f54f6d57d54aa481bd9"
+      },
+      {
+        "file": "hardware/system-review/electrical/usb-default-current-review/sources/BC1.2_without errata 2010-12-7.pdf",
+        "sha256": "160ad7f3435553f86c16754af8128889d1fd4f1d4b69d3e7aa38b39766c83810"
+      }
+    ]
+  },
+  {
+    "file": "hardware/system-review/electrical/usb-default-current-review/sources/usb-2.0-official.zip",
+    "url": "https://www.usb.org/sites/default/files/usb_20_20250603.zip",
+    "bytes": 14489344,
+    "sha256": "5fe9c53c04033818af396e8852b3acbca5c3a76ba92fab549fd81cd0ea7b3692",
+    "members": [
+      "usb_20_20250603/usb_20_20240927/",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/2002_05_28_errata.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/5V Short Circuit Withstand ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Connect Timing ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Device Capacitance ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Disconnect_Supplement_HSIC_v1.0_18Sep2013.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/ECN for Core Spec TEST_MODE selector values.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/ecn1-usb20-miniB-revd.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/errata-092800-1207001.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/High Speed Inter-Chip_1_0 final.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/HSIC_ECN_21May2012.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Inter-Chip USB Supplement to the USB 2.0 Specification_1.0.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/InterfaceAssociationDescriptor_ecn.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/Clarification on the Chamfer on USB 2 0 Micro Connectors ECN .pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/Maximum Unmating Force Value Definition to USB 2 0 Micro Connectors ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/Micro-USB Cables and Connectors ADOPTERS AGREEMENT - Device Class Spec.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/Micro-USB ECN for Cable R3.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/MicroUSB ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/Micro-USB_1_01.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/XV-4687C ECN Proposal for Micro USB.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Micro-USB_final/XV-4687C_Supplement Quad cable R1.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/resistor_ecn.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/rnd_chmfr_ECNFINAL.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Suspend Current ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/UnicodeECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2 0 Material Change ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2.0 DCR ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2.0 Double Isochronous IN ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2.0 ECN VBUS Max Limit.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2.0 eUSB2 Repeater ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2.0 Phase-Locked SOFs ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB 2_0 Adopters Agreement - PDF Submission Update 20230216.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB OTG and Embedded Host/",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB OTG and Embedded Host/USB OTG ECN/",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB OTG and Embedded Host/USB OTG ECN/USB OTGEH ECN Maximum Vbus Voltage OTGEH2.0.1.1A.001.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB OTG and Embedded Host/USB OTG v2.0_ Amendment final_052609.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB OTG and Embedded Host/USB_OTG_and_EH_2-0-version 1_1a.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/usb_20.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB2_LinkPowerMangement_ECN[final].pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/USB2-LPM-Errata-final.pdf"
+    ],
+    "selected": [
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/Suspend Current ECN.pdf",
+      "usb_20_20250603/usb_20_20240927/usb_20_20240927/usb_20.pdf"
+    ],
+    "extracted": [
+      {
+        "file": "hardware/system-review/electrical/usb-default-current-review/sources/Suspend Current ECN.pdf",
+        "sha256": "1e3375761a72c37eebd198e48bccf528a4bd153bc56cc124e1f88c72722d5019"
+      },
+      {
+        "file": "hardware/system-review/electrical/usb-default-current-review/sources/usb_20.pdf",
+        "sha256": "d39698a33486c399124af92bd02e4f978fd9a836b5cf4e52e6e4633eb1d89f61"
+      }
+    ]
+  }
+]

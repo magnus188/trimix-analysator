@@ -1,0 +1,68 @@
+{
+  "checks": [
+    {
+      "control": "identical",
+      "pass": true,
+      "expected_reject": false,
+      "detail": {
+        "changed_refs": [],
+        "conservation": true
+      }
+    },
+    {
+      "control": "add-hidden-qualified-height",
+      "pass": true,
+      "expected_reject": false,
+      "detail": {
+        "changed_refs": [
+          "R101"
+        ],
+        "conservation": true
+      }
+    },
+    {
+      "control": "wrong-package",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"reference\": \"R101\",\n    \"field\": \"Footprint\",\n    \"board\": \"Resistor_SMD:R_0402_1005Metric\",\n    \"netlist\": \"Resistor_SMD:R_0603_1608Metric\"\n  }\n]"
+    },
+    {
+      "control": "wrong-resistance",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"reference\": \"R101\",\n    \"field\": \"Value\",\n    \"board\": \"5.23k 1%\",\n    \"netlist\": \"10k\"\n  }\n]"
+    },
+    {
+      "control": "wrong-mpn",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"reference\": \"R101\",\n    \"field\": \"MPN\",\n    \"board\": \"RC0402FR-075K23L\",\n    \"netlist\": \"WRONG\"\n  }\n]"
+    },
+    {
+      "control": "wrong-dnp",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"reference\": \"C503\",\n    \"field\": \"dnp\",\n    \"board\": true,\n    \"netlist\": false\n  }\n]"
+    },
+    {
+      "control": "wrong-pad-net",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"reference\": \"R101\",\n    \"pad\": \"1\",\n    \"board_net\": \"WRONG\",\n    \"netlist_net\": \"/01  CHARGING + BATTERY/BQ_REGN\"\n  }\n]"
+    },
+    {
+      "control": "missing-required-part",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"population\": {\n      \"board_only\": [],\n      \"netlist_only\": [\n        \"C108\"\n      ]\n    }\n  }\n]"
+    },
+    {
+      "control": "wrong-pad-number",
+      "pass": true,
+      "expected_reject": true,
+      "detail": "Metadata sync refused before writing:\n[\n  {\n    \"reference\": \"R101\",\n    \"pad\": \"99\",\n    \"board_net\": \"/01  CHARGING + BATTERY/BQ_REGN\",\n    \"netlist_net\": null\n  },\n  {\n    \"reference\": \"R101\",\n    \"pad_population\": {\n      \"board_only\": [\n        \"99\"\n      ],\n      \"netlist_only\": [\n        \"1\"\n      ]\n    }\n  }\n]"
+    }
+  ],
+  "all_pass": true,
+  "scope": "Isolated parsed source and metadata mutations only; never a routing, assembly, native DRC or physical validation pass."
+}

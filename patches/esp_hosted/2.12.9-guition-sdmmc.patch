@@ -1,0 +1,483 @@
+--- a/host/port/esp/freertos/src/port_esp_hosted_host_sdio.c
++++ b/host/port/esp/freertos/src/port_esp_hosted_host_sdio.c
+@@ -4,6 +4,8 @@
+  * SPDX-License-Identifier: Apache-2.0
+  */
+ 
++#include "board/guition_sdmmc.h"
++#include "freertos/task.h"
+ #include "driver/sdmmc_defs.h"
+ #include "driver/sdmmc_host.h"
+ 
+@@ -66,24 +68,10 @@
+ 	}
+ }
+ 
+-static bool hosted_sdio_enable_ldo(sdmmc_host_t *config)
+-{
++/* C6 slot1 uses GPIO14..19, not the LDO4-powered card IO domain. */
+ #if H_SDIO_PWR_CTRL_LDO
+-	// enable LDO Power for slot, if required
+-	sd_pwr_ctrl_ldo_config_t ldo_config = {
+-		.ldo_chan_id = H_SDIO_PWR_CTRL_LDO_ID,
+-	};
+-	sd_pwr_ctrl_handle_t pwr_ctrl_handle = NULL;
+-
+-	esp_err_t ret = sd_pwr_ctrl_new_on_chip_ldo(&ldo_config, &pwr_ctrl_handle);
+-	if (ret != ESP_OK) {
+-		ESP_LOGE(TAG, "Failed to create a new on-chip LDO power control driver");
+-		return false;
+-	}
+-	config->pwr_ctrl_handle = pwr_ctrl_handle;
++#error "Guition C6 SDIO must not own the card LDO4 supply"
+ #endif
+-	return true;
+-}
+ 
+ static esp_err_t hosted_sdio_print_cis_information(sdmmc_card_t* card)
+ {
+@@ -97,7 +85,7 @@
+ 	if (ret == ESP_ERR_INVALID_SIZE) {
+ 		int temp_buf_size = cis_data_len;
+ 		uint8_t* temp_buf = g_h.funcs->_h_malloc(temp_buf_size);
+-		assert(temp_buf);
++		if (!temp_buf) return ESP_ERR_NO_MEM;
+ 
+ 		ESP_LOGW(TAG, "CIS data longer than expected, temporary buffer allocated.");
+ 		ret = sdmmc_io_get_cis_data(card, temp_buf, temp_buf_size, &cis_data_len);
+@@ -127,10 +115,10 @@
+ 	uint8_t *bs_read_u8 = (uint8_t *) &bs_read;
+ 
+ 	// Set and read back block size
+-	ESP_ERROR_CHECK(sdmmc_io_write_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEL, bs_u8[0], NULL));
+-	ESP_ERROR_CHECK(sdmmc_io_write_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEH, bs_u8[1], NULL));
+-	ESP_ERROR_CHECK(sdmmc_io_read_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEL, &bs_read_u8[0]));
+-	ESP_ERROR_CHECK(sdmmc_io_read_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEH, &bs_read_u8[1]));
++	ESP_RETURN_ON_ERROR(sdmmc_io_write_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEL, bs_u8[0], NULL), TAG, "SDIO function initialization failed");
++	ESP_RETURN_ON_ERROR(sdmmc_io_write_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEH, bs_u8[1], NULL), TAG, "SDIO function initialization failed");
++	ESP_RETURN_ON_ERROR(sdmmc_io_read_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEL, &bs_read_u8[0]), TAG, "SDIO function initialization failed");
++	ESP_RETURN_ON_ERROR(sdmmc_io_read_byte(card, SDIO_FUNC_0, offset + SD_IO_CCCR_BLKSIZEH, &bs_read_u8[1]), TAG, "SDIO function initialization failed");
+ 	ESP_LOGI(TAG, "Function %d Blocksize: %d", fn, (unsigned int) bs_read);
+ 
+ 	if (bs_read == value)
+@@ -191,29 +179,29 @@
+ 	}
+ 
+ 	// get interrupt status
+-	ESP_ERROR_CHECK(sdmmc_io_read_byte(card, SDIO_FUNC_0, SD_IO_CCCR_INT_ENABLE, &ie));
++	ESP_RETURN_ON_ERROR(sdmmc_io_read_byte(card, SDIO_FUNC_0, SD_IO_CCCR_INT_ENABLE, &ie), TAG, "SDIO function initialization failed");
+ 	ESP_LOGD(TAG, "IE: 0x%02x", ie);
+ 
+ 	// enable interrupts for function 1 and master enable
+ 	ie |= BIT(0) | FUNC1_EN_MASK;
+-	ESP_ERROR_CHECK(sdmmc_io_write_byte(card, SDIO_FUNC_0, SD_IO_CCCR_INT_ENABLE, ie, NULL));
+-
+-	ESP_ERROR_CHECK(sdmmc_io_read_byte(card, SDIO_FUNC_0, SD_IO_CCCR_INT_ENABLE, &ie));
++	ESP_RETURN_ON_ERROR(sdmmc_io_write_byte(card, SDIO_FUNC_0, SD_IO_CCCR_INT_ENABLE, ie, NULL), TAG, "SDIO function initialization failed");
++
++	ESP_RETURN_ON_ERROR(sdmmc_io_read_byte(card, SDIO_FUNC_0, SD_IO_CCCR_INT_ENABLE, &ie), TAG, "SDIO function initialization failed");
+ 	ESP_LOGD(TAG, "IE: 0x%02x", ie);
+ 
+ 	// get bus width register
+-	ESP_ERROR_CHECK(sdmmc_io_read_byte(card, SDIO_FUNC_0, SD_IO_CCCR_BUS_WIDTH, &bus_width));
++	ESP_RETURN_ON_ERROR(sdmmc_io_read_byte(card, SDIO_FUNC_0, SD_IO_CCCR_BUS_WIDTH, &bus_width), TAG, "SDIO function initialization failed");
+ 	ESP_LOGD(TAG, "BUS_WIDTH: 0x%02x", bus_width);
+ 
+ 	// skip enable of continuous SPI interrupts
+ 
+ 	// set FN0 block size to 512
+ 	bs = 512;
+-	ESP_ERROR_CHECK(hosted_sdio_set_blocksize(card, SDIO_FUNC_0, bs));
++	ESP_RETURN_ON_ERROR(hosted_sdio_set_blocksize(card, SDIO_FUNC_0, bs), TAG, "SDIO function initialization failed");
+ 
+ 	// set FN1 block size to 512
+ 	bs = 512;
+-	ESP_ERROR_CHECK(hosted_sdio_set_blocksize(card, SDIO_FUNC_1, bs));
++	ESP_RETURN_ON_ERROR(hosted_sdio_set_blocksize(card, SDIO_FUNC_1, bs), TAG, "SDIO function initialization failed");
+ 
+ 	return ESP_OK;
+ }
+@@ -290,25 +278,29 @@
+ 	return ESP_OK;
+ }
+ 
+-int hosted_sdio_deinit(void* ctx)
+-{
+-	SDIO_FAIL_IF_NULL(ctx);
+-
+-	sdmmc_context_t *context = (sdmmc_context_t *)ctx;
+-
++static int hosted_sdio_deinit_impl(void* ctx)
++{
++	SDIO_FAIL_IF_NULL(ctx);
++
++	sdmmc_context_t *context = (sdmmc_context_t *)ctx;
++
++	if (!sdio_bus_lock) return ESP_ERR_INVALID_STATE;
++	esp_err_t ret = guition_sdmmc_hosted_release();
++	if (ret != ESP_OK) return ret;
++	hosted_sdio_card_deinit(ctx);
+ 	HOSTED_FREE(context->card);
++	context->card = NULL;
+ 
+ 	if (sdio_bus_lock) {
+ 		g_h.funcs->_h_destroy_mutex(sdio_bus_lock);
+ 		sdio_bus_lock = NULL;
+ 	}
+ 
+-	sdmmc_host_deinit();
+ 
+ 	return ESP_OK;
+ }
+ 
+-void * hosted_sdio_init(void)
++static void * hosted_sdio_init_impl(void)
+ {
+ 	esp_err_t res;
+ 	bool got_valid_config = false;
+@@ -352,13 +344,6 @@
+ 		context.config.pin_d3.pin     = H_SDIO_PIN_D3;
+ 	}
+ 
+-	// initialise SDMMC host
+-	res = sdmmc_host_init();
+-	if (res != ESP_OK) {
+-		ESP_LOGE(TAG, "Failed to initialize SDMMC host");
+-		return NULL;
+-	}
+-
+ 	// configure SDIO interface and slot
+ 	slot_config.width = context.config.bus_width;
+ #if defined(H_SDIO_SOC_USE_GPIO_MATRIX)
+@@ -372,7 +357,7 @@
+ 
+ 	hosted_sdio_workaround(context.config.slot, &slot_config);
+ 
+-	res = sdmmc_host_init_slot(context.config.slot, &slot_config);
++	res = guition_sdmmc_hosted_acquire(context.config.slot, &slot_config);
+ 	if (res != ESP_OK) {
+ 		ESP_LOGE(TAG, "init SDMMC Host slot %d failed", H_SDMMC_HOST_SLOT);
+ 		return NULL;
+@@ -382,17 +367,25 @@
+ 	context.card = (sdmmc_card_t *)g_h.funcs->_h_malloc(sizeof(sdmmc_card_t));
+ 	if (!context.card) {
+ 		ESP_LOGE(TAG, "Failed to allocate memory for SDMMC card");
++		guition_sdmmc_hosted_release();
+ 		return NULL;
+ 	}
++
++	memset(context.card, 0, sizeof(*context.card));
+ 
+ 	// initialise mutex for bus locking
+ 	sdio_bus_lock = g_h.funcs->_h_create_mutex();
+-	assert(sdio_bus_lock);
++	if (!sdio_bus_lock) {
++		HOSTED_FREE(context.card);
++		context.card = NULL;
++		guition_sdmmc_hosted_release();
++		return NULL;
++	}
+ 
+ 	return (void *)&context;
+ }
+ 
+-int hosted_sdio_card_init(void *ctx, bool show_config)
++static int hosted_sdio_card_init_impl(void *ctx, bool show_config)
+ {
+ 	SDIO_FAIL_IF_NULL(ctx);
+ 
+@@ -405,9 +398,10 @@
+ 	sdmmc_host_t config = SDMMC_HOST_DEFAULT();
+ 	config.slot = sdio_config->slot; // override default slot set
+ 
+-	if (!hosted_sdio_enable_ldo(&config)) {
+-		goto fail;
+-	}
++	/* A retry must release the previous attempt's IDF-owned DMA buffer. */
++	hosted_sdio_card_deinit(ctx);
++	memset(context->card, 0, sizeof(*context->card));
++	config.command_timeout_ms = 1000;
+ 
+ 	config.max_freq_khz = sdio_config->clock_freq_khz;
+ 	if (show_config) {
+@@ -461,10 +455,11 @@
+ 	return ESP_OK;
+ 
+ fail:
++	hosted_sdio_card_deinit(ctx);
+ 	return ESP_FAIL;
+ }
+ 
+-int hosted_sdio_card_deinit(void *ctx)
++static int hosted_sdio_card_deinit_impl(void *ctx)
+ {
+ 	SDIO_FAIL_IF_NULL(ctx);
+ 
+@@ -480,7 +475,7 @@
+ 	return ESP_OK;
+ }
+ 
+-int hosted_sdio_read_reg(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
++static int hosted_sdio_read_reg_impl(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
+ {
+ 	int res = 0;
+ 
+@@ -504,7 +499,7 @@
+ 	return res;
+ }
+ 
+-int hosted_sdio_write_reg(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
++static int hosted_sdio_write_reg_impl(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
+ {
+ 	int res = 0;
+ 
+@@ -527,7 +522,7 @@
+ 	return res;
+ }
+ 
+-int hosted_sdio_read_block(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
++static int hosted_sdio_read_block_impl(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
+ {
+ 	int res = 0;
+ 
+@@ -548,7 +543,7 @@
+ 	return res;
+ }
+ 
+-int hosted_sdio_write_block(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
++static int hosted_sdio_write_block_impl(void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required)
+ {
+ 	int res = 0;
+ 
+@@ -570,14 +565,73 @@
+ }
+ 
+ /* Blocking fn call. Returns when SDIO slave device generates a SDIO interrupt */
++static int hosted_sdio_wait_slave_intr_impl(void *ctx, uint32_t ticks_to_wait)
++{
++	SDIO_FAIL_IF_NULL(ctx);
++
++	sdmmc_context_t *context = (sdmmc_context_t *)ctx;
++	sdmmc_card_t *card = context->card;
++
++	SDIO_FAIL_IF_NULL(card);
++
++	return sdmmc_io_wait_int(card, ticks_to_wait);
++}
++
++/* All C6 entry points participate in board arbitration, including access to the
++ * shared context/card and its DMA buffer. Do not cancel a worker owning this
++ * mutex: transport teardown acquires the guard before cancelling workers. */
++#define GUARDED_HOSTED(name, args, call) \
++    int name args { \
++        esp_err_t err = guition_sdmmc_lock(pdMS_TO_TICKS(250)); \
++        if (err != ESP_OK) return err; \
++        int result = (call); \
++        guition_sdmmc_unlock(); \
++        return result; \
++    }
++
++void *hosted_sdio_init(void)
++{
++    if (guition_sdmmc_lock(portMAX_DELAY) != ESP_OK) return NULL;
++    void *result = hosted_sdio_init_impl();
++    guition_sdmmc_unlock();
++    return result;
++}
++
++GUARDED_HOSTED(hosted_sdio_deinit, (void *ctx), hosted_sdio_deinit_impl(ctx))
++GUARDED_HOSTED(hosted_sdio_card_init, (void *ctx, bool show), hosted_sdio_card_init_impl(ctx, show))
++GUARDED_HOSTED(hosted_sdio_card_deinit, (void *ctx), hosted_sdio_card_deinit_impl(ctx))
++GUARDED_HOSTED(hosted_sdio_read_reg,
++    (void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required),
++    hosted_sdio_read_reg_impl(ctx, reg, data, size, lock_required))
++GUARDED_HOSTED(hosted_sdio_write_reg,
++    (void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required),
++    hosted_sdio_write_reg_impl(ctx, reg, data, size, lock_required))
++GUARDED_HOSTED(hosted_sdio_read_block,
++    (void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required),
++    hosted_sdio_read_block_impl(ctx, reg, data, size, lock_required))
++GUARDED_HOSTED(hosted_sdio_write_block,
++    (void *ctx, uint32_t reg, uint8_t *data, uint16_t size, bool lock_required),
++    hosted_sdio_write_block_impl(ctx, reg, data, size, lock_required))
++
+ int hosted_sdio_wait_slave_intr(void *ctx, uint32_t ticks_to_wait)
+ {
+-	SDIO_FAIL_IF_NULL(ctx);
+-
+-	sdmmc_context_t *context = (sdmmc_context_t *)ctx;
+-	sdmmc_card_t *card = context->card;
+-
+-	SDIO_FAIL_IF_NULL(card);
+-
+-	return sdmmc_io_wait_int(card, ticks_to_wait);
+-}
++    TickType_t start = xTaskGetTickCount();
++    for (;;) {
++        TickType_t elapsed = xTaskGetTickCount() - start;
++        TickType_t wait = pdMS_TO_TICKS(250);
++        if (ticks_to_wait != portMAX_DELAY) {
++            TickType_t remaining = elapsed < ticks_to_wait ? ticks_to_wait - elapsed : 0;
++            if (wait > remaining) wait = remaining;
++        }
++        esp_err_t err = guition_sdmmc_lock(wait);
++        if (err != ESP_OK) return err;
++        /* Nonblocking semaphore check: card/eject/C6 TX can use the controller
++         * while this worker waits. Recheck card lifetime under the guard. */
++        int result = hosted_sdio_wait_slave_intr_impl(ctx, 0);
++        guition_sdmmc_unlock();
++        if (result != ESP_ERR_TIMEOUT) return result;
++        if (ticks_to_wait != portMAX_DELAY &&
++            xTaskGetTickCount() - start >= ticks_to_wait) return ESP_ERR_TIMEOUT;
++        vTaskDelay(1);
++    }
++}
+--- a/host/drivers/transport/sdio/sdio_drv.c
++++ b/host/drivers/transport/sdio/sdio_drv.c
+@@ -74,6 +74,7 @@
+ 
+ /** Includes **/
+ #include "string.h"
++#include "board/guition_sdmmc.h"
+ #include "sdio_drv.h"
+ #include "sdio_reg.h"
+ #include "serial_drv.h"
+@@ -277,6 +278,9 @@
+ 
+ void bus_deinit_internal(void *bus_handle)
+ {
++	/* Drain any in-flight SDMMC callback before cancelling workers. Holding the
++	 * recursive guard also prevents another worker entering during cancellation. */
++	ESP_ERROR_CHECK(guition_sdmmc_lock(portMAX_DELAY));
+ 	uint8_t prio_q_idx = 0;
+ 
+ 	if (sdio_read_thread) {
+@@ -390,6 +394,7 @@
+ 		g_h.funcs->_h_bus_deinit(bus_handle);
+ 	}
+ 	sdio_handle = NULL;
++	guition_sdmmc_unlock();
+ }
+ 
+ static int sdio_generate_slave_intr(uint8_t intr_no)
+@@ -1435,15 +1440,15 @@
+ 
+ #if defined(USE_DRIVER_LOCK)
+ 	sdio_bus_lock = g_h.funcs->_h_create_mutex();
+-	assert(sdio_bus_lock);
++	if (!sdio_bus_lock) goto fail;
+ #endif
+ 
+ 	sem_to_slave_queue = g_h.funcs->_h_create_semaphore(tx_queue_size * MAX_PRIORITY_QUEUES);
+-	assert(sem_to_slave_queue);
++	if (!sem_to_slave_queue) goto fail;
+ 	g_h.funcs->_h_get_semaphore(sem_to_slave_queue, 0);
+ 
+ 	sem_from_slave_queue = g_h.funcs->_h_create_semaphore(rx_queue_size * MAX_PRIORITY_QUEUES);
+-	assert(sem_from_slave_queue);
++	if (!sem_from_slave_queue) goto fail;
+ 	g_h.funcs->_h_get_semaphore(sem_from_slave_queue, 0);
+ 
+ 	/* cleanup the semaphores */
+@@ -1452,11 +1457,11 @@
+ 	for (prio_q_idx=0; prio_q_idx<MAX_PRIORITY_QUEUES;prio_q_idx++) {
+ 		/* Queue - rx */
+ 		from_slave_queue[prio_q_idx] = g_h.funcs->_h_create_queue(rx_queue_size, sizeof(interface_buffer_handle_t));
+-		assert(from_slave_queue[prio_q_idx]);
++		if (!from_slave_queue[prio_q_idx]) goto fail;
+ 
+ 		/* Queue - tx */
+ 		to_slave_queue[prio_q_idx] = g_h.funcs->_h_create_queue(tx_queue_size, sizeof(interface_buffer_handle_t));
+-		assert(to_slave_queue[prio_q_idx]);
++		if (!to_slave_queue[prio_q_idx]) goto fail;
+ 	}
+ 
+ 	sdio_mempool_create(tx_queue_size, rx_queue_size);
+@@ -1466,7 +1471,7 @@
+ 	sdio_handle = g_h.funcs->_h_bus_init();
+ 	if (!sdio_handle) {
+ 		ESP_LOGE(TAG, "could not create sdio handle, exiting\n");
+-		assert(sdio_handle);
++		goto fail;
+ 	}
+ 
+ 	// initialise double buffering structs
+@@ -1475,7 +1480,7 @@
+ 	double_buf.write_index = 0; // we will write into the first buffer
+ 
+ 	sem_double_buf_xfer_data = g_h.funcs->_h_create_semaphore(1);
+-	assert(sem_double_buf_xfer_data);
++	if (!sem_double_buf_xfer_data) goto fail;
+ 	g_h.funcs->_h_get_semaphore(sem_double_buf_xfer_data, 0);
+ 
+ 	sdio_rx_buf_thread = g_h.funcs->_h_thread_create("sdio_rx_buf",
+@@ -1490,8 +1495,12 @@
+ 	sdio_write_thread = g_h.funcs->_h_thread_create("sdio_write",
+ 		DFLT_TASK_PRIO, DFLT_TASK_STACK_SIZE, sdio_write_task, NULL);
+ 
++	if (!sdio_rx_buf_thread || !sdio_read_thread || !sdio_process_rx_thread || !sdio_write_thread) goto fail;
+ 	ESP_LOGD(TAG, "sdio bus init done");
+ 	return sdio_handle;
++fail:
++	bus_deinit_internal(sdio_handle);
++	return NULL;
+ }
+ 
+ /**
+--- a/host/drivers/transport/transport_drv.c
++++ b/host/drivers/transport/transport_drv.c
+@@ -111,11 +111,11 @@
+ 	transport_driver_event_handler(state);
+ }
+ 
+-static void transport_drv_init(void)
++static esp_err_t transport_drv_init(void)
+ {
+ 	bus_handle = bus_init_internal();
+ 	ESP_LOGD(TAG, "Bus handle: %p", bus_handle);
+-	assert(bus_handle);
++	if (!bus_handle) return ESP_FAIL;
+ #if H_NETWORK_SPLIT_ENABLED
+ 	ESP_LOGI(TAG, "Network split enabled. Port ranges- Host:TCP(%d-%d), UDP(%d-%d), Slave:TCP(%d-%d), UDP(%d-%d)",
+ 		H_HOST_TCP_LOCAL_PORT_RANGE_START, H_HOST_TCP_LOCAL_PORT_RANGE_END,
+@@ -124,6 +124,7 @@
+ 		H_SLAVE_UDP_REMOTE_PORT_RANGE_START, H_SLAVE_UDP_REMOTE_PORT_RANGE_END);
+ #endif
+ 	hci_drv_init();
++	return ESP_OK;
+ }
+ 
+ esp_err_t teardown_transport(void)
+@@ -143,6 +144,7 @@
+ 
+ 	if (bus_handle) {
+ 		bus_deinit_internal(bus_handle);
++		bus_handle = NULL;
+ 	}
+ 	ESP_LOGI(TAG, "TRANSPORT_INACTIVE");
+ 	transport_state = TRANSPORT_INACTIVE;
+@@ -152,7 +154,8 @@
+ esp_err_t setup_transport(void(*esp_hosted_up_cb)(void))
+ {
+ 	g_h.funcs->_h_hosted_init_hook();
+-	transport_drv_init();
++	esp_err_t ret = transport_drv_init();
++	if (ret != ESP_OK) return ret;
+ 	transport_esp_hosted_up_cb = esp_hosted_up_cb;
+ 
+ 	return ESP_OK;
+--- a/host/api/src/esp_hosted_api.c
++++ b/host/api/src/esp_hosted_api.c
+@@ -151,7 +151,11 @@
+ 		ESP_ERROR_CHECK(esp_hosted_set_default_config());
+ 	}
+ 	ESP_ERROR_CHECK(add_esp_wifi_remote_channels());
+-	ESP_ERROR_CHECK(setup_transport(transport_active_cb));
++	esp_err_t setup_result = setup_transport(transport_active_cb);
++	if (setup_result != ESP_OK) {
++		remove_esp_wifi_remote_channels();
++		return setup_result;
++	}
+ 	ESP_ERROR_CHECK(rpc_init());
+ 	rpc_register_event_callbacks();
+ 

@@ -1,0 +1,162 @@
+Project Number: Lead Free                          Tracking Code: TC0310-Lead Free-0120
+Requested by: John Schmelz                      Date: 3/4/2003          Product Rev: AU
+Part #: HTSW-150-07-L-D                                     Lot #: NA            Tech: J.S.           Eng: J.S.
+Part description: HTSW                                                                        Qty to test: 10
+Test Start: 3/4/2003         Test Completed: 3/6/2003
+
+
+
+
+               Perform Solder Heat Resistance using three temperature profiles: 230°C, 260°C and 280°C.
+                                                   Summary Report
+
+                                                   PART DESCRIPTION
+
+                                                        HTSW-150-07-L-D
+            Tracking Code: TC0310-Lead Free-0120                                         Part #: HTSW-150-07-L-D
+                                                        Part description: HTSW
+
+                                                        CERTIFICATION
+
+All instruments and measuring equipment were calibrated to National Institute for Standards and Technology (NIST)
+traceable standards according to IS0 10012-l and ANSI/NCSL 2540-1, as applicable.
+
+All contents contained herein are the property of Samtec. No portion of this report, in part or in full shall be
+reproduced without prior written approval of Samtec.
+
+SCOPE
+              Perform Solder Heat Resistance using three temperature profiles: 230° C, 260° C and 280° C.
+
+APPLICABLE DOCUMENTS
+         Standards: EIA Publication 364
+
+TEST SAMPLES AND PREPARATION.
+    1) Parts are visually inspected for cleanliness.
+
+
+
+FLOWCHART
+
+
+
+
+                                  TEST            260 °C               280 °C        230 °C
+                                  STEP                                GROUP D       GROUP E
+                                                                                     Control
+                                    01            1 Pass                1 Pass        1 Pass
+                                                Solder Heat   Group   Solder Heat   Solder Heat
+                                    02          Resistance    A       Resistance    Resistance
+                                    03           2nd Pass
+                                                Solder Heat   Group
+                                    04          Resistance    B
+                                    05           3rd Pass
+                                                Solder Heat   Group
+                                    06          Resistance    C
+
+
+                              Solder Heat Resistance (Visual): Blistering, Distortion
+                              (Bowed or Twisted), Discoloration
+
+
+
+
+File: J:\QA LAB\Test Programs\TC0106-0334\tc0106—0334.doc               Form 01 Rev 00                             Page 2 of 8
+      Tracking Code: TC0310-Lead Free-0120                              Part #: HTSW-150-07-L-D
+                                             Part description: HTSW
+
+OVEN THERMAL PROFILE (Control):
+     1) The Following Thermal Profiles were used to stress the parts.
+      Tracking Code: TC0310-Lead Free-0120                            Part #: HTSW-150-07-L-D
+                                             Part description: HTSW
+
+OVEN THERMAL PROFILE, SUPPLEMENTAL TEST:
+Solder Heat Resistance (Visual) at 230 °C
+      Tracking Code: TC0310-Lead Free-0120                            Part #: HTSW-150-07-L-D
+                                             Part description: HTSW
+
+OVEN THERMAL PROFILE, SUPPLEMENTAL TEST Continued:
+Solder Heat Resistance (Visual) at 280 °C
+      Tracking Code: TC0310-Lead Free-0120                            Part #: HTSW-150-07-L-D
+                                             Part description: HTSW
+
+                                    ATTRIBUTE DEFINITION
+
+
+
+
+SOLDER HEAT RESISTANCE (Visual):
+     1) Blistering
+        a) Pass/Fail
+     2) Distortion
+        a) Bowed or Twisted
+     3) Discoloration
+        a) Pass/Fail
+          Tracking Code: TC0310-Lead Free-0120                             Part #: HTSW-150-07-L-D
+                                                  Part description: HTSW
+
+                                                       RESULTS
+
+
+
+
+Solder Heat Resistance, 260 °C Thermal Stressing
+    • Blistering
+            o One Thermal Stress--------------------------------Pass
+            o Two Thermal Stresses-----------------------------Pass
+            o Three Thermal Stresses ---------------------------Pass
+    • Distortion
+            o One Thermal Stress--------------------------------Pass
+            o Two Thermal Stresses-----------------------------Pass
+            o Three Thermal Stresses ---------------------------Pass
+    • Discoloration
+            o One Thermal Stress--------------------------------Pass
+            o Two Thermal Stresses-----------------------------Pass
+            o Three Thermal Stresses ---------------------------Pass
+
+
+
+
+Supplemental Tests
+
+
+Solder Heat Resistance, 230°C Thermal Stressing
+    • Blistering
+            o One Thermal Stress--------------------------------Pass
+    • Distortion
+            o One Thermal Stress--------------------------------Pass
+    • Discoloration
+            o One Thermal Stress--------------------------------Pass
+
+
+
+
+Solder Heat Resistance, 280 °C Thermal Stressing
+    • Blistering
+            o One Thermal Stress--------------------------------Pass
+    • Distortion
+            o One Thermal Stress--------------------------------Pass
+    • Discoloration
+            o One Thermal Stress--------------------------------Pass
+        Tracking Code: TC0310-Lead Free-0120                            Part #: HTSW-150-07-L-D
+                                               Part description: HTSW
+
+                         EQUIPMENT AND CALIBRATION SCHEDULES
+
+
+
+
+Equipment #: THL-01
+Description: Temperature/Humidity Chart Recorder
+Manufacturer: Dickson
+Model: THDX
+Serial #: 9316255
+Accuracy: Temp: +/- 1C; Humidity: +/-2% RH (0 - 60%) +/- 3% RH (61 - 95%).
+… Last Cal: 7/15/02, Next Cal: 7/15/03
+
+Equipment #: OV-5
+Description: Nitrongen Purge IR Reflow
+Manufacturer: Vitronics Soltec
+Model: XPM-730
+Serial #: XN 70328
+Accuracy: + / - 5° C
+

@@ -1,0 +1,335 @@
+{
+  "source_sha256": "d490110c6335a6594a8d2171386926c65a95e0f8ba729feb378c478e8a676a63",
+  "via_uuid": "b3d6a73a-b389-4126-b3c4-3d28ea9ea384",
+  "checks": [
+    {
+      "check": "F.Cu has one exact 0.40 mm CC via land",
+      "passed": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "check": "In1.Cu has one exact 0.40 mm CC via land",
+      "passed": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "check": "In2.Cu has one exact 0.40 mm CC via land",
+      "passed": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "check": "B.Cu has one exact 0.40 mm CC via land",
+      "passed": true,
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "check": "B.Mask original U115.3 aperture geometry",
+      "passed": true,
+      "detail": {
+        "count": 1,
+        "expected_area_mm2": 0.1478537845028612,
+        "actual_area_mm2": 0.14785378450286152
+      }
+    },
+    {
+      "check": "B.Mask exposes no cap extension",
+      "passed": true,
+      "detail": {
+        "difference_mm2": 0.0
+      }
+    },
+    {
+      "check": "B.Paste original U115.3 aperture geometry",
+      "passed": true,
+      "detail": {
+        "count": 1,
+        "expected_area_mm2": 0.1478537845028612,
+        "actual_area_mm2": 0.14785378450286152
+      }
+    },
+    {
+      "check": "B.Paste exposes no cap extension",
+      "passed": true,
+      "detail": {
+        "difference_mm2": 0.0
+      }
+    },
+    {
+      "check": "F.Mask has no opening over the via",
+      "passed": true,
+      "detail": {
+        "area_mm2": 0.0
+      }
+    },
+    {
+      "check": "F.Paste has no opening over the via",
+      "passed": true,
+      "detail": {
+        "area_mm2": 0.0
+      }
+    },
+    {
+      "check": "Via native process intent explicitly filled/capped and both faces tented",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Exactly one 0.20 mm plated drill hit",
+      "passed": true,
+      "detail": [
+        {
+          "file": "Trimix_Analyzer-PTH.drl",
+          "diameter_mm": 0.2
+        }
+      ]
+    },
+    {
+      "check": "Opened-via control leaves F.Cu geometry unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Opened-via control leaves In1.Cu geometry unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Opened-via control leaves In2.Cu geometry unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Opened-via control leaves B.Cu geometry unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Opened-via control leaves F.Paste geometry unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Opened-via control leaves B.Paste geometry unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Opened-via negative control adds forbidden F opening",
+      "passed": true,
+      "detail": {
+        "added_area_mm2": 0.12566055204577206
+      }
+    },
+    {
+      "check": "Opened-via negative control exposes B cap extension",
+      "passed": true,
+      "detail": {
+        "added_area_mm2": 0.03262014721304904
+      }
+    },
+    {
+      "check": "Native baseline has no violation involving exact CC via",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Removing only local clearance rule exposes three expected pad errors",
+      "passed": true,
+      "detail": [
+        "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1250 mm)",
+        "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1381 mm)",
+        "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1250 mm)"
+      ]
+    },
+    {
+      "check": "Oversized-land native control fails exact maximum and copper spacing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Moving via 0.01 mm loses its coordinate-scoped permissions",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "Single-rule control removes exactly one source-text block",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "passed": 25,
+  "failed": 0,
+  "native_baseline": {
+    "unconnected": 3,
+    "parity": 0,
+    "violations_by_type": {
+      "clearance": 1,
+      "shorting_items": 1,
+      "hole_clearance": 2,
+      "solder_mask_bridge": 1,
+      "track_dangling": 13,
+      "via_dangling": 6,
+      "silk_overlap": 3,
+      "silk_over_copper": 8,
+      "nonmirrored_text_on_back_layer": 1
+    },
+    "inherited_C116_CHG_findings": [
+      {
+        "description": "Clearance violation (netclass 'Default' clearance 0.2000 mm; actual 0.1624 mm)",
+        "items": [
+          {
+            "description": "Via [CHG_INT_N] on F.Cu - B.Cu",
+            "pos": {
+              "x": 15.95,
+              "y": 88.35
+            },
+            "uuid": "551051f9-15ca-4e98-9e17-600b206e2b0c"
+          },
+          {
+            "description": "Track [USB_OVP_DVDT] on B.Cu, length 1.3202 mm",
+            "pos": {
+              "x": 15.4,
+              "y": 89.3
+            },
+            "uuid": "8d04b12f-af6f-4f52-9518-3ae7d04d29aa"
+          }
+        ],
+        "severity": "error",
+        "type": "clearance"
+      },
+      {
+        "description": "Items shorting two nets (nets USB_OVP_DVDT and CHG_INT_N)",
+        "items": [
+          {
+            "description": "Pad 1 [USB_OVP_DVDT] of C116 on B.Cu",
+            "pos": {
+              "x": 16.5,
+              "y": 88.57
+            },
+            "uuid": "2e10c5dc-bd48-480c-b636-de00b00a6e8b"
+          },
+          {
+            "description": "Via [CHG_INT_N] on F.Cu - B.Cu",
+            "pos": {
+              "x": 15.95,
+              "y": 88.35
+            },
+            "uuid": "551051f9-15ca-4e98-9e17-600b206e2b0c"
+          }
+        ],
+        "severity": "error",
+        "type": "shorting_items"
+      },
+      {
+        "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1233 mm)",
+        "items": [
+          {
+            "description": "Pad 1 [USB_OVP_DVDT] of C116 on B.Cu",
+            "pos": {
+              "x": 16.5,
+              "y": 88.57
+            },
+            "uuid": "2e10c5dc-bd48-480c-b636-de00b00a6e8b"
+          },
+          {
+            "description": "Via [CHG_INT_N] on F.Cu - B.Cu",
+            "pos": {
+              "x": 15.95,
+              "y": 88.35
+            },
+            "uuid": "551051f9-15ca-4e98-9e17-600b206e2b0c"
+          }
+        ],
+        "severity": "error",
+        "type": "hole_clearance"
+      },
+      {
+        "description": "Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.1233 mm)",
+        "items": [
+          {
+            "description": "Pad 1 [USB_OVP_DVDT] of C116 on B.Cu",
+            "pos": {
+              "x": 16.5,
+              "y": 88.57
+            },
+            "uuid": "2e10c5dc-bd48-480c-b636-de00b00a6e8b"
+          },
+          {
+            "description": "Via [CHG_INT_N] on F.Cu - B.Cu",
+            "pos": {
+              "x": 15.95,
+              "y": 88.35
+            },
+            "uuid": "551051f9-15ca-4e98-9e17-600b206e2b0c"
+          }
+        ],
+        "severity": "error",
+        "type": "hole_clearance"
+      },
+      {
+        "description": "Rear solder mask aperture bridges items with different nets",
+        "items": [
+          {
+            "description": "Via [CHG_INT_N] on F.Cu - B.Cu",
+            "pos": {
+              "x": 15.95,
+              "y": 88.35
+            },
+            "uuid": "551051f9-15ca-4e98-9e17-600b206e2b0c"
+          },
+          {
+            "description": "Pad 1 [USB_OVP_DVDT] of C116 on B.Cu",
+            "pos": {
+              "x": 16.5,
+              "y": 88.57
+            },
+            "uuid": "2e10c5dc-bd48-480c-b636-de00b00a6e8b"
+          }
+        ],
+        "severity": "error",
+        "type": "solder_mask_bridge"
+      }
+    ],
+    "distinct_inherited_geometry_findings": 4,
+    "duplicate_geometry_row_explanation": "--all-track-errors repeats the same hole-clearance UUID pair once; five raw rows represent four distinct findings."
+  },
+  "parser_warnings": [
+    "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/vippo-process-review/native-v3-independent/baseline/cam/Trimix_Analyzer-PTH.drl:30 \"G90\": G90 header statement found after end of header",
+    "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/vippo-process-review/native-v3-independent/baseline/cam/Trimix_Analyzer-NPTH.drl:12 \"G90\": G90 header statement found after end of header"
+  ],
+  "scope": "Exact CC escape process, rule counterexamples and local CAM only. Unrelated remaining C116/CHG collision, three opens and silkscreen/dangling findings are not accepted here.",
+  "fabrication_release": false,
+  "fabricator_or_assembler_acceptance": false,
+  "no_authoritative_changes": true,
+  "inputs": {
+    "baseline/cam/Trimix_Analyzer-F_Paste.gtp": "fc86aa3ecf2047460294fd6a8f06f8e25f8ff27780f2f7e81988a3d9bc5bf80f",
+    "baseline/cam/Trimix_Analyzer-B_Mask.gbs": "86ece9ae1530f6516e2c3b42e2d363cfe122f0e4b6a9329ce3372c2821537590",
+    "baseline/cam/Trimix_Analyzer-In1_Cu.g1": "64b9f31202d298249a2f390f7fb2a6fbb4eb6c6387be918da399161e064f974a",
+    "baseline/cam/Trimix_Analyzer-job.gbrjob": "f7e1cf3b450078a3a3077d9a86423fbcd8c523a9ff3e33abcd75d32fd514d0c3",
+    "baseline/cam/Trimix_Analyzer-F_Mask.gts": "c359799d5125a2ab35f8e9a7e8441e0e9542ea89b0c136e4b24ffb43e906ca80",
+    "baseline/cam/Trimix_Analyzer-In2_Cu.g2": "f818a4714c0ef3fe1bab54570eef81fbee9c957240740a9ab281784a6792e093",
+    "baseline/cam/Trimix_Analyzer-PTH.drl": "2eb517a22d0d638a3460ab81ca59a5ecec3c5f0068c0008c72f449892696147e",
+    "baseline/cam/drill-report.txt": "42a0ecc00e2fd489ecbc7a2a6043432a5f95756471298959bb1b60092cc00a17",
+    "baseline/cam/Trimix_Analyzer-B_Paste.gbp": "f7e46901bb0e659153444f0ce1d6bb88eeb3c4b26cbff8159c80427abcf54df4",
+    "baseline/cam/Trimix_Analyzer-B_Cu.gbl": "9e92ac16213ed5afc8d93a5f597b527f579bebc7108cdd567ae04b4be3153194",
+    "baseline/cam/Trimix_Analyzer-NPTH.drl": "8063ff253a6e9010a0bbd7dd724d62ab7b2882f0d464234252dfd64fd9cb0e07",
+    "baseline/cam/Trimix_Analyzer-F_Cu.gtl": "1b995a9a9045de4ed80e25b4df8c4572ab3403ae0677a42a49f43f6feef79484",
+    "fully-opened-via/cam/Trimix_Analyzer-F_Paste.gtp": "fc86aa3ecf2047460294fd6a8f06f8e25f8ff27780f2f7e81988a3d9bc5bf80f",
+    "fully-opened-via/cam/Trimix_Analyzer-B_Mask.gbs": "a1946d0a240b6815dbf5c23b32fc01d1ae8b3e7c0d8a92cecef2395e0b54e36d",
+    "fully-opened-via/cam/Trimix_Analyzer-In1_Cu.g1": "64b9f31202d298249a2f390f7fb2a6fbb4eb6c6387be918da399161e064f974a",
+    "fully-opened-via/cam/Trimix_Analyzer-job.gbrjob": "f7e1cf3b450078a3a3077d9a86423fbcd8c523a9ff3e33abcd75d32fd514d0c3",
+    "fully-opened-via/cam/Trimix_Analyzer-F_Mask.gts": "82ad3ac9272a62c542fe5a8733bef1958441cd5addb830ec670043377f2ac403",
+    "fully-opened-via/cam/Trimix_Analyzer-In2_Cu.g2": "f818a4714c0ef3fe1bab54570eef81fbee9c957240740a9ab281784a6792e093",
+    "fully-opened-via/cam/Trimix_Analyzer-B_Paste.gbp": "f7e46901bb0e659153444f0ce1d6bb88eeb3c4b26cbff8159c80427abcf54df4",
+    "fully-opened-via/cam/Trimix_Analyzer-B_Cu.gbl": "9e92ac16213ed5afc8d93a5f597b527f579bebc7108cdd567ae04b4be3153194",
+    "fully-opened-via/cam/Trimix_Analyzer-F_Cu.gtl": "1b995a9a9045de4ed80e25b4df8c4572ab3403ae0677a42a49f43f6feef79484"
+  }
+}

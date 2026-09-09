@@ -1,0 +1,7 @@
+{
+  "rejected": "BQ ILIM4.02k<500mA extrapolation unsupported by datasheet; not final current limiter",
+  "final_stage": "TPS22950YBHR19.2k0.1% plus qualified1k branch",
+  "BQ_ILIM": "300ohm1%",
+  "tests": "native topology pending export; physical current/transient/thermal pending",
+  "charging_arm": "open"
+}

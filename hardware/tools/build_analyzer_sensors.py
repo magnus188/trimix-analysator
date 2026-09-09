@@ -1,10 +1,13 @@
 """Generate the two analogue sensor pages for the A2 analyzer review draft.
 
-The pin maps below are independently specified from the TI ADS1115 and MaxLinear
-SPX3819 data sheets. MD62 lead identification follows Winsen MD62 Manual V1.3;
+The pin maps below are independently specified from the TI ADS122C04 and
+TPS7A20 data sheets. MD62 lead identification follows Winsen MD62 Manual V1.3;
 its remote lead drawing is explanatory graphics, not a fabricated PCB footprint.
 """
 from analyzer_sheet import Sheet as BaseSheet, node, S, uid, children, child
+from sensor_calibration_parts import (adc_symbol, adc_pin_nets, divider_symbol,
+    divider_properties, ADC_FP, ADS_DS, RN_FP)
+from power_review_parts import LDO_ID, LDO_MPN, LDO_DS, ldo_symbol
 
 
 def grid(value):
@@ -30,12 +33,9 @@ class Sheet(BaseSheet):
 
 R_FP = 'Resistor_SMD:R_0603_1608Metric'
 C_FP = 'Capacitor_SMD:C_0603_1608Metric'
-ADC_FP = 'Package_SO:TSSOP-10_3x3mm_P0.5mm'
 HEADER2 = 'Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical'
 HEADER3 = 'Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical'
-ADS_DS = 'https://www.ti.com/lit/ds/symlink/ads1115.pdf'
 MD_DS = 'https://www.winsen-sensor.com/d/files/PDF/Thermal%20Conductor%20Gas%20Sensor/MD62%20Manual%20V1.3.pdf'
-LDO_DS = 'https://www.maxlinear.com/ds/spx3819.pdf'
 
 
 def wire_pin(s, ref, pin, *points):
@@ -56,17 +56,22 @@ def capacitor(s, ref, value, x, y, a, b, field_at=None, **kw):
 
 
 def adc(s, ref, x, y, addr, inputs):
-    # TI DGS package, top view: 1 ADDR, 2 ALERT, 3 GND, 4..7 AIN0..3,
-    # 8 VDD, 9 SDA, 10 SCL. Standard KiCad name is TSSOP, TI calls it VSSOP.
-    expected = {'1': addr, '2': None, '3': 'GND', '4': inputs[0],
-                '5': inputs[1], '6': inputs[2], '7': inputs[3],
-                '8': 'HOST_3V3', '9': 'I2C_SDA', '10': 'I2C_SCL'}
-    s.add('Analog_ADC:ADS1115IDGS', ref, 'ADS1115IDGS', x, y, expected,
-          footprint=ADC_FP, field_at=(x+2.54, y-24.13),
-          properties={'Primary_datasheet': ADS_DS, 'Package': 'TI DGS VSSOP-10, 0.5 mm pitch'})
-    names = {str(n): p['name'] for n, p in s.pins[ref].items()}
-    assert names == {'1': 'ADDR', '2': 'ALERT/RDY', '3': 'GND', '4': 'AIN0',
-                     '5': 'AIN1', '6': 'AIN2', '7': 'AIN3', '8': 'VDD', '9': 'SDA', '10': 'SCL'}
+    # TI PW pinmap, not the different RTE/WQFN pinmap. A1 is tied to GND.
+    s.add('Trimix_Analyzer:ADS122C04_PW', ref, 'ADS122C04IPWR', x, y,
+          adc_pin_nets(addr, inputs), custom=adc_symbol(),autowire=False,
+          footprint=ADC_FP, field_at=(x+20.32, y-33.02),
+          properties={'Manufacturer':'Texas Instruments','MPN':'ADS122C04IPWR',
+            'Primary_datasheet':ADS_DS,'Package':'TI PW TSSOP-16, 0.65 mm pitch',
+            'Firmware_contract':'Internal 2.048 V reference; 20 SPS normal; signed data; IDAC and burn-out currents OFF',
+            'Unused_pins':'REFP/REFN and DRDY NC per TI9.1.3; RESET=DVDD; poll DRDY status by I2C',
+            'Decoupling':'Dedicated local AVDD-AVSS and DVDD-DGND capacitors, each >=100 nF',
+            'I2C_address':'0x40' if addr=='GND' else '0x41'})
+    # Short outward-facing ground labels avoid the existing filter/supply wires.
+    for pin,sign in [(5,-1),(4,1)]:
+        px,py=s.pin(ref,pin)
+        wire_pin(s,ref,pin,(px,py+3.81),(x+sign*10.16,py+3.81))
+        s.label('GND',(x+sign*10.16,py+3.81),180 if sign<0 else 0)
+    s.connect(ref)
 
 
 def supply_caps(s, refs, x1, x2, y, top, bottom, left, right):
@@ -144,12 +149,12 @@ def oxygen():
               'Passive galvanic cells in a vented chamber - short cables <=30 cm - review draft')
     oxygen_channel(s, 'A', 48.26, 'J401', 401, 401)
     oxygen_channel(s, 'B', 130.81, 'J402', 405, 404, coax=True)
-    s.box(238.76, 48.26, 157.48, 109.22, '3  |  DIFFERENTIAL ADC - I2C 0x48')
+    s.box(238.76, 48.26, 157.48, 109.22, '3  |  24-BIT DIFFERENTIAL ADC - I2C 0x40')
     adc(s, 'U401', 312.42, 93.98, 'GND',
         ['O2_A_AIN_P', 'O2_A_AIN_N', 'O2_B_AIN_P', 'O2_B_AIN_N'])
     supply_caps(s, ['C407', 'C408'], 283.21, 340.36, 134.62,
                 123.19, 147.32, 267.97, 351.79)
-    s.text('Place C407 at U401 VDD/GND. I2C pull-ups are on the host sheet.',
+    s.text('C407: AVDD/AVSS; C408: DVDD/DGND. Place at their supply pins.',
            242.57, 152.4, 1.016)
 
     s.box(20.32, 213.36, 208.28, 53.34, '4  |  SHARED MID-SUPPLY BIAS')
@@ -171,7 +176,7 @@ def oxygen():
     s.text('Both cell leads float.\nNeither sensor receives power.', 148.59, 253.365, 1.016)
 
     s.box(238.76, 165.1, 157.48, 85.09, '5  |  SETUP AND CABLE RULES')
-    s.text('AIN0-AIN1 = O2 A; AIN2-AIN3 = O2 B.\nStart at +/-0.256 V and 8 SPS; keep signed readings.\nOne ADC multiplexes the pairs; they are not simultaneous.',
+    s.text('AIN0-AIN1 = O2 A; AIN2-AIN3 = O2 B.\nInternal 2.048 V reference; 20 SPS normal; signed data.\nStart oxygen gain 8, PGA ON; verify headroom before use.\nIDAC and burn-out currents OFF. Pairs are multiplexed.',
            242.57, 181.61, 1.016)
     s.text('No 50 ohm termination. No ground connection on SMB shell.\nCheck cell loading, reversed leads and power-off leakage\nwith the actual sensors before accepting readings.',
            242.57, 200.66, 1.016)
@@ -197,12 +202,12 @@ def helium():
     s = Sheet('Helium', 6, 'Helium | MD62 thermal-conductivity bridge',
               'Winsen MD62 repurposed for He - constant 3.0 V excitation - calibration-dependent review draft')
     s.box(20.32, 48.26, 180.34, 86.36, '1  |  SWITCHED 3.0 V EXCITATION')
-    ldo_nets = {'1': 'VOUT_5V', '2': 'GND', '3': 'HE_ENABLE', '4': 'HE_BYP', '5': 'HE_3V0'}
-    s.add('Regulator_Linear:SPX3819M5-L-3-0', 'U501', 'SPX3819M5-L-3-0', 101.6, 83.82,
-          ldo_nets, autowire=False, footprint='Package_TO_SOT_SMD:SOT-23-5',
+    ldo_nets = {'1': 'VOUT_5V', '2': 'GND', '3': 'HE_ENABLE', '4': None, '5': 'HE_3V0'}
+    s.add(LDO_ID, 'U501', LDO_MPN, 101.6, 83.82,
+          ldo_nets, custom=ldo_symbol(), autowire=False, footprint='Package_TO_SOT_SMD:SOT-23-5',
           field_at=(92.71, 70.485), properties={'Primary_datasheet': LDO_DS})
     assert {n: p['name'] for n, p in s.pins['U501'].items()} == {
-        '1': 'IN', '2': 'GND', '3': 'EN', '4': 'BP', '5': 'OUT'}
+        '1': 'IN', '2': 'GND', '3': 'EN', '4': 'NC', '5': 'OUT'}
     wire_pin(s, 'U501', 1, (81.28, 81.28), (81.28, 67.31), (43.18, 67.31))
     s.label('VOUT_5V', (43.18, 67.31),180)
     wire_pin(s, 'U501', 5, (132.08, 81.28), (132.08, 67.31), (177.8, 67.31))
@@ -211,9 +216,7 @@ def helium():
         capacitor(s, ref, '4.7u / X7R / 10V', x, 82.55, net, 'GND')
         wire_pin(s, ref, 1, (x, 67.31))
         wire_pin(s, ref, 2, (x, 106.68))
-    capacitor(s, 'C503', '10n', 127.0, 99.06, 'HE_BYP', 'GND')
-    wire_pin(s, 'U501', 4, (121.92, 83.82), (121.92, 95.25), s.pin('C503', 1))
-    s.done.add(('C503', '1'))
+    capacitor(s, 'C503', '10n / DNP: obsolete bypass', 127.0, 99.06, None, 'GND', dnp=True)
     wire_pin(s, 'C503', 2, (127.0, 106.68))
     wire_pin(s, 'U501', 2, (101.6, 106.68))
     wire_pin(s, 'U501', 3, (86.36, 83.82), (86.36, 93.98), (65.405, 93.98))
@@ -252,24 +255,17 @@ def helium():
            212.09, 129.54, 1.016)
 
     s.box(20.32, 142.24, 180.34, 121.92, '3  |  BRIDGE REFERENCE AND EXCITATION CHECK')
-    resistor(s, 'R502', '2k / 0.1%', 66.04, 174.625, 'HE_3V0', 'HE_TRIM_TOP',
-             properties={'Temperature_coefficient': '<=25 ppm/K preferred'})
-    s.add('Device:R_Potentiometer', 'RV501', '500R / multiturn', 66.04, 196.85,
-          {'1': 'HE_TRIM_TOP', '2': 'HE_REF', '3': 'HE_TRIM_BOTTOM'}, autowire=False,
-          footprint='Potentiometer_THT:Potentiometer_Bourns_3296W_Vertical',
-          field_at=(24.13, 194.31), properties={'Assembly_hold': 'Select and verify 500R multiturn trimmer package/pinout.'})
-    resistor(s, 'R503', '2k / 0.1%', 66.04, 221.615, 'HE_TRIM_BOTTOM', 'GND',
-             properties={'Temperature_coefficient': '<=25 ppm/K preferred'})
-    wire_pin(s, 'R502', 1, (66.04, 161.29), (44.45, 161.29))
+    s.add('Trimix_Analyzer:ACAS0606_2R_MATCHED','RN501','2x2k / 1:1 matched',
+          66.04,196.85,{'1':'HE_3V0','4':'HE_REF','2':'HE_REF','3':'GND'},
+          custom=divider_symbol(),footprint=RN_FP,autowire=False,
+          field_at=(24.13,171.45),properties=divider_properties())
+    wire_pin(s, 'RN501', 1, (66.04, 161.29), (44.45, 161.29))
     s.label('HE_3V0', (44.45, 161.29),180)
-    wire_pin(s, 'R502', 2, s.pin('RV501', 1))
-    s.done.add(('RV501', '1'))
-    wire_pin(s, 'RV501', 3, s.pin('R503', 1))
-    s.done.add(('R503', '1'))
-    wire_pin(s, 'R503', 2, (66.04, 233.68), (44.45, 233.68))
+    wire_pin(s, 'RN501', 3, (66.04, 233.68), (44.45, 233.68))
     s.label('GND', (44.45, 233.68),180)
-    wire_pin(s, 'RV501', 2, (92.71, 196.85))
-    s.label('HE_REF', (92.71, 196.85),0)
+    wire_pin(s,'RN501',4,(88.9,191.77),(88.9,196.85))
+    wire_pin(s,'RN501',2,(88.9,201.93),(88.9,196.85))
+    s.label('HE_REF',(88.9,196.85),0)
     resistor(s, 'R504', '10k / 0.1%', 142.24, 176.53, 'HE_3V0', 'HE_EXC_DIV')
     resistor(s, 'R505', '10k / 0.1%', 142.24, 217.17, 'HE_EXC_DIV', 'GND')
     capacitor(s, 'C504', '100n', 179.07, 217.17, 'HE_EXC_DIV', 'GND')
@@ -284,17 +280,17 @@ def helium():
     wire_pin(s, 'C504', 2, (179.07, 233.68))
     s.wire((130.81, 233.68), (179.07, 233.68))
     s.label('GND', (130.81, 233.68),180)
-    s.text('Reference branch: 2k + 500R trim + 2k across the same 3 V.\nAdjust near air balance; record signed offset and span during calibration.\nHE_EXC_DIV = board excitation / 2; it does not sense remote cable drop.',
+    s.text('RN501: matched 2k + 2k; HE_REF = excitation / 2 (1.5 V nominal).\nNo manual trim. Store signed zero and span/curve with known reference gases.\nHE_EXC_DIV remains separate; it does not sense remote cable drop.',
            24.13, 250.825, 1.016)
 
-    s.box(208.28, 142.24, 187.96, 107.95, '4  |  DIFFERENTIAL ADC - I2C 0x49')
+    s.box(208.28, 142.24, 187.96, 107.95, '4  |  24-BIT DIFFERENTIAL ADC - I2C 0x41')
     adc(s, 'U502', 330.2, 182.88, 'HOST_3V3',
         ['HE_AIN_P', 'HE_AIN_N', 'HE_EXC_DIV', 'O2_VMID'])
     supply_caps(s, ['C508', 'C509'], 245.11, 276.86, 181.61,
                 166.37, 198.12, 232.41, 284.48)
     for ref, y, src, dest in [('R506', 213.36, 'HE_REF', 'HE_AIN_P'),
                               ('R507', 232.41, 'HE_SENSE', 'HE_AIN_N')]:
-        resistor(s, ref, '100R / 0.1%', 254.0, y, src, dest, 90, (246.38, y-8.89))
+        resistor(s, ref, '680R / 0.1%', 254.0, y, src, dest, 90, (246.38, y-8.89))
         wire_pin(s, ref, 1, (235.585, y))
         s.label(src, (235.585, y),180)
         wire_pin(s, ref, 2, (345.44, y))
@@ -307,7 +303,7 @@ def helium():
         wire_pin(s, ref, 1, (325.12, y-6.35))
         wire_pin(s, ref, 2, (325.12, y+6.35), (318.77, y+6.35))
         s.label('GND', (318.77, y+6.35),180)
-    s.text('AIN0-AIN1 = REF-SENSE. Start at +/-2.048 V.\nAIN2 = excitation / 2; AIN3 = O2 mid-supply bias.\nValidate zero/span with known O2/He mixes and\ncontrolled temperature, humidity, pressure and flow.',
+    s.text('REF-SENSE: gain 1, PGA bypass; +/-2.048 V.\n20 SPS normal; IDAC/burn-out OFF; signed data.\nAIN2 = excitation / 2; AIN3 = O2 bias.\nC508: AVDD/AVSS; C509: DVDD/DGND.\nKnown gases + controlled T/RH/pressure/flow.',
            352.425, 218.44, 0.889)
     # Keep the full conditioning/experimental limitation in a readable footer.
     s.text('MD62 is a thermal-conductivity sensor, not selective to He. Conditioning and gas-specific calibration are mandatory; no factory He accuracy is specified.',
@@ -316,5 +312,17 @@ def helium():
 
 
 if __name__ == '__main__':
+    # These original templates do not include every later connector annotation.
+    # Require a staging directory so a template run cannot erase live edits.
+    import argparse
+    from pathlib import Path
+    import analyzer_sheet as shared
+    parser=argparse.ArgumentParser(description='Generate sensor templates into a staging directory; live sheets use surgical upgrades.')
+    parser.add_argument('--output-dir',required=True)
+    args=parser.parse_args()
+    output=Path(args.output_dir).resolve()
+    if output==shared.P.resolve():parser.error('The live analyzer directory is not a valid staging destination.')
+    shared.P=output
+    shared.VERIFY=output/'intent'
     for path in [oxygen(), helium()]:
         print(path)

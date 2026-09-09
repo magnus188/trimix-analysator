@@ -1,0 +1,70 @@
+{
+    "version": "1.1",
+    "layout": [
+        {
+            "name": "External RAM",
+            "total": 134217696,
+            "used": 1937464,
+            "free": 132280232,
+            "parts": {
+                ".text": {
+                    "size": 1188448
+                },
+                ".rodata": {
+                    "size": 748432
+                },
+                ".init_array": {
+                    "size": 328
+                },
+                ".appdesc": {
+                    "size": 256
+                }
+            }
+        },
+        {
+            "name": "DIRAM",
+            "total": 445392,
+            "used": 202962,
+            "free": 242430,
+            "parts": {
+                ".text": {
+                    "size": 93782
+                },
+                ".bss": {
+                    "size": 30248
+                },
+                ".data": {
+                    "size": 19548
+                }
+            }
+        },
+        {
+            "name": "HP core RAM",
+            "total": 8192,
+            "used": 104,
+            "free": 8088,
+            "parts": {
+                ".data": {
+                    "size": 60
+                },
+                ".text": {
+                    "size": 44
+                }
+            }
+        },
+        {
+            "name": "LP RAM",
+            "total": 32768,
+            "used": 56,
+            "free": 32712,
+            "parts": {
+                ".force_slow": {
+                    "size": 32
+                },
+                ".rtc_reserved": {
+                    "size": 24
+                }
+            }
+        }
+    ]
+}

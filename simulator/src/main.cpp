@@ -1,3 +1,4 @@
+#include "services/sd_log_service.h"
 #include <lvgl.h>
 #include "src/drivers/sdl/lv_sdl_keyboard.h"
 #include "src/drivers/sdl/lv_sdl_mouse.h"
@@ -60,6 +61,7 @@ int main(int argc, char** argv) {
     analysis_history_init();
     ota_service_init();
 
+    sd_log_start();
     screens_init();
     battery_start_monitoring();
     wifi_service_auto_connect();

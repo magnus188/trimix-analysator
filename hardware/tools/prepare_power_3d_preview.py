@@ -9,9 +9,9 @@ import csv, json, shutil, sys, tempfile, xml.etree.ElementTree as ET
 import sexpdata as sx
 
 HW = Path(__file__).resolve().parents[1]
-SOURCE = HW / 'kicad/power'
+SOURCE = HW / 'pcb/power'
 DEST = SOURCE / 'preview'
-VERIFY = HW / 'verification/power/preview'
+VERIFY = HW / 'pcb/verification/power/previews'
 BOARD = DEST / 'Trimix_Power_Preview.kicad_pcb'
 LIBS = Path('/Applications/KiCad/KiCad.app/Contents/SharedSupport')
 HEADER = 'Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical'
@@ -53,7 +53,7 @@ def prepare():
                 changed.append(ref)
         path.write_text(sx.dumps(root) + '\n')
     assert set(changed) == set(PLACEHOLDERS)
-    rows = list(csv.DictReader((HW/'verification/power/pcb-bom.csv').open()))
+    rows = list(csv.DictReader((HW/'pcb/verification/power/pcb-bom.csv').open()))
     model_status = []
     for row in rows:
         ident = row['footprint'] or PLACEHOLDERS[row['reference']]
@@ -105,7 +105,7 @@ def layout():
     assert set(fps) == set(POSITIONS), (set(POSITIONS)-set(fps), set(fps)-set(POSITIONS))
     # MCP's geometric schematic parser missed junctions in this hierarchy.
     # KiCad's own audited CLI netlist is the authority for every numbered pad.
-    netlist=ET.parse(HW/'verification/power/Trimix_Power-netlist.xml').getroot()
+    netlist=ET.parse(HW/'pcb/verification/power/Trimix_Power-netlist.xml').getroot()
     expected={}
     nets={}
     for net in netlist.findall('./nets/net'):

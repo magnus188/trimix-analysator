@@ -1,0 +1,30 @@
+{
+  "changes": [
+    {
+      "path": "hardware/kicad/analyzer/Helium.kicad_sch",
+      "changed": true,
+      "before": "4329babb0603eb0718d6c5f9383dbe431c34f03c26de0bb32e1572883ada4178",
+      "after": "f9d0ef872fc8de0f3031dccafdd5b6c9fcf9051f03e42cfc3d8818ef915a59ee"
+    },
+    {
+      "path": "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb",
+      "changed": true,
+      "before": "dbbc314435b5fbcc38f3aa1db0aee66d9c0baca076e6bac13775945592c80dcb",
+      "after": "56bb45eac6cf1cf9e7b81b0e5ace205fd2b89d2ad9325efc26ea2ddc739c7ca7"
+    }
+  ],
+  "allowed_value_changes": {
+    "R506": [
+      "100R / 0.1%",
+      "680R / 0.1%"
+    ],
+    "R507": [
+      "100R / 0.1%",
+      "680R / 0.1%"
+    ]
+  },
+  "rationale": "TI ADS122C04 8.3.1 series input-current limiting; below 10 mA for 3.1 V source with ADC off. No claim of valid off-state conversion or eliminated backpower.",
+  "layout_changes": false,
+  "net_changes": false,
+  "source": "https://www.ti.com/lit/ds/symlink/ads122c04.pdf"
+}

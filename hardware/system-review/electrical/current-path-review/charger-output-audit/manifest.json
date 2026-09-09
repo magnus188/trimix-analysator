@@ -1,0 +1,54 @@
+{
+  "checked_at_utc": "2026-09-07T18:25:21.300453+00:00",
+  "status": "read-only diagnostic inventory; no extra bulk recommended; physical and local-loop qualification pending",
+  "source_snapshot_manifest": {
+    "netlist.xml": {
+      "source": "hardware/system-review/electrical/analyzer-netlist.xml",
+      "sha256": "e63de8b7c7aa6b2e4429779e0dfd505191ec9a4e18d6459d323c22bebeae81b1",
+      "source_same_after_copy": true
+    },
+    "authoritative.kicad_pcb": {
+      "source": "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb",
+      "sha256": "c27e9fc9f946ce87a21ea21fdbb2cfda4c8776cce5b3ad0d0723cf04d7e45012",
+      "source_same_after_copy": true
+    },
+    "routing-snapshot.kicad_pcb": {
+      "source": "hardware/system-review/electrical/routing-candidate/native/Trimix_Analyzer.kicad_pcb",
+      "sha256": "b4e4d0b9f8e41cf1de1cf5215d66de0d0c490becd4c52028119dcc60c4080688",
+      "source_same_after_copy": true
+    }
+  },
+  "manufacturer_sources": [
+    {
+      "path": "hardware/system-review/electrical/sources/bq25895.pdf",
+      "url": "https://www.ti.com/lit/ds/symlink/bq25895.pdf",
+      "sha256": "2667a8d185cbf9138aed63f47616d35c0d0d29da877702b32b301caa55f8d404"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/wurth-l101.pdf",
+      "url": "https://www.we-online.com/components/products/datasheet/74437349010.pdf",
+      "sha256": "4b1144e0ad995065978b5d1131ab5f83490710a6f6fa265a349ea9231955dce8"
+    },
+    {
+      "path": "hardware/system-review/electrical/capacitor-research/c3225x7r1c226m250ac.pdf",
+      "url": "https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3225x7r1c226m250ac.pdf",
+      "sha256": "ced8303a667c7ed30dae6a9d329d2d538c4eb99f10c6b22077d6827f6001de2d"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/c3216x5r1e226m160ab.pdf",
+      "url": "https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3216x5r1e226m160ab.pdf",
+      "sha256": "f6e9a7acbbb58da5881fdf7d8b5bc813bf3560bfccd05e659ed3b9cbedb2e770"
+    }
+  ],
+  "files_sha256": {
+    "README.md": "c49a9063d926501393f182ae35e624a42059fd50bb8c0f9aa4a4428e010a3a82",
+    "inventory.json": "846c02d26f46b0b2ca5b0986a41c49dd614fa051ac89033fdafb6d6818d4b29d",
+    "analysis.json": "73d8c13efadb5ad5c92e29e99717313a0aa16997c5a1bf1a5a70d6f9f7280f9c",
+    "capacitance-sensitivity.csv": "6fbc62ca8dedfa4a2b993b7afce7c1f6ce715967b6021b7e34c81db2975e0fb4",
+    "trace-witnesses.json": "6fb266a95c744403973ceb5760f9e3540153ff83860c99aa19238a7638ad2976",
+    "collect_inventory.py": "0d3294f5db88101520f6e54d5134dab814e45132ea41b238111af9310b2e7144",
+    "calculate.py": "9168543300f16a23863e2f2896e5276d4ac376d7b74deeb3fb4ad6c36075a814",
+    "trace_witnesses.py": "118bb71331d45f2755ae85aa5cf3f3257a1f6e2e3f5b460f165997d75ea6cf1e",
+    "c3216-curves.png": "314f1d888c029004c084bb4af7aa5bf6391c1738004b9c0b6aafa12959ce14ca"
+  }
+}

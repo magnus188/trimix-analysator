@@ -1,0 +1,19 @@
+# Independent power and environment driver review
+
+The host fixture passes **67 assertions**, also with AddressSanitizer and UndefinedBehaviorSanitizer. These are register-transport simulations, not physical sensor, charging or power-cut tests.
+
+The review found and reproduced three BME280 acceptance defects, fixed by the parent implementation before this final run: skipped raw values could be compensated into plausible endpoints; acknowledged but ineffective configuration or forced-mode writes could make old data appear fresh; and erased all-ones/all-zero data bursts could pass after compensation clamping. The driver now verifies oversampling/filter configuration and the forced command, waits for conversion completion, checks one complete raw snapshot before compensation, and rejects missing trim. The zero-humidity test confirms that a valid dry reading is still accepted.
+
+The fixture covers:
+
+- MAX17048 big-endian voltage, fractional SOC, 100% presentation limit, signed rate, identity mismatch, plausible voltage limits, read failure and recovery.
+- BQ25895 identity and commissioning-inhibited configuration, failed write readback, charge-state decoding, independent first/second fault reads, watchdog history, freshness across timer wrap, and OTA refusal with invalid power information.
+- Complete BME280 initialization at either address, 1x temperature/pressure/humidity, forced conversion, packed signed humidity trim, a numeric compensation oracle, unplug/reconnect, partial transport failure, busy conversion, skipped raw sentinels, erased/missing trim, lost configuration, ignored commands and invalid full bursts.
+
+The temperature/pressure fixture uses the Bosch numerical example: raw temperature 519888 and pressure 415148 produce about 25.08248 C and 100653.27 Pa. Humidity uses deliberately synthetic trim H1=0, H2=256, H3=0, H4=-100, H5=65, H6=0. The independent simplified expression `(6400 + 6400 - 65*(128422 - 76800)/16384)/256` gives 49.2000031471% RH. This exercises signed H4 and H5 sharing register E5 without copying the production compensator as the expected-value oracle.
+
+Primary references: [Bosch BME280 datasheet](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf), [TI BQ25895 datasheet](https://www.ti.com/lit/ds/symlink/bq25895.pdf), and [Analog Devices MAX17048/MAX17049 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf). Bosch SensorAPI is retained unchanged at upstream commit `c90d419492e26dd95586598a794e65eb2760753a`, with its license and source hashes under `main/third_party/bme280/`.
+
+Read-only integration review covered the shared I2C bus, acquisition engine, hardware acquisition worker, system-power coordination and battery service. Transactions use one bus mutex with conversion delays outside that mutex; cached samples expire; invalid communications remain unavailable; acquisition output shutdown is guarded; and a latched helium excitation fault does not prevent the separate oxygen-bias diagnostic. No additional blocking defect was established in this bounded review after the above fixes. The test harness does not execute ESP-IDF GPIO interrupts or FreeRTOS scheduling, and the engine soak has a separate receipt.
+
+Physical checks remain pending: actual I2C pull-ups and harness, bus hold-low/recovery, startup button/INT timing (including a line already low at boot), KILL and held-button behavior, measured rail collapse, real fuel-gauge behavior, environmental accuracy/thermal placement, loaded battery thresholds, charging configuration and fault injection on assembled hardware. Simulated ACK/readback tests cannot prove those properties. Software still inhibits charging during commissioning and does not certify any gas measurement.

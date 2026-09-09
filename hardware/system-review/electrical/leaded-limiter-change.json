@@ -1,0 +1,7 @@
+{
+  "U114": "TPS22950CQDDCRQ1,notindustrialC;50mA table verifiedindependently",
+  "SW101": "B3U-1000P;3x2.5body,1.75maxactuatorheight;10uAat1Vminimumloadreference",
+  "approved_by_root": true,
+  "layout_update_pending": true,
+  "physical_tests": false
+}

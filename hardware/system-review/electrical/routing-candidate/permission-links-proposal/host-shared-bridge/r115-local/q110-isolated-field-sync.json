@@ -1,0 +1,9 @@
+[
+  {
+    "file": "USB_Source_Control.kicad_sch",
+    "ref": "Q110",
+    "key": "Footprint",
+    "before": "Package_TO_SOT_SMD:SOT-23",
+    "after": "Trimix_Power:DMN2056U_SOT23_Diodes_Recommended"
+  }
+]

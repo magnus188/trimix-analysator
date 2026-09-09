@@ -1,0 +1,102 @@
+{
+  "review_date": "2026-09-07",
+  "scope": "Read-only J402 connector selection and footprint audit; no board or schematic mutation",
+  "recommended_manufacturer": "Amphenol RF",
+  "recommended_mpn": "142138",
+  "description": "50-ohm SMB straight through-hole PCB jack, male centre pin",
+  "selection_status": "Manufacturer drawing nominal pad pattern matched; new design choice, not identification of owned AliExpress part",
+  "source_board": "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb",
+  "source_board_sha256_at_review": "fa2b5611cf3b185ab65796e0b1f540d50bf583d20abe7b9757d7863f61f84a7f",
+  "j402_snapshot_sha256": "466b1856c4ea90d660ff7bec17eced701760c4b136bb549465a8d382ea7076a9",
+  "preserved_pose_mm_deg": {
+    "x": 4.45,
+    "y": 16.6,
+    "angle": 0
+  },
+  "footprint": "Connector_Coaxial:SMB_Jack_Vertical",
+  "nominal_mounting_comparison": {
+    "pitch_square_mm": 5.08,
+    "centre_drill_mm": 1.2,
+    "four_shell_drills_mm": 1.7,
+    "matches_manufacturer_drawing": true,
+    "pad1_diameter_mm": 2.24,
+    "pad2_diameter_mm": 2.74,
+    "annular_ring_mm_each": 0.52,
+    "annular_ring_note": "Existing layout choice; manufacturer drawing specifies mounting holes only, not annular rings."
+  },
+  "body_comparison": {
+    "manufacturer_square_mm": 7.0,
+    "current_fab_square_mm": 6.9,
+    "current_courtyard_square_mm": 8.5,
+    "fab_outline_action": "Correct to 7.00 mm at same centre; do not change pad coordinates or connector pose.",
+    "nominal_height_above_board_mm": 7.6,
+    "height_derivation": "11.50 overall minus 3.90 terminal protrusion, nominal drawing dimensions.",
+    "physical_height_clearance_test": "pending"
+  },
+  "electrical_mapping": {
+    "centre_pin_pad1": "O2_B_RAW_P",
+    "four_shell_feet_pad2": "O2_B_RAW_N",
+    "warning": "The metal shell is sensor minus, not ground/chassis. Preserve isolation from ground, battery, shields and fasteners."
+  },
+  "cad": {
+    "manufacturer_exact_step_url": "https://www.amphenolrf.com/en-us/assets/file/4066922863/",
+    "manufacturer_listed_size_KB": 81.1,
+    "download_status": "HTTP403 from official file host; no exact STEP downloaded",
+    "current_wrong_model": "SMA_Amphenol_132134-10_Vertical.step, scaled0.7",
+    "action": "Remove the wrong SMA model; use exact142138 CAD when retrieved, or a clearly labelled drawing-based142138 envelope with unit scale.",
+    "generic_kicad_model_note": "Installed SMB_Jack_Vertical footprint points to SMB_Jack_Vertical.step, but that STEP is absent from installed KiCad library; not an exact manufacturer source."
+  },
+  "rejected_near_names": [
+    {
+      "mpn": "142134",
+      "reason": "SMB plug with female socket; opposite mating contact to required PCB male pin."
+    },
+    {
+      "mpn": "142138-11",
+      "reason": "Surface mount variant; does not preserve existing through-hole pad pattern."
+    },
+    {
+      "mpn": "142138-75",
+      "reason": "Mini-SMB75-ohm variant; not the chosen50-ohm SMB interface."
+    }
+  ],
+  "physical_holds": [
+    "Verify owned cable has a female centre socket and ordinary50-ohm SMB mating geometry, rather than relying on seller gender wording.",
+    "Trial mate the actual90-degree cable; inspect contact engagement and measure full elbow envelope.",
+    "At fixedJ402 centre/orientation, check cable swivel sweep, strain relief, rear removal, J401 clearance and enclosure wall/battery clearance.",
+    "Verify centre/shell polarity against actual sensor documentation or measurement; do not ground sensor-minus shell.",
+    "Review connector/solder fillet dimensions against ordered lot and PCB manufacturing tolerances before fabrication."
+  ],
+  "sources": [
+    {
+      "url": "https://www.amphenolrf.com/en-us/part/142138/883/",
+      "role": "Manufacturer product identity, active status and exact drawing/CAD links"
+    },
+    {
+      "url": "https://www.amphenolrf.com/en-us/assets/file/4065786651/",
+      "role": "Official drawing link; file hostHTTP403"
+    },
+    {
+      "url": "https://assets.testequity.com/te1/Documents/pdf/amphenol/amphenol_142138-connector_customer-drawing.pdf",
+      "role": "Accessible mirror of manufacturer-authored142138 customer drawing, RevB,21Nov2011; visually inspected",
+      "local_file": "amphenol-142138-drawing.pdf"
+    },
+    {
+      "url": "https://www.amphenolrf.com/en-us/assets/file/4065861575/",
+      "role": "Manufacturer SMB interface drawings; jack male centre pin / plug female contact"
+    },
+    {
+      "url": "https://www.aii1.com/en-us/sensors/PSR-11-39-JJ.htm",
+      "role": "Manufacturer replacementJJsensor specifies90-degreeSMBfemale on cable; does not establish identity of ownedsensor."
+    }
+  ],
+  "test_scope": "Drawing and source inspection only. No physical mating, assembly, sealing, sensor or electrical test performed.",
+  "sources_license": "Manufacturer drawing retained unchanged with its original title block; no relicensing of third-party materials.",
+  "artifact_sha256": {
+    "J402-audit-snapshot.kicad_mod.txt": "466b1856c4ea90d660ff7bec17eced701760c4b136bb549465a8d382ea7076a9",
+    "README.md": "fe4770f2eb1d3c3274fe5c95fb312cc54fa71c4463c1adc5d31a3a1aef81de29",
+    "amphenol-142138-drawing.pdf": "2f7ac0a3c7bd072ff08ca070da6b44f3e991bbaa37e3fb885ed243e78c261c9c",
+    "amphenol-142138-drawing.png": "7161127887477de4d709a4603e1097930aa9248f028ce5fe9636212da7c71d85",
+    "amphenol-142138-drawing.txt": "ef6cbd2161eaea7943ce8693b9824d23d1793ffb1c0fca05b600d3899b44c977"
+  }
+}

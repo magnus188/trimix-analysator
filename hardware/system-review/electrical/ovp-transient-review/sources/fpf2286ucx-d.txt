@@ -1,0 +1,343 @@
+                                                                          Share Feedback                        DATA SHEET
+                                                                          Your Opinion Matters             www.onsemi.com
+
+
+28 V / 4 A Rated OVP with
+Low On-resistance
+                                                                                              WLCSP6
+FPF2286UCX                                                                                   CASE 567UV
+
+
+   FPF2286 is an OVP with integrated low on-resistance single channel
+switch. The device contains an N-MOSFET that can operate over an                       MARKING DIAGRAM
+input voltage range of 2.8 V to 23 V and can support a maximum
+continuous current of 4 A.                                                                         3FMG
+   When the input voltage exceeds the over-voltage threshold, the
+internal FET is turned off immediately to prevent damage to the                      3F   = Specific Device Code
+protected downstream components.                                                     M    = Month Code
+   FPF2286 is available in a small 6-bump WLCSP package and operate                  G    = Pb-Free Package
+over the free-air temperature range of −40 °C to +85 °C.
+
+Features                                                                               PIN CONNECTIONS
+• Over-voltage Protection Up to +28 V                                                         2            1
+• Internal Low RDS(on) NMOS Transistors: Typical 25 mW
+• Programmable Over-voltage Lockout (OVLO)                                                    IN          OUT      A
+   ♦ Externally Adjustable via OVLO Pin
+• Active-low Enable Pin (OVLO) for Device
+• Super Fast OVLO Response Time: Typical 40 ns                                                IN          OUT      B
+• Short Circuit Protection and Auto-restart
+• Over Temperature Protection (Thermal Shutdown)
+• Robust ESD Performance                                                                   OVLO           GND     C
+
+   ♦ 2 kV Human Body Model (HBM)
+   ♦ 1 kV Charged Device Model (CDM)                                                         (Bottom View)
+   ♦ VIN Tolerant to 35 V Residue-voltage during Surge Event
+• These Devices are Pb-Free, Halogen Free/BFR Free and are RoHS
+  Compliant                                                                        ORDERING INFORMATION
+                                                                        See detailed ordering, marking and shipping information on
+Typical Applications                                                    page 5 of this data sheet.
+
+• Mobile Phones
+• PDAs
+• GPS
+
+
+
+
+© Semiconductor Components Industries, LLC, 2018            1                                       Publication Order Number:
+April, 2025 − Rev. 1                                                                                          FPF2286UCX/D
+                                                               FPF2286UCX
+
+
+                                    VBUS                                                                HV Battery
+                   Travel                                            IN             OUT
+                  Adapter                                                                                Charger
+                                        1uF                                                       1uF
+
+
+
+                                                                     FPF2286
+                        Legacy USB /                     R1
+                     USB Type C connector
+                                                                    OVLO
+
+
+                                                         R2                   GND
+
+
+
+
+                                   Figure 1. Application Schematic − Adjustable Option
+
+
+
+
+                     IN                                                                                              OUT
+
+
+
+                                                                                                  Gate Drive
+
+
+
+                                                                 1 . 2V
+
+
+                                                                                                    Control
+              OVLO
+
+
+                                            0 .3 V
+
+
+
+
+                                                                                    GND
+
+                                                     Figure 2. Simplified Block Diagram
+
+
+Table 1. PIN FUNCTION DESCRIPTION
+Pin No.   Pin Name                                                                  Description
+A2, B2       IN           Power Input: Switch Input and Device Supply
+A1, B1      OUT           Power Output: Switch Output to Load
+  C2       OVLO           OVLO Input: Over Voltage Lockout Adjustment Input
+  C1        GND           Ground
+
+
+
+
+                                                              www.onsemi.com                                           Share Feedback
+                                                                          2                                            Your Opinion Matters
+                                                             FPF2286UCX
+
+ Table 2. MAXIMUM RATINGS
+                                    Rating                                        Symbol                     Value                  Unit
+  Input Voltage Range (Note 1)                                                      Vin                    −0.3 to 28                 V
+  Output Voltage Range                                                              Vout              −0.3 to (Vin + 0.3)             V
+  Adjustable Input Range                                                          VOVLO                    −0.3 to 23                 V
+  Internal FET continuous current                                                  IOUT                      0 to 4                   A
+  Maximum Junction Temperature                                                    TJ(max)                     150                    °C
+  Storage Temperature Range                                                        TSTG                    −65 to 150                °C
+  ESD Capability, Human Body Model (Note 2)                                      ESDHBM                        2                     kV
+  ESD Capability, Charged Device Model (Note 2)                                  ESDCDM                        1                     kV
+  Lead Temperature Soldering                                                       TSLD                       260                    °C
+          Reflow (SMD Styles Only), Pb-Free Versions (Note 3)
+Stresses exceeding those listed in the Maximum Ratings table may damage the device. If any of these limits are exceeded, device functionality
+should not be assumed, damage may occur and reliability may be affected.
+1. Refer to ELECTRICAL CHARACTERISTICS, RECOMMENDED OPERATING RANGES and/or APPLICATION INFORMATION for Safe
+   Operating parameters.
+2. This device series incorporates ESD protection and is tested by the following methods:
+     ESD Human Body Model tested per AEC-Q100-002 (EIA/JESD22-A114)
+     ESD Charged Device Model tested per AEC-Q100-011 (EIA/JESD22-C101)
+     Latch-up Current Maximum Rating: ≤150 mA per JEDEC standard: JESD78
+3. For information, please refer to our Soldering and Mounting Techniques Reference Manual, SOLDERRM/D.
+
+ Table 3. THERMAL CHARACTERISTICS
+                                    Rating                                        Symbol                     Value                  Unit
+  Thermal Characteristics, WLCSP-6 (Note 4)                                        RθJA                      121.7                  °C/W
+           Thermal Resistance, Junction-to-Air (Note 5)
+4. Refer to ELECTRICAL CHARACTERISTICS, RECOMMENDED OPERATING RANGES and/or APPLICATION INFORMATION for Safe
+   Operating parameters.
+5. Values based on 2S2P JEDEC std. PCB.
+
+ Table 4. RECOMMENDED OPERATING RANGES
+                                    Rating                                        Symbol             Min                Max         Unit
+  Supply Voltage on VIN                                                             Vin              2.8                23            V
+  I/O pins                                                                        VOVLO               0                 5.5           V
+  Output Current                                                                    Iout              0                 3.5           A
+  IN Capacitor                                                                      Cin              0.1                             mF
+  OUT Capacitor                                                                     Cout             0.1                             mF
+  Ambient Temperature                                                               TA               −40                85           °C
+Functional operation above the stresses listed in the Recommended Operating Ranges is not implied. Extended exposure to stresses beyond
+the Recommended Operating Ranges limits may affect device reliability.
+
+
+
+
+                                                           www.onsemi.com                                               Share Feedback
+                                                                     3                                                  Your Opinion Matters
+                                                             FPF2286UCX
+
+Table 5. ELECTRICAL CHARACTERISTICS
+VIN = 2.8 to 23 V, CIN = 0.1 mF, COUT = 0.1 mF, TA = −40 to 85 °C; For typical values VIN = 5.0 V, IIN v 3 A, CIN = 0.1 mF, TA = 25 °C, for
+min/max values TA = −40 °C to 85 °C; unless otherwise noted. (Note 6)
+                 Parameter                                 Test Conditions                  Symbol        Min        Typ       Max      Unit
+LEAKAGE AND QUIESCENT CURRENTS
+ Input Quiescent Current on VIN                VIN = 5 V, VOVLO = 0.6 V                        IQ                    85                  mA
+                                               VIN = 20 V, VOVLO = 0.6 V                                             200
+ Supply Current during Over Voltage            VIN = 23 V, VOVLO = 3.0 V, VOUT = 0 V          IIN_Q                  215                 mA
+ OVLO Input Leakage Current                    VOVLO = VOVLO_TH                              IOVLO        −100                  100      nA
+OVER VOLTAGE AND UNDER VOLTAGE LOCKOUT
+ Under-Voltage Rising Trip Level for VIN       VIN rising, TA = −40 to 85 °C               VIN_UV_R        2.3       2.5        2.7       V
+ Under-Voltage Falling Trip Level for VIN      VIN falling, TA = −40 to 85 °C               VIN_UV_F                 2.4                  V
+ Default Over-Voltage Trip Level               VIN rising, TA = −40 to 85 °C               VIN_OVLO        6.6       6.8        7.0       V
+ OVLO set threshold                            VOVLO = 1.1 V to 1.3 V, the voltage of      VOVLO_TH       1.16      1.19       1.22       V
+                                               OVLO to trigger Over Voltage condition
+
+ OVLO threshold hysteresis                                                                VHYS_OVLO                   2                   %
+ Adjustable OVLO range                         OV_MODE = 0, VOVLO > 0.5 V                  VOV_RNG          4                   23        V
+I/O THRESHOLDS
+ OVLO Input Threshold Voltage                                                                                                             V
+         Voltage Increasing, Logic High        High                                        VIH_OVLO        0.3        −         −
+         Voltage Decreasing, Logic Low         Low                                         VIL_OVLO         −         −        0.15
+RESISTANCE
+ On-resistance of Power FET                    VIN = 5 V, IOUT = 500 mA, TA = 25 °C           rON                    25         35       mW
+TIMING
+ De-bounce Time of Power FET turned on         Time from 2.5 V < VIN < VIN_OVLO to          tSW_DEB                  15                  ms
+                                               VOUT = 0.1 × VIN
+
+ Switch Turn-On rising Time (Note 8)           VIN = 5 V, RL = 100 W, CL = 22 mF,              tR                     1                  ms
+                                               VOUT from 0.1 × VIN to 0.9 × VIN
+ Switch Turn-Off Time (Note 8)                 RL = 10 W, CL = 0 mF, time from VIN >                                                     ns
+                                               VOVLO to VOUT = 0.9 × VIN
+                                               Internal OVP level                                                    40
+                                               External OVP level (Note 9)                                           100
+THERMAL SHUTDOWN
+ Thermal Shutdown Temperature (Note 8)                                                        TSD           −        130         −       °C
+ Thermal Shutdown Hysteresis (Note 8)                                                         TSH           −        20          −       °C
+Product parametric performance is indicated in the Electrical Characteristics for the listed test conditions, unless otherwise noted. Product
+performance may not be indicated by the Electrical Characteristics if operated under different conditions.
+6. Performance guaranteed over the indicated operating temperature range by design and/or characterization tested at TJ = TA = 25 °C. Low
+   duty cycle pulse techniques are used during testing to maintain the junction temperature as close to ambient as possible.
+7. Refer to the APPLICATION INFORMATION section.
+8. Values based on design and/or characterization.
+9. Depends on the capacitance on OVLO pin.
+
+
+
+
+                                                            www.onsemi.com                                                Share Feedback
+                                                                      4                                                   Your Opinion Matters
+                                                           FPF2286UCX
+
+Function Description                                                    Under Voltage Lockout
+                                                                          FPF2286 power switch will be turned off when the
+General                                                                 voltage on IN is lower than the UVLO threshold VIN_UV_F.
+  FPF2286 is an OVP power switch to protect next stage                    Whenever VIN voltage ramps up to higher than
+system which is optimized to lower voltage working                      VIN_UV_R, the power FET will be turned on automatically
+condition. The device includes ultra low on-resistance                  after tDEB de-bounce time if there is no OV or OT condition.
+power FET (25 mW) and super fast OVP response time
+(40 ns).                                                                Over Voltage Lockout
+                                                                          The power FET will be turned off whenever VIN voltage
+Power MOSFET                                                            higher than VIN_OVLO. The value of VIN_OVLO can be set by
+  The FPF2286 integrates an N-type MOSFET with 25 mW                    external resistor ladder or just be default value VIN_OVLO.
+resistance. The power FET can work under 2.8 V ~ 23 V and                 When VOVLO is smaller than VIL_OVLO, VOVLO will be
+up to 4 A DC current capability.                                        decided by default value. When VOVLO is larger than
+                                                                        VIH_OVLO, the power switch will be turned off once VOVLO
+Power Supply
+                                                                        > VOVLO_TH. The external resistor ladder can be decided
+  The FPF2286 is supplied by IN. IN will be firstly supplied
+                                                                        according to the following equation:
+by OUT when the device is working under USB On-The-Go
+(OTG) condition.                                                                  V IN_OVLO + V OVLO_TH         ǒ1 ) R1ńR2Ǔ        (eq. 1)
+
+Enable Control                                                          where R1 and R2 are the resistors in Figure 1.
+  There is no specified enable pin for FPF2286. However,
+                                                                        Thermal Shutdown
+the OVLO can be used as an active LOW enable pin to be
+                                                                          When the device is in the switch mode, to protect the
+controlled by a GPIO. When OVLO pin is connected to a
+                                                                        device from over temperature, the power switch will be
+high level (higher than 1.2 V), the internal FET will be
+                                                                        turned off when the junction temperature exceeds TSD. The
+turned off. When OVLO pin is connected to 0 V, the FET
+                                                                        switch will be turned on again when temperature drop below
+will be turned on as long as VIN is not higher than 6.8 V.
+                                                                        TSD − TSH.
+
+                                               APPLICATIONS INFORMATION
+
+Input Decoupling (Cin)                                                  the FPF2286 has good thermal conductivity through the
+  A ceramic or tantalum at least 0.1 mF capacitor is                    PCB, the junction temperature will be relatively low with
+recommended and should be connected close to the                        high power applications. The maximum dissipation the
+FPF2286 package. Higher capacitance and lower ESR will                  FPF2286 can handle is given by:
+improve the overall line and load transient response.
+                                                                                                      ƪTJ(MAX) * TAƫ
+Output Decoupling (Cout)                                                                 P D(MAX) +                                (eq. 2)
+                                                                                                            R qJA
+   The FPF2286 is a stable component and does not require
+                                                                          Since TJ is not recommended to exceed 125 °C, then the
+a minimum Equivalent Series Resistance (ESR) for the
+                                                                        FPF2286 soldered on 645 mm2, 1 oz copper area, and the
+output capacitor. The minimum output decoupling value is
+                                                                        ambient temperature (TA) is 25 °C. The power dissipated by
+0.1 mF and can be augmented to fulfill stringent load
+                                                                        the FPF2286 can be calculated from the following
+transient requirements.
+                                                                        equations:
+Thermal Considerations                                                              P D [ V in @ ǒI Q@I outǓ ) I out 2 @ r ON      (eq. 3)
+  As power in the FPF2286 increases, it might become
+necessary to provide some thermal relief. The maximum
+                                                                        Hints
+power dissipation supported by the device is dependent
+                                                                          Vin and Vout printed circuit board traces should be as wide
+upon board design and layout. Mounting pad configuration
+                                                                        as possible. Place external components, especially the input
+on the PCB, the board material, and the ambient temperature
+                                                                        capacitor and TVS, as close as possible to the FPF2286, and
+affect the rate of junction temperature rise for the part. When
+                                                                        make traces as short as possible.
+
+ ORDERING INFORMATION
+          Device               Default OV Level               Marking                     Package                      Shipping†
+  FPF2286UCX                         6.8 V                        3F                     WLCSP-6L                   3000 / Tape & Reel
+†For information on tape and reel specifications, including part orientation and tape sizes, please refer to our Tape and Reel Packaging
+ Specifications Brochure, BRD8011/D.
+
+
+
+
+                                                         www.onsemi.com                                              Share Feedback
+                                                                   5                                                 Your Opinion Matters
+                                                                                                                   MECHANICAL CASE OUTLINE
+                                                                                                                                                   PACKAGE DIMENSIONS
+
+
+                                                                            WLCSP6 1.3x0.9x0.574
+                                                                               CASE 567UV
+                                                                                 ISSUE O
+                                                                                                                                                                 DATE 05 JUL 2017
+
+
+
+
+                                                                                         Electronic versions are uncontrolled except when accessed directly from the Document Repository.
+ DOCUMENT NUMBER:                          98AON66547G                                   Printed versions are uncontrolled except when stamped “CONTROLLED COPY” in red.
+
+             DESCRIPTION:                  WLCSP6 1.3x0.9x0.574                                                                                                        PAGE 1 OF 1
+
+ onsemi and               are trademarks of Semiconductor Components Industries, LLC dba onsemi or its subsidiaries in the United States and/or other countries. onsemi reserves
+ the right to make changes without further notice to any products herein. onsemi makes no warranty, representation or guarantee regarding the suitability of its products for any particular
+ purpose, nor does onsemi assume any liability arising out of the application or use of any product or circuit, and specifically disclaims any and all liability, including without limitation
+ special, consequential or incidental damages. onsemi does not convey any license under its patent rights nor the rights of others.
+
+
+
+© Semiconductor Components Industries, LLC, 2017                                                                                                                       www.onsemi.com
+ onsemi,                , and other names, marks, and brands are registered and/or common law trademarks of Semiconductor Components Industries, LLC dba “onsemi” or its affiliates
+ and/or subsidiaries in the United States and/or other countries. onsemi owns the rights to a number of patents, trademarks, copyrights, trade secrets, and other intellectual property.
+ A listing of onsemi’s product/patent coverage may be accessed at www.onsemi.com/site/pdf/Patent−Marking.pdf. onsemi reserves the right to make changes at any time to any
+ products or information herein, without notice. The information herein is provided “as−is” and onsemi makes no warranty, representation or guarantee regarding the accuracy of the
+ information, product features, availability, functionality, or suitability of its products for any particular purpose, nor does onsemi assume any liability arising out of the application or use
+ of any product or circuit, and specifically disclaims any and all liability, including without limitation special, consequential or incidental damages. Buyer is responsible for its products
+ and applications using onsemi products, including compliance with all laws, regulations and safety requirements or standards, regardless of any support or applications information
+ provided by onsemi. “Typical” parameters which may be provided in onsemi data sheets and/or specifications can and do vary in different applications and actual performance may
+ vary over time. All operating parameters, including “Typicals” must be validated for each customer application by customer’s technical experts. onsemi does not convey any license
+ under any of its intellectual property rights nor the rights of others. onsemi products are not designed, intended, or authorized for use as a critical component in life support systems
+ or any FDA Class 3 medical devices or medical devices with a same or similar classification in a foreign jurisdiction or any devices intended for implantation in the human body. Should
+ Buyer purchase or use onsemi products for any such unintended or unauthorized application, Buyer shall indemnify and hold onsemi and its officers, employees, subsidiaries, affiliates,
+ and distributors harmless against all claims, costs, damages, and expenses, and reasonable attorney fees arising out of, directly or indirectly, any claim of personal injury or death
+ associated with such unintended or unauthorized use, even if such claim alleges that onsemi was negligent regarding the design or manufacture of the part. onsemi is an Equal
+ Opportunity/Affirmative Action Employer. This literature is subject to all applicable copyright laws and is not for resale in any manner.
+
+
+ADDITIONAL INFORMATION
+    TECHNICAL PUBLICATIONS:                                                                               ONLINE SUPPORT: www.onsemi.com/support
+    Technical Library: www.onsemi.com/design/resources/technical−documentation                            For additional information, please contact your local Sales Representative at
+    onsemi Website: www.onsemi.com                                                                        www.onsemi.com/support/sales
+
+
+
+
+

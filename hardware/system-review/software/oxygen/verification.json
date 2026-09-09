@@ -1,0 +1,203 @@
+{
+  "generated_utc": "2026-09-07T11:24:38.624909+00:00",
+  "scope": "Explicit touchscreen AO2/JJ oxygen configuration, preserved calibration identities, analysis gates, history provenance and visible device storage/battery status",
+  "physical_hardware_tested": false,
+  "runtime_sources_frozen": true,
+  "calibration_ids": {
+    "AO2": 0,
+    "JJCCR": 1,
+    "He": 2
+  },
+  "configuration_choices": {
+    "Unconfigured": 0,
+    "AO2": 1,
+    "JJCCR": 2
+  },
+  "adc_profiles": {
+    "O2": {
+      "revision": 1,
+      "gain": 8,
+      "sps": 20,
+      "reference_mv": 2048,
+      "pga_bypass": false
+    },
+    "He": {
+      "revision": 2,
+      "gain": 1,
+      "sps": 20,
+      "reference_mv": 2048,
+      "pga_bypass": true
+    }
+  },
+  "commands": [
+    "cmake --build simulator/build --target test_gas_acquisition test_oxygen_selection test_sensor_interface test_ui_smoke -j 4",
+    "simulator/build/test_oxygen_selection",
+    "simulator/build/test_gas_acquisition",
+    "simulator/build/test_sensor_interface",
+    "TRIMIX_UI_CAPTURE_DIR=hardware/system-review/software/oxygen/views simulator/build/test_ui_smoke",
+    "ctest --test-dir simulator/build -R '^(test_oxygen_selection|sensor_interface|analysis_calculator|gas_acquisition|analysis_history|ui_smoke)$' --output-on-failure",
+    "c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Isimulator/stubs -Imain tests/test_oxygen_selection.cpp main/services/oxygen_selection_core.cpp -o /tmp/trimix-independent-power/test_oxygen_selection",
+    "/tmp/trimix-independent-power/test_oxygen_selection",
+    "c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Isimulator/stubs -Imain tests/test_gas_acquisition.cpp main/sensors/ads122c04.cpp main/sensors/ze07_co.cpp main/services/gas_calibration_core.cpp main/services/gas_calibration_journal.cpp -o /tmp/trimix-independent-power/test_gas_acquisition",
+    "/tmp/trimix-independent-power/test_gas_acquisition"
+  ],
+  "results": {
+    "relevant_ctest_targets_passed": 6,
+    "relevant_ctest_targets_failed": 0,
+    "ui_assertions_passed": 34,
+    "decision_core_assertions_passed": 35,
+    "sensor_interface_assertions_passed": 30,
+    "analysis_calculator_assertions_passed": 25,
+    "adc_calibration_assertions_passed": 62,
+    "decision_core_asan_ubsan_passed": 35,
+    "adc_calibration_asan_ubsan_passed": 62,
+    "asan_ubsan_diagnostics": 0
+  },
+  "limitations": [
+    "No device flashing or physical board/cell measurements were performed in this scope.",
+    "Known-air view reports raw inputs and remains inconclusive/manual because neither profile has qualified sensor-identity response bounds. It never changes selection automatically.",
+    "Unselected oxygen input is not required for the primary reading; root acquisition backend integration is verified separately.",
+    "Real acquisitions remain bench-only; software calibration does not validate helium composition dependence, gas accuracy, sealing or thermal response.",
+    "Read-only storage and unavailable battery views were exercised with host state hooks; actual NVS initialization failure and physical fuel-gauge disconnect remain hardware checks.",
+    "Selection and gas records use separate simulation/hardware storage. A replacement blocks application of the previous calibration while retaining its stored record.",
+    "Calibration compatibility is per channel: O2 acquisition revision1 remains valid after the He input-resistor change to revision2.",
+    "Acquisition-profile compatibility is distinct from archive integrity: intact incompatible records are retained for history and monotonic revision numbering, never applied to current conversions."
+  ],
+  "source_sha256": {
+    "main/services/oxygen_selection_service.h": "187beded70701955330d96edaf490f8f41dc2fcffe99fefb31eb8640bd4c83d9",
+    "main/services/oxygen_selection_service.cpp": "9d87044e1bd78f8e338c8b5ef0d711e4a31d46c0a7a2784f11c91cb4e9f4083d",
+    "main/services/oxygen_selection_core.h": "2f2f32282a6f2aff5c82d25b5e1533adc299f4b5c5ff5ace35f023334a0160f9",
+    "main/services/oxygen_selection_core.cpp": "5127bf53b0f11f739821c256749b9f778a849cd8a5692479f8e55d494989e4eb",
+    "main/services/oxygen_selection_internal.h": "14ae04078f6c4f567281afd14e1a2ff3f00dd94b1a0d4b485f152361b29a3d15",
+    "main/services/gas_calibration_service.h": "cf5121648f6ef908a057f6186f5f4486a069e4a69b71da87507ca817cfde2128",
+    "main/services/gas_calibration_service.cpp": "3910bdd14088ed53fcc9e1a315392d2209e4447abd3d4481be27eb67c206def5",
+    "main/services/gas_calibration_core.cpp": "27ea4cb11659300c577c64f69cb2ad26c8a0f9e262db9d157b78adc0b6836977",
+    "main/sensors/gas_acquisition_config.h": "e9f3370e29fad3694793312182f1ef5d8b2417cf0f0505bcb46a99515ac83da8",
+    "main/sensors/sensor_interface.h": "eac20aa8083eab9882fb855eb72ba5e880099fcc34b113e5fca810959f5cf79c",
+    "main/sensors/sensor_interface.cpp": "fd5bfbfd5cd0435112aec5fe72027e94c9934b254036199ed0966562328187e3",
+    "main/analysis/analysis_calculator.cpp": "b2ac2f820470cac4058697497164f1a4c0ccfadad9521cb05f2f847a72f08a3d",
+    "main/ui/screens/settings/calibrate_screen.cpp": "16ba1e38adc4f90d96c70f7cdfd71bc3277ef20f95947e8eb8a29e2af9098b03",
+    "main/ui/screens/settings/device_screen.cpp": "e426716a348fa2601cafb5896781107d90ab09db7f387852431622057e66673d",
+    "main/ui/screens/analyse/analyse_screen.cpp": "5a847cca62d8bf3814676dd5d589e956514706c209d4fb4081f67c6a36dd60c8",
+    "main/ui/screens/history/history_screen.cpp": "e16a6c9891632a7ca43fb0d463753130e54bb3d5de65743d89c4867f5dc26d39",
+    "main/services/analysis_history.h": "904b81a4b54143f79c9a51028012ad2c66caa28a5dd2085cbbfeea4bef6ab820",
+    "main/services/analysis_history.cpp": "9e0caa0a885209f89036cfe97ccd4171c7e1484b75e1bb32d00d5f751daec08b",
+    "main/services/analysis_history_format.h": "4f31239e100a65d9a0079cfc12d2305a2322d769df43a953d023279997498fb8",
+    "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+    "main/services/storage_service.cpp": "d3fcba43f00165ba91e2715a583876377cc21f586e8b825be62ee2ca4e6c23c3",
+    "main/services/blob_journal.cpp": "b3c7afc4f0966db6f00061dff0432f09396dafd7bcd5a943a10a92661cfc08fb",
+    "tests/test_oxygen_selection.cpp": "d5fa119a678d34ab484b35c122382fceee5408e9fd0c5006b4d7d284f2ca7605",
+    "tests/test_sensor_interface.cpp": "1767fe25499ec623ba0832af04d7b402b5173d183c7098b7f478a484d387c9f0",
+    "tests/test_analysis_calculator.cpp": "7ea17d38215e2411898700576329ae4cfaaddb640f0030ed6dd6327e14c82b9e",
+    "simulator/tests/test_ui_smoke.cpp": "8172ae9ec52c4b74f46fd654555c9fa462b17fa4c147009f67dafc30ae8b6ee7",
+    "simulator/mocks/battery_service_mock.cpp": "75f1e085d9d2a1709de0e719ccfdfb159ba77ebadecb5540d7c6dac062d7315e",
+    "tests/test_gas_acquisition.cpp": "54c58df94c8410abdedff5317a913e533114fab7dc983a45e884b971411bc05b",
+    "main/services/gas_calibration_core.h": "f3d2c2432573263873979f4feaa8aa430b34ebb513e4508d7d4eb9c03e690440",
+    "main/services/gas_calibration_journal.cpp": "9b9c4455e2b8ae3c1eb674ddc66a40ba94279e39c0ec18395e852c62518a4ec0",
+    "main/services/gas_calibration_journal.h": "80bda889e19f76b566b509df9cdb3020e50a9cdaf115d2413c5c309b3263a35b"
+  },
+  "logs": {
+    "host-build-ui.log": {
+      "sha256": "54677b75c047724efb610a30fe91879126c3c3cdb5382b240422b3b49576c7c9",
+      "pass_lines": 0
+    },
+    "decision-core.log": {
+      "sha256": "3312db83863c9c75363b88d413dc9e27e4153222f6d44b7ce08896b16a1d7de0",
+      "pass_lines": 35
+    },
+    "profile-migration-build.log": {
+      "sha256": "71cc35eaa57255f6f370a303350236b6afc14a1c9061e1d275a1175bde6fb1a6",
+      "pass_lines": 0
+    },
+    "sensor-interface.log": {
+      "sha256": "a43f0a8d806c1fc8b69f39383f91a310f6fc2945ec84edcad11097d3695e2a2a",
+      "pass_lines": 30
+    },
+    "host-build-adc.log": {
+      "sha256": "b81c37c2619d7dbc39de30f54495fcc579a5dc28f67be1691876cbd158c876db",
+      "pass_lines": 0
+    },
+    "gas-acquisition-asan-ubsan.log": {
+      "sha256": "e15c2bcd5e64fe5e5dcaf051f136b75cb5774cae62076cb727b38945e5fee21d",
+      "pass_lines": 62
+    },
+    "ui-smoke.log": {
+      "sha256": "53fb18638ab2bae0271d9876df7b54c003055c9ff0c7f0d75c78427193be8141",
+      "pass_lines": 34
+    },
+    "gas-acquisition.log": {
+      "sha256": "e15c2bcd5e64fe5e5dcaf051f136b75cb5774cae62076cb727b38945e5fee21d",
+      "pass_lines": 62
+    },
+    "analysis-calculator.log": {
+      "sha256": "59e807d4cb77ab4d618455d602be05162145fac6687c614c155fd09cadc3669e",
+      "pass_lines": 25
+    },
+    "decision-core-asan-ubsan.log": {
+      "sha256": "e06a5e38d00c7839c7ef86fd7420ed4d91e870ed2e79539639dfc06a146cb03e",
+      "pass_lines": 35
+    },
+    "ctest.log": {
+      "sha256": "d1340ecf1354e7cf7f47ca143ce8da647b5ac98447bcc6d72ef63ed812b39aac",
+      "pass_lines": 0
+    },
+    "host-build.log": {
+      "sha256": "7dc9d02eec0e66f6ed0fd5d0be701ea71d6d1f427e229e5e10aa810f781dac45",
+      "pass_lines": 0
+    }
+  },
+  "views": {
+    "analysis-live.png": {
+      "sha256": "89bac6dcc7a7431a7d91f1f5233b49246583782d6fbe43e1346ff3c3ff3f0ca2",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "calibration-overview.png": {
+      "sha256": "f27bd8a63ae212683a26c2a0a895065f8a754188a6881fcc8a1c41732457f8e1",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "calibration-helium-saved.png": {
+      "sha256": "bed0335e8f7bf1adf04494903f1d10cd7ced19a1f38e5934603fea05c4cb2047",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "calibration-fault.png": {
+      "sha256": "2d7e6ebdd980c0e86af8756ec23b846b34914f4572e93f06fbabe1df216b1092",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "oxygen-air-check.png": {
+      "sha256": "c0cf197b33ecd3e0660eed6e02e7a379a148e9c9c5f12c91e752532c9f0447d8",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "oxygen-setup.png": {
+      "sha256": "d927ff9cefcc85cc995c1b9cd54a180a4d7d8db89c86a7910562c8bb3e80fa85",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "device-unavailable.png": {
+      "sha256": "72f6791068c8e095fbe0de294311910f3e7cdd12edb0f3725ed398e087d5e90f",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "calibration-review.png": {
+      "sha256": "1d4bb7ab69304604bb8304e811213fcf912b57d542e0f1342f787181bdca53fe",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "history-gas-provenance.png": {
+      "sha256": "62740e8b18ee30e0ad9cb765839174579ef770dc66d47da4a8271eeff9e652b8",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    },
+    "device-status.png": {
+      "sha256": "82a65012979d1540d9a92d95f69ff05b848fb05a90a2bac453eb5f7c88d7e8ca",
+      "reviewed": true,
+      "source": "LVGL host framebuffer, simulated data only"
+    }
+  },
+  "documentation_sha256": "ffef06937fd2a9a3473f1220ab866e5d07457c59cbb64deb8d7ec3100faa2ba4",
+  "final_rendered_frames_unchanged": true
+}

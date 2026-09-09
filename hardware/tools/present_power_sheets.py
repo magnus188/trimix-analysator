@@ -11,8 +11,8 @@ import copy, json, uuid
 import sexpdata as sx
 
 HW=Path(__file__).resolve().parents[1]
-P=HW/'kicad/power'
-V=HW/'verification/power'
+P=HW/'pcb/power'
+V=HW/'pcb/verification/power'
 SEED=V/'before-presentation-layout.zip'
 MANIFEST=V/'presentation-layout.json'
 S=sx.Symbol
@@ -96,7 +96,7 @@ def translate(a,name):
 sources={}; old_manifest=json.loads(MANIFEST.read_text()) if MANIFEST.exists() else {'files':{}}
 with ZipFile(SEED) as z:
     for name in ['Trimix_Power','Charging','Supply_5V','Gauge_Interface']:
-        fname=name+'.kicad_sch'; raw=z.read('kicad/power/'+fname)
+        fname=name+'.kicad_sch'; raw=z.read('pcb/power/'+fname)
         current=sha256((P/fname).read_bytes()).hexdigest()
         allowed={sha256(raw).hexdigest(),old_manifest['files'].get(fname,{}).get('sha256')}
         if current not in allowed:raise SystemExit(f'{fname}: unexpected edits; rebase layout before overwriting.')

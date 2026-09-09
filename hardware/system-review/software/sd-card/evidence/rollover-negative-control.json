@@ -1,0 +1,23 @@
+{
+  "status": "old production core rejected by new compound-failure regression as expected",
+  "exit_code": -6,
+  "command": [
+    "c++",
+    "-std=c++17",
+    "-pthread",
+    "-I",
+    "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-sd-negative-v3p9dpo0",
+    "-I",
+    "main",
+    "-I",
+    "simulator/stubs",
+    "tests/test_sd_log.cpp",
+    "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-sd-negative-v3p9dpo0/services/sd_log_core.cpp",
+    "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-sd-negative-v3p9dpo0/services/sd_log_files.cpp",
+    "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-sd-negative-v3p9dpo0/services/sd_log_format.cpp",
+    "-o",
+    "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-sd-negative-v3p9dpo0/negative"
+  ],
+  "old_core_sha256": "cf7cea7aa16757e1a053a78c96134c752d29ce6160b186a55ebfca0a1f9233f7",
+  "test_sha256": "8d0c6e19aac93a8691402bae753f949e43242a89ace98ff1ac457fc67c437afe"
+}

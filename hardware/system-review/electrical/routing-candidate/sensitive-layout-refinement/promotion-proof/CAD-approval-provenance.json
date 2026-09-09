@@ -1,0 +1,9 @@
+{
+  "original_uri": "hardware/system-review/mechanical/final-local-checkpoint/summary.json",
+  "original_absolute_path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/mechanical/final-local-checkpoint/summary.json",
+  "original_sha256": "daab92a20c5177621c927585a7270acf066d1771d886d6be1e37c0f719c434e2",
+  "immutable_copy": "hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/promotion-proof/CAD-native-approval-summary.json",
+  "immutable_copy_sha256": "daab92a20c5177621c927585a7270acf066d1771d886d6be1e37c0f719c434e2",
+  "preserved_utc": "2026-09-08T03:00:24.965938+00:00",
+  "reason": "Preserve the exact native CAD approval used for PCB promotion; original final CAD summary may later append independent STEP roundtrip evidence. The approved receipt bytes and approval hash are unchanged."
+}

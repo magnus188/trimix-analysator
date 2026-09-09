@@ -1,0 +1,68 @@
+{
+  "status": "SOURCE_REVIEWED_CANDIDATE_NOT_ADOPTED",
+  "checked_at_utc": "2026-09-07T23:12:32.507955+00:00",
+  "manufacturer": "ruthex GmbH",
+  "part": "RX-M2x4",
+  "order_number": "GE-M2x04-001",
+  "thread": "M2",
+  "nominal_dimensions_mm": {
+    "outer_crest_diameter": 3.6,
+    "lead_in_diameter": 3.1,
+    "length": 4.0,
+    "recommended_pilot": 3.2,
+    "manufacturer_min_radial_wall": 1.3,
+    "blind_depth_minimum": 5.0
+  },
+  "sources": [
+    {
+      "url": "https://www.ruthex.de/en/products/ruthex-gewindeeinsatz-m2-70-stuck-rx-m2x4-messing-gewindebuchsen",
+      "purpose": "Exact part/order identity and official STEP link"
+    },
+    {
+      "url": "https://cdn.shopify.com/s/files/1/0567/7019/9760/files/ruthex_RX-M2x4.step?v=1621264078",
+      "file": "ruthex_RX-M2x4.step",
+      "sha256": "4fe0b584d0f9473ff9dc4afbf08bf6a3c951bf32e81e595a912bb1f1f71dd3ce",
+      "purpose": "Manufacturer CAD; downloaded only, not imported or mechanically inspected yet"
+    },
+    {
+      "url": "https://www.igo3d.com/mediafiles/Sonstiges/Ruthex/ruthex_Datenblatt_RX-Serie.pdf",
+      "file": "ruthex_Datenblatt_RX-Serie.pdf",
+      "sha256": "6bfc05690afce95e31ad652a8c1860ea9d8781373cf34f5730c935f703bf1fde",
+      "author": "ruthex GmbH",
+      "host_role": "Distributor mirror of manufacturer document",
+      "document_date": "2022-08-15",
+      "page": 1,
+      "purpose": "Manufacturer dimensions and pilot/wall/blind-depth guidance"
+    }
+  ],
+  "visual_review": {
+    "file": "rx-series-page1.png",
+    "sha256": "97172ecd0f8f291e3472b6f97d4c42b6dcbdae3da9467bc2899f49446e2b0756",
+    "inspected": true,
+    "confirmed": "d1/d2/L/d3/w labels, M2 row and L+1mm minimum blind hole diagram"
+  },
+  "current_reference_interface": {
+    "generic_insert_label": "GEN-M2-HEATSET-OD3.2-L4",
+    "reported_pilot_diameter_mm": 3.3,
+    "reported_web_width_mm": 7.2,
+    "current_pilot_ligament_mm": 1.95,
+    "basis": "Width-review native pilot-axis and selected-section inventory, to be rebound at exact eventual adoption"
+  },
+  "calculated_implications": {
+    "radial_wall_to_3p2_pilot_in_7p2_web_mm": 2.0,
+    "radial_material_to_3p6_insert_crest_in_7p2_web_mm": 1.8,
+    "web_width_for_2mm_material_beyond_crest_mm": 7.6
+  },
+  "required_before_adoption": [
+    "Inspect official STEP dimensions and exact assembly axis; published dimensions are nominal without a complete tolerance envelope.",
+    "Inventory every affected insert occurrence and preserve actual part counts and remaining generic references.",
+    "Distinguish pre-installation printed pilot from installed heat-set cavity; any deliberate material interference must be exactly paired and quantified, not globally ignored.",
+    "Check boss wall after installation, blind hole depth, screw tip clearance and thread engagement for each affected location.",
+    "Run local native interference/section/tool/removal checks after any targeted printed-web change.",
+    "Use PLA/PETG coupons to qualify actual printed holes, insertion conditions, retention and repeated servicing before print release."
+  ],
+  "model_or_BOM_changed": false,
+  "purchased": false,
+  "physical_tests_performed": false,
+  "release": false
+}

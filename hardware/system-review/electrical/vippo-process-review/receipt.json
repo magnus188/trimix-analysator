@@ -1,0 +1,46 @@
+{
+  "status": "source-backed isolated-layout process recommendation; native routed candidate and fab acceptance pending",
+  "checked_date": "2026-09-08",
+  "native_files_modified": false,
+  "reference": "U115.3",
+  "via_xy_mm": [
+    13.6,
+    89.775
+  ],
+  "diameter_mm": 0.4,
+  "hole_mm": 0.2,
+  "nominal_annulus_mm": 0.1,
+  "scoped_clearance_recommendation_mm": 0.12,
+  "measured_clearance_mm": 0.125,
+  "fabrication_process": "Paid four-layer resin-filled, copper-capped, planarized POFV; ENIG; exact B original pad aperture with masked cap extension; F tented",
+  "sources": [
+    "https://jlcpcb.com/capabilities/pcb-capabilities",
+    "https://jlcpcb.com/news/free-via-in-pad-6-20-layer-pcbs-pofv",
+    "https://jlcpcb.com/help/article/pcb-via-covering",
+    "https://jlcpcb.com/blog/via-in-pad-design-deep-dive",
+    "https://docs.kicad.org/10.0/en/pcbnew/pcbnew.html#custom_design_rules"
+  ],
+  "required_not_completed": [
+    "Native parser/DRC with exact route and negative controls",
+    "Filled-plane ground anchor and continuity checks",
+    "Independent exported mask/paste/copper/drill byte check",
+    "Fabricator acceptance of masked via extension classification, selected fill/cap, plating and drill aspect ratio",
+    "Assembler acceptance of RPW cap flatness/voiding/stencil"
+  ],
+  "files": {
+    "audit_u115_cc.py": "e62ec2e5e29b89d93b4ab8c761c9e0951808d011ba3b4c26ca15ba4c65a517ab",
+    "u115-cc-scoped-rules.kicad_sexpr": "b52520b73e2dbab544d5185a71d833b09438e67020acbb8f13f1ec5b660429c8",
+    "README.md": "21e2afc589a047709aed1e008d5c3e2f5d42135d603a0f19867cc2479e70ca5f",
+    "u115-cc-centred/geometry.json": "97ed28d5b978a85f9ae01cd93d58c2c285f9b748d7694c2e9238b7ff312724ef",
+    "u115-cc-centred/geometry.svg": "0de913112d78e710d99fe52a19ea2cd51568e5b5f48334eaed9876c1fc59b9e8",
+    "u115-cc-centred/geometry.png": "7f161ec0b5e206d95c2085cb8fad9b0fc958cca4bcf485148c665c1cd217a862"
+  },
+  "order_release": false,
+  "native_followup": {
+    "receipt": "native-v3-independent/manifest.json",
+    "source_sha256": "d490110c6335a6594a8d2171386926c65a95e0f8ba729feb378c478e8a676a63",
+    "checks_passed": 25,
+    "checks_failed": 0,
+    "manifest_sha256": "6ce247837f79016117978ccf65791eb1b36cd7748a0fe1067aff350bb7de457d"
+  }
+}

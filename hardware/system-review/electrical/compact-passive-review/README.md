@@ -1,0 +1,3 @@
+# Compact passive part review
+
+R115’s exact **YAGEO RT0402BRD0710KL** is verified in its [manufacturer part-specific PDF](https://yageogroup.com/component-documentation/download/specsheet/RT0402BRD0710KL):10kΩ±0.1%,25ppm/°C,63mW at70°C,0402,maximum1.10×0.55×0.35mm. The50V continuous rating is also bounded by resistor power; it does not authorize50V across10kΩ. Under an explicit3.6V/70°C pull-up stress assumption, tolerance and linearTCR give about1.30mW, with no measured-rail or thermal claim. See `r115-source-review.json`. Package selection does not establish factory stock, placement qualification or permission to purchase.

@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "repository": "magnus188/trimix-analysator",
+  "tag": "v0.2.0",
+  "applications": [
+    {
+      "name": "Trimix_analyzer_esp32p4_pre3_v0.2.0.bin",
+      "size": 1980912,
+      "digest": "sha256:161f93d42cd62fc8f0df59722b831a91619b287c129f3398f0fe8927533fd6d4",
+      "project": "Trimix_analyzer",
+      "version": "0.2.0",
+      "minimum_chip_revision": 1,
+      "maximum_chip_revision": 199,
+      "ota_slot_capacity": 4194304
+    },
+    {
+      "name": "Trimix_analyzer_esp32p4_v3_v0.2.0.bin",
+      "size": 1986112,
+      "digest": "sha256:428d966fd33c9ef41aa860ba17220766b03d27b07e0bdd7f10f3e6287fb55d70",
+      "project": "Trimix_analyzer",
+      "version": "0.2.0",
+      "minimum_chip_revision": 300,
+      "maximum_chip_revision": 399,
+      "ota_slot_capacity": 6291456
+    }
+  ]
+}

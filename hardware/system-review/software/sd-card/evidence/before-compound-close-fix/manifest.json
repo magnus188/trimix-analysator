@@ -1,0 +1,90 @@
+[
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/repository-tests.log",
+    "sha256": "13a60ca9365f846359209b4de8838a67f9f56711cf449111c3a955ad15fe3292"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/sanitizer-build.log",
+    "sha256": "1415c8da39f2c531d91ffe6b1c805dc4e6b4c533672584cb08192f533a54d61f"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/size-ng-v3.log",
+    "sha256": "368640bd00ca8f8928b05dc4b4f44c2ffe9a6d2c0aabc0fb6471aa9295ea6c48"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/static-analysis.log",
+    "sha256": "77170be52e48a535bdac3e6994a8c2a9c1285728ff0a7163ebd1a5ff4c68bf79"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/size-v3.raw.log",
+    "sha256": "ce54d0d3c7a89910314ec2c0fbb829a1708653e026189fe50f2ea03da3906bc6"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/ui-smoke-capture.log",
+    "sha256": "421c5ac27beb3c758637ffd2968130a71509234faf33b1ca52e365c7a18188d4"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/size-ng-pre3.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/sanitizer-configure.log",
+    "sha256": "48e611c1563d3f6a7610043615346ed57d5656e16bd7591c8a5e96d55420c01c"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/sd-tsan.log",
+    "sha256": "8f8e394780ee47ebcbd213cbc07f290a7ceba69d0f1fde293614aaa60c16d508"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/sanitizer-tests.log",
+    "sha256": "593c1ea1996f6e3da370f4660ff77826af8eaf8b27feceadfbeb64ee54acc11e"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/sd-maintenance-tsan.log",
+    "sha256": "ceff2b342a0e58e3a3dec3ee698a3bd02953f68bdd30bd672500e8b892b3c106"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/build-v3.log",
+    "sha256": "98ec8c71075c6e1b450fc039961ad74ee48dd7e249d4daa4b0c7eb506e70d792"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/host-configure.log",
+    "sha256": "58f78af9650799caefdcc689177a2b34ea3bba15a08724dba13fef2e9b317a61"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/maintenance-repeat.log",
+    "sha256": "9c4e0493552f0ba28b09dc1b7f0160ce65fea62792cc3d7a23b1afad24708d97"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/host-tests.log",
+    "sha256": "83fdff344df392331f4095078c4cc16b942014d19351cd01cf61f3364b69e3cb"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/build-pre3.log",
+    "sha256": "69dbc80f421fefc676ca97d4a3402790396f1d0dfc14da109591104fdc97925d"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/host-build.log",
+    "sha256": "722d3c94484b53418d0b12878221f3d04fe0d4dbebbe9fbe704559115a185db9"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/release-validation.log",
+    "sha256": "9607ef6998b3b867f8be77e128deddf0c2fcec6410d84ae9d34091386930cb56"
+  },
+  {
+    "path": "hardware/system-review/software/sd-card/evidence/source-before.json",
+    "sha256": "c235b0902bb2c887329f8229d95eacd814a51fbf4625dcfc1439d3b16ad93952"
+  },
+  {
+    "path": "main/services/sd_log_core.cpp",
+    "sha256": "cf7cea7aa16757e1a053a78c96134c752d29ce6160b186a55ebfca0a1f9233f7"
+  },
+  {
+    "path": "main/services/sd_log_core.h",
+    "sha256": "678dac4c1f754319f4d56e70b12a543f73137fd6ebc60bcd9ec253ec53b396ec"
+  },
+  {
+    "path": "tests/test_sd_log.cpp",
+    "sha256": "18dcd8cc2b4d435ebe0853672836fb938a4d2f64c8a8dd60ef3860064a0d8ba7"
+  }
+]

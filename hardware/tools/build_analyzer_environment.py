@@ -4,6 +4,7 @@ Run with KiCad MCP's Python venv. Pin assignments come from manufacturer
 datasheets; unidentified purchased module details are marked for qualification.
 """
 from analyzer_sheet import Sheet, custom_symbol
+from power_review_parts import LDO_ID, LDO_MPN, ldo_symbol
 
 R='Resistor_SMD:R_0603_1608Metric'
 C='Capacitor_SMD:C_0805_2012Metric'
@@ -12,8 +13,8 @@ J='Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical'
 def resistor(s,ref,value,x,y,a,b,angle=90,dnp=False,autowire=True):
     return s.add('Device:R',ref,value,x,y,{1:a,2:b},R,angle=angle,dnp=dnp,autowire=autowire,field_at=(x-5.08,y-7.62) if angle==90 else None)
 
-def capacitor(s,ref,value,x,y,a,b='GND'):
-    return s.add('Device:C',ref,value,x,y,{1:a,2:b},C)
+def capacitor(s,ref,value,x,y,a,b='GND',dnp=False):
+    return s.add('Device:C',ref,value,x,y,{1:a,2:b},C,dnp=dnp)
 
 def connector(name, labels):
     return custom_symbol(name,[(str(i+1),label,'passive',-12.7,7.62-i*5.08,0) for i,label in enumerate(labels)],bounds=(-10.16,-10.16,10.16,10.16))
@@ -83,13 +84,13 @@ def carbon_monoxide():
     capacitor(s,'C702','22u / 10V',191.77,85.09,'CO_5V28')
     capacitor(s,'C703','22u / 10V',191.77,118.11,'CO_5V28')
     s.text('0.595 x (1 + 787k/100k) = 5.278 V nominal.\nVerify >=5.0 V at the module under start-up and load; account for ripple and cable loss.',25.4,139.7,1.016)
-    s.add('Regulator_Linear:SPX3819M5-L-3-0','U702','SPX3819M5-L-3-0',297.18,96.52,
-          {1:'VOUT_5V',2:'GND',3:'VOUT_5V',4:'CO_LOGIC_BYP',5:'CO_LOGIC_3V0'},
-          'Package_TO_SOT_SMD:SOT-23-5',field_at=(281.94,74.93),properties={'Stock':'New part / not confirmed in stock'})
+    s.add(LDO_ID,'U702',LDO_MPN,297.18,96.52,
+          {1:'VOUT_5V',2:'GND',3:'VOUT_5V',4:None,5:'CO_LOGIC_3V0'},
+          'Package_TO_SOT_SMD:SOT-23-5',custom=ldo_symbol(),field_at=(281.94,74.93),properties={'Stock':'New part / not confirmed in stock'})
     capacitor(s,'C704','4.7u / 10V',241.3,91.44,'VOUT_5V')
     capacitor(s,'C705','4.7u / 10V',346.71,91.44,'CO_LOGIC_3V0')
-    capacitor(s,'C706','10n',381,115.57,'CO_LOGIC_BYP')
-    s.text('Powered by switched 5 V; independent of the MD62 heater rail.\nC706 bypasses the LDO reference. Confirm stability with chosen capacitors.\nCO_LOGIC_3V0 powers the translator only; do not use a reserved module pin.',223.52,137.16,1.016)
+    capacitor(s,'C706','10n / DNP: obsolete bypass',381,115.57,None,dnp=True)
+    s.text('Powered by switched 5 V; independent of the MD62 heater rail.\nTPS7A20: ceramic-stable; C706 DNP, pin4 NC. Qualify effective C and heat.\nCO_LOGIC_3V0 powers the translator only; do not use a reserved module pin.',223.52,137.16,1.016)
     txu=custom_symbol('TXU0202DCU',[
         (3,'VCCA','power_in',-15.24,15.24,0),(7,'VCCB','power_in',15.24,15.24,180),
         (5,'A1','input',-15.24,5.08,0),(8,'B1Y','output',15.24,5.08,180),

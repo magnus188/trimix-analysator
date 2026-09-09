@@ -1,0 +1,416 @@
+{
+  "status": "PASSED_DIGITALLY_FOR_SCOPED_POWER_LAYOUT_AND_GROUND_REVIEW",
+  "board_sha256": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788",
+  "geometry_manifest_checks": [
+    {
+      "path": "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb",
+      "sha256": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788",
+      "passed": true
+    },
+    {
+      "path": "review/analyzer-netlist.xml",
+      "sha256": "b04e4701898d62cb49b5adbc709e634b919f88fb2f1c1c36e5818ad94b2f4b08",
+      "passed": true
+    },
+    {
+      "path": "review/component-height-contract.csv",
+      "sha256": "7216deb1758b3f09e1d5823943d25a177e2844675853b8e2a371a4db5e5953ac",
+      "passed": true
+    },
+    {
+      "path": "review/component-height-contract.json",
+      "sha256": "2dbf87fafac4ef4af2d5a84798795dcd0ae62094594c706bf992e0620abb0904",
+      "passed": true
+    },
+    {
+      "path": "review/Trimix_Analyzer_Local_Refinement.step",
+      "sha256": "81eef0182d0d3bbaaf1a433cf43dce3e70f975c9ccd6d8d94bd196aa00c99014",
+      "passed": true
+    },
+    {
+      "path": "review/drc.json",
+      "sha256": "8aa85069b19d78edfe4ac7ceaaebc71f36f053e105add0c859fba7edd0b102a0",
+      "passed": true
+    },
+    {
+      "path": "review/routing-audit.json",
+      "sha256": "ee6e48e54b0feefd4a3b1167546b0768ee4a91c782ed2cfb910bfdcab0e5d6ea",
+      "passed": true
+    },
+    {
+      "path": "review/via-assembly.json",
+      "sha256": "5b09e7ff9be17de18263fe9c7de3b7c41b10e12f56ecbe0ddb3bcf01ec3d9f56",
+      "passed": true
+    },
+    {
+      "path": "review/connectivity.json",
+      "sha256": "3ef385d66ef1ec01819a4de0ce5dc812c5ae3ca08b10c3f6d73ab23754349c19",
+      "passed": true
+    }
+  ],
+  "power_paths": [
+    {
+      "source": "J101.1",
+      "target": "U115.5",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "J101.1",
+      "target": "C115.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U115.6",
+      "target": "U114.2",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U115.6",
+      "target": "C114.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U114.5",
+      "target": "U101.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U114.5",
+      "target": "C101.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U101.15",
+      "target": "C105.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U101.16",
+      "target": "C105.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C105.1",
+      "target": "U201.10",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C105.1",
+      "target": "U201.11",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U201.4",
+      "target": "C204.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U201.4",
+      "target": "C205.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U201.4",
+      "target": "C206.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U201.5",
+      "target": "C204.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U201.5",
+      "target": "C205.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U201.5",
+      "target": "C206.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C204.1",
+      "target": "U302.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C205.1",
+      "target": "U302.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C206.1",
+      "target": "U302.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U302.3",
+      "target": "J301.2",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "U302.3",
+      "target": "J301.4",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C204.1",
+      "target": "U701.2",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C204.1",
+      "target": "U501.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "C204.1",
+      "target": "U702.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "J102.1",
+      "target": "U101.13",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "J102.1",
+      "target": "U101.14",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "J101.1",
+      "target": "R110.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "J101.1",
+      "target": "R121.1",
+      "same_ordered_native_edges": true
+    },
+    {
+      "source": "J101.1",
+      "target": "R124.1",
+      "same_ordered_native_edges": true
+    }
+  ],
+  "local_trace_path_count": 35,
+  "layout_comparisons": [
+    {
+      "source": "U101.21",
+      "target": "C103.2",
+      "before_mm": 9.149576153477103,
+      "after_mm": 1.3555093044445425,
+      "shorter": true
+    },
+    {
+      "source": "U101.19",
+      "target": "C103.1",
+      "before_mm": 9.8375,
+      "after_mm": 5.620988082409197,
+      "shorter": true
+    },
+    {
+      "source": "U101.22",
+      "target": "C107.1",
+      "before_mm": 8.8841341442555,
+      "after_mm": 2.921089452001788,
+      "shorter": true
+    },
+    {
+      "source": "U701.6",
+      "target": "C702.1",
+      "before_mm": 6.802580314844643,
+      "after_mm": 1.6031858750833141,
+      "shorter": true
+    },
+    {
+      "source": "U701.1",
+      "target": "R702.1",
+      "before_mm": 29.84146473445395,
+      "after_mm": 1.0400751174795022,
+      "shorter": true
+    }
+  ],
+  "output_capacitor_ground_return": {
+    "source": "C702.2",
+    "target": "U701.4",
+    "status": "explicit_native_witness",
+    "net": "GND",
+    "source_layer": "F.Cu",
+    "target_layer": "F.Cu",
+    "ordered_item_uuids": [
+      "1cc09aa8-4031-4032-9ba2-a7834bd3e977",
+      "a877bcd8-b8cf-4237-a59a-2ca3a98dd590",
+      "d4e186a8-bb42-44c1-a678-913b82a2337f",
+      "e4abc0e9-de6b-4bd0-9dce-1f2bbb3a9ac0",
+      "6e8f2b20-14ce-423c-a8cc-5974e814258a",
+      "93a0664f-5232-4f8b-80c3-00b35a830d2b"
+    ],
+    "ordered_edges": [
+      {
+        "kind": "native_adjacency",
+        "from_uuid": "1cc09aa8-4031-4032-9ba2-a7834bd3e977",
+        "to_uuid": "a877bcd8-b8cf-4237-a59a-2ca3a98dd590",
+        "layer": "F.Cu"
+      },
+      {
+        "kind": "trace",
+        "uuid": "a877bcd8-b8cf-4237-a59a-2ca3a98dd590",
+        "layer": "F.Cu",
+        "full_item_length_mm": 1.0,
+        "width_mm": 0.35
+      },
+      {
+        "kind": "native_adjacency",
+        "from_uuid": "a877bcd8-b8cf-4237-a59a-2ca3a98dd590",
+        "to_uuid": "d4e186a8-bb42-44c1-a678-913b82a2337f",
+        "layer": "F.Cu"
+      },
+      {
+        "kind": "trace",
+        "uuid": "d4e186a8-bb42-44c1-a678-913b82a2337f",
+        "layer": "F.Cu",
+        "full_item_length_mm": 1.4142135623730951,
+        "width_mm": 0.35
+      },
+      {
+        "kind": "native_adjacency",
+        "from_uuid": "d4e186a8-bb42-44c1-a678-913b82a2337f",
+        "to_uuid": "e4abc0e9-de6b-4bd0-9dce-1f2bbb3a9ac0",
+        "layer": "F.Cu"
+      },
+      {
+        "kind": "trace",
+        "uuid": "e4abc0e9-de6b-4bd0-9dce-1f2bbb3a9ac0",
+        "layer": "F.Cu",
+        "full_item_length_mm": 0.9,
+        "width_mm": 0.35
+      },
+      {
+        "kind": "native_adjacency",
+        "from_uuid": "e4abc0e9-de6b-4bd0-9dce-1f2bbb3a9ac0",
+        "to_uuid": "6e8f2b20-14ce-423c-a8cc-5974e814258a",
+        "layer": "F.Cu"
+      },
+      {
+        "kind": "trace",
+        "uuid": "6e8f2b20-14ce-423c-a8cc-5974e814258a",
+        "layer": "F.Cu",
+        "full_item_length_mm": 0.6875,
+        "width_mm": 0.2
+      },
+      {
+        "kind": "native_adjacency",
+        "from_uuid": "6e8f2b20-14ce-423c-a8cc-5974e814258a",
+        "to_uuid": "93a0664f-5232-4f8b-80c3-00b35a830d2b",
+        "layer": "F.Cu"
+      }
+    ],
+    "layer_summary": {
+      "F.Cu": {
+        "full_item_length_mm": 4.001713562373094,
+        "minimum_width_mm": 0.2,
+        "track_uuids": [
+          "a877bcd8-b8cf-4237-a59a-2ca3a98dd590",
+          "d4e186a8-bb42-44c1-a678-913b82a2337f",
+          "e4abc0e9-de6b-4bd0-9dce-1f2bbb3a9ac0",
+          "6e8f2b20-14ce-423c-a8cc-5974e814258a"
+        ]
+      }
+    },
+    "barrel_transition_count": 0,
+    "full_item_estimate_ohm_20C_25um_1p6mm": 0.006357971234867129,
+    "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+  },
+  "native_DRC": {
+    "violations": 0,
+    "opens": 0,
+    "parity": 0
+  },
+  "ground_summary": {
+    "In1.Cu": {
+      "physical_regions": 1,
+      "anchors": 107,
+      "retained_contacts_lost": 0
+    },
+    "In2.Cu": {
+      "physical_regions": 11,
+      "anchors": 21,
+      "retained_contacts_lost": 0
+    }
+  },
+  "visuals_inspected": [
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-final-review/refined-ground-comparison.png",
+      "sha256": "ceef30b01940cf4ecf90c3ab128292161cc94173ecb4a93ee0ae0a9ad2808986"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-final-review/refined-local-copper.png",
+      "sha256": "e8448d63cde09fbf36920b8084e2a64aebf5e687fc9d66317cd83fdbdc76a50b"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/co.png",
+      "sha256": "61ee89719042a4629890c6f3e8a84a39988c5d8ea94a6cfbda7428c752fc452b"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/bq.png",
+      "sha256": "385a0a65043bea77e312791a8b4d4d5f58493cdaa89c975a1f5ca27a0ef6474e"
+    }
+  ],
+  "bound_sources": [
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/geometry-handoff-manifest.json",
+      "sha256": "d046543445fc91e4b08e4deba68cf3a1d73e11f473e15ba5ca9bf4ca8e8ec42c"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-final-review/refined-local-paths.json",
+      "sha256": "3787e538f72075ffad0a6054a76e2604a2a21907606965d9ff4013b95db12a95"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-final-review/refined-ground-review.json",
+      "sha256": "c4198eb95701bc9b7d47a0128174c02c9509387b78a1466352bb0eb01d09f011"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-final-review/current-paths/inventory.json",
+      "sha256": "8428ac9d95c9bc0ffd9e00dd4dc8fe9dd77d57d96cb907b19dfa10926e6f16b4"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/final-power-layout-review/review_refined_native.py",
+      "sha256": "81bcb54e42014f1e68d6c532f21875f3f7bf41d9bd78de9e47ae36174eb41717"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/final-power-layout-review/review_refined_ground.py",
+      "sha256": "ffa2fc017e09c9910fa0ef52265d3f7399098d917b45764c75a92a19de0e759e"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/current-path-review/inventory.py",
+      "sha256": "199e736b3309135569023179d01ade9632f4602e6fd0556180c4264fd5d1c117"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/cap-signal-reconnect/pullup-swap/independent-ground/audit_ground.py",
+      "sha256": "c24610c3de9a82300aefafef7c7e81cd862eeb8f9c8388fd2e4e30e83cfb5f68"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/sensitive-layout-refinement/c107-0805/root-source-and-layout-review.json",
+      "sha256": "9a59483ab559cbc4c3f1a1c5600b3d2afc730d4ea972d459c80baa04c38d96ca"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/sensitive-layout-refinement/r504-independent/verification-receipt.json",
+      "sha256": "06b02e31e43a19ad9867bce8c6c405cb33fc79354a321554f94b0677b2ffc37f"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-final-review/complete_review.py",
+      "sha256": "b6187d9a47eb0f0e32030778a1e33b089161bce3f29cc435b51c0e4edb4ac84e"
+    }
+  ],
+  "disposition": "Four identified layout corrections are implemented: shorter bootstrap/REGN, shortCOfeedback and closeoutputcap with directFgroundreturn. This is a layout improvement under manufacturer guidance, not a regulator stability or gas-noise qualification.",
+  "limits": [
+    "FreshERC/sourcevalidation, manufacturingCAM/process acceptance and finalCADfit have separate gates.",
+    "C107 startup demand, biasedcapacitance/ripple and thermal behaviour remainphysicaltestingpending.",
+    "R504 filteredexcitationmonitor is covered byIn1below northerninductoredge; actualpickup/qualification-window behaviour remainsunmeasured.",
+    "Sourcecurrent/transientprotection, Guitionpowerentry, actualcells/connectormates and externalfactoryapproval stillblockordering."
+  ],
+  "order_release": false
+}

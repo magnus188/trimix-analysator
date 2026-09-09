@@ -1,6 +1,8 @@
 #pragma once
 #include <esp_err.h>
 #include <stdint.h>
+#include <stdbool.h>
+#include "services/oxygen_selection_service.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,6 +42,21 @@ typedef struct {
     uint32_t sequence;
     sensor_status_t status;
     sensor_source_t source;
+    float oxygen_jj_percent;
+    bool oxygen_jj_valid;
+    bool oxygen_calibrated;
+    bool helium_calibrated;
+    bool calibration_unvalidated;
+    bool environment_valid;
+    float co_ppm;
+    bool co_valid;
+    // Primary oxygen_percent belongs to this explicitly selected input.
+    oxygen_selection_t oxygen_selection;
+    uint32_t oxygen_selection_generation;
+    bool oxygen_configuration_required;
+    bool oxygen_calibration_required;
+    uint32_t oxygen_calibration_revision;
+    uint32_t helium_calibration_revision;
 } sensor_readings_t;
 
 esp_err_t sensor_read_all(sensor_readings_t *out);

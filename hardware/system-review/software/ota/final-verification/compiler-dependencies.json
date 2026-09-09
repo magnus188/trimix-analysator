@@ -1,0 +1,110 @@
+{
+  "source_hashes_by_test": {
+    "ota-asan": {
+      "main/services/blob_journal.cpp": "b3c7afc4f0966db6f00061dff0432f09396dafd7bcd5a943a10a92661cfc08fb",
+      "main/services/blob_journal.h": "5f05029916d45625df8257786833ec2535a440fce5a5f9aac29b2bf2f3b9d245",
+      "main/services/c6_recovery_checks.h": "7f68eabc4ad06b566bebb0cb241698b21dcb5113a4376ff514945bb65eda08bf",
+      "main/services/maintenance_service.cpp": "edf05da0ad8b7b7040f43f5584747982eb9f8bb5828376ed6788db83e79f0c66",
+      "main/services/maintenance_service.h": "04e195435f94894d3a0dc4a7927f0c39b10aebb0ee31beb9940fa92972bcbdec",
+      "main/services/ota_core.cpp": "c1086a81cad7b82c5fe23d23158bac854f9ef3037e84be1a1a628901b624f11b",
+      "main/services/ota_core.h": "7b780c741eb6c1bdc5da05086bcaafc137de2c59603c671fae8bc1250c621f7a",
+      "main/services/storage_service.cpp": "d3fcba43f00165ba91e2715a583876377cc21f586e8b825be62ee2ca4e6c23c3",
+      "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+      "tests/test_ota_storage.cpp": "336d518a455965343a95196a837eab120d1202f37c9d750a8072a6a23c3d763b",
+      "tests/third_party/cjson/cJSON.h": "25b0145150d500498e4d209cec69c18c42cf818bffcc54690be3b895a2a16dee",
+      "tests/third_party/cjson/cJSON.c": "298581a04a36c0165da4b0aade235c23088cb2faa58651d720ea2f3706ed0b0d"
+    },
+    "storage-maintenance-asan": {
+      "main/services/blob_journal.cpp": "b3c7afc4f0966db6f00061dff0432f09396dafd7bcd5a943a10a92661cfc08fb",
+      "main/services/blob_journal.h": "5f05029916d45625df8257786833ec2535a440fce5a5f9aac29b2bf2f3b9d245",
+      "main/services/maintenance_service.cpp": "edf05da0ad8b7b7040f43f5584747982eb9f8bb5828376ed6788db83e79f0c66",
+      "main/services/maintenance_service.h": "04e195435f94894d3a0dc4a7927f0c39b10aebb0ee31beb9940fa92972bcbdec",
+      "main/services/storage_service.cpp": "d3fcba43f00165ba91e2715a583876377cc21f586e8b825be62ee2ca4e6c23c3",
+      "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+      "tests/test_storage_maintenance_race.cpp": "5f671cad18aa1098970200aa1076cbb1c7e0f9196c06e93ae1c451b2bcc709c5"
+    },
+    "storage-maintenance-tsan": {
+      "main/services/blob_journal.cpp": "b3c7afc4f0966db6f00061dff0432f09396dafd7bcd5a943a10a92661cfc08fb",
+      "main/services/blob_journal.h": "5f05029916d45625df8257786833ec2535a440fce5a5f9aac29b2bf2f3b9d245",
+      "main/services/maintenance_service.cpp": "edf05da0ad8b7b7040f43f5584747982eb9f8bb5828376ed6788db83e79f0c66",
+      "main/services/maintenance_service.h": "04e195435f94894d3a0dc4a7927f0c39b10aebb0ee31beb9940fa92972bcbdec",
+      "main/services/storage_service.cpp": "d3fcba43f00165ba91e2715a583876377cc21f586e8b825be62ee2ca4e6c23c3",
+      "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+      "tests/test_storage_maintenance_race.cpp": "5f671cad18aa1098970200aa1076cbb1c7e0f9196c06e93ae1c451b2bcc709c5"
+    },
+    "calibration-asan": {
+      "main/hardware_contract.h": "c9fb7ed97d4086429a5be261df11c0d23623a33aa12e549838d897636cb0ac31",
+      "main/sensors/ads122c04.cpp": "b0028bf0e1d60f0f61c7c04d2a67a1d0e269ccf66977350c1130e8c8225619ff",
+      "main/sensors/ads122c04.h": "532680e14e03fb28b6347ad5b9b610b2212f5df5f809550fa2b2fc93f3c0190e",
+      "main/sensors/gas_acquisition_config.h": "e9f3370e29fad3694793312182f1ef5d8b2417cf0f0505bcb46a99515ac83da8",
+      "main/sensors/ze07_co.cpp": "8009cab7b918cae1e56d21933445e7ba74037a76712ebac6e61644733e2b5972",
+      "main/sensors/ze07_co.h": "fc4fb5445d2642899002c38ea6fd4392d2199153362ff8e20cbc7dcc5385d56d",
+      "main/services/gas_calibration_core.cpp": "27ea4cb11659300c577c64f69cb2ad26c8a0f9e262db9d157b78adc0b6836977",
+      "main/services/gas_calibration_core.h": "f3d2c2432573263873979f4feaa8aa430b34ebb513e4508d7d4eb9c03e690440",
+      "main/services/gas_calibration_journal.cpp": "9b9c4455e2b8ae3c1eb674ddc66a40ba94279e39c0ec18395e852c62518a4ec0",
+      "main/services/gas_calibration_journal.h": "80bda889e19f76b566b509df9cdb3020e50a9cdaf115d2413c5c309b3263a35b",
+      "main/services/gas_calibration_service.h": "cf5121648f6ef908a057f6186f5f4486a069e4a69b71da87507ca817cfde2128",
+      "simulator/stubs/esp_err.h": "d987f8a338c5b321fe906f1d99529ce1e9a153e115267b0bafeb9e4f4e99088d",
+      "tests/test_gas_acquisition.cpp": "54c58df94c8410abdedff5317a913e533114fab7dc983a45e884b971411bc05b"
+    },
+    "oxygen-selection-asan": {
+      "main/sensors/gas_acquisition_config.h": "e9f3370e29fad3694793312182f1ef5d8b2417cf0f0505bcb46a99515ac83da8",
+      "main/services/gas_calibration_service.h": "cf5121648f6ef908a057f6186f5f4486a069e4a69b71da87507ca817cfde2128",
+      "main/services/oxygen_selection_core.cpp": "5127bf53b0f11f739821c256749b9f778a849cd8a5692479f8e55d494989e4eb",
+      "main/services/oxygen_selection_core.h": "2f2f32282a6f2aff5c82d25b5e1533adc299f4b5c5ff5ace35f023334a0160f9",
+      "main/services/oxygen_selection_service.h": "187beded70701955330d96edaf490f8f41dc2fcffe99fefb31eb8640bd4c83d9",
+      "simulator/stubs/esp_err.h": "d987f8a338c5b321fe906f1d99529ce1e9a153e115267b0bafeb9e4f4e99088d",
+      "tests/test_oxygen_selection.cpp": "d5fa119a678d34ab484b35c122382fceee5408e9fd0c5006b4d7d284f2ca7605"
+    },
+    "history-asan": {
+      "main/analysis/analysis_calculator.h": "40783e956e567deb2251a970db071c0cc7902741fadde34515fdedde304c4553",
+      "main/sensors/sensor_interface.h": "eac20aa8083eab9882fb855eb72ba5e880099fcc34b113e5fca810959f5cf79c",
+      "main/services/analysis_history.cpp": "9e0caa0a885209f89036cfe97ccd4171c7e1484b75e1bb32d00d5f751daec08b",
+      "main/services/analysis_history.h": "904b81a4b54143f79c9a51028012ad2c66caa28a5dd2085cbbfeea4bef6ab820",
+      "main/services/analysis_history_format.h": "4f31239e100a65d9a0079cfc12d2305a2322d769df43a953d023279997498fb8",
+      "main/services/gas_calibration_service.h": "cf5121648f6ef908a057f6186f5f4486a069e4a69b71da87507ca817cfde2128",
+      "main/services/oxygen_selection_service.h": "187beded70701955330d96edaf490f8f41dc2fcffe99fefb31eb8640bd4c83d9",
+      "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+      "simulator/stubs/esp_err.h": "d987f8a338c5b321fe906f1d99529ce1e9a153e115267b0bafeb9e4f4e99088d",
+      "tests/test_analysis_history.cpp": "55e8994722504a2baf3a27dd7857f2eb5fd152fd4bbff6829186714e215d5fca"
+    },
+    "cylinder-asan": {
+      "main/analysis/analysis_calculator.cpp": "b2ac2f820470cac4058697497164f1a4c0ccfadad9521cb05f2f847a72f08a3d",
+      "main/analysis/analysis_calculator.h": "40783e956e567deb2251a970db071c0cc7902741fadde34515fdedde304c4553",
+      "main/sensors/sensor_interface.h": "eac20aa8083eab9882fb855eb72ba5e880099fcc34b113e5fca810959f5cf79c",
+      "main/services/analysis_history.cpp": "9e0caa0a885209f89036cfe97ccd4171c7e1484b75e1bb32d00d5f751daec08b",
+      "main/services/analysis_history.h": "904b81a4b54143f79c9a51028012ad2c66caa28a5dd2085cbbfeea4bef6ab820",
+      "main/services/analysis_history_format.h": "4f31239e100a65d9a0079cfc12d2305a2322d769df43a953d023279997498fb8",
+      "main/services/cylinder_profiles.cpp": "23c636a6eaf9345b351cdf36f2891feb7db25c15eaed3a64fffa7e5d16202510",
+      "main/services/cylinder_profiles.h": "b489c8d13f4972a968189fe902e551005f858521a3640cedee3fc5e120632221",
+      "main/services/gas_calibration_service.h": "cf5121648f6ef908a057f6186f5f4486a069e4a69b71da87507ca817cfde2128",
+      "main/services/mix_label_service.cpp": "5fc84ca063c10902c5ef9cc598d0256188e811acc3fb9ae5e322614b569d5d53",
+      "main/services/mix_label_service.h": "88aef280dad0cff07879caabda7ce46357d06757f63db8e626e293ffa3836211",
+      "main/services/oxygen_selection_service.h": "187beded70701955330d96edaf490f8f41dc2fcffe99fefb31eb8640bd4c83d9",
+      "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+      "simulator/stubs/esp_err.h": "d987f8a338c5b321fe906f1d99529ce1e9a153e115267b0bafeb9e4f4e99088d",
+      "tests/test_cylinder_profiles.cpp": "1a0cc1910ce32a2e6fb11e5b2f5dac334c4ec545af539fd5eb1afb968a415595"
+    },
+    "esp-storage-adapter": {
+      "main/services/blob_journal.cpp": "b3c7afc4f0966db6f00061dff0432f09396dafd7bcd5a943a10a92661cfc08fb",
+      "main/services/blob_journal.h": "5f05029916d45625df8257786833ec2535a440fce5a5f9aac29b2bf2f3b9d245",
+      "main/services/storage_service.cpp": "d3fcba43f00165ba91e2715a583876377cc21f586e8b825be62ee2ca4e6c23c3",
+      "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+      "tests/esp_storage_stubs/esp_log.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+      "tests/esp_storage_stubs/esp_ota_ops.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+      "tests/esp_storage_stubs/esp_test_platform.h": "230764cd9281bc9621246a0511aaf8a2449c0315658d94036b1e585980838b81",
+      "tests/esp_storage_stubs/nvs.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+      "tests/esp_storage_stubs/nvs_flash.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+      "tests/test_esp_storage_adapter.cpp": "962bf595375fcdcf18ae6943ab1b6511d9e66376b4bc7447a10c0be5a7ba1db9"
+    }
+  },
+  "matching_previous_test_receipt": {
+    "ota-asan": true,
+    "storage-maintenance-asan": true,
+    "storage-maintenance-tsan": true,
+    "calibration-asan": true,
+    "oxygen-selection-asan": true,
+    "history-asan": true,
+    "cylinder-asan": true
+  }
+}

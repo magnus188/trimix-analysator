@@ -1,0 +1,45 @@
+{
+  "status": "isolated_proposal_pending_combined_CC_and_native_acceptance",
+  "reference": "R101",
+  "manufacturer": "YAGEO",
+  "MPN": "RC0402FR-075K23L",
+  "source": "https://yageogroup.com/component-documentation/download/specsheet/RC0402FR-075K23L",
+  "source_retrieved_utc_date": "2026-09-07",
+  "resistance_ohm": 5230,
+  "tolerance_pct": 1,
+  "temperature_coefficient_ppm_C": 100,
+  "rated_power_W_at_70C": 0.063,
+  "maximum_working_voltage_V": 50,
+  "body_max_mm": [
+    1.05,
+    0.55,
+    0.4
+  ],
+  "footprint": "Resistor_SMD:R_0402_1005Metric",
+  "assembly": "factory SMT; a real smaller part, not a scaled 0603",
+  "proposed_front_pose_mm_deg": [
+    14.85,
+    88.95,
+    0
+  ],
+  "pad_contract": {
+    "1": "/01  CHARGING + BATTERY/BQ_REGN",
+    "2": "/01  CHARGING + BATTERY/PACK_TS"
+  },
+  "transfer_function_change": "none: preserve authoritative5.23k/1% (previous planning text erroneously said10k; native parity caught the wrong proposed MPN before source adoption)",
+  "power_check": {
+    "assumed_REGN_upper_V": 6.2,
+    "assumed_resistor_temperature_C": 85,
+    "minimum_R_with_1pct_and_65C_at_100ppm_ohm": 5144.04495,
+    "dissipation_upper_mW": 7.4727185266917235,
+    "power_rating_after_linear_derating_to_155C_mW": 51.882,
+    "interpretation": "conditional DC resistor stress check; not a PCB or charging thermal test"
+  },
+  "availability": "exact manufacturer specsheet verified; final factory stock/quote not yet checked",
+  "physical_checks_pending": [
+    "assembly process acceptance",
+    "actual pack NTC identity and calibration",
+    "charging and thermal qualification"
+  ],
+  "correction_receipt": "r101-divider-pruned-drc.json found mismatch with RC0603FR-075K23L; no authoritative resistor value was changed"
+}

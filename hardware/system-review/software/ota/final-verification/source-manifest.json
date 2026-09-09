@@ -1,0 +1,116 @@
+{
+  "timestamp_utc": "2026-09-07T12:24:31Z",
+  "scope": "OTA/storage tests bound to actual compiler dependencies. Startup, optional Wi-Fi and changing USB worker are read-only source review. Portable calibration core tests are separate; parent owns the latest physical-wrapper API tests and final integrated firmware builds.",
+  "artifacts_observed": {
+    "build/esp32p4-pre3/Trimix_analyzer.bin": {
+      "sha256": "161f93d42cd62fc8f0df59722b831a91619b287c129f3398f0fe8927533fd6d4",
+      "size": 1980912,
+      "mtime_ns": 1788782683221823360
+    },
+    "build/esp32p4-pre3/Trimix_analyzer.elf": {
+      "sha256": "f4e0fda0fbdc97bb0da0d65ed4b422c60344b4b4474956b3817f264b1d13d1c5",
+      "size": 24033596,
+      "mtime_ns": 1788782683058096886
+    },
+    "build/esp32p4-pre3/partition_table/partition-table.bin": {
+      "sha256": "77343ac3ceac061ad878e677bdc6a519e366749ac7adbd53b1f40804229ed9e9",
+      "size": 3072,
+      "mtime_ns": 1788772383902541977
+    },
+    "build/esp32p4-pre3/sdkconfig": {
+      "sha256": "97561babf3599ed7d88e9baa1bccc0ca63016a70349b526f129f9a661a35fffd",
+      "size": 103647,
+      "mtime_ns": 1787221244186262323
+    },
+    "build/esp32p4-v3/Trimix_analyzer.bin": {
+      "sha256": "428d966fd33c9ef41aa860ba17220766b03d27b07e0bdd7f10f3e6287fb55d70",
+      "size": 1986112,
+      "mtime_ns": 1788782921384131417
+    },
+    "build/esp32p4-v3/Trimix_analyzer.elf": {
+      "sha256": "8080544047b14be72fb645541b3ac32832cb9bd65916c6c1c8a80c79bf3fe9ac",
+      "size": 24186092,
+      "mtime_ns": 1788782921231182722
+    },
+    "build/esp32p4-v3/partition_table/partition-table.bin": {
+      "sha256": "8783431db861035a4bf06f45b0a606c977b7f950c6ff7867a77167a9054f6883",
+      "size": 3072,
+      "mtime_ns": 1788772524141103301
+    },
+    "build/esp32p4-v3/sdkconfig": {
+      "sha256": "b23049e40710accda74814e84e2f6e71f7eaad601a35a5b3358df60199a0e93c",
+      "size": 103913,
+      "mtime_ns": 1788772522083363391
+    }
+  },
+  "artifacts_still_match_inspected_manifest": {
+    "pre3": true,
+    "v3": true
+  },
+  "test_log_sha256": {
+    "hardware/system-review/software/ota/final-verification/calibration-asan.log": "e15c2bcd5e64fe5e5dcaf051f136b75cb5774cae62076cb727b38945e5fee21d",
+    "hardware/system-review/software/ota/final-verification/boot-probation-asan.log": "83ac2c8b5c8d01c8e1e43733758656524fd4b57b368249bbc83bd41eafc7c79e",
+    "hardware/system-review/software/ota/final-verification/storage-maintenance-tsan.log": "47b875ef463c0165c9720d2987c7329240e83ee4f4a494f91cc266f833354df4",
+    "hardware/system-review/software/ota/final-verification/cylinder-asan.log": "2d8b492fbf776b9a292d0e78c92bcd4423557701705cf6e130a192c9e04bdfb4",
+    "hardware/system-review/software/ota/final-verification/esp-storage-adapter-asan.log": "abbecf469988a64020bc5e590163d2591ac8451a8c293ceafb5c91911a1ede7d",
+    "hardware/system-review/software/ota/final-verification/release-core-asan.log": "9674d20e07bc92927f786d287bb0bed2da2fcedc63bfc6d1fe3124820073a7c7",
+    "hardware/system-review/software/ota/final-verification/history-asan.log": "31058eba8df1bbdd0c487fb20bd259d394c45197476228ccc3dd70debe74b063",
+    "hardware/system-review/software/ota/final-verification/boot-probation-tsan.log": "83ac2c8b5c8d01c8e1e43733758656524fd4b57b368249bbc83bd41eafc7c79e",
+    "hardware/system-review/software/ota/final-verification/vendor-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hardware/system-review/software/ota/final-verification/ota-asan.log": "7cb3e5a082f85e43a99f75979cd027d16f17c95ab21d3002ae6e3a761cc26bb3",
+    "hardware/system-review/software/ota/final-verification/storage-maintenance-asan.log": "47b875ef463c0165c9720d2987c7329240e83ee4f4a494f91cc266f833354df4",
+    "hardware/system-review/software/ota/final-verification/oxygen-selection-asan.log": "b47d27889d2949cdfb643c8748f0a2799c1a775c32b06a88fc74c3d736e4b0ba",
+    "hardware/system-review/software/ota/final-verification/release-validation.log": "9ce045ec0906680299aad77d85b39ca91d5c7570cc3851c922b495d516ac9bf7"
+  },
+  "ota_tested_source_sha256": {
+    ".github/workflows/build.yml": "7cd5aacd9be4983ea0f84c95bba979f2b4e17c2ea293466aa7d7dc074d474bd7",
+    ".github/workflows/release.yml": "fa53341fb45468e486da64bdf069ef1156b03a65970297956771fec268e5567e",
+    "hardware/system-review/software/ota/final-verification/test-fixtures/test_boot_probation_race.cpp": "f15a72b3d38a827f6ba4ec54e51ff897ea327ae23ff71948b1abf9f8d1a8d207",
+    "hardware/system-review/software/ota/final-verification/test-fixtures/test_release_core.cpp": "0d4c4680ac26a45ddc058bad941ad2a6b123946e3122b82ee5cdeef078919423",
+    "main/services/blob_journal.cpp": "b3c7afc4f0966db6f00061dff0432f09396dafd7bcd5a943a10a92661cfc08fb",
+    "main/services/blob_journal.h": "5f05029916d45625df8257786833ec2535a440fce5a5f9aac29b2bf2f3b9d245",
+    "main/services/c6_recovery_checks.h": "7f68eabc4ad06b566bebb0cb241698b21dcb5113a4376ff514945bb65eda08bf",
+    "main/services/maintenance_service.cpp": "edf05da0ad8b7b7040f43f5584747982eb9f8bb5828376ed6788db83e79f0c66",
+    "main/services/maintenance_service.h": "04e195435f94894d3a0dc4a7927f0c39b10aebb0ee31beb9940fa92972bcbdec",
+    "main/services/ota_core.cpp": "c1086a81cad7b82c5fe23d23158bac854f9ef3037e84be1a1a628901b624f11b",
+    "main/services/ota_core.h": "7b780c741eb6c1bdc5da05086bcaafc137de2c59603c671fae8bc1250c621f7a",
+    "main/services/storage_service.cpp": "d3fcba43f00165ba91e2715a583876377cc21f586e8b825be62ee2ca4e6c23c3",
+    "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+    "scripts/set_version.sh": "0ce01b50bb82988853e7b6629725e74f57259a8d1fca41f861e0ff2fab2bbd02",
+    "scripts/verify_release.py": "0526aae129d35fa82103292c074302240f0f5e40635f78fa52cf4c4b2fe5b95a",
+    "tests/esp_storage_stubs/esp_log.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+    "tests/esp_storage_stubs/esp_ota_ops.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+    "tests/esp_storage_stubs/esp_test_platform.h": "230764cd9281bc9621246a0511aaf8a2449c0315658d94036b1e585980838b81",
+    "tests/esp_storage_stubs/nvs.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+    "tests/esp_storage_stubs/nvs_flash.h": "9e4abf8c2f4d1cf8bb031c1b5f4cfd5096d5e17d9295dcbbabe3c0463ce7a87d",
+    "tests/test_esp_storage_adapter.cpp": "962bf595375fcdcf18ae6943ab1b6511d9e66376b4bc7447a10c0be5a7ba1db9",
+    "tests/test_ota_storage.cpp": "336d518a455965343a95196a837eab120d1202f37c9d750a8072a6a23c3d763b",
+    "tests/test_release_validation.py": "c3801f3c65fe83168b7838095a72bf6b2575bc9d779a7292d50e7901603a6c4a",
+    "tests/test_storage_maintenance_race.cpp": "5f671cad18aa1098970200aa1076cbb1c7e0f9196c06e93ae1c451b2bcc709c5",
+    "tests/third_party/cjson/cJSON.c": "298581a04a36c0165da4b0aade235c23088cb2faa58651d720ea2f3706ed0b0d",
+    "tests/third_party/cjson/cJSON.h": "25b0145150d500498e4d209cec69c18c42cf818bffcc54690be3b895a2a16dee"
+  },
+  "read_only_review_source_sha256": {
+    "main/main.cpp": "c62f93cab907974940dd7cd676a0a2a16142efd0766e83f17a3588f2c4c8ae4e",
+    "main/services/ota_service.cpp": "ebb4d31391ea61864a5c650cbae551c95f80d3a3f689370cfd414f61b426e4bf",
+    "main/services/wifi_service.cpp": "cab6a7059aeae9d5d711bb1a0cdf01803ad08942ade179b0a2326713e433cc13",
+    "main/services/system_power.cpp": "b08492b0ffdc2128a6ba2b8c5e47c3815f6953dee541e5f7243f46e0fe9b6adf",
+    "main/sensors/system_i2c.cpp": "cf79cb9f72e84abafff890ff240a694d010bc96ba0cdc764f2e8a400b7eddd03",
+    "main/sensors/usb_input_policy.cpp": "eff3b2ef9298d1a95409cbd6a3335bcbb29b655ce8cd45f952e46861709ddc15",
+    "main/sensors/usb_source_monitor.cpp": "5930c8a293c7960a2474cf006515880fe189a3dd81c39f8b3968de49505a9f8d",
+    "main/sensors/bc12_monitor.cpp": "852a745465a360fccc6ebf38e1d9d624b2d05abaf49de93d3da5d31369fa0c1b",
+    "main/sensors/power_monitor.cpp": "68fe6fbb19658c6167b3a9ce8e27db5f054054b3664e974ebd872f8f796d0353",
+    "main/sensors/environment_monitor.cpp": "9dc822ab1afaeba79b8c2421ab7d5938b98a92d0287fc08c942b9b50458582ef",
+    "main/sensors/sensor_hardware.cpp": "48a0c34027db0acd79ba0756b2b61ae5e14662feeda3de86a2c13b6f717eb986"
+  },
+  "ota_dependencies_match_test_receipt": true,
+  "other_portable_test_dependencies_match_receipt": {
+    "ota-asan": true,
+    "storage-maintenance-asan": true,
+    "storage-maintenance-tsan": true,
+    "calibration-asan": true,
+    "oxygen-selection-asan": true,
+    "history-asan": true,
+    "cylinder-asan": true
+  }
+}

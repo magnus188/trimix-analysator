@@ -1,0 +1,81 @@
+{
+  "source_sha256": "c923d4089a2f41379cdfe414671334aef104d732ca95206d2386324e8ecde60e",
+  "candidate_sha256": "41393691dd716fe36a1ac9332ae1904d966b9017070489201ec7aef48b894cb1",
+  "copper_delta": {
+    "removed": [
+      "35d70dba-d39f-40e5-8108-2fcb07098cde",
+      "3bc3f02a-f3d7-4d37-84e7-5960b88aa338",
+      "421eecae-b762-4d25-853a-db4c8ffef2f1",
+      "65de2131-f4a0-4d16-a224-ebeb297b275a",
+      "b60fa637-1165-4666-97bc-8532aec97ec6",
+      "d938035e-b894-48ac-a6e1-4f808e2ae730",
+      "fc360a06-afd6-417a-aa28-183203d8e73d"
+    ],
+    "added": [
+      "0965795c-380a-425e-9285-f72691924797",
+      "17d7cffd-21ed-4b7b-bfa5-65d7f8062f72",
+      "b19e720e-3c28-4c4e-b834-274dda82040f"
+    ],
+    "modified": []
+  },
+  "footprint_delta": {
+    "removed": [],
+    "added": [],
+    "modified": [
+      "075b6afc-9789-4d1b-8b22-99f6cb601ff1"
+    ]
+  },
+  "removed_original_items": {
+    "35d70dba-d39f-40e5-8108-2fcb07098cde": "(segment (start 9.7045 76.2536) (end 9.4259 75.975) (width 0.15) (layer \"F.Cu\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"35d70dba-d39f-40e5-8108-2fcb07098cde\"))",
+    "3bc3f02a-f3d7-4d37-84e7-5960b88aa338": "(via (at 9.7045 76.2536) (size 0.5) (drill 0.25) (layers \"F.Cu\" \"B.Cu\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"3bc3f02a-f3d7-4d37-84e7-5960b88aa338\"))",
+    "421eecae-b762-4d25-853a-db4c8ffef2f1": "(segment (start 9.4259 75.975) (end 8 75.975) (width 0.15) (layer \"F.Cu\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"421eecae-b762-4d25-853a-db4c8ffef2f1\"))",
+    "65de2131-f4a0-4d16-a224-ebeb297b275a": "(via (at 8 71.775) (size 0.6) (drill 0.3) (layers \"F.Cu\" \"B.Cu\") (net \"GND\") (uuid \"65de2131-f4a0-4d16-a224-ebeb297b275a\"))",
+    "b60fa637-1165-4666-97bc-8532aec97ec6": "(segment (start 8 73.025) (end 8 71.775) (width 0.25) (layer \"F.Cu\") (net \"GND\") (uuid \"b60fa637-1165-4666-97bc-8532aec97ec6\"))",
+    "d938035e-b894-48ac-a6e1-4f808e2ae730": "(segment (start 9.7045 78.0645) (end 12.79 81.15) (width 0.15) (layer \"In2.Cu\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"d938035e-b894-48ac-a6e1-4f808e2ae730\"))",
+    "fc360a06-afd6-417a-aa28-183203d8e73d": "(segment (start 9.7045 76.2536) (end 9.7045 78.0645) (width 0.15) (layer \"In2.Cu\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"fc360a06-afd6-417a-aa28-183203d8e73d\"))"
+  },
+  "added_items": {
+    "0965795c-380a-425e-9285-f72691924797": "(segment (start 14.8 79.125) (end 16.05 78.05) (width 0.25) (layer \"B.Cu\") (net \"GND\") (uuid \"0965795c-380a-425e-9285-f72691924797\"))",
+    "17d7cffd-21ed-4b7b-bfa5-65d7f8062f72": "(via (at 16.05 78.05) (size 0.5) (drill 0.25) (layers \"F.Cu\" \"B.Cu\") (net \"GND\") (uuid \"17d7cffd-21ed-4b7b-bfa5-65d7f8062f72\"))",
+    "b19e720e-3c28-4c4e-b834-274dda82040f": "(segment (start 12.95 79.125) (end 12.79 81.15) (width 0.25) (layer \"B.Cu\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"b19e720e-3c28-4c4e-b834-274dda82040f\"))"
+  },
+  "original_C107_guard": "(footprint \"Capacitor_SMD:C_1206_3216Metric\" (layer \"F.Cu\") (uuid \"075b6afc-9789-4d1b-8b22-99f6cb601ff1\") (at 8 74.5 90) (descr \"Capacitor SMD 1206 (3216 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)\") (tags \"capacitor\") (property \"Reference\" \"C107\" (at -0.04518 0.023809 0) (unlocked yes) (layer \"B.SilkS\") (uuid \"6b7ee35c-69ce-4f40-aca7-495d1bd310e1\") (effects (font (size 1 1) (thickness 0.15)) (justify mirror))) (property \"Value\" \"22u / 25V X5R / 20%\" (at 0 1.68 90) (layer \"F.Fab\") (hide yes) (uuid \"4fed0ce9-6da5-42b0-9acc-63e03ccd3dac\") (effects (font (size 1 1) (thickness 0.15)))) (property \"Datasheet\" \"https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB\" (at 0 0 90) (layer \"F.Fab\") (hide yes) (uuid \"90f2164d-389b-47f1-a34d-ff610e252e48\") (effects (font (size 1.27 1.27)))) (property \"Description\" \"Unpolarized capacitor\" (at 0 0 90) (layer \"F.Fab\") (hide yes) (uuid \"8ccaa6f0-3351-4e7d-bb52-d8b339df98c6\") (effects (font (size 1.27 1.27)))) (property \"KiLib_Generator\" \"SMD_2terminal_chip_molded\" (at 0 0 90) (layer \"F.SilkS\") (hide yes) (uuid \"bab5ca2c-8e3a-400c-9199-502e4eb495df\") (effects (font (size 1 1) (thickness 0.15)))) (property \"MPN\" \"C3216X5R1E226M160AB\" (at 0 0 90) (layer \"F.Fab\") (hide yes) (uuid \"d80a3ed8-2d20-41d7-b6d5-d94f93a4fba0\") (effects (font (size 0.8 0.8) (thickness 0.15)))) (property \"Manufacturer\" \"TDK\" (at 0 0 90) (layer \"F.Fab\") (hide yes) (uuid \"32f015d2-8740-4e5f-934a-e2fa6e2e3836\") (effects (font (size 0.8 0.8) (thickness 0.15)))) (property \"Maximum_body_height_mm\" \"1.8\" (at 0 0 90) (layer \"F.Fab\") (hide yes) (uuid \"c3417fc4-c95a-4f36-8d97-37c45d328f2e\") (effects (font (size 0.8 0.8) (thickness 0.15)))) (property \"Effective_capacitance_review\" \"5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup\" (at 0 0 90) (layer \"F.Fab\") (hide yes) (uuid \"51e66a84-10af-4385-99f4-764320c66862\") (effects (font (size 0.8 0.8) (thickness 0.15)))) (path \"/c6ab7247-88c4-56c7-a6d4-6e20f86ff6cf/6ddbe8c7-5b6f-461f-9dac-1b0e665fc5b9\") (sheetname \"01  CHARGING + BATTERY\") (sheetfile \"Charging.kicad_sch\") (attr smd) (duplicate_pad_numbers_are_jumpers no) (fp_line (start -0.711252 -0.91) (end 0.711252 -0.91) (stroke (width 0.12) (type solid)) (layer \"F.SilkS\") (uuid \"a4f7efba-ee48-4ded-bcdb-36afe83bb673\")) (fp_line (start -0.711252 0.91) (end 0.711252 0.91) (stroke (width 0.12) (type solid)) (layer \"F.SilkS\") (uuid \"5e5e759f-2223-4d5a-b61d-67dfafec1c86\")) (fp_rect (start -2.3 -1.15) (end 2.3 1.15) (stroke (width 0.05) (type solid)) (fill no) (layer \"F.CrtYd\") (uuid \"05089bb7-aa1c-4333-9b3d-34c59cde6487\")) (fp_rect (start -1.6 -0.8) (end 1.6 0.8) (stroke (width 0.1) (type solid)) (fill no) (layer \"F.Fab\") (uuid \"3c98f05a-b506-4b5e-a4c0-8da1b3e73802\")) (fp_text user \"${REFERENCE}\" (at 0 0 90) (layer \"F.Fab\") (uuid \"53ce333f-18b4-4148-b15a-fb2df94afcfa\") (effects (font (size 0.8 0.8) (thickness 0.12)))) (pad \"1\" smd roundrect (at -1.475 0 90) (size 1.15 1.8) (layers \"F.Cu\" \"F.Mask\" \"F.Paste\") (roundrect_rratio 0.217391) (net \"/01  CHARGING + BATTERY/BQ_REGN\") (pintype \"passive\") (uuid \"cd6172e0-6a2c-4498-ad13-0aa259df7c1d\")) (pad \"2\" smd roundrect (at 1.475 0 90) (size 1.15 1.8) (layers \"F.Cu\" \"F.Mask\" \"F.Paste\") (roundrect_rratio 0.217391) (net \"GND\") (pintype \"passive\") (uuid \"cbded003-798a-4c8f-8512-30da5c6fc7de\")) (embedded_fonts no) (model \"${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step\" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0))))",
+  "new_C107": "(footprint \"C107_Trial:C_TDK_C2012_Manufacturer_Reflow\" (layer \"B.Cu\") (uuid \"075b6afc-9789-4d1b-8b22-99f6cb601ff1\") (at 13.875 79.125) (descr \"TDK C2012 real0805 manufacturer reflow: A1.05 gap B0.80 padlength C1.10 width; maxbody2.20x1.45x1.45. Reference production process qualification pending.\") (property \"Reference\" \"C107\" (at 0 1.4 180) (layer \"B.SilkS\") (hide yes) (uuid \"5221c81b-1f19-4c73-9c79-53e17f9d9f93\") (effects (font (size 0.6 0.6) (thickness 0.1)) (justify mirror))) (property \"Value\" \"47uF / 10V X5R\" (at 0 -1.4 180) (layer \"B.Fab\") (hide yes) (uuid \"917346c7-0f93-488c-acae-b2a682e06341\") (effects (font (size 0.6 0.6) (thickness 0.1)) (justify mirror))) (property \"Datasheet\" \"https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c2012x5r1a476m125ac.pdf\" (at 0 0 180) (layer \"B.Fab\") (hide yes) (uuid \"2c7ac53a-11e8-4f74-aaae-d6a7ebbc5737\") (effects (font (size 1.27 1.27)) (justify mirror))) (property \"Description\" \"Unpolarized capacitor\" (at 0 0 180) (layer \"B.Fab\") (hide yes) (uuid \"56196cfc-fa4b-499b-9ab4-653f1c90022a\") (effects (font (size 1.27 1.27)) (justify mirror))) (property \"KiLib_Generator\" \"SMD_2terminal_chip_molded\" (at 0 0 180) (layer \"B.SilkS\") (hide yes) (uuid \"fc5b1afb-873b-4220-b6a1-2e35bd1bb13c\") (effects (font (size 1.27 1.27) (thickness 0.15)) (justify mirror))) (property \"MPN\" \"C2012X5R1A476M125AC\" (at 0 0 180) (layer \"B.SilkS\") (hide yes) (uuid \"24552cbe-1711-41ab-b1cc-a11c43ef31b5\") (effects (font (size 1.27 1.27) (thickness 0.15)) (justify mirror))) (property \"Manufacturer\" \"TDK\" (at 0 0 180) (layer \"B.SilkS\") (hide yes) (uuid \"8526f53d-24c9-4ab8-9462-c281b2ea223c\") (effects (font (size 1.27 1.27) (thickness 0.15)) (justify mirror))) (property \"Maximum_body_height_mm\" \"1.8\" (at 0 0 180) (layer \"B.SilkS\") (hide yes) (uuid \"161be686-4536-49cd-98d6-0b133234e69d\") (effects (font (size 1.27 1.27) (thickness 0.15)) (justify mirror))) (property \"Effective_capacitance_review\" \"5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup\" (at 0 0 180) (layer \"B.SilkS\") (hide yes) (uuid \"8d08837b-6016-4cf2-89e5-08dfe05ac5b0\") (effects (font (size 1.27 1.27) (thickness 0.15)) (justify mirror))) (path \"/c6ab7247-88c4-56c7-a6d4-6e20f86ff6cf/6ddbe8c7-5b6f-461f-9dac-1b0e665fc5b9\") (attr smd) (duplicate_pad_numbers_are_jumpers no) (fp_rect (start -1.575 0.975) (end 1.575 -0.975) (stroke (width 0.05) (type solid)) (fill no) (layer \"B.CrtYd\") (uuid \"d843c2e5-8a97-4f05-b66a-2b28cd9a6f8e\")) (fp_rect (start -1 0.625) (end 1 -0.625) (stroke (width 0.1) (type solid)) (fill no) (layer \"B.Fab\") (uuid \"b9eac4e1-337f-4411-9065-7e92fdeffd0e\")) (pad \"1\" smd rect (at -0.925 0) (size 0.8 1.1) (layers \"B.Cu\" \"B.Mask\" \"B.Paste\") (net \"/01  CHARGING + BATTERY/BQ_REGN\") (uuid \"cd6172e0-6a2c-4498-ad13-0aa259df7c1d\")) (pad \"2\" smd rect (at 0.925 0) (size 0.8 1.1) (layers \"B.Cu\" \"B.Mask\" \"B.Paste\") (net \"GND\") (uuid \"cbded003-798a-4c8f-8512-30da5c6fc7de\")) (embedded_fonts no))",
+  "filled_ground": [
+    {
+      "layer": "In1.Cu",
+      "before_region_count": 1,
+      "after_region_count": 1,
+      "symmetric_difference_area_mm2": 0.641253460994719,
+      "new_GNDvia_center_covered": true,
+      "new_via_covering_region_area_mm2": [
+        2059.202289026144
+      ],
+      "before_total_area_mm2": 2058.561035711472,
+      "after_total_area_mm2": 2059.202289026144
+    },
+    {
+      "layer": "In2.Cu",
+      "before_region_count": 11,
+      "after_region_count": 11,
+      "symmetric_difference_area_mm2": 0.0,
+      "new_GNDvia_center_covered": false,
+      "new_via_covering_region_area_mm2": [],
+      "before_total_area_mm2": 80.91266441259363,
+      "after_total_area_mm2": 80.91266441259363
+    }
+  ],
+  "native_check": "drc-clean.json:0errors,0opens,0parity; inheritedC103silk warning only",
+  "do_not_copy_entire_board": "Source includes owner C103local2; use guarded C107-only delta and sync exact MPN/footprint/value in integration.",
+  "existing_cap3D_removed": "No claim that a generic0805 STEP has actual purchased height. Exactbodymax1.45mm+assembly.15 mechanical envelope supplied for owner integration.",
+  "ordinary_new_GNDvia": {
+    "xy": [
+      16.05,
+      78.05
+    ],
+    "diameter": 0.5,
+    "drill": 0.25,
+    "no_via_in_pad": true
+  },
+  "canonical_board_sha256": "9f274fdf198f1bcb871a4fc360e76693f8a5b048553e6a02998141737956514f"
+}

@@ -9,9 +9,9 @@ import json, math, uuid
 import sexpdata as sx
 
 HW = Path(__file__).resolve().parents[1]
-if (HW / 'verification/power/presentation-layout.json').exists():
+if (HW / 'pcb/verification/power/presentation-layout.json').exists():
     raise SystemExit('P1.1 presentation exists. Do not overwrite it with the initial-placement generator; rebase before a later electrical revision.')
-P = HW / 'kicad/power'
+P = HW / 'pcb/power'
 S = sx.Symbol
 def node(tag, *args): return [S(tag), *args]
 def tag(a): return str(a[0]) if isinstance(a, list) and a else ''
@@ -31,7 +31,7 @@ def effects(size=1.016, justify=None, bold=False):
     if justify: e.append(node('justify', *[S(x) for x in justify.split()]))
     return e
 
-pins = json.loads((HW/'verification/power/placement-pins.json').read_text())
+pins = json.loads((HW/'pcb/verification/power/placement-pins.json').read_text())
 maps = {
  'Charging': {
   'U101': {'1':'USB_5V','2':None,'3':None,'4':'CHG_STAT_N','5':'I2C_SCL','6':'I2C_SDA','7':'CHG_INT_N','8':'GND','9':'CHG_CE_N','10':'BQ_ILIM','11':'PACK_TS','12':'BQ_QON_N','13':'PACK_P','14':'PACK_P','15':'VSYS','16':'VSYS','17':'GND','18':'GND','19':'BQ_SW','20':'BQ_SW','21':'BQ_BTST','22':'BQ_REGN','23':'BQ_PMID','24':None,'25':'GND'},
@@ -262,5 +262,5 @@ rt('HOW TO READ THESE SHEETS',25.4,127,1.52,True)
 rt('Matching net names connect electrically, including between sheets. Cross-sheet nets use global labels.\nGND is always the protected black lead (P-). PACK_P is the protected red lead (P+).\nVSYS changes with battery/charger operation; VOUT_5V is the regulated output for the display board.\nOpen the sheet blocks above to follow each stage. DNP means the part is not fitted initially.',25.4,139.7,1.016)
 rt('REVIEW DRAFT: connector CC resistors, cell ratings, Guition input wiring, passive selections and PCB layout\nremain to be verified. See hardware/POWER_DESIGN.md and hardware/power-inventory.csv.\nNo charger firmware or routed PCB is included in this revision.',25.4,170.18,1.016)
 save(P/'Trimix_Power.kicad_sch',root)
-(HW/'verification/power/intended-nets.json').write_text(json.dumps(maps,indent=2)+'\n')
+(HW/'pcb/verification/power/intended-nets.json').write_text(json.dumps(maps,indent=2)+'\n')
 print('Wired 3 power sheets; design intent recorded.')

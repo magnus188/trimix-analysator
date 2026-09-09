@@ -1,0 +1,92 @@
+{
+  "source": "hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/root-r504/candidate3/Trimix_Analyzer.kicad_pcb",
+  "sha256": "c13e2fc459b43f194a146776127d15c0c415135d9d243c21dad3bef570cfc53b",
+  "hypothetical_inductor": "L701centre19.5,50.65 is NOT actually moved in source; analysis projects selected max4.3x4.3mm body only",
+  "projected_body_nativeXY": [
+    17.35,
+    48.5,
+    21.65,
+    52.8
+  ],
+  "local_HE_EXC_DIV_copper_under_projected_inductor_mm2": 0.5178810948461351,
+  "local_route_copper_outside_In1_GND_mm2": 0.08422279639347717,
+  "route_under_inductor_outside_In1_GND_mm2": 0.0,
+  "north_simple_alternatives": [
+    {
+      "nominal_northern_detour_y": 47.2,
+      "foreign_clearance_blockers": [
+        {
+          "net": "HE_3V0",
+          "start_cartesian_mm": [
+            19.022,
+            -46.8581
+          ],
+          "end_cartesian_mm": [
+            19.075,
+            -46.9111
+          ]
+        },
+        {
+          "net": "HE_3V0",
+          "start_cartesian_mm": [
+            19.075,
+            -46.9111
+          ],
+          "end_cartesian_mm": [
+            19.075,
+            -48.0
+          ]
+        },
+        {
+          "net": "HE_3V0",
+          "start_cartesian_mm": [
+            18.1406,
+            -45.9767
+          ],
+          "end_cartesian_mm": [
+            19.022,
+            -46.8581
+          ]
+        }
+      ],
+      "not_native_checked": true
+    },
+    {
+      "nominal_northern_detour_y": 46.4,
+      "foreign_clearance_blockers": [
+        {
+          "net": "HE_3V0",
+          "start_cartesian_mm": [
+            18.1406,
+            -45.9767
+          ],
+          "end_cartesian_mm": [
+            19.022,
+            -46.8581
+          ]
+        }
+      ],
+      "not_native_checked": true
+    }
+  ],
+  "nominal_filter": {
+    "Rtop_ohm": 10000,
+    "Rbottom_ohm": 10000,
+    "C_F": 1e-07,
+    "Rth_ohm": 5000,
+    "tau_s": 0.0005,
+    "cutoff_Hz": 318.30988618379064
+  },
+  "source_reference_pin": "U502.7(AIN2), diagnosticHEexcitation only; RN501measurementbridge unaffected",
+  "production_code": {
+    "path": "main/sensors/acquisition_engine.cpp",
+    "sha256": "f913ba653105977fa6d3cdf5b5bab19ba460dd5d37d75af5e03009627a61c1a3",
+    "lines": "61,65: e.volts*2; latch if excitation<2.9 or>3.1V"
+  },
+  "not_proved": [
+    "EM coupling amplitude/magnetic attenuation ofplane orshieldedinductor",
+    "postfilterinjection/ringing/rectification",
+    "falsefaultor missedfault rate",
+    "physicalhelummeasurementaccuracy"
+  ]
+}

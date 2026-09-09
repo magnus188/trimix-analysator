@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "frozen_utc": "2026-09-07T12:49:00.363952+00:00",
+  "scope": "Independent linear passive nodal analysis; no production edits; no SPICE/semiconductor/sensor models or physical tests.",
+  "command": "MPLCONFIGDIR=/tmp/trimix-analogue-matplotlib /tmp/trimix-analogue-simulation-venv/bin/python hardware/system-review/electrical/analogue-simulation/simulate_filters.py > hardware/system-review/electrical/analogue-simulation/run.log 2>&1",
+  "command_exit_status": 0,
+  "post_run_source_change": "Only the scalar_o2 comment changed from 3-node to full two-input 5-node; no executed code changes. README and this manifest then added.",
+  "numerical_corners": 394752,
+  "source_impedances": "Explicit hypothetical sweep points, not measured or manufacturer bounds.",
+  "files": [
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/README.md",
+      "bytes": 11735,
+      "sha256": "d4ceae118dbbc9b402db7d18204be4fbef3fe040679fe14eabb069c91fdf6684"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/corner-sweep.csv",
+      "bytes": 7386,
+      "sha256": "fa63317fadc05bffa115eaf6fe3112c533e4d6365cd98e1c4bf1639ac5ed6b19"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/filter-study.pdf",
+      "bytes": 33143,
+      "sha256": "f1832ecd27b2cd681fbbffc415653b9637404fc2a2ac8d74fc070429b9f0c193"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/filter-study.png",
+      "bytes": 311914,
+      "sha256": "ed1fe310979f0ccfa20e1a89e531f15f94bea010d2e94fed894e26518ea1c2b5"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/input-netlist.xml",
+      "bytes": 346560,
+      "sha256": "b7eef4f355909249b364aaed34577ab2fc210bd2f97f4282d0c618ee8d8e0666"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/noise-and-nominal.json",
+      "bytes": 8013,
+      "sha256": "fd88e9d684507a1b34ffebbe4506fb4f5497ceed88d0f774434c8edcd8e17e28"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/requirements.txt",
+      "bytes": 203,
+      "sha256": "fa2f65ea1a6a8a73b0326694bccb41ad88713330badb0ad56d7245c9743c2439"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/results.json",
+      "bytes": 18234,
+      "sha256": "98c826c9db4d6d36823dc147bd94da8f716bf2872026e5af2febe125dfb2f2ec"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/run.log",
+      "bytes": 2106,
+      "sha256": "4ed8ac0e1e17c3c7eedece60ce67f0b22accb97165e321b6d3615409ba56ccd8"
+    },
+    {
+      "path": "hardware/system-review/electrical/analogue-simulation/simulate_filters.py",
+      "bytes": 20643,
+      "sha256": "6d509a23239e757d30a6208ae817c59de8cb6a620b3225689ff8bb143ba390d2"
+    }
+  ],
+  "primary_local_documents": [
+    {
+      "path": "hardware/system-review/electrical/sources/ads122c04.pdf",
+      "bytes": 2303641,
+      "sha256": "2380301f98deb11efb06810f265a79ea1c75ca1df488833cd74d32364d5030b3",
+      "primary_url": "https://www.ti.com/lit/ds/symlink/ads122c04.pdf"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/yageo-rt.pdf",
+      "bytes": 547014,
+      "sha256": "00a9148c2958122200e8a93292e389392a795adcfe40562d6ca4f690d1e5d7d1",
+      "primary_url": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/yageo-rc.pdf",
+      "bytes": 542969,
+      "sha256": "7b6f0ae72708ca4b38126f84b5407a3e970a94cb60bc1a0afdaeb25a23d839bb",
+      "primary_url": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    },
+    {
+      "path": "hardware/system-review/electrical/capacitor-research/C0603C105K4RACTU.pdf",
+      "bytes": 285641,
+      "sha256": "3d9a3f797337faa37211d9a2d400738997886e85092c6fabd7c8e37472812c94",
+      "primary_url": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/c1608x7r1h103k080aa.pdf",
+      "bytes": 136122,
+      "sha256": "6c5b1ca5ee25e7c225c79a46a3c8ee33543e86bb33ade14de651ef76f9caf600",
+      "primary_url": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    }
+  ],
+  "primary_web_documents_without_local_copy": [
+    "https://www.vishay.com/doc?28770=",
+    "https://www.ti.com/lit/ds/symlink/tps7a20.pdf",
+    "https://www.ti.com/lit/ab/sboa345/sboa345.pdf"
+  ],
+  "live_netlist_at_freeze": {
+    "path": "hardware/system-review/electrical/analyzer-netlist.xml",
+    "bytes": 346869,
+    "sha256": "be3499b55fd5701a1827fda97406c7cb14593e6d732d636bb5c915ff2d83071d"
+  },
+  "relevant_snapshot_vs_live_identical": true,
+  "relevant_snapshot_vs_live_differences": {
+    "components": {},
+    "connected_nets": {}
+  },
+  "production_context_at_freeze": [
+    {
+      "path": "main/sensors/ads122c04.cpp",
+      "bytes": 4153,
+      "sha256": "b0028bf0e1d60f0f61c7c04d2a67a1d0e269ccf66977350c1130e8c8225619ff"
+    },
+    {
+      "path": "main/sensors/ads122c04.h",
+      "bytes": 1697,
+      "sha256": "532680e14e03fb28b6347ad5b9b610b2212f5df5f809550fa2b2fc93f3c0190e"
+    },
+    {
+      "path": "main/sensors/gas_acquisition_config.h",
+      "bytes": 1087,
+      "sha256": "e9f3370e29fad3694793312182f1ef5d8b2417cf0f0505bcb46a99515ac83da8"
+    },
+    {
+      "path": "main/sensors/sensor_hardware.cpp",
+      "bytes": 10776,
+      "sha256": "48a0c34027db0acd79ba0756b2b61ae5e14662feeda3de86a2c13b6f717eb986"
+    }
+  ],
+  "visual_review": {
+    "file": "filter-study.png",
+    "method": "Rendered PNG inspected using view_image",
+    "readable_axes_legends_and_scope_labels": true
+  },
+  "claims_excluded": [
+    "Gas accuracy or characterized MD62 sensitivity",
+    "Guaranteed source impedance or settling",
+    "ADC input-current maximum from typical data",
+    "DC bias or aging minimum effective capacitance from typical plots",
+    "Charger/LDO switching ripple, dropout, thermal or semiconductor fault simulation",
+    "Physical sensor, prototype, charging, EMC or safety acceptance"
+  ]
+}

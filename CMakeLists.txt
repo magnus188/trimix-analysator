@@ -21,3 +21,5 @@ idf_build_set_property(
 )
 
 project(Trimix_analyzer)
+
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/guition_hosted_sdmmc.cmake")

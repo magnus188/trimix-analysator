@@ -12,8 +12,8 @@ from analyzer_sheet import (
     node, save, sheet_uuid, sx, tag, uid,
 )
 
-SEED = HW / 'kicad/power'
-INTENT = json.loads((HW / 'verification/power/intended-nets.json').read_text())
+SEED = HW / 'pcb/power'
+INTENT = json.loads((HW / 'pcb/verification/power/intended-nets.json').read_text())
 RES = 'Resistor_SMD:R_0603_1608Metric'
 CAP = 'Capacitor_SMD:C_0805_2012Metric'
 

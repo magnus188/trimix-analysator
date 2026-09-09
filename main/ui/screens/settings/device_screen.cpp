@@ -4,8 +4,12 @@
 #include "../../styles/styles.h"
 #include "../../../services/settings_service.h"
 #include "../../../services/backlight_service.h"
+#include "../../../services/storage_service.h"
+#include "../../../services/battery_service.h"
+#include "../../../services/sd_log_service.h"
 #include <esp_log.h>
 #include <cstdio>
+#include <initializer_list>
 
 static const char* TAG = "DEVICE_SCREEN";
 
@@ -25,6 +29,10 @@ struct DeviceScreenState {
     lv_obj_t* brightness_btns = nullptr;
     lv_obj_t* timeout_btns = nullptr;
     lv_obj_t* sound_switch = nullptr;
+    lv_obj_t* storage_status = nullptr;
+    lv_obj_t* battery_status = nullptr;
+    lv_obj_t* sd_status = nullptr;
+    lv_timer_t* status_timer = nullptr;
 };
 
 DeviceScreenState g_state;
@@ -35,6 +43,39 @@ void on_timeout_change(lv_event_t* e);
 void on_sound_change(lv_event_t* e);
 void on_reset_click(lv_event_t* e);
 void back_cb(lv_event_t* e);
+void refresh_status() {
+    storage_init();
+    char text[320];
+    if (!storage_ready()) {
+        std::snprintf(text, sizeof(text), "Storage recovery required\n%s\nExisting data is preserved. Settings and calibration saves are unavailable.", storage_status_message());
+    } else if (!storage_writes_allowed()) {
+        std::snprintf(text, sizeof(text), "Storage: read only\nChanges cannot be saved during update probation or maintenance. Existing data is preserved.");
+    } else std::snprintf(text, sizeof(text), "Storage: %s", storage_status_message());
+    lv_label_set_text(g_state.storage_status, text);
+    lv_obj_set_style_text_color(g_state.storage_status, lv_color_hex(storage_ready() && storage_writes_allowed() ?
+        STYLE_COLOR_TEXT_LIGHT : STYLE_COLOR_WARNING), 0);
+    if (!battery_is_available() || battery_get_hw_type() == BATTERY_HW_UNAVAILABLE)
+        std::snprintf(text, sizeof(text), "Battery: unavailable\nCheck the battery connection and fuel-gauge communication.");
+    else std::snprintf(text, sizeof(text), "Battery: %s | %u%% | %.3f V",
+        battery_get_hw_type() == BATTERY_HW_MOCK ? "simulated" :
+        battery_get_hw_type() == BATTERY_HW_MAX17048 ? "MAX17048" : "voltage estimate",
+        static_cast<unsigned>(battery_get_percentage()), battery_get_voltage_mv() / 1000.0);
+    lv_label_set_text(g_state.battery_status, text);
+    const auto sd=sd_log_status();
+    char capacity[32];
+    if(sd.capacity_bytes)std::snprintf(capacity,sizeof(capacity),"%.1f GB",sd.capacity_bytes/1000000000.0);
+    else std::snprintf(capacity,sizeof(capacity),"capacity unknown");
+    std::snprintf(text,sizeof(text),"%s | %s\nRows %llu | synced %llu | missing %llu\n%s\n%s",
+        sd_log::state_label(sd.state),capacity,
+        static_cast<unsigned long long>(sd.written),static_cast<unsigned long long>(sd.synced),static_cast<unsigned long long>(sd.dropped),sd.detail,sd.path);
+    lv_label_set_text(g_state.sd_status,text);
+}
+void status_timer_cb(lv_timer_t*) { refresh_status(); }
+void visibility_cb(lv_event_t *e) {
+    if (lv_event_get_code(e) == LV_EVENT_SCREEN_LOADED) {
+        refresh_status(); lv_timer_reset(g_state.status_timer); lv_timer_resume(g_state.status_timer);
+    } else lv_timer_pause(g_state.status_timer);
+}
 
 // Event handlers
 void on_brightness_change(lv_event_t* e) {
@@ -154,18 +195,38 @@ lv_obj_t* device_screen_create(void) {
     // Navbar
     navbar_create_with_back(screen, "Device Settings", back_cb);
     
-    // Content container - fixed layout, no scrolling
+    // Scroll when a recovery message needs more room than the ordinary settings.
     lv_coord_t navbar_h = navbar_get_height();
     lv_obj_t* content = lv_obj_create(screen);
     lv_obj_remove_style_all(content);
     lv_obj_set_pos(content, CONTENT_PAD, navbar_h + CONTENT_PAD);
     lv_obj_set_size(content, SCREEN_WIDTH - CONTENT_PAD * 2, SCREEN_HEIGHT - navbar_h - CONTENT_PAD * 2);
-    lv_obj_clear_flag(content, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_add_flag(content, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scroll_dir(content, LV_DIR_VER);
     lv_obj_clear_flag(content, LV_OBJ_FLAG_OVERFLOW_VISIBLE);  // Clip children that overflow
     lv_obj_set_flex_flow(content, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(content, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_obj_set_style_pad_row(content, ITEM_PAD, 0);
     lv_obj_set_style_pad_all(content, 0, 0);  // No internal padding
+
+    create_section_header(content, "Device status");
+    g_state.storage_status = lv_label_create(content);
+    g_state.battery_status = lv_label_create(content);
+    g_state.sd_status = lv_label_create(content);
+    for (auto *label : {g_state.storage_status, g_state.battery_status,g_state.sd_status}) {
+        lv_obj_set_width(label, LV_PCT(100));
+        lv_label_set_long_mode(label, LV_LABEL_LONG_WRAP);
+        lv_obj_set_style_text_font(label, &lv_font_montserrat_14, 0);
+        lv_obj_set_style_text_color(label, lv_color_hex(STYLE_COLOR_TEXT_LIGHT), 0);
+    }
+    for(unsigned action=0;action<2;++action) {
+        auto *button=lv_button_create(content); lv_obj_set_size(button,LV_PCT(100),44);
+        auto *label=lv_label_create(button);lv_label_set_text(label,action==0?"Safely eject SD card":"Retry SD card (preserve files)");lv_obj_center(label);
+        lv_obj_add_event_cb(button,[](lv_event_t *event) {
+            if(lv_event_get_user_data(event))sd_log_retry();else sd_log_eject();
+        },LV_EVENT_CLICKED,reinterpret_cast<void *>(static_cast<uintptr_t>(action)));
+    }
+    refresh_status();
     
     // === BRIGHTNESS SECTION ===
     create_section_header(content, "Display");
@@ -289,5 +350,9 @@ lv_obj_t* device_screen_create(void) {
     lv_obj_center(reset_label);
     
     ESP_LOGI(TAG, "Device settings screen created");
+    g_state.status_timer = lv_timer_create(status_timer_cb, 1000, nullptr);
+    lv_timer_pause(g_state.status_timer);
+    lv_obj_add_event_cb(screen, visibility_cb, LV_EVENT_SCREEN_LOADED, nullptr);
+    lv_obj_add_event_cb(screen, visibility_cb, LV_EVENT_SCREEN_UNLOADED, nullptr);
     return screen;
 }

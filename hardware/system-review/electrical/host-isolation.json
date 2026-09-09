@@ -1,0 +1,14 @@
+{
+  "status": "schematic applied; PCB sync pending",
+  "new_refs": [
+    "U302",
+    "C302",
+    "C303"
+  ],
+  "changed_existing_pins": [
+    "J301.2",
+    "J301.4"
+  ],
+  "source": "https://www.ti.com/lit/ds/symlink/lm66100.pdf",
+  "not_whole_host_backfeed_qualification": true
+}

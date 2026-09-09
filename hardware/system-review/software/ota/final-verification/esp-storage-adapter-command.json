@@ -1,0 +1,29 @@
+{
+  "compile_command": [
+    "c++",
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pthread",
+    "-fsanitize=address,undefined",
+    "-DESP_PLATFORM=1",
+    "-I",
+    "tests/esp_storage_stubs",
+    "-I",
+    "main",
+    "tests/test_esp_storage_adapter.cpp",
+    "main/services/storage_service.cpp",
+    "main/services/blob_journal.cpp",
+    "-o",
+    "/tmp/trimix-ota-final/test_esp_storage"
+  ],
+  "compile_exit": 0,
+  "scenarios": {
+    "no-free-pages": 0,
+    "new-nvs-version": 0,
+    "pending-rollback": 0,
+    "accepted-upgrade": 0,
+    "valid-image": 0
+  }
+}

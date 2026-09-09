@@ -1,0 +1,13 @@
+{
+  "README.md": "3af202d89270559b10e0c0f0eeae6f67c5da26c37c4d54df5e3c6ba1348fe0c6",
+  "diagnostic/inventory.json": "deaf40a40e176ef8b3108398ca424235ba0581c579040a9245684f6fa3fa0212",
+  "diagnostic/paths.csv": "3ee5d25ed652243d80731f07f9feb58cf5850b4e1f5d39202e113d7ed0a48a24",
+  "diagnostic/run.log": "53f4a96f32052c3343738d975021c71b5e5797bb655636f46fda41ac860014e7",
+  "diagnostic/sensitivities.csv": "01dbdbdabf5adac4a7bfb42227e98ea84e8652d8c522a61d173d5cc51cf1bd64",
+  "diagnostic/source.kicad_pcb": "40158632831955192a2603701a928c6f53594d5937f9eee2602a55cd93141205",
+  "inventory.py": "199e736b3309135569023179d01ade9632f4602e6fd0556180c4264fd5d1c117",
+  "native-controls.json": "bd10c626c05d63ff57421970c23cf6ad7fbaa2339d994e7a15867d3e62c96f30",
+  "native-controls.log": "bd10c626c05d63ff57421970c23cf6ad7fbaa2339d994e7a15867d3e62c96f30",
+  "nbshandbook100.pdf": "3128aaa9fac5688c4e2c4ea9e1b0bb9e20aead7c71039772790859c7fa571af0",
+  "test_inventory.py": "87f3ee6259a610ca4a70286d23525f5cf93469bbf2d00ea9b6074af6100dc3c9"
+}

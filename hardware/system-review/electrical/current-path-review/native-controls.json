@@ -1,0 +1,103 @@
+{
+  "status": "pass",
+  "tests": 19,
+  "passed": 19,
+  "kicad_version": "10.0.6",
+  "cases": [
+    {
+      "name": "three_segment_chain_connected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native_adjacency_is_direct_not_transitive",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full_item_resistance_matches_closed_form",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "removed_middle_bridge_is_detected",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "same_net_disconnected_copper_has_no_path",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "coincident_F_B_tracks_without_via_do_not_join",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "physically_joined_F_B_via_connects",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "F_B_via_includes_one_full_barrel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "via_trace_formula_is_dimensionally_correct",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "same_layer_via_touch_does_not_add_barrel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "same_number_disconnected_physical_pads_do_not_join",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "same_number_physically_overlapping_pads_do_join",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "IC_package_does_not_create_internal_edges",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "filled_zone_is_present_for_negative_control",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "filled_zone_only_connection_is_excluded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inner_layer_via_path_is_supported",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inner_layer_uses_thinner_copper_and_partial_barrel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "temperature_scaling_matches_declared_model",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "geometry_sensitivity_matches_declared_dimensions",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

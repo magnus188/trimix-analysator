@@ -1,0 +1,12 @@
+{
+  "status": "conditional_accept_for_digital_integration_and_prototype_noise_testing",
+  "source_sha256": "c13e2fc459b43f194a146776127d15c0c415135d9d243c21dad3bef570cfc53b",
+  "no_production_mutation": true,
+  "physical_EMI_validation": false,
+  "hashes": {
+    "review.py": "263ace1fc91ac4f5721a2fb15636a4cd6c0965b3cc5241fe27c05b3141269d7f",
+    "README.md": "10a781bb8e0a5f61d35a171fc6992c11fa0fe1645389828cd57ee1f74f35069b",
+    "review.log": "60f2fedc42b3e965d444731d01e7a9beea25e702cb7bc7a0946913b5f0ac03ea",
+    "review.json": "60f2fedc42b3e965d444731d01e7a9beea25e702cb7bc7a0946913b5f0ac03ea"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "checks": {
+    "authoritative.kicad_pcb:C104:MPN": true,
+    "authoritative.kicad_pcb:C104:nets": true,
+    "authoritative.kicad_pcb:C105:MPN": true,
+    "authoritative.kicad_pcb:C105:nets": true,
+    "authoritative.kicad_pcb:C201:MPN": true,
+    "authoritative.kicad_pcb:C201:nets": true,
+    "authoritative.kicad_pcb:C202:MPN": true,
+    "authoritative.kicad_pcb:C202:nets": true,
+    "authoritative.kicad_pcb:C801:MPN": true,
+    "authoritative.kicad_pcb:C801:nets": true,
+    "authoritative.kicad_pcb:L101:MPN": true,
+    "authoritative.kicad_pcb:L101:value": true,
+    "authoritative.kicad_pcb:L101:nets": true,
+    "routing-snapshot.kicad_pcb:C104:MPN": true,
+    "routing-snapshot.kicad_pcb:C104:nets": true,
+    "routing-snapshot.kicad_pcb:C105:MPN": true,
+    "routing-snapshot.kicad_pcb:C105:nets": true,
+    "routing-snapshot.kicad_pcb:C201:MPN": true,
+    "routing-snapshot.kicad_pcb:C201:nets": true,
+    "routing-snapshot.kicad_pcb:C202:MPN": true,
+    "routing-snapshot.kicad_pcb:C202:nets": true,
+    "routing-snapshot.kicad_pcb:C801:MPN": true,
+    "routing-snapshot.kicad_pcb:C801:nets": true,
+    "routing-snapshot.kicad_pcb:L101:MPN": true,
+    "routing-snapshot.kicad_pcb:L101:value": true,
+    "routing-snapshot.kicad_pcb:L101:nets": true
+  },
+  "nominal_VSYS_capacitance_uF": 88.1,
+  "dedicated_charger_pair_nominal_uF": 44,
+  "assumed_analysis_bias_V": 5.5,
+  "assumptions": {
+    "initial_tolerance_retained": 0.8,
+    "temperature_retained": 0.85,
+    "aging_retained": 0.9,
+    "C104_C105_typical_DC_bias_retained_approx": 0.9,
+    "C201_C202_typical_DC_bias_retained_conservative_approx": 0.5
+  },
+  "dedicated_pair_model_uF": 24.235200000000003,
+  "C201_C202_additional_model_uF": 13.464,
+  "total_four_capacitors_model_uF": 37.6992,
+  "C801_credit_in_model_uF": 0,
+  "dedicated_pair_required_retained_bias_factor_for_20uF": 0.7427213309566251,
+  "sensitivity": [
+    {
+      "bias_retained_assumption": 0.9,
+      "each_uF": 12.117600000000001,
+      "pair_uF": 24.235200000000003,
+      "margin_above_20uF_pct": 21.176000000000016
+    },
+    {
+      "bias_retained_assumption": 0.85,
+      "each_uF": 11.444400000000002,
+      "pair_uF": 22.888800000000003,
+      "margin_above_20uF_pct": 14.444000000000013
+    },
+    {
+      "bias_retained_assumption": 0.8,
+      "each_uF": 10.771200000000002,
+      "pair_uF": 21.542400000000004,
+      "margin_above_20uF_pct": 7.71200000000003
+    },
+    {
+      "bias_retained_assumption": 0.75,
+      "each_uF": 10.098,
+      "pair_uF": 20.196,
+      "margin_above_20uF_pct": 0.9800000000000031
+    },
+    {
+      "bias_retained_assumption": 0.7,
+      "each_uF": 9.4248,
+      "pair_uF": 18.8496,
+      "margin_above_20uF_pct": -5.752000000000002
+    }
+  ],
+  "limits": [
+    "The 5.5V analysis voltage is an intentionally conservative capacitor comparison point, not a permitted SYS operating-voltage declaration.",
+    "These factor products are engineering sensitivity, not a manufacturer-guaranteed combined bias/temperature/tolerance/aging limit.",
+    "The .9 aging factor is an explicit unqualified design allowance; no exact service interval or aging guarantee is established.",
+    "These sums assume both terminals connect with negligible impedance at the relevant loop frequencies; native net names alone do not prove this.",
+    "No extra bulk capacitor is recommended by this inventory.",
+    "No measured ripple, stability, transient, temperature or capacitance data exists in this audit."
+  ]
+}

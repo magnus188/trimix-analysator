@@ -1,0 +1,7 @@
+{
+  "case": "outside_receipt_path_rejected_before_processing",
+  "exit_code": 1,
+  "outside_file_created": false,
+  "stderr": "REJECTED: Receipt output must stay inside erc-reviewed-exceptions",
+  "guard_sha256": "95e8dc254e36f1507b7f4197780d79eeceaf41440260c1e8febda40446d4401a"
+}

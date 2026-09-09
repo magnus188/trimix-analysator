@@ -1,0 +1,2029 @@
+                                                                                                                                TPS1641
+                                                                                                SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+      TPS1641x 40V, 1.8A Power and Current Limiting eFuse With IN to OUT Short
+                                    Detection
+1 Features                                                             3 Description
+•   Operating voltage range (IN):                                      The TPS1641x family are integrated eFuse devices
+    – 4.5V to 40V (power limit devices)                                with accurate power limit or current limit. The device
+    – 2.7V to 40V (current limit devices)                              family provides robust protection with integrated
+•   Withstands negative voltages up to –1V at output                   overcurrent protection, overvoltage protection, IN to
+•   Ultra-low ON-resistance: RON = 152mΩ (typical)                     OUT short detection, and overtemperature protection.
+•   2W to 64W power limiting                                           TPS16410, TPS16411, TPS16414, and TPS16415
+•   0.03A to 1.8A current limiting                                     devices provide ± 5% power limiting at 15W for
+•   IN to OUT short detection and indication on FLT                    loads and also provide configurable blanking time
+    pin                                                                for transient overload or overcurrent events. Use
+•   FLT output for diagnostics and driving external                    TPS16410, TPS16411, TPS16414, and TPS16415 in
+    PFET                                                               low-power circuits (LPCs) for 15W power limiting as
+•   ±5% accurate power limit at 15W (power limit                       per IEC60335 and UL60730 standards. TPS1641x
+    devices)                                                           devices provide protection from adjacent pin short and
+•   ±6% accurate current limit at 1A (current limit                    pin short to GND faults.
+    devices)
+•   Configurable overvoltage protection                                Applications such as backplane power protection in
+•   Configurable overcurrent protection (IOCP)                         PLC and DCS modules configure the current limit with
+•   Configurable blanking time for transient currents                  a resistor on the ILIM pin. TPS16412, TPS16413,
+•   Overvoltage protection up to 60V with external                     TPS16416, and TPS16417 devices provide ± 6%
+    FET                                                                current limiting at 1A for loads and also provide
+•   Adjustable output slew rate control (dVdt) for                     output slew rate control with dVdT pin to charge large
+    inrush current protection                                          capacitive loads at power up.
+•   Enable and shutdown control                                        TPS1641x features IN to OUT short detection and
+•   Output load current monitoring on IOCP pin                         indicate IN to OUT short on the FLT pin. The FLT pin
+•   Overtemperature protection (OTP) with thermal                      either provides to MCU as digital input or to drive an
+    shutdown                                                           external PFET.
+•   Small footprint: QFN 3 × 3mm, 0.5mm pitch
+•   UL 2367 recognition                                                The devices are characterized for operation over a
+    – File No. E169910                                                 junction temperature range from –40°C to +125°C.
+    – RILM ≥ 5.1kΩ                                                                         Package Information
+•   IEC 62368-1 CB certified                                                 PART NUMBER          PACKAGE(1)         PACKAGE SIZE(2)
+
+2 Applications                                                         TPS1641x               VSON (10)             3.00mm × 3.00mm
+
+•   Refrigerator and freezer                                           (1)    For all available packages, see the orderable addendum at
+                                                                              the end of the datasheet.
+•   Oven
+                                                                       (2)    The package size (length × width) is a nominal value and
+•   Dishwasher                                                                includes pins, where applicable.
+•   HVAC valve and actuator control
+•   Ventilators
+•   Anesthesia delivery systems
+
+
+
+
+     An IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,
+     intellectual property matters and other important disclaimers. PRODUCTION DATA.
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                        www.ti.com
+
+                                                       Vcc
+                                                                                    OUT               VOUT
+                                                       IN
+                                     CIN
+                                                                  152 m
+
+                                                                    TPS1641x
+                                                       EN/SHDN
+                                                       FLT                  IOCP/IMON
+
+                                                        OVP                    PDLY/IDLY
+                                                                                                                ROCP
+                                                       dVdT                    PLIM/ILIM
+                                                                      GND                               CDLY
+                                                                                              RPLIM
+
+
+
+
+                                                              Simplified Schematic
+                                           Configurable Blanking time and
+                                           magnuitude for Transient Loads
+                                                      tPDLYt
+
+                                                                                           PLIM
+                             POUT
+
+
+                                                       IOCP
+
+                              IOUT                                                 IOUT = PLIM/VOUT
+
+
+
+
+                                                                 PDLY = Duration of Transient Load
+                                                       IOCP = Maximum magnitude of Transient Load
+
+                                     Configurable Blanking Time for Transient Loads
+
+
+
+
+2     Submit Document Feedback                                                                                 Copyright © 2026 Texas Instruments Incorporated
+
+                                                             Product Folder Links: TPS1641
+                                                                                                                                                                   TPS1641
+www.ti.com                                                                                                               SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+
+                                                                        Table of Contents
+1 Features............................................................................1   8 Application and Implementation.................................. 23
+2 Applications..................................................................... 1       8.1 Application Information............................................. 23
+3 Description.......................................................................1       8.2 Typical Application: 15W Power Limiting for Low
+4 Device Comparison Table...............................................4                     Power Circuits (LPCs)................................................. 23
+5 Pin Configuration and Functions...................................5                       8.3 System Examples..................................................... 26
+6 Specifications.................................................................. 6        8.4 Best Design Practices...............................................27
+  6.1 Absolute Maximum Ratings........................................ 6                    8.5 Power Supply Recommendations.............................27
+  6.2 ESD Ratings............................................................... 6          8.6 Layout....................................................................... 28
+  6.3 Recommended Operating Conditions.........................6                          9 Device and Documentation Support............................30
+  6.4 Thermal Information....................................................7              9.1 Receiving Notification of Documentation Updates....30
+  6.5 Electrical Characteristics.............................................7              9.2 Support Resources................................................... 30
+  6.6 Timing Requirements.................................................. 9               9.3 Trademarks............................................................... 30
+  6.7 Typical Characteristics.............................................. 10              9.4 Electrostatic Discharge Caution................................30
+7 Detailed Description......................................................13              9.5 Glossary....................................................................30
+  7.1 Overview................................................................... 13      10 Revision History.......................................................... 30
+  7.2 Functional Block Diagram......................................... 13                11 Mechanical, Packaging, and Orderable
+  7.3 Feature Description...................................................14              Information.................................................................... 30
+  7.4 Device Functional Modes..........................................22
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                                    Submit Document Feedback                    3
+                                                                      Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                       www.ti.com
+
+4 Device Comparison Table
+     Part Number                Power or Current Limit                           Fault Behavior                        IN-OUT Short
+                                                                                                                         Detection
+      TPS16410                        Power limit                                    Auto-retry                               Y
+      TPS16411                        Power limit                                    Latch-off                                Y
+      TPS16412                       Current limit                                   Auto-retry                               Y
+      TPS16413                       Current limit                                   Latch-off                                Y
+      TPS16414                        Power limit                                    Auto-retry                               N
+      TPS16415                        Power limit                                    Latch-off                                N
+      TPS16416                       Current limit                                   Auto-retry                               N
+      TPS16417                       Current limit                                   Latch-off                                N
+
+
+See Section 7.3.9 for recommended device variants.
+
+
+
+
+4     Submit Document Feedback                                                                Copyright © 2026 Texas Instruments Incorporated
+
+                                                     Product Folder Links: TPS1641
+                                                                                                                                                  TPS1641
+www.ti.com                                                                                                      SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+5 Pin Configuration and Functions
+
+
+               IN     1                               10     OUT                            IN       1                              10     OUT
+
+              Vcc                                            IOCP/IMON                      Vcc                                            IOCP/IMON
+                                PowerPADTM
+              OVP                  GND                       PLIM                                                PowerPADTM
+                                                                                           OVP                      GND                    ILIM
+              FLT                                             dVdT
+                                                                                            FLT                                            dVdT
+         EN/SHDN      5                               6      PDLY
+                                                                                      EN/SHDN       5                               6      IDLY
+
+
+                           TPS16410, TPS16411,
+                           TPS16414, TPS16415
+                                                                                                              TPS16412, TPS16413,
+   Figure 5-1. TPS16410, TPS16411, TPS16414 and                                                               TPS16416, TPS16417
+   TPS16415 10-Pin DRC VSON Package (Top View)                                     Figure 5-2. TPS16412, TPS16413, TPS16416 and
+                                                                                   TPS16417 10-Pin DRC VSON Package (Top View)
+
+                                                               Table 5-1. Pin Functions
+                    PIN
+                                           TYPE(1)                                                DESCRIPTION
+         NAME                 NO.
+ IN                             1             P           Power input for internal FET.
+ Vcc                            2             P           Supply input for internal circuits of the device.
+ OVP                            3                 I       Overvoltage protection input. Connect this pin to GND for disabling OVP.
+ FLT                            4             O           Active low fault output. See Section 7.3.11 for different FLT pin indications.
+ EN/SHDN                        5                 I       Enable or shutdown input.
+                                                          TPS16410, TPS16411: Input for blanking time for power limiting. Connect a capacitor to
+ PDLY
+                                                          set PDLY blanking time.
+                                6            I/O
+                                                          TPS16412, TPS16413: Input for blanking time for current limiting. Connect a capacitor to
+ IDLY
+                                                          set IDLY blanking time.
+                                                          Output slew control input. Connect a capacitor to set the output slew rate. If not used, this
+ dVdT                           7            I/O
+                                                          pin can be left open.
+ PLIM                                                     TPS16410, TPS16411: Power limit input. Connect a resistor to set PLIM setpoint.
+                                8            I/O
+ ILIM                                                     TPS16412, TPS16413: Current limit input. Connect a resistor to set ILIM setpoint.
+                                                          Overcurrent protection input and current monitoring output for output current. Output
+ IOCP/IMON                      9            I/O          current can be sensed by reading voltage on this pin. Connect a resistor to set IOCP
+                                                          set-point and for reading output current.
+ OUT                           10             P           Power output from internal FET.
+                                                          GND connection for the device.
+                                                          PowerPAD™ must connect to GND of input power supply.
+ PowerPAD/GND                  —              G
+                                                          Connect PowerPAD to GND plane on PCB using multiple vias for enhanced thermal
+                                                          performance.
+
+(1)     I = Input, O = Output, I/O = Input or Output, G = Ground, P = Power
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                         Submit Document Feedback          5
+                                                               Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                www.ti.com
+
+6 Specifications
+6.1 Absolute Maximum Ratings
+over operating free-air temperature range (unless otherwise noted)(1)
+                                                                                                       MIN               MAX            UNIT
+    Vcc, FLT           Input Voltage                                                                   –0.3                67            V
+    OVP                Input Voltage                                                                   –0.3                62            V
+    IN, IN-OUT,
+                       Input Voltage                                                                   –0.3                42            V
+    IOCP
+    OUT                Input Voltage                                                                       –1              42            V
+    EN/SHDN,
+                       Input Voltage                                                                   –0.3                5.5           V
+    PDLY/IDLY
+    dVdT, PLIM/
+                       Input Voltage                                                                   –0.3                5.5           V
+    ILIM
+    IIOCP,IPDLY,IPLIM,                                                                            Internally
+                       Source Current
+    IdVdT, IILIM                                                                                    Limited
+                       Junction temperature                                                            –40                150            °C
+    TJ
+                       Transient Junction Temperature                                                  –40               TTSD            °C
+    Tstg               Storage temperature                                                             –65                150            °C
+
+(1)        Operation outside the Absolute Maximum Ratings may cause permanent device damage. Absolute Maximum Ratings do not imply
+           functional operation of the device at these or any other conditions beyond those listed under Recommended Operating Conditions.
+           If used outside the Recommended Operating Conditions but within the Absolute Maximum Ratings, the device may not be fully
+           functional, and this may affect device reliability, functionality, performance, and shorten the device lifetime.
+
+
+6.2 ESD Ratings
+                                                                                                                        VALUE             UNIT
+                                                                   Human body model (HBM), per ANSI/ESDA/
+                                                                                                                         ±1500
+                                                                   JEDEC JS-001, all pins(1)
+    V(ESD)        Electrostatic discharge                                                                                                     V
+                                                                   Charged device model (CDM), per JEDEC
+                                                                                                                          ±500
+                                                                   specification JS-002, all pins(2)
+
+(1)        JEDEC document JEP155 states that 500V HBM allows safe manufacturing with a standard ESD control process.
+(2)        JEDEC document JEP157 states that 250V CDM allows safe manufacturing with a standard ESD control process.
+
+
+6.3 Recommended Operating Conditions
+over operating free-air temperature range (unless otherwise noted)
+                                                                                                    MIN         NOM           MAX         UNIT
+    Vcc           Supply voltage                                                                     VIN                          60          V
+    FLT           Input Voltage                                                                        0                          60          V
+    IN            Input Voltage (TPS16410, TPS16411, TPS16414, TPS16415)                             4.5                          40          V
+    IN            Input Voltage (TPS16412, TPS16413, TPS16416, TPS16417)                             2.7                          40          V
+    OUT           Input Voltage                                                                        0                          40          V
+    EN/SHDN,
+             Input Voltage                                                                             0                          5.5         V
+    OVP
+    PDLY/IDLY External capacitor                                                                  0.012                           10         µF
+    dVdT          External capacitor                                                                0.01                           5         µF
+    IOCP          External resistor                                                                 6.34                         80.6        kΩ
+    PLIM          External resistor                                                                 12.4                         412         kΩ
+    ILIM          External resistor                                                                  5.1                         348         kΩ
+
+
+
+
+6          Submit Document Feedback                                                                 Copyright © 2026 Texas Instruments Incorporated
+
+                                                          Product Folder Links: TPS1641
+                                                                                                                                   TPS1641
+www.ti.com                                                                                      SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+6.3 Recommended Operating Conditions (continued)
+over operating free-air temperature range (unless otherwise noted)
+                                                                                                MIN           NOM         MAX      UNIT
+ TJ            Junction temperature                                                              –40                      125       °C
+
+
+
+6.4 Thermal Information
+                                                                                                   TPS1641
+                                     THERMAL METRIC(1)                                           DRC (VSON)                       UNIT
+                                                                                                    10 PINS
+ RθJA               Junction-to-ambient thermal resistance                                             43.7                     °C/W
+ RθJC(top)          Junction-to-case (top) thermal resistance                                          50.0                     °C/W
+ RθJB               Junction-to-board thermal resistance                                               15.8                     °C/W
+ ΨJT                Junction-to-top characterization parameter                                          1.1                     °C/W
+ ΨJB                Junction-to-board characterization parameter                                       15.8                     °C/W
+ RθJC(bot)          Junction-to-case (bottom) thermal resistance                                        2.1                     °C/W
+
+(1)     For more information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics application
+        note.
+
+
+6.5 Electrical Characteristics
+–40°C ≤ TA = TJ ≤ +125°C, VIN = 3V to 40V (TPS16412, TPS16413, TPS16416, TPS16417), VIN = 4.5V to 40V (TPS16410,
+TPS16411, TPS16414, TPS16415), Vcc = VIN, RILIM = 5.49kΩ RPLIM = 255kΩ RIOCP = 7.32kΩ , FLT = Open, COUT = 100nF,
+CIN = 10nF CdVdT = Open, PDLY/IDLY = Open. , EN/SHDN = Open
+(All voltages referenced to GND, (unless otherwise noted))
+                      PARAMETER                                    TEST CONDITIONS                     MIN       TYP       MAX      UNIT
+ OPERATING INPUT AND SUPPLY VOLTAGE
+ Vcc         Operating Supply voltage                                                                   VIN                 60       V
+                                                        TPS16410, TPS16411,
+ VIN         Operating Input voltage                                                                    4.5                 40       V
+                                                        TPS16414 ,TPS16415
+                                                        TPS16412, TPS16413, TPS16416,
+ VIN         Operating Input voltage                                                                    2.7                 40       V
+                                                        TPS16417
+                                                        EN/SHDN = 2V, Vcc = 40V, VIN = Open,
+ IQ          Operating Supply current (Vcc)                                                                         1.2     2.1      mA
+                                                        RILIM or RPLIM = Open
+                                                        EN/SHDN = GND, Vcc = 40V, VIN = Open,
+ IQSD        Shutdown Supply current (Vcc)                                                                          14      36       µA
+                                                        RILIM or RPLIM = Open, RIOCP = Open
+                                                        EN/SHDN = 2V, VIN = Vcc = 40V, Open,
+ IINLKG      IN Leakage Current in ON State                                                                     0.025      0.52      mA
+                                                        RILIM or RPLIM = Open
+                                                        EN/SHDN = GND,VIN = Vcc =
+ IINLKG-SD IN Leakage Current in Shutdown               40V, RILIM or RPLIM = Open, RIOCP =                         0.7     2.8      µA
+                                                        Open
+ OVER-VOLTAGE PROTECTION (OVP) INPUT
+ VOVPR       OVP rising threshold                                                                      1.48      1.53      1.58      V
+ VOVPF       OVP falling threshold                                                                     1.34      1.40      1.46      V
+ IOVP        OVP leakage current                        0V ≤ VOVP ≤ 4V                                 –350     –265       –200      nA
+ EN/SHDN INPUT
+ VENR        Enable rising threshold                                                                                        1.2      V
+ VENF        Enable falling threshold                                                                  0.59                          V
+ IEN         Enable leakage current                     0V ≤ VEN ≤ 4V                                  –10                           µA
+ VEN-Open    Open circuit Enable Voltage                IEN = 0.1 µA, VCC ≥ 5V                                      4.9              V
+ OUTPUT POWER LIMITING (PLIM)
+
+Copyright © 2026 Texas Instruments Incorporated                                                          Submit Document Feedback          7
+                                                        Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                            www.ti.com
+
+6.5 Electrical Characteristics (continued)
+–40°C ≤ TA = TJ ≤ +125°C, VIN = 3V to 40V (TPS16412, TPS16413, TPS16416, TPS16417), VIN = 4.5V to 40V (TPS16410,
+TPS16411, TPS16414, TPS16415), Vcc = VIN, RILIM = 5.49kΩ RPLIM = 255kΩ RIOCP = 7.32kΩ , FLT = Open, COUT = 100nF,
+CIN = 10nF CdVdT = Open, PDLY/IDLY = Open. , EN/SHDN = Open
+(All voltages referenced to GND, (unless otherwise noted))
+                           PARAMETER                                      TEST CONDITIONS                MIN        TYP        MAX      UNIT
+    POUT           Output Power Limit                         RPLIM = 26.7kΩ                                3       3.66         4.5      W
+    POUT           Output Power Limit                         RPLIM = 95.3kΩ, –40°C ≤ TA ≤ +85°C       12.94       13.69      14.44       W
+    POUT           Output Power Limit                         RPLIM = 255kΩ, –40°C ≤ TA ≤ +85°C           34          37        39.8      W
+    OUTPUT CURRENT LIMITING (ILIM)
+    IOUT           Output Current Limit                       RILIM = 332kΩ                            0.024       0.032      0.039       A
+    IOUT           Output Current Limit                       RILIM = 10kΩ, –40°C ≤ TA ≤ +85°C         0.918       0.987      1.035       A
+    IOUT           Output Current Limit                       RILIM = 5.49kΩ, –40°C ≤ TA ≤ +85°C       1.671        1.77      1.881       A
+    POWER OUTPUT (OUT)
+    RON            IN to OUT On resistance                    –40°C ≤ TJ ≤ 125°C                          96         153        260      mΩ
+    RON            IN to OUT On resistance                    0°C ≤ TJ ≤ 85°C                                        153        215      mΩ
+    RON            IN to OUT On resistance                    TJ = 25°C                                              153        160      mΩ
+    ILKG-OUT       Output Leakage current in OFF state        VIN = 40V, VOUT = 0V, EN = Low             –15        –1.2                 µA
+    CURRENT MONITORING OUTPUT (IMON)
+    GIMON          Gain : IMON/IOUT                           IOUT = 0.05 to 1.8A                         45          50          55    µA/A
+    OSIMON         IMON Offset current                        IOUT = 0.3 to 0.8A                        –0.8        0.05         0.8     µA
+    OVER CURRENT PROTECTION (IOCP) AND SHORT CIRCUIT PROTECTION (ISCP)
+    IOCP           Over current protection set-point          RIOCP = 7.32kΩ                             2.11       2.23        2.35      A
+    IOCP           Over current protection set-point          RIOCP = 16.2kΩ                            0.95        1.01        1.07      A
+                                                                                                                   1.9 ×
+    IFasttrip      Fast Trip protection threshold                                                                                         A
+                                                                                                                    IOCP
+    ISCP           Short circuit protection threshold                                                                6.7                  A
+    ILIM-                                                     TPS16410, TPS16411, TPS16414,                       0.81 ×
+                   Internal Current Limit                                                                                                 A
+    Internal                                                  TPS16415                                              IOCP
+    THERMAL PROTECTION and SHUTDOWN (TTSD)
+    TTSD           Thermal shutdown temperature                                                                      155                 °C
+                   Thermal shutdown temperature
+    TTSD-hyst                                                                                                         12                 °C
+                   hysteresis
+    Output slew rate control (dVdT)
+    IdVdT          dVdT charging current                                                                1.78           2        2.23     µA
+    GdVdT          dVdT Gain                                                                                          50                 V/V
+    FLT Output (FLTb) (Open Drain Output)
+    RFLTb          Fault pin pull down resistance                                                                     73                  Ω
+    IFLTb-LKG      Fault pin leakage current                  FLT is High, VFLT ≤ 25V                     –1       0.005           1     µA
+    IN to OUT Short Detection (TPS16410, TPS16411, TPS16412, TPS16413)
+    Rshort         Resistance for IN to OUT short detection                                                                       30     mΩ
+
+
+
+
+8              Submit Document Feedback                                                            Copyright © 2026 Texas Instruments Incorporated
+
+                                                              Product Folder Links: TPS1641
+                                                                                                                                TPS1641
+www.ti.com                                                                                        SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+6.6 Timing Requirements
+–40°C ≤ TA = TJ ≤ +125°C, VIN = 3V to 40V (TPS16412, TPS16413), VIN = 4.5V to 40V (TPS16410, TPS16411), VCC = VIN,
+VEN = 2V, RILIM = 5.49kΩ RPLIM = 255kΩ RIOCP = 7.32kΩ , FLT = Open, COUT = 100nF, CIN = 10nF CdVdT = Open, PDLY =
+Open.
+(All voltages referenced to GND, (unless otherwise noted))
+                       PARAMETER                                     TEST CONDITIONS              MIN      TYP     MAX        UNIT
+ Enable/SHDN and Vcc Input
+ tON_DLY             Turn on delay with VCC                  VEN = VENR + 0.1V , RLOAD = Open              500                 µs
+                                                             Fast turn-on with Enable when
+ tEN_ON_DLY          Enable on delay                         device is not in shutdown, VEN =              270                 µs
+                                                             VENR + 0.1V , RLOAD = Open
+                                                             VEN < VENF to VOUT = 0.9 × VIN, ,
+ tEN_OFF_DLY         Enable off delay                                                                       1.2                µs
+                                                             RLOAD = 100
+ tLOW_SHDN           Min low pulse for entering shutdown RLOAD = 100                                24                         ms
+ OVP Input
+ tOVP_ENTRY_DLY      OVP entry delay                         VOVP = VOVPR + 25mV to FLT Low                0.75                µs
+ tOVP_EXIT_DLY       OVP exit delay                          VOVP = VOVPF - 25mV to to FLT High             0.6                µs
+ Over Current Protection and Short-circuit protection
+ tFASTTRIP_DLY       Fast Trip protection delay              IFASTTRIP < IOUT < ISCP to FET OFF            5.65                µs
+ tSCP_DLY            Short-Circuit protection delay          IOUT = ISCP + 500mA to FET OFF                280                 ns
+ Power Limiting
+                                                             IOUT < IOCP, POUT = 1.2 × PLIM,
+ tPDLY               Blanking time before power limiting                                                    6.5                ms
+                                                             CDLY = 12nF
+                                                             IOUT < IOCP, IOUT = 1.2 × ILIM,
+ tPLIM-RES           Power Limit response time                                                             215                 µs
+                                                             CDLY = OPEN
+                                                                                                            2×
+ tPLIM-DUR           PowerLimit Duration                                                                                        s
+                                                                                                          tPDLY
+ Current Limiting
+                                                             IOUT < IOCP, IOUT = 1.2 × ILIM,
+ tIDLY               Blanking time before current limiting                                                  6.5                ms
+                                                             CDLY = 12nF
+                                                             IOUT < IOCP, IOUT = 1.2 × ILIM,
+ tILIM-RES           Current Limit response time                                                           280                 µs
+                                                             CDLY = OPEN
+                                                                                                            2×
+ tILIM-DUR           Current Limit Duration                                                                                     s
+                                                                                                          tPDLY
+ Auto-Retry and Thermal Shutdown
+                                                                                                            8×
+ tRETRY              Retry Delay                                                                                                s
+                                                                                                          tPDLY
+ Output Ramp Control (dVdT)
+ tdVdT               Output Ramp Time                        CdVdT = Open, VIN = VCC = 24V                 105                 µs
+ IN to OUT Short (TPS16410, TPS16411, TPS16412, TPS16413) and FLT Output
+ tIN_OUT_Short_Detec IN to OUT short detection time
+                                                             IN-OUT Short to FLT Low                       135                 ms
+ t                   when FET is ON
+ tIN_OUT_Short_Detec IN to OUT short detection time
+                                                             IN-OUT Short to FLT Low                        20                 ms
+ t                   when FET is OFF
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                          Submit Document Feedback       9
+                                                           Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                                                 www.ti.com
+
+6.7 Typical Characteristics
+
+                     1.35                                                                                  50
+
+                      1.3                                         (VCC = 4.5 V )                           45                                                    (VCC = 4.5 V )
+                                                                  (VCC = 12 V )                                                                                  (VCC = 12 V )
+                     1.25                                         (VCC = 24 V )                            40                                                    (VCC = 40 V )
+                                                                  (VCC = 40 V )                                                                                  (VCC = 24 V )
+                      1.2                                                                                  35
+
+
+
+     IQ-ON (mA)
+                                                                                                           30
+
+                                                                                         IQSD (uA)
+                     1.15
+                                                                                                           25
+                      1.1
+                                                                                                           20
+                     1.05
+                                                                                                           15
+                       1
+                                                                                                           10
+                     0.95
+                                                                                                            5
+                      0.9
+                        -40   -20    0      20   40     60   80   100   120        140                      0
+                                                  TA (C)                                                    16       24        32         40      48       56         64         72
+                                                                                                                                             TA(C)
+                                Figure 6-1. IQ-ON vs Temperature
+                                                                                                                       Figure 6-2. IQSD vs Temperature
+                     5000
+                                                                  (VIN = 4.5 V )
+                     2000
+                                                                  (VIN = 12 V )
+                     1000                                         (VIN = 24 V )
+                      500                                         (VIN = 40 V )
+
+                      200
+
+
+     ILKG-VIN (A)
+                      100
+                       50
+
+                       20
+                       10
+                        5
+
+                        2
+                        1
+                        -40   -20     0     20   40     60   80   100    120       140
+                                                  TA (C)
+                               Figure 6-3. ILKG-VIN vs Temperature                                                   Figure 6-4. ILKG-VIN-SD vs Temperature
+                     240                                                                                   49.81
+                               (IOUT = 0.5 A)                                                               49.8
+                     220       (IOUT = 1.7 A)
+                                                                                                           49.79
+
+                     200                                                                                   49.78
+
+
+
+
+                                                                                         dVdT gain (V/V)
+                                                                                                           49.77
+
+
+     RDS-ON (m)
+                     180                                                                                   49.76
+                                                                                                           49.75
+                     160
+                                                                                                           49.74
+                     140                                                                                   49.73
+                                                                                                           49.72
+                     120
+                                                                                                           49.71
+
+                     100                                                                                    49.7
+                                                                                                               -40    -20   0         20    40     60    80      100    120   140
+                       -40    -20    0     20    40     60   80   100   120        140
+                                                                                                                                             TA (C)
+                                                  TA (C)
+                               Figure 6-5. RDS-ON vs Temperature                                                       Figure 6-6. GdVdT vs Temperature
+
+
+
+
+10                   Submit Document Feedback                                                                                        Copyright © 2026 Texas Instruments Incorporated
+
+                                                                     Product Folder Links: TPS1641
+                                                                                                                                                                                           TPS1641
+www.ti.com                                                                                                                                   SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+6.7 Typical Characteristics (continued)
+
+                -2.0375                                                                                              49.8
+                  -2.04                                                                                                        (IOUT = 1 A )
+                                                                                                                               (IOUT = 1.8 A )
+                -2.0425                                                                                              49.6
+
+                 -2.045
+                                                                                                                     49.4
+
+
+
+                                                                                                      GIMON (A/A)
+                -2.0475
+
+   IdVdT (A)
+                  -2.05                                                                                              49.2
+                -2.0525
+                 -2.055                                                                                               49
+                -2.0575
+                  -2.06
+                                                                                                                     48.8
+
+                -2.0625
+                      -40       -20       0        20     40     60    80       100     120    140                   48.6
+                                                           TA (C)                                                      -40   -20    0        20       40     60    80         100    120    140
+                                                                                                                                                        TA (C)
+                                Figure 6-7. IdVdT vs Temperature
+                                                                                                                               Figure 6-8. GIMON vs Temperature
+                  3                                                                                                   3
+                                                                           (RIOCP = 16.2 k)                                                                       ILIM (RILIM = 332 k)
+                                                                           (RIOCP = 7.32 k)                                                                       ILIM (RILIM = 10 k)
+                2.5                                                                                                  2.4                                           ILIM (RILIM = 5.49 k)
+
+
+
+                  2                                                                                                  1.8
+
+   IOCP (A)                                                                                           ILIM (A)
+                1.5                                                                                                  1.2
+
+
+                  1                                                                                                  0.6
+
+
+                0.5                                                                                                   0
+                  -60       -30           0             30      60         90         120     150                     -60     -30        0           30      60           90         120     150
+                                                          TA (C)                                                                                      TA (C)
+                                Figure 6-9. IOCP vs Temperature                                      Figure 6-10. Output Current Limit vs Temperature for TPS16412
+                                                                                                                             and TPS16413
+                14                                                                                                   6.56
+                                                                                                                               CDLY = 12 nF
+                                                                                                                     6.54
+                12
+                                                                             RPLIM = 26.7 k
+                                                                                                                     6.52
+                                                                             RPLIM = 95.3 k
+                10
+                                                                                                                      6.5
+
+
+   POUT (W)                                                                                           TDLY (ms)
+                 8                                                                                                   6.48
+
+                                                                                                                     6.46
+                 6
+                                                                                                                     6.44
+
+                 4                                                                                                   6.42
+
+                                                                                                                      6.4
+                 2
+                                                                                                                        -40   -20    0        20       40    60      80        100    120    140
+                 -40      -20         0       20        40     60     80        100    120    140
+                                                                                                                                                   Te mperature (C)
+                                                         TA (C)
+   Figure 6-11. Output Power Limit vs Temperature for TPS16410                                                                 Figure 6-12. TDLY vs Temperature
+                   and TPS16411 with VIN = 12V
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                                                         Submit Document Feedback                   11
+                                                                                  Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                                                                    www.ti.com
+
+6.7 Typical Characteristics (continued)
+
+                40                                                                                                             200
+                                                                                                                                                                                       TA = -40C
+                                                                                                                               100
+                35                                                                                                                                                                     TA = 25C
+                                                                                                                               50                                                      TA = 85C
+                30                                                              RPLIM = 26.7 k                                                                                        TA = 105C
+
+
+
+
+                                                                                                       Time to Shutdown (ms)
+                                                                                RPLIM = 95.3 k                                20                                                      TA = 125C
+                                                                                RPLIM = 255 k
+                25                                                                                                             10
+
+     POUT (W)
+                                                                                                                                5
+                20
+                                                                                                                                2
+                15
+                                                                                                                                1
+                10                                                                                                             0.5
+
+                 5                                                                                                             0.2
+
+                 0                                                                                                             0.1
+                 -40   -20   0   20    40     60                           80    100    120   140                                    0   2.5      5        7.5   10    12.5    15   17.5    20   22.5
+                                                                                                                                                            Power Dissipation (W)
+                                        TA (C)
+     Figure 6-13. Output Power Limit vs Temperature for TPS16410                                      Figure 6-14. Thermal Shutdown Time vs Power Dissipation with
+                     and TPS16411 with VIN = 24V                                                                                VIN = 12V
+
+                                                                    200
+                                                                    100                                                                         TA = -40C
+                                                                                                                                                TA = 25C
+                                                                     50                                                                         TA = 85C
+                                                                                                                                                TA = 105C
+
+
+
+
+                                            Time to Shutdown (ms)
+                                                                     20                                                                         TA = 125C
+                                                                     10
+                                                                      5
+
+                                                                      2
+                                                                      1
+                                                                     0.5
+
+                                                                     0.2
+                                                                     0.1
+                                                                    0.05
+                                                                           0      5     10    15   20     25     30                        35         40     45
+                                                                                              Power Dissipation (W)
+                                      Figure 6-15. Thermal Shutdown Time vs Power Dissipation with VIN = 24V
+
+
+
+
+12              Submit Document Feedback                                                                                                                   Copyright © 2026 Texas Instruments Incorporated
+
+                                                                                      Product Folder Links: TPS1641
+                                                                                                                                                                                                        TPS1641
+www.ti.com                                                                                                                                                       SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+7 Detailed Description
+7.1 Overview
+The TPS1641x is an integrated eFuse with accurate power limit or current limit. The device integrates an
+NFET with RON of 152mΩ. TPS16410, TPS16411, TPS16414 and TPS16415 provide power limiting whereas
+the TPS16412, TPS16413, TPS16416, and TPS16417 provide current limiting. The TPS16410, TPS16411,
+TPS16414 and TPS16415 can provide 15W accurate power limiting for low-power circuit (LPCs) as per
+IEC60335 and UL60730 standards. TPS16410, TPS16411, TPS16412 and TPS16413 also provide IN to OUT
+short detection and its indication on FLT output. IN to OUT short detection eliminates the need of additional
+eFuse or power limiting circuit in case of IN to OUT short test for IEC60335, UL60730, and similar standards.
+Use FLT as an input for MCU or to drive an external PFET. TPS1641x devices also provide protection from
+adjacent pin short and pin short to GND faults.
+The TPS1641x device also provide configurable blanking time (IDLY or PDLY) and overcurrent protection (IOCP)
+for transient loads. Load such as motors need higher current for start-up. Blanking time is useful for providing
+higher current for start-up of loads such as motors.
+TPS1641x devices have overvoltage protection (OVP), overtemperature protection, and adjustable output slew
+rate control (dvdt). Vcc and FLT are rated up to 60V and can provide protection up to 60V with an external PFET.
+7.2 Functional Block Diagram
+                                                                                     VIN                      IOUT
+                                                                                                 IN to OUT
+                                                                                                   Short
+                                        TPS1641x                                   IN-OUT         Detection      VOUT
+                                                                                    Short
+                                                                                                                           IOUT
+                                 IN                                                                                       Sense                                                    OUT
+
+
+
+                                                                  Thermal Shutdown                                                                            Isink
+
+                                                                                                                                                                                   IOCP/IMON
+                                                                                     TSD          Pass FET Drive and
+                                                                                                        Control
+                                                                                                                                    Over-Current
+                                                                                                                                     Protection
+                                                                                                                                                   –
+                                 Vcc
+                                                  Internal                                                                                         +            IOCP_REF
+                                                                     VINT
+                                                 Regulator                                                                  –      IOUT
+                                                                                                                                         Short-Circuit                      VINT
+                                                                                                                            +       ISCP Protection
+                                 FLT
+                                                                                                                            –      IOUT                                            PLIM/ILIM
+
+                                                                              IN-OUT Short                                  +       Ifast-trip
+                                                                             OVP
+                                                                             ILIM/PLIM Timeout
+                                                                               TSD
+
+
+                                                                                                              Power or Current
+                                                                                                                 Limiting
+                                                                                                                  Delay                    –
+                                        VINT                                                                                                             POUT
+                                                              Over-Voltage
+                                               V(OVPR)         Protection                                                                  +             OR                VINT
+                                OVP            V(OVPF) –                                                                                                 IOUT
+                                                                                                                                   Power or
+                                                          +                                                                     Current Limiting
+                                                                                                                                                                                    PDLY/IDLY
+
+                                       VINT      V(ENR)
+
+                                                        –                                                                                 VINT
+                             EN/SHDN
+                                               V(ENF)                                                         Output Slew Rate
+                                                        +                                                     Control (dVOUT/dt)
+                                                                    Pulse Duration                                                               IdVdt
+                                                                                                                        GdVdt
+                                                                      Detection
+
+
+
+
+                                                                                                                                                                                   dVdt
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                                                                                    Submit Document Feedback   13
+                                                                             Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                 www.ti.com
+
+7.3 Feature Description
+7.3.1 Enable and Shutdown Input (EN/SHDN)
+The TPS1641x devices include a enable and shutdown input. Keeping EN/SHDN low for a duration more than
+tLow_SHDN brings the device into low power shutdown mode, internal blocks of device are turned off, and the
+quiescent current of the device is reduced to IQSD from Vcc supply.
+While keeping EN/SHDN low for a duration less than tLow_SHDN, the device turns off the internal FET only and
+FET can quickly turn back on. The device turns off the internal FET with a delay of tEN_OFF_dly as the enable pin
+is brought low. Quickly enable the internal FET with a delay of tEN_ON_dly when the device is not in shutdown.
+See the Section 6.5 for VENR and VENF thresholds and the Section 6.6 for tLow_SHDN, tEN_OFF_dly, and tEN_ON_dly
+timings. A PWM signal with low period less than tLow_SHDN can be provided on EN/SHDN pin of the device for
+fast turn-on and turn-off of internal FET. Figure 7-1 illustrates the EN/SHDN input in the TPS1641x devices.
+Figure 7-2 shows the start-up of the device with enable input.
+                                                                 VINT
+
+
+                                                       ON
+                                                                          +
+                                           OFF         EN/SHDN     VENR
+                                                                              EN/SHDN
+                                                                   VENF
+
+                                                                  TPS1641x
+
+
+                                      Figure 7-1. EN/SHDN in TPS1641x Devices
+
+
+
+
+                                                             VIN = 12V
+
+
+
+                                           Figure 7-2. Turn-On with Enable
+
+7.3.2 Overvoltage Protection (OVP)
+The TPS1641x implements overvoltage protection to protect the load from input overvoltage conditions. A
+resistor divider can be connected from the IN pin of device to configure the overvoltage protection setpoint. The
+device turns off the internal FET and asserts the FLT pin as the voltage at OVP pin goes above VOVPR, and
+as the OVP pin voltage falls below VOVPF, the internal FET is turned ON and FLT pin is de-asserted. See the
+
+
+14    Submit Document Feedback                                                          Copyright © 2026 Texas Instruments Incorporated
+
+                                                 Product Folder Links: TPS1641
+                                                                                                                      TPS1641
+www.ti.com                                                                              SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+Section 6.5 table for VOVPF and VOVPR and Section 6.6 for tOVP_entry_dly and tOVP_exit_dly timings for overvoltage
+protection input. Figure 7-3 illustrates the OVP input in TPS1641x devices. Figure 7-4 shows the overvoltage
+response.
+                                                       VIN         VINT
+
+
+                                                     R1
+                                                             OVP
+                                                                           +
+                                                                   VOVPR          OVP
+                                                     R2            VOVPF
+
+                                                                    TPS1641x
+
+
+                                                  Figure 7-3. OVP Input in TPS1641x
+
+
+
+
+                         Figure 7-4. Overvoltage Protection Response for IN Voltage 12V to 40V
+
+Vcc and FLT pins of the device are rated up to 60V, and the FLT pin can be used to drive an external PFET
+transistor and provide protection from 60V overvoltage at input as shown in Figure 7-5.
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                Submit Document Feedback      15
+                                                       Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                            www.ti.com
+
+                                                    * Optional TVS Diode
+
+
+                                           CPH6354 or
+                                             similar
+                                                                     Vcc
+                                                                     IN                        OUT             VOUT
+
+                                                         CIN                                                   COUT
+
+                       +
+                       –                                                       TPS1641x
+                                                                    EN/SHDN
+                           R1                                       FLT                       IOCP
+                                                                    OVP                   IDLY/PDLY
+                                R2
+                                                                                                                        ROCP
+                                                                                           ILIM/PLIM
+                                                                                 GND                             CDLY
+                                                                                                        RLIM
+
+
+
+
+                           Figure 7-5. Overvoltage (up to 60V) Protection with External PFET
+
+To disable the overvoltage input, connect OVP to GND. If the OVP pin is left open, the device turns off the
+internal FET.
+
+
+
+
+     Figure 7-6. Overvoltage Response with External                        Figure 7-7. Hot Plugin with External PFET for 60V
+           PFET for IN Voltage from 12V to 60V                                                   Input
+
+7.3.3 Output Slew Rate and Inrush Current Control (dVdt)
+During hot plug events or while trying to charge a large output capacitance, there can be a large inrush current.
+If the inrush current is not managed properly, it can damage the input connectors and cause the system power
+supply to droop leading to unexpected restarts elsewhere in the system. The inrush current during turn-on is
+directly proportional to the load capacitance and rising slew rate. Equation 1 can be used to find the output slew
+rate (SR) required to limit the inrush current (IINRUSH) for a given output capacitance (COUT).
+
+               I
+          SR = INRUSH
+                C                                                                                                                      (1)
+                   OUT
+
+A capacitance can be added to the dVdt pin to control the rising slew rate and lower the inrush current during
+turn-on. Calculate the required CdVdt capacitance to produce a given slew rate using Equation 2.
+
+                   I       ×G
+          CdVdt = dVdt SR dVdt                                                                                                         (2)
+
+
+
+16     Submit Document Feedback                                                                    Copyright © 2026 Texas Instruments Incorporated
+
+                                                    Product Folder Links: TPS1641
+                                                                                                                                                    TPS1641
+www.ti.com                                                                                                            SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+The fastest output slew rate is achieved by leaving the dVdt pin open. If dVdt pin is connected to GND, the
+device does not power up the output. Figure 7-8 shows the output slew rate control in the TPS1641x devices.
+Figure 7-9 shows the output slew rate control response of the device.
+
+                                                                               VINT
+
+                                                                                      Idvdt
+                                                  Idvdt/Cdvdt         dvdt
+                                                                                      Gdvdt
+
+                                                                      Cdvdt                     Output Slew
+                                                                                                Rate (SR) =
+                                                                              TPS1641x        [Gdvdt × Idvdt]/Cdvdt
+
+
+                                      Figure 7-8. Output Slew Rate Control in the TPS1641x
+
+
+
+
+               Figure 7-9. Output Slew Rate Control with VIN = 12V, CdVdt = 150nF, and COUT = 470μF
+
+7.3.4 Active Current Limiting (ILIM) With the TPS16412, TPS16413, TPS16416, and TPS16417
+The TPS16412, TPS16413, TPS16416, and TPS16417 devices respond to output overcurrent or overload
+conditions by actively limiting the current. The devices first provide a blanking time configured by capacitance
+on the IDLY pin. During this blanking time, the device can provide a current up to IOCP value. After the end of
+this blanking time, the devices limit current to ILIM value. ILIM can be set by connecting resistor on ILIM pin.
+Calculate RILIM using Equation 3.
+
+           ILIM = 0R. 984A × 10kΩ                                                                                                                    (3)
+                       ILIM
+
+If the output current exceeds IOCP, the device goes into current limiting. During current limiting, if the output
+current goes below ILIM (IOUT < ILIM), the device resets the IDLY timer and restarts IDLY timer when IOUT >
+ILIM. Figure 7-10 shows the current limiting behavior for IOUT < IOCP and for IOCP ≤ IOUT < Ifast-trip.
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                              Submit Document Feedback      17
+                                                                Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                             www.ti.com
+
+
+
+
+      Figure 7-10. Current Limiting for IOUT < IOCP                                  Figure 7-11. IOCP ≤ IOUT < Ifast-trip
+
+
+During the current limiting, the device dissipates a power of (VIN – VOUT) × IOUT and the device gets heated
+up. If the junction temperature of device reaches thermal shutdown temperature (TTSD), the device turns off the
+internal FET. If the device does not go into thermal shutdown, the internal FET is turned off after a duration of
+tILIM-DUR. After the internal FET is turned off, the TPS16412 and TPS16416 auto-retry while the TPS16413 and
+TPS16417 latch off. If ILIM pin is connected to GND or left open, the device turns-off the internal FET. If the
+IDLY pin is left open or connected to GND, device provides tILIM-DUR = 155ms unless the device enters thermal
+shutdown. Table 7-1 summarizes the device behavior for different output currents.
+Table 7-1. Current Limiting and Overload Protection With TPS16412, TPS16413, TPS16416, and TPS16417
+          Output Current (IOUT)                                                   Device Response
+                IOUT < ILIM            The device provides current up to ILIM.
+                                       The device provides current up to IOCP for a duration of IDLY and then limits current to ILIM for a
+            ILIM ≤ IOUT < IOCP
+                                       maximum duration of tILIM-DUR.
+           IOCP ≤ IOUT < Ifast-trip    The device limits current to ILIM for a maximum duration of tILIM-DUR.
+           Ifast-trip ≤ IOUT < ISCP    The device turns off the internal FET after a delay of tfast-trip.
+                ISCP ≤ IOUT            The device turns off the internal FET after a delay of tSCP_dly.
+
+
+7.3.5 Active Power Limiting (PLIM) With the TPS16410, TPS16411, TPS16414, and TPS16415
+The TPS16410, TPS16411, TPS16414, and TPS16415 devices respond to output overcurrent or overload
+conditions by actively limiting the output power. The devices first provide a blanking time configured by
+capacitance on PDLY pin. During this blanking time, the device can provide a current up to IOCP value. After
+the end of this blanking time, the devices limit power to PLIM value. Set the power limit by connecting a resistor
+on the PLIM pin. During power limiting, if the output power goes below PLIM (POUT < PLIM), the device resets
+the PDLY timer and restarts the PDLY timer when POUT > PLIM. Use Equation 4 to calculate the value of resistor
+for power limiting. The device is rated for 1.8A continuous current, TI recommends to set PLIM < VIN × 1.8A and
+PLIM < 0.9 × VOUT × IOCP
+
+          PLIM = 13 . 82W
+                 95 . 3kΩ × RPLIM                                                                                                       (4)
+
+Figure 7-12 shows the power limiting in the TPS16410 and TPS16411 devices for IOUT < IOCP and IOCP ≤ IOUT <
+Ifast-trip.
+
+
+
+
+18    Submit Document Feedback                                                                      Copyright © 2026 Texas Instruments Incorporated
+
+                                                    Product Folder Links: TPS1641
+                                                                                                                                        TPS1641
+www.ti.com                                                                                                SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+
+
+         Figure 7-12. Power Limiting (IOUT < IOCP)                             Figure 7-13. Power Limiting (IOCP ≤ IOUT < Ifast-trip)
+
+
+During power limiting, the device dissipates a power of (VIN – VOUT) × IOUT and the device gets heated up. If the
+junction temperature of device reaches thermal shutdown temperature (TTSD), the device turns off the internal
+FET. If the device does not go into thermal shutdown, the internal FET is turned off after a duration of tPLIM-DUR.
+After the internal FET is turned off, the TPS16410 and TPS16414 devices auto-retry while the TPS16411 and
+TPS16415 device latch off. If PLIM is connected to GND or left open, the device turns-off the internal FET. If the
+PDLY pin is left open or connected to GND, device provides tPLIM-DUR = 155ms unless the device enters thermal
+shutdown. Table 7-2 summarizes the device behavior for different output power and current.
+    Table 7-2. Power Limiting and Overload Response in TPS16410, TPS16411, TPS16414, and TPS16415
+                                                Devices
+     Output Power (POUT) or Output
+                                                                                         Device Response
+             Current (IOUT)
+                POUT < PLIM                   The device provides power up to PLIM.
+                PLIM ≤ POUT                   The device provides current up to IOCP for a duration of PDLY and then limits power to PLIM for
+               and IOUT < IOCP                a maximum duration of tPLIM-DUR.
+            IOCP ≤ IOUT < Ifast-trip          The device limits current to PLIM for a maximum duration of tPLIM-DUR.
+            Ifast-trip ≤ IOUT < ISCP          The device turns off the internal FET after a delay of tfast-trip.
+                 ISCP ≤ IOUT                  The device turns off the internal FET after a delay of tSCP_dly.
+
+
+7.3.5.1 Internal Current Limit for the TPS16410 and TPS16411
+In power limiting devices, there is an internal current limit. If during power up, the output current exceeds
+overcurrent protection setpoint (IOCP), these devices limit current to 0.81 × IOCP.
+TPS16410, TPS16411, TPS16414, and TPS16415 devices also limit the output current if PLIM is set to more
+than (VOUT × IOCP) and IOUT exceeds IOCP.
+7.3.6 Overcurrent Protection (IOCP) and Blanking Time (IDLY or PDLY) for Transient Loads
+In TPS1641x devices, configure the overcurrent protection set-point by connecting a resistor on IOCP pin.
+Calculate the resistor value for overcurrent using Equation 5.
+
+           IOCP = 2R . 25A × 7 . 32kΩ                                                                                                    (5)
+                      IOCP
+
+If the IOCP pin is left open or connected to GND, the device turns off the internal FET.
+The devices also provide blanking time for overload or overcurrent events. Configure this blanking time by
+connecting a capacitor on IDLY or PDLY. Calculate the blanking time using Equation 6.
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                    Submit Document Feedback     19
+                                                           Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                         www.ti.com
+
+
+If IDLY/PDLY pin is left open or connected to GND, device disables the blanking time and directly goes into
+power or current limiting.
+
+          Blanking Time IDLY or PDLY = 612nF
+                                         . 5ms
+                                               × CDLY                                                               (6)
+
+7.3.7 Fast-Trip and Short-Circuit Protection
+During an output short-circuit event, the current through the device increases very rapidly. When an output
+short-circuit is detected and output current reaches ISCP level, the device turns off the internal FET after a delay
+of tSCP_dly.
+In case of fast input transients, the current through internal FET rises rapidly, but these transients can lead to
+false turn-off of internal FET due to excessive flow of current through internal FET. To prevent false tripping
+during these input transients, the device includes fast-trip comparator, which turns off the internal FET if the
+output current exceeds Ifast-trip for a duration of tfast-trip. Figure 7-14 shows the short-circuit response of the
+device.
+
+
+
+
+                                 Figure 7-14. Short-Circuit Response with VIN = 12V
+
+7.3.8 Analog Load Current Monitor (IMON) on the IOCP Pin
+The device allows the system to monitor the output load current accurately by providing an analog current on the
+IOCP/IMON pin, which is proportional to the current through the FET. The resistor on IOCP/IMON pin converts
+this current into voltage, use this voltage to monitor the output current. Calculate the output current from voltage
+at IOCP/IMON pin by using Equation 7.
+
+                V    − OSIMON × RIOCP
+          IOUT = IOCPG    ×R                                                                                        (7)
+                        IMON     IOCP
+
+7.3.9 IN to OUT Short Detection (TPS16410, TPS16411, TPS16412, and TPS16413)
+TPS16410, TPS16411, TPS16412, and TPS16413 devices include short detection across IN and OUT pins. If
+the device detects a resistance less than Rshort across IN and OUT pins, the device asserts the FLT pin low. See
+the Section 6.5 for Rshort and Section 6.6 for tIN_OUT_Short_Detect.
+
+
+
+20    Submit Document Feedback                                                  Copyright © 2026 Texas Instruments Incorporated
+
+                                              Product Folder Links: TPS1641
+                                                                                                                           TPS1641
+www.ti.com                                                                                   SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+At start-up, the device keeps FLT low and the internal FET off. The device detects for short across IN to OUT
+before turning on the internal FET. If device does not detect any short across IN to OUT, the device de-asserts
+the FLT and enables the internal FET. After start-up, the device detects for short across IN to OUT at regular
+intervals and asserts the FLT pin after a delay of tIN_OUT_Short_Detect. After the device detects IN to OUT short,
+it latches off. To reset the latch, toggle EN/SHDN or recycle the Vcc supply. To reset the latch, keep EN/SHDN
+pin low for duration more than tLow_SHDN. Figure 7-15 shows the response of device for IN to OUT short. In case
+of switching loads on output of device, see Table 7-3 for recommended device variants based on switching load
+frequency fSW (in kHz) and ripple load current IRipple (in mAp-p).
+                                              Table 7-3. Recommended Device Variants
+    Switching Load Frequency                         (IRipple / fSW) ≥ 2                            (IRipple / fSW) < 2
+               0 to 5Hz                TPS16410, TPS16411, TPS16412, TPS16413, TPS16414, TPS16415, TPS16416, or TPS16417
+                                                                                      TPS16410, TPS16411, TPS16412, TPS16413,
+                > 5Hz                  TPS16414, TPS16415, TPS16416, or TPS16417
+                                                                                      TPS16414, TPS16415, TPS16416, or TPS16417
+
+
+
+
+                                       Figure 7-15. IN to OUT Short Detection for VIN = 12V
+
+7.3.10 Thermal Shutdown and Overtemperature Protection
+During power or current limiting, there is a power dissipation [(VIN – VOUT) × IOUT] in the internal FET of the
+device. Due to this power dissipation, the temperature (TJ) of device increases. When the device temperature
+increases above TTSD, it shuts down. After the thermal shutdown, the TPS16411, TPS16413, TPS16415, and
+TPS16417 remain latched. To reset the latch, toggle EN/SHDN or recycle the Vcc supply. To reset the latch,
+keep EN/SHDN pin low for duration more than tLow_SHDN.
+After thermal shutdown, the TPS16410, TPS16412, TPS16414, and TPS16416 devices wait for temperature to
+go below [TTSD – TTSD-hyst] and then the device restarts after a delay of tretry.
+7.3.11 Fault Response and Indication (FLT)
+FLT is an open-drain output to indicate the overvoltage, IN to OUT short, overtemperature, current limit, and
+power limit events. Table 7-4 summarizes the state of FLT pin under different events. To prevent excessive
+dissipation in device during adjacent pin short test (FLT to EN/SHDN), pull up the FLT pin with a resistor (R FLT )
+such that sink current into FLT pin is less than 3mA. Figure 7-16 shows the connection diagram for FLT pin with
+a pullup resistor.
+
+Copyright © 2026 Texas Instruments Incorporated                                                     Submit Document Feedback      21
+                                                      Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                 www.ti.com
+
+                                                                          IN   TPS1641x
+
+                                                                  RFLT
+                                                     IFLT < 3mA          FLT
+
+
+
+
+                                                                         EN
+
+
+
+                                            Figure 7-16. FLT Output in the TPS1641x
+
+                                       Table 7-4. FLT Pin Indication for Different Events
+                                                                                   Retry Delay With IDLY/            Retry Delay With Capacitor
+                                                                                    PDLY = Open or GND                  on IDLY/PDLY pin for
+               Event, Condition                          FLT Pin
+                                                                                  for TPS16410, TPS16412,              TPS16410, TPS16412,
+                                                                                  TPS16414, and TPS16416              TPS16414, and TPS16416
+ Overvoltage protection (VOVP > VOVPR)(1)                  Low                                   NA                                NA
+ IN to short detection (TPS16410, TPS16411,
+                                                           Low                            No retry, latch off               No retry, latch off
+ TPS16412, and TPS16413)
+ Thermal shutdown (TJ > TTSD)                              Low                                 620ms                          8 × tPDLY/IDLY
+ After current or power limiting timeout                   Low                                 620ms                          8 × tPDLY/IDLY
+
+(1)   For overvoltage protection, device turns on the FET as VOVP falls below VOVPF
+
+7.4 Device Functional Modes
+The device can be brought into low power shutdown mode by bringing the EN/SHDN pin low. In low power
+shutdown mode, the internal blocks of devices are shut down and it takes IQSD from VCC supply. See the Enable
+and Shutdown Input (EN/SHDN) section for details.
+
+
+
+
+22    Submit Document Feedback                                                                          Copyright © 2026 Texas Instruments Incorporated
+
+                                                     Product Folder Links: TPS1641
+                                                                                                                                          TPS1641
+www.ti.com                                                                                                 SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+8 Application and Implementation
+                                                                          Note
+       Information in the following applications sections is not part of the TI component specification,
+       and TI does not warrant its accuracy or completeness. TI’s customers are responsible for
+       determining suitability of components for their purposes, as well as validating and testing their design
+       implementation to confirm system functionality.
+
+8.1 Application Information
+TPS1641x devices include power limiting or current limiting for a low power circuit (as per IEC60335 and
+UL60730 standards) in appliances, HVAC actuators, and medical equipment. TPS1641x devices also have IN
+to OUT short detection for internal FET for IN-OUT short testing during IEC60335 or UL60730 certifications.
+The TPS16410 and TPS16411 have an accurate power limiting feature while the TPS16412 and TPS16413
+have an accurate current limiting feature. For transient current required for start-up of motors or actuators,
+TPS1641x devices have a configurable overcurrent protection threshold (IOCP) and configurable blanking time
+(IDLY/PDLY). For start-up with big capacitance (< 1mF) on output, the TPS1641x include dVdT feature to control
+the output slew rate and limiting the inrush current during power up. Monitor the output current from the IOCP or
+IMON pin by sensing the voltage on this pin.
+8.2 Typical Application: 15W Power Limiting for Low Power Circuits (LPCs)
+Use the TPS16410 and TPS16411 for 15W power limiting for low-power circuits in IEC60335 and UL60730
+standards. Use a resistor on the PLIM pin to configure the output power limit. Figure 8-1 provides a typical
+application circuit for 15W power limiting.
+                                           VIN = 18 to   Vcc
+                                              32V
+                                                                                    OUT             VOUT
+                                                                                                           VOUT
+                                                         IN
+                                      CIN                                                   CIN
+                                    100nF
+                                                                     TPS16410
+                                                         EN/SHDN TPS16411
+                                               1m
+                                                         FLT            IOCP/IMON
+                                                R1
+                                                         OVP                       PDLY                      R4
+                                               47k
+                                                                                                  CDLY
+                                                                                PLIM/ILIM                    16.2k
+                                                         dVdT                                     12nF
+                                                R2
+                                                                       GND
+                                                                                             R3
+                                                          CdVdt                              95.4 k
+                                                         150 nF
+
+
+
+                                     Figure 8-1. 15W Power Limiting for Low-Power Circuits
+
+8.2.1 Design Requirements
+                                                         Table 8-1. Design Parameters
+                                Parameter                                                                         Value
+                                     VIN                                                                     18V to 32V
+                                   POUT                                                                           ≤ 15W
+                          Overcurrent protection                                                                   1A
+                        Output capacitance (COUT)                                                                 470μF
+                                  IINRUSH                                                                     ≤ 350mA
+                   Blanking time for transients (PDLY)                                                            6.5ms
+
+
+8.2.2 Detailed Design Procedure
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                                      Submit Document Feedback   23
+                                                               Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                          www.ti.com
+
+8.2.2.1 Setting Overvoltage Setpoints
+Set input overvoltage protection setpoints by connecting resistors (R1, R2) from the IN pin to OVP pin. Calculate
+the value of resistors using Equation 8 and Equation 9. To set the OVP rising setpoint to 32V, R1 = 1MΩ and R2
+= 47kΩ are selected.
+
+                               V    × R1 + R2
+          OVP Rising Setpoint = OVPR R2                                                                              (8)
+
+                                V    × R1 + R2
+          OVP Falling Setpoint = OVPF R2                                                                             (9)
+
+8.2.2.2 Setting the Output Overcurrent Setpoint (IOCP)
+To set the output overcurrent setpoint, a resistor (R4) is required on the IOCP pin. To calculate the value of this
+resistor (R4), use Equation 5. For IOCP = 1A, R4 is selected as 16.2kΩ.
+8.2.2.3 Setting the Output Power Limit
+For setting the output power limit, a resistor (R3) is required on the PLIM pin. To calculate the value of power
+limit, use Equation 4. To keep output power limit ≤ 15W, R3 is selected as 95.3kΩ.
+8.2.2.4 Monitoring the Output Current
+Monitor the output current on IOCP or IMON by reading the voltage on this pin. Calculate the output current
+using Equation 7.
+8.2.2.5 Limiting the Inrush Current and Setting the Output Slew Rate
+For charging the large capacitors on output, control the output slew rate by using a capacitor on dVdt pin.
+Estimate the value of inrush current by Equation 10. To keep the inrush current below 350mA, CdVdt is selected
+as 150nF.
+
+                     I     × GdVdt × COUT
+          IINRUSH = dVdt     CdVdt                                                                                  (10)
+
+
+
+
+24    Submit Document Feedback                                                   Copyright © 2026 Texas Instruments Incorporated
+
+                                                 Product Folder Links: TPS1641
+                                                                                                                  TPS1641
+www.ti.com                                                                          SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+8.2.3 Application Curves
+
+
+
+
+      Figure 8-2. Overvoltage Protection up to 40V               Figure 8-3. Inrush Current Control for Hot Plugin at
+                                                                                        Input
+
+
+
+
+       Figure 8-4. Output Short-Circuit Protection                  Figure 8-5. 15W Power Limiting with TPS16410
+                                                                                     (IOUT < IOCP)
+
+
+
+
+     Figure 8-6. 15W Power Limiting with TPS16410                  Figure 8-7. IN to OUT Short Detection with VIN =
+                   (IOCP ≤ IOUT < Ifast-trip)                                            24V
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                            Submit Document Feedback      25
+                                                  Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                       www.ti.com
+
+
+
+
+                                                     Figure 8-8. Power-Up Into Short
+
+8.3 System Examples
+
+8.3.1 Accurate Power or Current Limiting at the Output of DC/DC or Flyback Converter
+For systems using a DC/DC converter or a flyback converter, use the device for accurate power or current
+limiting (± 5%) at the output. For additional protection, the device has a fault pin and it is asserted in case of
+overvoltage, overcurrent or overpower, IN-short detection and thermal shutdown events. Use the fault to turn-off
+the DC/DC converter or flyback converter providing the power to input of TPS1641 for the load. The device has
+separate Vcc pin for powering itself and it can remain on with Vcc supply. Figure 8-9 shows the application at the
+output of DC/DC or flyback converter.
+                                                                                    Vcc                               VOUT
+                                                                                                               OUT
+                                                                   +
+                          Vcc                OUT                            ≥VIN
+                                  DC -DC                           –
+                           EN    Converter
+                                                                                    EN/SHDN
+
+                                                                              VIN
+                                                                                    IN
+                                                                                              TPS1641x
+                                             OUT                       R1
+                                                                                    OVP                       IOCP
+                                                              R2
+                                                                                                         IDLY/PDLY
+                                               Vcc
+                                                                                                                                       ROCP
+                                                                                                          ILIM/PLIM
+                                                                                    FLT         GND                             CDLY
+                                                                                                                         RLIM
+                         Flyback Converter
+
+
+
+
+        Figure 8-9. Accurate Power or Current Limiting at the Output of DC/DC or Flyback Converter
+
+
+
+
+26    Submit Document Feedback                                                                                Copyright © 2026 Texas Instruments Incorporated
+
+                                                         Product Folder Links: TPS1641
+                                                                                                                                   TPS1641
+www.ti.com                                                                                           SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+8.4 Best Design Practices
+•    Use CIN ≥ 10nF for decoupling Vcc and IN pins.
+•    Do not leave the OVP, PLIM/ILIM, and IOCP/IMON pins open or floating.
+•    Connect the PowerPAD of the device to GND on the PCB.
+•    Do not connect the EN/SHDN pin to voltage more than 5V.
+8.5 Power Supply Recommendations
+•    Use 4.5V ≤ VIN ≤ 40V for the TPS16410 and TPS16411.
+•    Use 2.7V ≤ VIN ≤ 40V for the TPS16412 and TPS16413.
+•    Use VIN ≤ VCC ≤ 60V.
+•    Pull up FLT with voltage ≤ 60V. Use a pullup resistor to keep current into the FLT pin < 3mA.
+8.5.1 Transient Protection
+In the case of a short-circuit and overload current limit when the device interrupts current flow, the input
+inductance generates a positive voltage spike on the input, and the output inductance generates a negative
+voltage spike on the output. The peak amplitude of voltage spikes (transients) depends on the value of
+inductance in series to the input or output of the device. Such transients can exceed the absolute maximum
+ratings of the device if steps are not taken to address the issue. Figure 8-10 shows the transient protection
+circuit. Typical methods for addressing transients include:
+•    Minimize lead length and inductance into and out of the device.
+•    Use a large PCB GND plane.
+•    Connect a Schottky diode (D2) from the OUT pin ground to absorb negative spikes. The OUT pin has an
+     absolute maximum rating of –1V for negative transient spikes on output.
+•    Connect a low-ESR capacitor larger than 1μF at the OUT pin very close to the device.
+•    Use a low-value ceramic capacitor CIN = 0.1μF to absorb the energy and dampen the transients. Estimate the
+     approximate value of input capacitance using Equation 11.
+                                                  LIN
+           VIN − SPIKE = VIN + ILOAD ×            CIN                                                                              (11)
+
+•    Some applications require additional Transient Voltage Suppressor (TVS) to keep transients below the
+     absolute maximum rating of the device. A TVS can help to absorb the excessive energy dump and prevent
+     it from creating very fast transient voltages on the input of the device. Use an appropriate TVS to clamp the
+     transient voltage below the absolute maximum rating of the device.
+                                                        Vcc
+                                                                                  OUT             VOUT
+                                                        IN                                          COUT
+                                      CIN                                                D2*
+
+
+                                             D1*
+                                                                  TPS1641x
+                                                        EN/SHDN
+                                                        FLT              IOCP/IMON
+
+                                                        OVP                  PDLY/IDLY
+                                                                                                           ROCP
+                                                        dVdT                 PLIM/ILIM
+                                                                   GND                              CDLY
+                                                                                          RPLIM
+
+
+
+
+TVS D1* and Schottky D2* are optional diodes for transient protection on the input and output.
+                                            Figure 8-10. Transient Protection with TPS1641x
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                               Submit Document Feedback    27
+                                                        Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                          www.ti.com
+
+8.6 Layout
+8.6.1 Layout Guidelines
+•    Verify that the high current-carrying power-path connections are as short as possible and are sized to carry at
+     least twice the full-load current.
+•    Tie the GND (PowerPAD) pin to the PCB ground plane at the terminal of the IC with the shortest possible
+     trace. The PCB ground must be a copper plane or island on the board. TI recommends to have a separate
+     ground plane island for the eFuse. This plane does not carry any high currents and serves as a quiet ground
+     reference for all the critical analog signals of the eFuse. Connect the device ground plane to the system
+     power ground plane using a star connection.
+•    The best placement of the decoupling capacitor (CIN) is closest to the IN and GND pins of the device. Take
+     care to minimize the loop area that the bypass-capacitor connection, the IN pin, and the GND pin of the IC
+     form.
+•    Locate the following support components close to the connection pins:
+     – RILM or RPLM
+     – RIOCP
+     – CDLY
+     – CdVdT
+     – Resistors for OVP
+•    Connect the other end of the component to the GND pin of the device with shortest trace length. The trace
+     routing for these components to the device must be as short as possible to reduce parasitic effects on the
+     current limit, overcurrent blanking interval, and soft-start timing.
+•    Because the bias current on ILM pin directly controls the overcurrent protection behavior of the device, the
+     PCB routing of this node must be kept away from any noisy (switching) signals.
+•    Physically place protection devices such as TVS, snubbers, capacitors, or diodes close to the device
+     the protection device is intended to protect. Route these protection devices with short traces to reduce
+     inductance. For example, TI recommends a protection Schottky diode to address negative transients due to
+     switching of inductive loads. TI recommends to add a ceramic decoupling capacitor (COUT) of 1μF or greater
+     between OUT and GND. These components must be physically close to the OUT pins. Take care to minimize
+     the loop area that the Schottky diode and bypass-capacitor connection, the OUT pin, and the GND pin of the
+     IC form.
+
+
+
+
+28    Submit Document Feedback                                                   Copyright © 2026 Texas Instruments Incorporated
+
+                                              Product Folder Links: TPS1641
+                                                                                                                         TPS1641
+www.ti.com                                                                                 SLVSGF4C – JUNE 2022 – REVISED JUNE 2026
+
+
+8.6.2 Layout Example
+
+
+
+
+                                                                      ROCP
+
+
+                                                                           R   PLIM/ILIM
+
+
+
+
+                                                  COUT                     CdVdT
+                                                                                                     15 mm
+
+
+
+
+                                                                TPS1641x
+
+
+
+
+                                                   CIN
+
+
+                                                                    12 mm
+                                    Top Layer
+                                                  Figure 8-11. Layout Example
+
+
+
+
+Copyright © 2026 Texas Instruments Incorporated                                                   Submit Document Feedback      29
+                                                    Product Folder Links: TPS1641
+TPS1641
+SLVSGF4C – JUNE 2022 – REVISED JUNE 2026                                                                                                    www.ti.com
+
+9 Device and Documentation Support
+TI offers an extensive line of development tools. Tools and software to evaluate the performance of the device,
+generate code, and develop solutions are listed below.
+9.1 Receiving Notification of Documentation Updates
+To receive notification of documentation updates, navigate to the device product folder on ti.com. Click on
+Notifications to register and receive a weekly digest of any product information that has changed. For change
+details, review the revision history included in any revised document.
+9.2 Support Resources
+TI E2E™ support forums are an engineer's go-to source for fast, verified answers and design help — straight
+from the experts. Search existing answers or ask your own question to get the quick design help you need.
+Linked content is provided "AS IS" by the respective contributors. They do not constitute TI specifications and do
+not necessarily reflect TI's views; see TI's Terms of Use.
+9.3 Trademarks
+PowerPAD™ and TI E2E™ are trademarks of Texas Instruments.
+All trademarks are the property of their respective owners.
+9.4 Electrostatic Discharge Caution
+                   This integrated circuit can be damaged by ESD. Texas Instruments recommends that all integrated circuits be handled
+                   with appropriate precautions. Failure to observe proper handling and installation procedures can cause damage.
+                   ESD damage can range from subtle performance degradation to complete device failure. Precision integrated circuits may
+                   be more susceptible to damage because very small parametric changes could cause the device not to meet its published
+                   specifications.
+
+
+9.5 Glossary
+ TI Glossary            This glossary lists and explains terms, acronyms, and definitions.
+
+10 Revision History
+NOTE: Page numbers for previous revisions may differ from page numbers in the current version.
+Changes from Revision B (April 2023) to Revision C (June 2026)                                                                                   Page
+• Updated the numbering format for tables, figures, and cross-references throughout the document................. 1
+• Added UL 2367 recognition status..................................................................................................................... 1
+• Added IEC 62368-1 CB certification...................................................................................................................1
+
+
+
+Changes from Revision A (December 2022) to Revision B (April 2023)                                                                     Page
+• Added information for new device variants throughout the document................................................................1
+• Added recommendations for new device variants............................................................................................20
+
+
+11 Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the most
+current data available for the designated devices. This data is subject to change without notice and revision of
+this document. For browser-based versions of this data sheet, refer to the left-hand navigation.
+
+
+
+
+30    Submit Document Feedback                                                                            Copyright © 2026 Texas Instruments Incorporated
+
+                                                           Product Folder Links: TPS1641
+                                                                                                                                                                    PACKAGE OPTION ADDENDUM
+
+       www.ti.com                                                                                                                                                                                                    17-Apr-2026
+
+
+
+
+PACKAGING INFORMATION
+
+       Orderable part number          Status     Material type      Package | Pins     Package qty | Carrier       RoHS             Lead finish/             MSL rating/             Op temp (°C)               Part marking
+                                        (1)            (2)                                                            (3)           Ball material            Peak reflow                                              (6)
+                                                                                                                                          (4)                      (5)
+
+          TPS16410DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16410
+         TPS16410DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16410
+          TPS16411DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16411
+         TPS16411DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16411
+          TPS16412DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16412
+         TPS16412DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16412
+          TPS16413DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16413
+         TPS16413DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16413
+         TPS16413DRCRG4               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16413
+        TPS16413DRCRG4.A              Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16413
+          TPS16414DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16414
+         TPS16414DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16414
+          TPS16415DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16415
+         TPS16415DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16415
+          TPS16416DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16416
+         TPS16416DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16416
+          TPS16417DRCR                Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16417
+         TPS16417DRCR.A               Active      Production       VSON (DRC) | 10      3000 | LARGE T&R             Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                  T16417
+
+(1)
+      Status: For more details on status, see our product life cycle.
+
+(2)
+   Material type: When designated, preproduction parts are prototypes/experimental devices, and are not yet approved or released for full production. Testing and final process, including without limitation quality assurance,
+reliability performance testing, and/or process qualification, may not yet be complete, and this item is subject to further changes or possible discontinuation. If available for ordering, purchases will be subject to an additional
+waiver at checkout, and are intended for early internal evaluation purposes only. These items are sold without warranties of any kind.
+
+(3)
+      RoHS values: Yes, No, RoHS Exempt. See the TI RoHS Statement for additional information and value definition.
+
+(4)
+   Lead finish/Ball material: Parts may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two lines if the finish value exceeds the maximum
+column width.
+
+
+
+
+                                                                                                         Addendum-Page 1
+                                                                                                                                                                      PACKAGE OPTION ADDENDUM
+
+       www.ti.com                                                                                                                                                                                                 17-Apr-2026
+
+
+
+
+(5)
+  MSL rating/Peak reflow: The moisture sensitivity level ratings and peak solder (reflow) temperatures. In the event that a part has multiple moisture sensitivity ratings, only the lowest level per JEDEC standards is shown.
+Refer to the shipping label for the actual reflow temperature that will be used to mount the part to the printed circuit board.
+
+(6)
+      Part marking: There may be an additional marking, which relates to the logo, the lot trace code information, or the environmental category of the part.
+
+Multiple part markings will be inside parentheses. Only one part marking contained in parentheses and separated by a "~" will appear on a part. If a line is indented then it is a continuation of the previous line and the two
+combined represent the entire part marking for that device.
+
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information provided by third parties, and
+makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and continues to take reasonable steps to provide representative
+and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals. TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers
+and other limited information may not be available for release.
+
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+
+
+
+                                                                                                          Addendum-Page 2
+                                                                               PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                                                       3-Sep-2026
+
+
+
+TAPE AND REEL INFORMATION
+
+       REEL DIMENSIONS                                                                      TAPE DIMENSIONS
+                                                                                       K0       P1
+
+
+
+                                                                                                                      B0 W
+                                        Reel
+                                      Diameter
+                                                                                    Cavity           A0
+                                                                A0   Dimension designed to accommodate the component width
+                                                                B0   Dimension designed to accommodate the component length
+                                                                K0   Dimension designed to accommodate the component thickness
+                                                                W    Overall width of the carrier tape
+                                                                P1   Pitch between successive cavity centers
+
+
+                                       Reel Width (W1)
+                              QUADRANT ASSIGNMENTS FOR PIN 1 ORIENTATION IN TAPE
+
+                                                                                                     Sprocket Holes
+
+
+                                                 Q1        Q2          Q1    Q2
+
+                                                 Q3        Q4          Q3    Q4                  User Direction of Feed
+
+
+
+                                                            Pocket Quadrants
+
+
+*All dimensions are nominal
+             Device           Package Package Pins              SPQ       Reel   Reel   A0                  B0         K0     P1     W     Pin1
+                               Type Drawing                             Diameter Width (mm)                (mm)       (mm)   (mm)   (mm) Quadrant
+                                                                          (mm) W1 (mm)
+     TPS16410DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16411DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16412DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16413DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+   TPS16413DRCRG4              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16414DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16415DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16416DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+     TPS16417DRCR              VSON     DRC           10        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+
+
+
+
+                                                                      Pack Materials-Page 1
+                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                              3-Sep-2026
+
+
+
+ TAPE AND REEL BOX DIMENSIONS
+
+
+
+
+                                                               Width (mm)
+                                                                              H
+
+
+
+
+                      W                                   L
+
+
+
+
+*All dimensions are nominal
+             Device           Package Type   Package Drawing   Pins         SPQ    Length (mm)   Width (mm)   Height (mm)
+     TPS16410DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+     TPS16411DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+     TPS16412DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+     TPS16413DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+    TPS16413DRCRG4               VSON             DRC           10          3000      367.0        367.0         35.0
+     TPS16414DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+     TPS16415DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+     TPS16416DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+     TPS16417DRCR                VSON             DRC           10          3000      360.0        360.0         36.0
+
+
+
+
+                                                        Pack Materials-Page 2
+                                                                  GENERIC PACKAGE VIEW
+DRC 10                                                                     VSON - 1 mm max height
+3 x 3, 0.5 mm pitch                                                         PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+               This image is a representation of the package family, actual package may vary.
+                             Refer to the product data sheet for package details.
+
+
+
+
+                                                                                                   4226193/A
+
+
+
+
+                                                    www.ti.com
+                                                                                                                          PACKAGE OUTLINE
+ DRC0010J                                                              SCALE 4.000
+                                                                                                                       VSON - 1 mm max height
+                                                                                                                          PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+                                                       3.1                                       B
+                                 A
+                                                       2.9
+
+
+
+
+              PIN 1 INDEX AREA
+                                                                                                 3.1
+                                                                                                 2.9
+
+
+
+
+                          1.0                                                                                C
+                          0.8
+
+                                                                                                                 SEATING PLANE
+                         0.05
+                         0.00                                                                                    0.08 C
+
+                                                    1.65 0.1
+                                                                               2X (0.5)
+                                                                                                                                        (0.2) TYP
+                       EXPOSED                                                       4X (0.25)
+                    THERMAL PAD
+
+                                     5                                                    6
+
+
+
+                            2X                       11                                          SYMM
+                             2
+                                                                                                             2.4 0.1
+
+
+
+                                                                                          10
+                                     1
+                       8X 0.5                                                                                0.30
+                                                                                                       10X
+                                                                                                             0.18
+                             PIN 1 ID                SYMM
+                                                                                                             0.1     C A B
+                          (OPTIONAL)
+                                                                 0.5                                         0.05     C
+                                                             10X
+                                                                 0.3
+
+
+                                                                                                                                         4218878/B 07/2018
+
+NOTES:
+
+1. All linear dimensions are in millimeters. Any dimensions in parenthesis are for reference only. Dimensioning and tolerancing
+   per ASME Y14.5M.
+2. This drawing is subject to change without notice.
+3. The package thermal pad must be soldered to the printed circuit board for optimal thermal and mechanical performance.
+
+
+
+
+                                                                       www.ti.com
+                                                                                        EXAMPLE BOARD LAYOUT
+ DRC0010J                                                                                             VSON - 1 mm max height
+                                                                                                          PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+                                                                     (1.65)
+                                                                        (0.5)
+
+
+                               10X (0.6)
+
+                                           1
+                                                                                                     10
+
+                         10X (0.24)
+                                                                   11
+                                  SYMM                                                                             (2.4)
+                                                                                                                           (3.4)
+
+
+                                                                                                          (0.95)
+                               8X (0.5)
+
+                                           5                                                         6
+
+                         (R0.05) TYP
+
+                                 ( 0.2) VIA
+                                 TYP
+                                                       (0.25)
+                                                                           (0.575)
+                                                                    SYMM
+
+                                                                        (2.8)
+
+                                                      LAND PATTERN EXAMPLE
+                                                          EXPOSED METAL SHOWN
+                                                               SCALE:20X
+
+
+
+                                                                                                              0.07 MIN
+                    0.07 MAX                        EXPOSED METAL                                             ALL AROUND
+                ALL AROUND
+                                                                                EXPOSED METAL
+
+
+
+                  SOLDER MASK                       METAL                            METAL UNDER                            SOLDER MASK
+                  OPENING                                                            SOLDER MASK                            OPENING
+                                 NON SOLDER MASK
+                                                                                                         SOLDER MASK
+                                     DEFINED
+                                                                                                           DEFINED
+                                   (PREFERRED)
+
+                                                           SOLDER MASK DETAILS
+                                                                                                                                   4218878/B 07/2018
+
+NOTES: (continued)
+
+4. This package is designed to be soldered to a thermal pad on the board. For more information, see Texas Instruments literature
+   number SLUA271 (www.ti.com/lit/slua271).
+5. Vias are optional depending on application, refer to device data sheet. If any vias are implemented, refer to their locations shown
+   on this view. It is recommended that vias under paste be filled, plugged or tented.
+
+
+
+
+                                                                         www.ti.com
+                                                                                     EXAMPLE STENCIL DESIGN
+ DRC0010J                                                                                     VSON - 1 mm max height
+                                                                                                PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+                                                                     2X (1.5)
+                                                                      (0.5)
+                                                                     SYMM
+                                                                                           EXPOSED METAL
+                                                                11                         TYP
+
+
+                                     10X (0.6)
+                                 1
+                                                                                                   10
+                                                                                                                    (1.53)
+                 10X (0.24)                                                                                  2X
+                                                                                                           (1.06)
+
+
+
+                       SYMM
+
+
+
+                                                                                                        (0.63)
+
+
+                      8X (0.5)
+
+                                                                                                   6
+                                 5
+
+                (R0.05) TYP
+                                                    4X (0.34)
+
+
+                                                                         4X (0.25)
+                                                                      (2.8)
+
+
+                                                     SOLDER PASTE EXAMPLE
+                                                   BASED ON 0.125 mm THICK STENCIL
+
+                                                           EXPOSED PAD 11:
+                                                 80% PRINTED SOLDER COVERAGE BY AREA
+                                                               SCALE:25X
+
+
+
+
+                                                                                                                       4218878/B 07/2018
+
+NOTES: (continued)
+
+6. Laser cutting apertures with trapezoidal walls and rounded corners may offer better paste release. IPC-7525 may have alternate
+   design recommendations.
+
+
+
+
+                                                                        www.ti.com
+                                         IMPORTANT NOTICE AND DISCLAIMER
+TI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE
+DESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS”
+AND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD
+PARTY INTELLECTUAL PROPERTY RIGHTS.
+These resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate
+TI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable
+standards, and any other safety, security, regulatory or other requirements.
+These resources are subject to change without notice. TI grants you permission to use these resources only for development of an
+application that uses the TI products described in the resource. Other reproduction and display of these resources is prohibited. No license
+is granted to any other TI intellectual property right or to any third party intellectual property right. TI disclaims responsibility for, and you fully
+indemnify TI and its representatives against any claims, damages, costs, losses, and liabilities arising out of your use of these resources.
+TI’s products are provided subject to TI’s Terms of Sale, TI’s General Quality Guidelines, or other applicable terms available either on
+ti.com or provided in conjunction with such TI products. TI’s provision of these resources does not expand or otherwise alter TI’s applicable
+warranties or warranty disclaimers for TI products. Unless TI explicitly designates a product as custom or customer-specified, TI products
+are standard, catalog, general purpose devices.
+TI objects to and rejects any additional or different terms you may propose.
+IMPORTANT NOTICE
+
+                                                Copyright © 2026, Texas Instruments Incorporated
+                                                                Last updated 10/2025
+

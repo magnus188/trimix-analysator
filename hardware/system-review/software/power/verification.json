@@ -1,0 +1,50 @@
+{
+  "generated_utc": "2026-09-07T11:24:38.622063+00:00",
+  "scope": "Independent power/environment register-transport tests and bounded integration code review",
+  "physical_hardware_tested": false,
+  "assertions_passed": 67,
+  "assertions_failed": 0,
+  "asan_ubsan_assertions_passed": 67,
+  "asan_ubsan_diagnostics": 0,
+  "commands": [
+    "cmake --build simulator/build --target test_power_environment -j 4",
+    "simulator/build/test_power_environment",
+    "clang -std=c11 -fsanitize=address,undefined -fno-omit-frame-pointer -g -Imain -c main/third_party/bme280/bme280.c -o /tmp/trimix-independent-power/bme280.o",
+    "clang++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Isimulator/stubs -Imain -Imain/board tests/test_power_environment.cpp main/sensors/power_monitor.cpp main/sensors/environment_monitor.cpp /tmp/trimix-independent-power/bme280.o -o /tmp/trimix-independent-power/test_power_environment",
+    "/tmp/trimix-independent-power/test_power_environment"
+  ],
+  "source_sha256": {
+    "tests/test_power_environment.cpp": "a0f926d86fc5bca86c04ca68947fdb791407a6626e88b8d5ebb53bbb0cc8d749",
+    "main/sensors/power_monitor.cpp": "3d5127607864c243d1df1de7e2e086a2bd6a41aeaa5dcaa991186b48058b90ae",
+    "main/sensors/power_monitor.h": "c8c9874ed32a599eea52afaf41e9cc821348e7bf7b9649455e6503683c227502",
+    "main/sensors/environment_monitor.cpp": "9dc822ab1afaeba79b8c2421ab7d5938b98a92d0287fc08c942b9b50458582ef",
+    "main/sensors/environment_monitor.h": "c4def80c36b07d106b17ac8427bc334bfcec2bb2e22d3deb8cdbe8a3cee4832e",
+    "main/sensors/system_i2c.cpp": "9d9ad45d5b76b0d0feb2677baf90f5d3f0beb916f0c50cb53a9a37bd1aa93ad8",
+    "main/sensors/system_i2c.h": "803bb5c753d69e8a8a41ada789a7c79d0ad3a927b503c6cd776284822144ffb3",
+    "main/sensors/acquisition_engine.cpp": "f913ba653105977fa6d3cdf5b5bab19ba460dd5d37d75af5e03009627a61c1a3",
+    "main/sensors/sensor_hardware.cpp": "ac5c57673b310c198790c01a02f49ea75c708c40bb13122b6731bfda388af92a",
+    "main/services/system_power.cpp": "93ef82caaa187bb79bb0d75a61885f72d7237cd482d15ea2e30668a8ffcac7c5",
+    "main/services/battery_service.cpp": "cab5e4e072d6c611f680ef37ddb44dc5241af1327dfe7224a694237471ffd3fc",
+    "main/hardware_contract.h": "96802cc5ef15c80483ff27364a203499c5ea250584b6a4e0e80f11fe7cb2cc82",
+    "main/third_party/bme280/bme280.c": "7de1e7d3082b85e90db1daa34573ba77553a7caf44e06e216de5216b7ed4fa12",
+    "main/third_party/bme280/bme280.h": "6f144510e103f0ab1a24244a71f7ff8ab7f23147b4899aa7bfd0f526062d2163",
+    "main/third_party/bme280/bme280_defs.h": "541bbd32498b8603bc8fe8eafac26b15d09fb032d37448ca88e7aa398d6a0769",
+    "main/third_party/bme280/UPSTREAM.json": "941253072ccfcd8265a804ffb7c4308ba9ec115ae58dc47f61e03cbcb6fdcee8",
+    "simulator/CMakeLists.txt": "e0f05a36f0e9f4cd5c0cd7568519b3bd827ff9b1a1a54fbee5be6d3470cf5902"
+  },
+  "logs": {
+    "asan-ubsan.log": "6a696c2a8d86640d7e7afa917a6eec85d176afbf639e2f6e9e78ba2fae571e69",
+    "host-tests.log": "6a696c2a8d86640d7e7afa917a6eec85d176afbf639e2f6e9e78ba2fae571e69",
+    "host-build.log": "71f992b4cf3b3a445768c780725f9b1af9fbf1b1d5b70c0bac2cad855c044c14"
+  },
+  "documentation_sha256": "5b0a4200add5ef9f9f488fee59930ce6566941c02c9f520ad6f52611f4b0d378",
+  "binary_sha256": {
+    "simulator/build/test_power_environment": "1f205699494e94bcaf5e97ab144cc4c2093299e518c1f2d6ede1dd363b0dbc13",
+    "/tmp/trimix-independent-power/test_power_environment": "860dfae5c4d863a5f791208dee531657068da864ad3d81e36bb903c1c7fdedd7"
+  },
+  "limitations": [
+    "Register-level host fixtures do not execute physical I2C, GPIO ISR, FreeRTOS scheduling, power-cut or charge behavior.",
+    "The synthetic humidity fixture is a compensation test, not a sensor accuracy qualification.",
+    "Actual startup interrupt timing, rail collapse, charging and sensor thermal validation remain pending."
+  ]
+}

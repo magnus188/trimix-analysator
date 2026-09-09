@@ -1,0 +1,178 @@
+{
+  "analysis": "closed-form integration of visually digitized typical C(V), no actual SPICE or physical measurement",
+  "curves": {
+    "C2012X5R1A476M125AC": {
+      "nominal_uF": 47,
+      "points_V_ratio": [
+        [
+          0,
+          1
+        ],
+        [
+          1.25,
+          0.88
+        ],
+        [
+          2,
+          0.7
+        ],
+        [
+          2.5,
+          0.59
+        ],
+        [
+          3.125,
+          0.49
+        ],
+        [
+          4,
+          0.38
+        ],
+        [
+          5,
+          0.3
+        ],
+        [
+          6.3,
+          0.23
+        ],
+        [
+          8,
+          0.17
+        ],
+        [
+          10,
+          0.13
+        ]
+      ],
+      "screening_retained_factor_6p5V": 0.22,
+      "calculations": [
+        {
+          "voltage_V": 4.8,
+          "typical_graph_interpolated_uF": 14.852,
+          "nominal_integrated_charge_uC": 145.066675,
+          "nameplate_plus20pct_charge_sensitivity_uC": 174.08001,
+          "equivalent_time_ms_at20mA_NOT_guaranteed": 7.25333375,
+          "equivalent_time_ms_at40mA_NOT_guaranteed": 3.626666875,
+          "meaning": "20/40mA are TI voltage-characterization test conditions only, not guaranteed spare startup current; Q/I is illustrative."
+        },
+        {
+          "voltage_V": 6.4,
+          "typical_graph_interpolated_uF": 10.644117647058824,
+          "nominal_integrated_charge_uC": 165.22608088235293,
+          "nameplate_plus20pct_charge_sensitivity_uC": 198.2712970588235,
+          "equivalent_time_ms_at20mA_NOT_guaranteed": 8.261304044117647,
+          "equivalent_time_ms_at40mA_NOT_guaranteed": 4.130652022058824,
+          "meaning": "20/40mA are TI voltage-characterization test conditions only, not guaranteed spare startup current; Q/I is illustrative."
+        },
+        {
+          "voltage_V": 6.5,
+          "typical_graph_interpolated_uF": 10.478235294117647,
+          "nominal_integrated_charge_uC": 166.28219852941177,
+          "nameplate_plus20pct_charge_sensitivity_uC": 199.53863823529412,
+          "equivalent_time_ms_at20mA_NOT_guaranteed": 8.31410992647059,
+          "equivalent_time_ms_at40mA_NOT_guaranteed": 4.157054963235295,
+          "meaning": "20/40mA are TI voltage-characterization test conditions only, not guaranteed spare startup current; Q/I is illustrative."
+        }
+      ],
+      "screening_at6p5V": {
+        "bias_estimate_uF": 10.34,
+        "tolerance_temp_uF": 7.0312,
+        "plus_unqualified_10pct_aging_allowance_uF": 6.32808,
+        "plus_additional_unqualified_20pct_measurement_ripple_sensitivity_uF": 5.062464
+      }
+    },
+    "C3216X5R1E226M160AB": {
+      "nominal_uF": 22,
+      "points_V_ratio": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0.99
+        ],
+        [
+          2,
+          0.9
+        ],
+        [
+          3.125,
+          0.775
+        ],
+        [
+          4,
+          0.68
+        ],
+        [
+          5,
+          0.58
+        ],
+        [
+          6.25,
+          0.48
+        ],
+        [
+          8,
+          0.375
+        ],
+        [
+          10,
+          0.29
+        ],
+        [
+          12.5,
+          0.22
+        ],
+        [
+          16,
+          0.165
+        ],
+        [
+          25,
+          0.1
+        ]
+      ],
+      "screening_retained_factor_6p5V": 0.45,
+      "calculations": [
+        {
+          "voltage_V": 4.8,
+          "typical_graph_interpolated_uF": 13.2,
+          "nominal_integrated_charge_uC": 88.6765,
+          "nameplate_plus20pct_charge_sensitivity_uC": 106.4118,
+          "equivalent_time_ms_at20mA_NOT_guaranteed": 4.433825000000001,
+          "equivalent_time_ms_at40mA_NOT_guaranteed": 2.2169125000000003,
+          "meaning": "20/40mA are TI voltage-characterization test conditions only, not guaranteed spare startup current; Q/I is illustrative."
+        },
+        {
+          "voltage_V": 6.4,
+          "typical_graph_interpolated_uF": 10.362,
+          "nominal_integrated_charge_uC": 107.41665,
+          "nameplate_plus20pct_charge_sensitivity_uC": 128.89998,
+          "equivalent_time_ms_at20mA_NOT_guaranteed": 5.370832500000001,
+          "equivalent_time_ms_at40mA_NOT_guaranteed": 2.6854162500000003,
+          "meaning": "20/40mA are TI voltage-characterization test conditions only, not guaranteed spare startup current; Q/I is illustrative."
+        },
+        {
+          "voltage_V": 6.5,
+          "typical_graph_interpolated_uF": 10.229999999999999,
+          "nominal_integrated_charge_uC": 108.44625,
+          "nameplate_plus20pct_charge_sensitivity_uC": 130.1355,
+          "equivalent_time_ms_at20mA_NOT_guaranteed": 5.4223125,
+          "equivalent_time_ms_at40mA_NOT_guaranteed": 2.71115625,
+          "meaning": "20/40mA are TI voltage-characterization test conditions only, not guaranteed spare startup current; Q/I is illustrative."
+        }
+      ],
+      "screening_at6p5V": {
+        "bias_estimate_uF": 9.9,
+        "tolerance_temp_uF": 6.732,
+        "plus_unqualified_10pct_aging_allowance_uF": 6.058800000000001,
+        "plus_additional_unqualified_20pct_measurement_ripple_sensitivity_uF": 4.847040000000001
+      }
+    }
+  },
+  "guaranteed_spec_scope": "Nominal\u00b120%, X5R\u00b115% temperature class, voltage rating and dimension tolerances are manufacturer part specifications under their stated tests. Typical bias charts, multiplied combined effects and illustrative aging/ripple factors are not guaranteed minimum effective capacitance.",
+  "startup_source": "TI BQ25895 RevC table7.5:50mA minimum REGN current limit at VBUS9V,REGN3.8V only; REGN voltage tested at20mA/5V and40mA/9V. \u00a78.2.3.1:220ms precedes REGN enable, not a cap-charge time budget. No guaranteed external-cap maximum/ramp or spare charging-current bound found. No conclusion of guaranteed startup at5V or cold-limited source.",
+  "recommendation": "47uF10V0805 gives similar/slightly better conditional retained-cap margin and a much shorter layout than the existing22uF25V1206. Prototype only after mechanical acceptance and explicit startup/ripple/temperature checks; EL13 cold/depleted-source startup remains open."
+}

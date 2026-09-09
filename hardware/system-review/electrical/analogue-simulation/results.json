@@ -1,0 +1,471 @@
+{
+  "method": "Exact linear resistor/capacitor nodal analysis, generalized eigen step and analytical Johnson-noise integration; independently cross-checked with SciPy expm and numerical PSD integration. NOT SPICE.",
+  "physical_tested": false,
+  "ngspice_available": false,
+  "sensor_or_IC_models_used": false,
+  "temperature_noise_K": 298.15,
+  "source_impedance_status": "All swept cell/MD62 source resistances are explicit hypothetical assumptions; none is a sensor measurement or datasheet limit.",
+  "assumed_source_ohms": [
+    0,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000
+  ],
+  "corner_count_total": 394752,
+  "cross_checks_max_step_absolute_error": 2.1316282072803006e-14,
+  "components": {
+    "C401": {
+      "value": "1u / 16V X7R / 10%",
+      "mpn": "C0603C105K4RACTU",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "C402": {
+      "value": "10n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C403": {
+      "value": "10n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C404": {
+      "value": "1u / 16V X7R / 10%",
+      "mpn": "C0603C105K4RACTU",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "C405": {
+      "value": "10n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C406": {
+      "value": "10n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C407": {
+      "value": "100n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H104K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA"
+    },
+    "C408": {
+      "value": "1u / 16V X7R / 10%",
+      "mpn": "C0603C105K4RACTU",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "C409": {
+      "value": "1u / 16V X7R / 10%",
+      "mpn": "C0603C105K4RACTU",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "R401": {
+      "value": "100R / 0.1%",
+      "mpn": "RT0603BRD07100RL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R402": {
+      "value": "100R / 0.1%",
+      "mpn": "RT0603BRD07100RL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R403": {
+      "value": "1M / 1%",
+      "mpn": "RC0603FR-071ML",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    },
+    "R404": {
+      "value": "1M / 1%",
+      "mpn": "RC0603FR-071ML",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    },
+    "R405": {
+      "value": "100R / 0.1%",
+      "mpn": "RT0603BRD07100RL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R406": {
+      "value": "100R / 0.1%",
+      "mpn": "RT0603BRD07100RL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R407": {
+      "value": "1M / 1%",
+      "mpn": "RC0603FR-071ML",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    },
+    "R408": {
+      "value": "1M / 1%",
+      "mpn": "RC0603FR-071ML",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    },
+    "R409": {
+      "value": "10k / 0.1%",
+      "mpn": "RT0603BRD0710KL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R410": {
+      "value": "10k / 0.1%",
+      "mpn": "RT0603BRD0710KL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "U401": {
+      "value": "ADS122C04IPWR",
+      "mpn": "ADS122C04IPWR",
+      "datasheet": "https://www.ti.com/lit/ds/symlink/ads122c04.pdf"
+    },
+    "C501": {
+      "value": "4.7u / 16V X5R / 10%",
+      "mpn": "C1608X5R1C475K080AC",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X5R1C475K080AC"
+    },
+    "C502": {
+      "value": "4.7u / 16V X5R / 10%",
+      "mpn": "C1608X5R1C475K080AC",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X5R1C475K080AC"
+    },
+    "C503": {
+      "value": "10n / 50V X7R / 10% / DNP",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C504": {
+      "value": "100n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H104K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA"
+    },
+    "C505": {
+      "value": "1u / 16V X7R / 10%",
+      "mpn": "C0603C105K4RACTU",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "C506": {
+      "value": "10n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C507": {
+      "value": "10n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H103K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H103K080AA"
+    },
+    "C508": {
+      "value": "100n / 50V X7R / 10%",
+      "mpn": "C1608X7R1H104K080AA",
+      "datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA"
+    },
+    "C509": {
+      "value": "1u / 16V X7R / 10%",
+      "mpn": "C0603C105K4RACTU",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0603C105K4RACTU"
+    },
+    "R501": {
+      "value": "100k",
+      "mpn": "RC0603FR-07100KL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    },
+    "R504": {
+      "value": "10k / 0.1%",
+      "mpn": "RT0603BRD0710KL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R505": {
+      "value": "10k / 0.1%",
+      "mpn": "RT0603BRD0710KL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R506": {
+      "value": "680R / 0.1%",
+      "mpn": "RT0603BRD07680RL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "R507": {
+      "value": "680R / 0.1%",
+      "mpn": "RT0603BRD07680RL",
+      "datasheet": "https://yageogroup.com/content/datasheet/asset/file/pyu-rt_1-to-0-01_rohs_l"
+    },
+    "RN501": {
+      "value": "2x2k / 1:1 matched",
+      "mpn": "ACASN2001U2001P1AT",
+      "datasheet": "https://www.vishay.com/doc?28770="
+    },
+    "U501": {
+      "value": "TPS7A2030PDBVR",
+      "mpn": "TPS7A2030PDBVR",
+      "datasheet": "https://www.ti.com/lit/ds/symlink/tps7a20.pdf"
+    },
+    "U502": {
+      "value": "ADS122C04IPWR",
+      "mpn": "ADS122C04IPWR",
+      "datasheet": "https://www.ti.com/lit/ds/symlink/ads122c04.pdf"
+    }
+  },
+  "open_O2": {
+    "tau_nominal_s": 2.01,
+    "initial_tolerance_symmetric_bounds": {
+      "gain_min": 0,
+      "gain_max": 0,
+      "tau_min_s": 1.7909099999999998,
+      "tau_max_s": 2.2331100000000004
+    },
+    "residual_100ms": 0.95146607816898,
+    "residual_10s": 0.0069076597243646004,
+    "residual_20s": 4.7715762867608825e-05,
+    "note": "ADC leakage/switching and unmeasured sensor/cable leakage can dominate an open input."
+  },
+  "input_current_sensitivity": [
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 0,
+      "offset_per_1nA_into_AINplus_uV": 0.09999000099988188,
+      "offset_per_1nA_into_AINminus_uV": -0.0999900009999401,
+      "opposing_per_pin_typical_current_scale_uV": 0.199980001999822,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 100,
+      "offset_per_1nA_into_AINplus_uV": 0.14997750337451,
+      "offset_per_1nA_into_AINminus_uV": -0.14997750337451,
+      "opposing_per_pin_typical_current_scale_uV": 0.29995500674902,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 1000,
+      "offset_per_1nA_into_AINplus_uV": 0.5996402158704587,
+      "offset_per_1nA_into_AINminus_uV": -0.5996402158705169,
+      "opposing_per_pin_typical_current_scale_uV": 1.1992804317409755,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 10000,
+      "offset_per_1nA_into_AINplus_uV": 5.07412197791267,
+      "offset_per_1nA_into_AINminus_uV": -5.07412197791267,
+      "opposing_per_pin_typical_current_scale_uV": 10.14824395582534,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 100000,
+      "offset_per_1nA_into_AINplus_uV": 47.70974192934012,
+      "offset_per_1nA_into_AINminus_uV": -47.70974192934006,
+      "opposing_per_pin_typical_current_scale_uV": 95.4194838586802,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 1000000,
+      "offset_per_1nA_into_AINplus_uV": 333.37777481501223,
+      "offset_per_1nA_into_AINminus_uV": -333.3777748150123,
+      "opposing_per_pin_typical_current_scale_uV": 666.7555496300246,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 0,
+      "offset_per_1nA_into_AINplus_uV": 1.6799999999999997,
+      "offset_per_1nA_into_AINminus_uV": -0.68,
+      "opposing_per_pin_typical_current_scale_uV": 11.8,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 100,
+      "offset_per_1nA_into_AINplus_uV": 1.6799999999999997,
+      "offset_per_1nA_into_AINminus_uV": -0.78,
+      "opposing_per_pin_typical_current_scale_uV": 12.3,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 1000,
+      "offset_per_1nA_into_AINplus_uV": 1.6799999999999997,
+      "offset_per_1nA_into_AINminus_uV": -1.6799999999999997,
+      "opposing_per_pin_typical_current_scale_uV": 16.799999999999997,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 10000,
+      "offset_per_1nA_into_AINplus_uV": 1.6799999999999997,
+      "offset_per_1nA_into_AINminus_uV": -10.68,
+      "opposing_per_pin_typical_current_scale_uV": 61.8,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 100000,
+      "offset_per_1nA_into_AINplus_uV": 1.6799999999999997,
+      "offset_per_1nA_into_AINminus_uV": -100.68,
+      "opposing_per_pin_typical_current_scale_uV": 511.79999999999995,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 1000000,
+      "offset_per_1nA_into_AINplus_uV": 1.6799999999999997,
+      "offset_per_1nA_into_AINminus_uV": -1000.6800000000002,
+      "opposing_per_pin_typical_current_scale_uV": 5011.8,
+      "note": "Assumed independent opposing currents; TI current specs are typical only, not guaranteed bounds."
+    }
+  ],
+  "conditional_cap_leakage_sweep": [
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 0,
+      "gain_with_100Mohm_differential_leakage": 0.9998980104029389
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 100,
+      "gain_with_100Mohm_differential_leakage": 0.9998470234054185
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 1000,
+      "gain_with_100Mohm_differential_leakage": 0.9993883743149199
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 10000,
+      "gain_with_100Mohm_differential_leakage": 0.9948249207621956
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 100000,
+      "gain_with_100Mohm_differential_leakage": 0.9513824538436805
+    },
+    {
+      "channel": "O2",
+      "assumed_source_ohm": 1000000,
+      "gain_with_100Mohm_differential_leakage": 0.6622069237707123
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 0,
+      "gain_with_100Mohm_differential_leakage": 0.9999764005569468
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 100,
+      "gain_with_100Mohm_differential_leakage": 0.9999754006051449
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 1000,
+      "gain_with_100Mohm_differential_leakage": 0.9999664011289221
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 10000,
+      "gain_with_100Mohm_differential_leakage": 0.999876415275072
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 100000,
+      "gain_with_100Mohm_differential_leakage": 0.9989774466855645
+    },
+    {
+      "channel": "He",
+      "assumed_source_ohm": 1000000,
+      "gain_with_100Mohm_differential_leakage": 0.9900758754546596
+    }
+  ],
+  "capacitor_scope": "Initial +/-10%; full rated X7R TCC +/-15%. The initial_plus_temperature upper-envelope scenario uses max1.15*TOL. It does not specify a guaranteed minimum effectiveC under DC bias, aging, AC amplitude, humidity or process. The50% case is a labelled stress assumption.",
+  "adc": {
+    "O2_profile": 1,
+    "He_profile": 2,
+    "O2_gain": 8,
+    "He_gain": 1,
+    "He_PGA_bypass": true,
+    "internal_reference_V": 2.048,
+    "data_rate_SPS": 20,
+    "preconversion_ms": 100,
+    "O2_full_scale_nominal_V": 0.256,
+    "He_full_scale_nominal_V": 2.048,
+    "O2_RMS_typical_uV": 0.64,
+    "He_RMS_typical_uV": 5.04,
+    "note": "ADC noise already includes its internal digital filter. External resistor full-band RMS is an upper comparison for this passive model; do not assume20SPS means a10Hz brick-wall filter or delivered20Hz gas frames."
+  },
+  "unmodeled": [
+    "Sensor source impedance versus gas, temperature, frequency and age; electrochemical noise and MD62 thermal nonlinearity.",
+    "ADC dynamic input loading, charge injection, offset/gain/reference drift, digital filter transfer, aliasing, coherent noise and conversion timing jitter.",
+    "LDO output noise, dropout, current limit, board/cable IR drop and thermal behaviour; BQ/TPS switching ripple and actual layout coupling.",
+    "PCB/surface leakage, moisture/flux, connector noise, dielectric absorption, microphonics, ESR/ESL, component aging and full DC-bias capacitance guarantee.",
+    "Real cable capacitance/common-mode coupling and non-passive input transients. Both boardO2inputs and their sharedVMID are included; the unused connector is assumed open."
+  ],
+  "versions": {
+    "python": "3.14.6",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.1"
+  },
+  "source_files_sha256": {
+    "hardware/system-review/electrical/analogue-simulation/input-netlist.xml": "b7eef4f355909249b364aaed34577ab2fc210bd2f97f4282d0c618ee8d8e0666",
+    "main/sensors/ads122c04.cpp": "b0028bf0e1d60f0f61c7c04d2a67a1d0e269ccf66977350c1130e8c8225619ff",
+    "main/sensors/gas_acquisition_config.h": "e9f3370e29fad3694793312182f1ef5d8b2417cf0f0505bcb46a99515ac83da8"
+  },
+  "nominal_unselected_open_channel_step_delta": 1.2212453270876722e-15,
+  "conditional_adc_headroom": [
+    {
+      "assumed_HOST_V": 3.0,
+      "O2_input_envelope_V": [
+        1.36902608,
+        1.6309739199999997
+      ],
+      "PGA_allowed_at_fullscale_V": [
+        0.32819200000000004,
+        2.671808
+      ],
+      "minimum_voltage_margin_V": 1.04083408,
+      "He_max_midpoint_assumed_V": 3.045,
+      "He_bypass_upper_margin_V": 0.05500000000000016
+    },
+    {
+      "assumed_HOST_V": 3.3,
+      "O2_input_envelope_V": [
+        1.51887608,
+        1.7811239199999995
+      ],
+      "PGA_allowed_at_fullscale_V": [
+        0.32819200000000004,
+        2.971808
+      ],
+      "minimum_voltage_margin_V": 1.19068408,
+      "He_max_midpoint_assumed_V": 3.045,
+      "He_bypass_upper_margin_V": 0.355
+    },
+    {
+      "assumed_HOST_V": 3.6,
+      "O2_input_envelope_V": [
+        1.6687260800000001,
+        1.9312739199999998
+      ],
+      "PGA_allowed_at_fullscale_V": [
+        0.32819200000000004,
+        3.271808
+      ],
+      "minimum_voltage_margin_V": 1.34053408,
+      "He_max_midpoint_assumed_V": 3.045,
+      "He_bypass_upper_margin_V": 0.6550000000000002
+    }
+  ],
+  "reference_only_fullscale_O2_V": [
+    0.255616,
+    0.256384
+  ],
+  "minimum_HOST_for_He_passive_midpoint_up_to_3_045V": 2.945,
+  "noise_budget_scope": {
+    "maximum_resistor_RMS_initial_corners_25C_uV": 0.06746130880130614,
+    "maximum_resistor_RMS_TCC_corners_25C_uV": 0.0731720630165654,
+    "O2_LSB_nV": 30.517578125,
+    "He_LSB_nV": 244.140625,
+    "He_sensitivity_for_3sigma_0_5pp_ADC_noise_alone_uV_per_pp": 30.240000000000002,
+    "He_sensitivity_for_3sigma_0_125pp_ADC_noise_allocation_uV_per_pp": 120.96000000000001,
+    "claim": "Required-sensitivity arithmetic only. No MD62 sensitivity or achieved gas accuracy is established."
+  }
+}

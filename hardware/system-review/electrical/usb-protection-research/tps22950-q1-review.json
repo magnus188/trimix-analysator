@@ -1,0 +1,80 @@
+{
+  "timestamp_utc": "2026-09-07T12:45:59Z",
+  "orderable": "TPS22950CQDDCRQ1",
+  "recommendation": "Published-data-supported leaded alternative for nominal50mA role; no industrial-C substitution and no overall USB transient qualification.",
+  "production_edits": false,
+  "datasheet": "SLVSGP6A, December2022; ordering addendum31Oct2025",
+  "active_production": true,
+  "marking": "950Q",
+  "ilim_at_19200_ohms_ma": {
+    "min": 34,
+    "typ": 50,
+    "max": 66
+  },
+  "temperature_c": [
+    -40,
+    125
+  ],
+  "input_operating_v": [
+    1.8,
+    5.5
+  ],
+  "input_absolute_max_v": 6,
+  "iq_max_ua": 60,
+  "pin_map": {
+    "1": "ON",
+    "2": "VIN",
+    "3": "GND",
+    "4": "ILIM",
+    "5": "VOUT",
+    "6": "FLT"
+  },
+  "mechanical": {
+    "drawing": "DDC0006A 4214841/E08/2024",
+    "maximum_overall_mm": [
+      3.05,
+      3.05,
+      1.1
+    ],
+    "maximum_molded_body_xy_mm": [
+      3.05,
+      1.75
+    ],
+    "pitch_mm": 0.95,
+    "example_land_mm": [
+      1.1,
+      0.6
+    ],
+    "opposing_pad_centers_mm": 2.7,
+    "visually_inspected": true
+  },
+  "caveats": [
+    "Inventory not confirmed available.",
+    "Table prints VOUT-VIN=0.3V; apparent forward-current test-condition sign typo retained.",
+    "Typical resistor equation cannot establish unlisted worst-case tolerance points.",
+    "Input overvoltage beyond5.5Voperating/6Vabsolute remains a separate system issue."
+  ],
+  "source_files": {
+    "tps22950-q1-review-datasheet.pdf": {
+      "url": "https://www.ti.com/lit/ds/symlink/tps22950-q1.pdf",
+      "sha256": "68091fcd2738730173eabceefe5845683be207605672ee3cf7774670574be08d",
+      "bytes": 980202
+    },
+    "tps22950-q1-review-package.pdf": {
+      "url": "https://www.ti.com/lit/pdf/MPDS124I",
+      "sha256": "005fbb4a48c26e6aa55b96193289b0c5fb96c443b6ad3263b70b5962edf071fb",
+      "bytes": 287959
+    },
+    "tps22950-q1-review-orderable.html": {
+      "url": "https://www.ti.com/product/TPS22950-Q1/part-details/TPS22950CQDDCRQ1",
+      "sha256": "540853bee527539c7b4408f7d47efb90e8193d5b6493adace12d233b7605bcaa",
+      "bytes": 65445
+    }
+  },
+  "support_clarification": {
+    "url": "https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum/1232889/tps22950-functional-difference-between-tps22950-q1-and-tps22950c",
+    "author": "Elizabeth Higgins, TI",
+    "retrieval": "Primary TI search extract; direct forum fetch403. Q1 datasheet and exact orderable independently available.",
+    "finding": "Industrial C below0.5A not tested/guaranteed; Q1 differs in supported range."
+  }
+}

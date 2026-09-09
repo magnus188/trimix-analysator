@@ -1,0 +1,13 @@
+Role,Quantity,Manufacturer,MPN,Value,Package,Qualification note,Primary source
+Upstream OVP,1,Texas Instruments,TPS259470ARPWR,Adjustable OVLO auto-retry,RPW0010A 10-pin HotRod QFN,ACTIVE exact orderable; use AUXOFF rather than FLT for OVLO clear; transient qualification pending,https://www.ti.com/lit/ds/symlink/tps25947.pdf
+OVLO upper series 1,1,Vishay,TNPW060334K0BYEA,34.0k 0.1% 10ppm/K,0603,Manufacturer ordering-table candidate; exact purchase availability not verified,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+OVLO upper series 2,1,Vishay,TNPW0603649RBYEA,649R 0.1% 10ppm/K,0603,Manufacturer ordering-table candidate; exact purchase availability not verified,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+OVLO lower,1,Vishay,TNPW060310K0BYEA,10.0k 0.1% 10ppm/K,0603,Manufacturer ordering-table candidate; exact purchase availability not verified,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+UVLO upper,1,Vishay,TNPW060321K5BEEA,21.5k 0.1% 25ppm/K,0603,Manufacturer ordering-table candidate; exact purchase availability not verified,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+UVLO lower,1,Vishay,TNPW060310K0BEEA,10.0k 0.1% 25ppm/K,0603,Manufacturer ordering-table candidate; exact purchase availability not verified,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+Current limit,1,Vishay,TNPW06031K65BEEA,1.65k 0.1% 25ppm/K,0603,Manufacturer ordering-table candidate; TI table limit 1.8 to2.2A before resistor tolerance,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+Output bleed,1,Vishay,TNPW060310K0BEEA,10.0k 0.1% 25ppm/K,0603,Conservative review uses wider 1% plus50ppm bound; may reuse already qualified ordinary10k,https://www.vishay.com/docs/28758/tnpw_e3.pdf
+Output capacitor,1,TDK,C3216X7R1E475K160AC,4.7uF 25V X7R 10%,1206 max1.8mmH,Primary DC-bias curve inspected; effective2.912uF engineering estimate not guaranteed corner,https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3216x7r1e475k160ac.pdf
+Input capacitor,1,TDK,C1608X7R1H104K080AA,100nF 50V X7R 10%,0603 max0.9mmH,Existing project standard qualified capacitor,https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA
+Cold-start slew capacitor,1,TDK,C1608C0G1H332J080AA,3.3nF 50V C0G 5%,0603 max0.9mmH,Exact primary part page; bypassed during470 OVLO recovery,https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608C0G1H332J080AA
+Shared pull-up replacement proposal,1,Vishay,TNPW060347K0FHEA,47k 1% 50ppm/K,0603,Optional replacement for existing10k on CC-IRQ/MR; check combined leakage and GPIO rise times,https://www.vishay.com/docs/28758/tnpw_e3.pdf

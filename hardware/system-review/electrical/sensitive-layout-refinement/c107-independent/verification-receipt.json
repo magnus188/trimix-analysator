@@ -1,0 +1,157 @@
+{
+  "created_utc": "2026-09-08T00:58:07.794464+00:00",
+  "status": "REJECTED_NATIVE_GEOMETRY_DO_NOT_MERGE",
+  "source_sha256": "9f274fdf198f1bcb871a4fc360e76693f8a5b048553e6a02998141737956514f",
+  "candidate_sha256": "ded5e2fc62d36d771e89bb610a94dc2f223bbf92ca4b56afbe9cf1eec0114038",
+  "unconnected": 0,
+  "parity": 0,
+  "errors": 8,
+  "warnings": 4,
+  "types": {
+    "shorting_items": 3,
+    "clearance": 1,
+    "hole_clearance": 1,
+    "solder_mask_bridge": 3,
+    "track_dangling": 2,
+    "silk_over_copper": 2
+  },
+  "canonical_edited": false,
+  "CAD_fit_qualified": false,
+  "command": "/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli pcb drc --refill-zones --save-board --schematic-parity --format json -o candidate/drc.json candidate/Trimix_Analyzer.kicad_pcb",
+  "source_dimensions": {
+    "path": "hardware/system-review/electrical/sources/c3216x5r1e226m160ab.pdf",
+    "sha256": "f6e9a7acbbb58da5881fdf7d8b5bc813bf3560bfccd05e659ed3b9cbedb2e770",
+    "body_max_mm": [
+      3.4,
+      1.8,
+      1.8
+    ]
+  },
+  "evidence": [
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/README.md",
+      "sha256": "4399d939b1e2b98d981df28b3cbcb1e271ee4bb7b3e905ba469920479a54c4e7"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/build_bridge.py",
+      "sha256": "f1733c3ea06aaafe888b5f774d71f1c421befc1080b58d95cf69e1030493d320"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/candidate/GND-reachable.json",
+      "sha256": "f66f4f358b20bcc1d691ad957fba1942869a0dbdab3efd2d57d61d6582b847a5"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/candidate/Trimix_Analyzer.kicad_pcb",
+      "sha256": "ded5e2fc62d36d771e89bb610a94dc2f223bbf92ca4b56afbe9cf1eec0114038"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/candidate/complete-trial.json",
+      "sha256": "60dbf72bb9a70383ac694750e6c775938b1c990685affca4534960eff167cc89"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/candidate/drc.json",
+      "sha256": "05195f7e454378de5bfcdf342831da7d80c0dc578c8713e9263a9092fa2910c8"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/candidate/reachable-landing-scout.json",
+      "sha256": "aa40718bc2da811cee38a53b004317311d333c8e654ca621503485b17593a215"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/candidate/status.json",
+      "sha256": "5dc80a6fe7c278dfec9e0bbcc22ed7187bcf498d1a207f90ce4f85332df3b401"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/complete-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/complete-stderr.log",
+      "sha256": "a2528b717c9b1753ee226ee2f0b2507746184721a87253864a0c3d3715864e65"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/complete_trial.py",
+      "sha256": "2a21d2e0451c71fe4676fa8f0269bf17fcd06fcc3fae4c016c9d911f7b57b55a"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/ground-route-stderr.log",
+      "sha256": "a2528b717c9b1753ee226ee2f0b2507746184721a87253864a0c3d3715864e65"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/ground-route.log",
+      "sha256": "c5c28f9f7bb5dfc6775026fd036ab5106868494e43679320787ff9b79ff66f61"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/ground_landing.py",
+      "sha256": "fd5fce1cd16f072b46c627d2dc6ec1b69c5d8a832c3a02950a2a8de839749e4a"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/landing-stderr.log",
+      "sha256": "a2528b717c9b1753ee226ee2f0b2507746184721a87253864a0c3d3715864e65"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/landing.log",
+      "sha256": "f717bb4d4c59a9812fd23c35311aca05c5a4afdc5658bf6fe76fb9125edc20cb"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/pose-scout.json",
+      "sha256": "8afa3338c0433ed6e3c3d1e80092d42109e86d5aac43cb628ef79dae260f38f7"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/route_bounded.py",
+      "sha256": "d325ca8d9cab177dc04c4a6c0f1300ba59299bdb443e4de59cb8ca53d0e265fb"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/scout.log",
+      "sha256": "8e27fe15522187b83bfba1a8af5f51b9a56c72c73738f10552c240195d90c03f"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/scout.py",
+      "sha256": "85b74653a9d88af198f201125a27684d94b0b8dc3f3f7f3735859c64d911840d"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/source.kicad_pcb",
+      "sha256": "9f274fdf198f1bcb871a4fc360e76693f8a5b048553e6a02998141737956514f"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial-geometry.json",
+      "sha256": "458c56908b9a8988e4fc273f3bec2eb4713ae23c929c911796c66f39a81bd11b"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial-geometry.log",
+      "sha256": "458c56908b9a8988e4fc273f3bec2eb4713ae23c929c911796c66f39a81bd11b"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial2-geometry.json",
+      "sha256": "12269bbf832c331bf29e15f849ef280fc814014d201338e7ee298148ecb74964"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial2-geometry.log",
+      "sha256": "12269bbf832c331bf29e15f849ef280fc814014d201338e7ee298148ecb74964"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial2_geometry.py",
+      "sha256": "4ef74474b72d160c9455a9d5f7568eccf49d9fd0a9c74e563aee0ef0bf8e796e"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial3-geometry.json",
+      "sha256": "523f9b265c7c0fc6f4307d516654bca3c4e6fc717a01d29a9f4ab6f51ae48aa1"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial3-geometry.log",
+      "sha256": "523f9b265c7c0fc6f4307d516654bca3c4e6fc717a01d29a9f4ab6f51ae48aa1"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial3_geometry.py",
+      "sha256": "460710d050dbf176cde452da46e212230c9e6a080645f1d58aac6903dc95ef77"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/trial_geometry.py",
+      "sha256": "9ea5a520816def545541dd8f2b782ee14b1c8ee4b135f11e6f3dbd32d80b23cf"
+    },
+    {
+      "path": "hardware/system-review/electrical/sensitive-layout-refinement/c107-independent/try_ground.py",
+      "sha256": "07ba18d6f8f3c75fdb9a8ab9db9d4b8da61f3d94f5fd2d0090a3e249207c8d0f"
+    }
+  ],
+  "physical_tests": false
+}

@@ -1,0 +1,7 @@
+{
+  "removed_U703_external_silk_triangle": [
+    "9e5fd5d0-c5f5-4c4d-8226-e540395336c0"
+  ],
+  "reason": "External stock silk triangle touched adjacent U502 outline; footprint/pads/courtyard/Fab pin1 and reference retained",
+  "electrical_change": false
+}

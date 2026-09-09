@@ -1,0 +1,84 @@
+{
+  "utc": "2026-09-07T14:31:23.975005+00:00",
+  "review_type": "read-only functional review; no production changes",
+  "conclusion": {
+    "current_charging": "intentionally disabled",
+    "true_off_high_current": "unavailable while host is off",
+    "normal_charge_standby": "software-feasible topology; unimplemented and unqualified",
+    "depleted_pack_recovery": "not proved and not repaired by runtime standby"
+  },
+  "sources": [
+    {
+      "path": "main/services/system_power.cpp",
+      "sha256": "17ff9ca4ee49c21e98874b1b26dfa226ca4c69af79e42f577e880749ee070e4a"
+    },
+    {
+      "path": "main/services/system_power.h",
+      "sha256": "849f8b57a2c244e209e5b95b75f9f77520e119dcbebe0f9fad8d19c8bd1733ff"
+    },
+    {
+      "path": "main/sensors/power_monitor.cpp",
+      "sha256": "68fe6fbb19658c6167b3a9ce8e27db5f054054b3664e974ebd872f8f796d0353"
+    },
+    {
+      "path": "main/sensors/power_monitor.h",
+      "sha256": "68a434d7cadc7b1e085408228289fdd7a40ab90009a4c671a0300bfe5f14724f"
+    },
+    {
+      "path": "main/sensors/usb_input_policy.cpp",
+      "sha256": "555ee7d9c17c0bd7a6ee219c5b909cda46478bd32fa3faee3759b56884141046"
+    },
+    {
+      "path": "main/services/maintenance_service.cpp",
+      "sha256": "edf05da0ad8b7b7040f43f5584747982eb9f8bb5828376ed6788db83e79f0c66"
+    },
+    {
+      "path": "main/services/backlight_service.cpp",
+      "sha256": "8912323f95968452cd6a8740d2d3e592ed533cf1a63cc1b7bbf21dac5ba9fe19"
+    },
+    {
+      "path": "main/board/guition_jc4880p443.c",
+      "sha256": "235884824fa571bf3e050aee7ce87b484e55290afd1b58d6b8f9ae3be2ae81d2"
+    },
+    {
+      "path": "main/sensors/sensor_hardware.cpp",
+      "sha256": "48a0c34027db0acd79ba0756b2b61ae5e14662feeda3de86a2c13b6f717eb986"
+    },
+    {
+      "path": "main/main.cpp",
+      "sha256": "c62f93cab907974940dd7cd676a0a2a16142efd0766e83f17a3588f2c4c8ae4e"
+    },
+    {
+      "path": "main/hardware_contract.h",
+      "sha256": "112a0e382d360a8ba1eb4d71fbbd50edb30c313a6d86f09121d921f902cb18bb"
+    },
+    {
+      "path": "hardware/system-review/electrical/analyzer-netlist.xml",
+      "sha256": "c87d737aa162d9ef25417d6cadd9bfc998b3f38d4e7ccbc8739002c320809d8c"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/bq25895.pdf",
+      "sha256": "2667a8d185cbf9138aed63f47616d35c0d0d29da877702b32b301caa55f8d404"
+    },
+    {
+      "path": "hardware/system-review/electrical/sources/tusb320lai.pdf",
+      "sha256": "62f7b3f65338e25ebd6fd46ef04474ba806b06b1cc04bc0b3d7b8191b01ca87d"
+    }
+  ],
+  "primary_urls": [
+    "https://www.ti.com/lit/ds/symlink/bq25895.pdf",
+    "https://www.ti.com/lit/ds/symlink/tusb320lai.pdf",
+    "https://www.analog.com/media/en/technical-documentation/data-sheets/2954fb.pdf"
+  ],
+  "state_rows": 9,
+  "illustrative_energy": {
+    "unverified_capacity_Ah": 6.8,
+    "nominal_voltage": 3.7,
+    "nominal_energy_Wh": 25.16,
+    "ideal_input_W": 0.25,
+    "ideal_zero_other_load_hours": 100.64,
+    "physical_prediction": false
+  },
+  "physical_tests": false,
+  "flashing_or_charge_writes": false
+}

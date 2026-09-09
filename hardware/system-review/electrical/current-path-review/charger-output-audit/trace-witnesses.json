@@ -1,0 +1,294 @@
+{
+  "source_board_sha256": "b4e4d0b9f8e41cf1de1cf5215d66de0d0c490becd4c52028119dcc60c4080688",
+  "method": "Native direct adjacency trace/barrel witnesses, zones excluded; no IC internals or presumed pad joins",
+  "meaning": "Witness lengths are full native items, not extracted loop ESL or exact network impedance; missing witnesses may still have plane connections.",
+  "rows": [
+    {
+      "source": "L101.2",
+      "target": "C104.1",
+      "pad_centre_straight_line_mm": 4.85450821402127,
+      "witness": {
+        "status": "explicit_native_witness",
+        "net": "VSYS",
+        "source_layer": "F.Cu",
+        "target_layer": "F.Cu",
+        "ordered_item_uuids": [
+          "a469eb1d-bff0-41fb-a0a2-04eb0ace9a72",
+          "6dfc73f5-d8da-4590-978d-9d9560b3930b",
+          "b058ed0d-50e2-4da8-895b-96760a21b39c",
+          "e5b78ddb-5983-49ad-84e4-c7f51bb856c3"
+        ],
+        "ordered_edges": [
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "a469eb1d-bff0-41fb-a0a2-04eb0ace9a72",
+            "to_uuid": "6dfc73f5-d8da-4590-978d-9d9560b3930b",
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "trace",
+            "uuid": "6dfc73f5-d8da-4590-978d-9d9560b3930b",
+            "layer": "F.Cu",
+            "full_item_length_mm": 2.999999,
+            "width_mm": 1.0
+          },
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "6dfc73f5-d8da-4590-978d-9d9560b3930b",
+            "to_uuid": "b058ed0d-50e2-4da8-895b-96760a21b39c",
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "trace",
+            "uuid": "b058ed0d-50e2-4da8-895b-96760a21b39c",
+            "layer": "F.Cu",
+            "full_item_length_mm": 1.5358266297994054,
+            "width_mm": 1.0
+          },
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "b058ed0d-50e2-4da8-895b-96760a21b39c",
+            "to_uuid": "e5b78ddb-5983-49ad-84e4-c7f51bb856c3",
+            "layer": "F.Cu"
+          }
+        ],
+        "layer_summary": {
+          "F.Cu": {
+            "full_item_length_mm": 4.5358256297994055,
+            "minimum_width_mm": 1.0,
+            "track_uuids": [
+              "6dfc73f5-d8da-4590-978d-9d9560b3930b",
+              "b058ed0d-50e2-4da8-895b-96760a21b39c"
+            ]
+          }
+        },
+        "barrel_transition_count": 0,
+        "full_item_estimate_ohm_20C_25um_1p6mm": 0.0022343968619701502,
+        "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+      }
+    },
+    {
+      "source": "L101.2",
+      "target": "C105.1",
+      "pad_centre_straight_line_mm": 14.456573266165144,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 149,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.15",
+      "target": "C104.1",
+      "pad_centre_straight_line_mm": 9.539465721412284,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 12,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.15",
+      "target": "C105.1",
+      "pad_centre_straight_line_mm": 7.387966213715448,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 12,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.16",
+      "target": "C104.1",
+      "pad_centre_straight_line_mm": 9.0692561023493,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 12,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.16",
+      "target": "C105.1",
+      "pad_centre_straight_line_mm": 7.603094421023652,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 12,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.15",
+      "target": "C201.1",
+      "pad_centre_straight_line_mm": 21.123494768858677,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 12,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.15",
+      "target": "C202.1",
+      "pad_centre_straight_line_mm": 12.435590305650955,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 12,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "U101.19",
+      "target": "L101.1",
+      "pad_centre_straight_line_mm": 2.9107827555487544,
+      "witness": {
+        "status": "explicit_native_witness",
+        "net": "/01  CHARGING + BATTERY/BQ_SW",
+        "source_layer": "F.Cu",
+        "target_layer": "F.Cu",
+        "ordered_item_uuids": [
+          "ad4af7b6-ef34-404a-87e2-2eafbd6ec607",
+          "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+          "78b787aa-7e55-480e-b299-6ce990b93b2a"
+        ],
+        "ordered_edges": [
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "ad4af7b6-ef34-404a-87e2-2eafbd6ec607",
+            "to_uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "trace",
+            "uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "layer": "F.Cu",
+            "full_item_length_mm": 1.9375,
+            "width_mm": 0.45
+          },
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "to_uuid": "78b787aa-7e55-480e-b299-6ce990b93b2a",
+            "layer": "F.Cu"
+          }
+        ],
+        "layer_summary": {
+          "F.Cu": {
+            "full_item_length_mm": 1.9375,
+            "minimum_width_mm": 0.45,
+            "track_uuids": [
+              "c080da6b-3dac-4bb9-b195-21a9a2e50659"
+            ]
+          }
+        },
+        "barrel_transition_count": 0,
+        "full_item_estimate_ohm_20C_25um_1p6mm": 0.002120963327859879,
+        "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+      }
+    },
+    {
+      "source": "U101.20",
+      "target": "L101.1",
+      "pad_centre_straight_line_mm": 2.823589249519129,
+      "witness": {
+        "status": "explicit_native_witness",
+        "net": "/01  CHARGING + BATTERY/BQ_SW",
+        "source_layer": "F.Cu",
+        "target_layer": "F.Cu",
+        "ordered_item_uuids": [
+          "74771e5a-7c7b-4989-9aa7-a3b159c03d6f",
+          "88a5e996-f20c-4c7d-85bc-8df755e87d77",
+          "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+          "78b787aa-7e55-480e-b299-6ce990b93b2a"
+        ],
+        "ordered_edges": [
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "74771e5a-7c7b-4989-9aa7-a3b159c03d6f",
+            "to_uuid": "88a5e996-f20c-4c7d-85bc-8df755e87d77",
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "trace",
+            "uuid": "88a5e996-f20c-4c7d-85bc-8df755e87d77",
+            "layer": "F.Cu",
+            "full_item_length_mm": 0.5,
+            "width_mm": 0.25
+          },
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "88a5e996-f20c-4c7d-85bc-8df755e87d77",
+            "to_uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "layer": "F.Cu"
+          },
+          {
+            "kind": "trace",
+            "uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "layer": "F.Cu",
+            "full_item_length_mm": 1.9375,
+            "width_mm": 0.45
+          },
+          {
+            "kind": "native_adjacency",
+            "from_uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "to_uuid": "78b787aa-7e55-480e-b299-6ce990b93b2a",
+            "layer": "F.Cu"
+          }
+        ],
+        "layer_summary": {
+          "F.Cu": {
+            "full_item_length_mm": 2.4375,
+            "minimum_width_mm": 0.25,
+            "track_uuids": [
+              "88a5e996-f20c-4c7d-85bc-8df755e87d77",
+              "c080da6b-3dac-4bb9-b195-21a9a2e50659"
+            ]
+          }
+        },
+        "barrel_transition_count": 0,
+        "full_item_estimate_ohm_20C_25um_1p6mm": 0.0031061850027367262,
+        "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+      }
+    },
+    {
+      "source": "C104.2",
+      "target": "U101.17",
+      "pad_centre_straight_line_mm": 10.06790227654202,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 7,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "C104.2",
+      "target": "U101.18",
+      "pad_centre_straight_line_mm": 9.675363365269543,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 7,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "C105.2",
+      "target": "U101.17",
+      "pad_centre_straight_line_mm": 6.83974011019432,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 13,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    },
+    {
+      "source": "C105.2",
+      "target": "U101.18",
+      "pad_centre_straight_line_mm": 6.932318859876616,
+      "witness": {
+        "status": "no_explicit_trace_path",
+        "reachable_port_count": 13,
+        "meaning": "Unresolved by this zone-free witness; not proof that the full board is open."
+      }
+    }
+  ]
+}

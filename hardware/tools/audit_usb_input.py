@@ -67,7 +67,7 @@ def main():
     assert expected == previous, 'Existing main-board net assignments changed'
 
     import pcbnew as pcb
-    board_path = P/'preview/Trimix_Analyzer_Preview.kicad_pcb'
+    board_path = P/'previews/Trimix_Analyzer_Preview.kicad_pcb'
     board_hash = digest(board_path)
     board = pcb.LoadBoard(str(board_path))
     footprints = {f.GetReference(): f for f in board.GetFootprints()}

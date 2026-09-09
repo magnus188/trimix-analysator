@@ -1,0 +1,30 @@
+{
+  "before_sha256": "a3b5947a4b3d53cc4f905c464f7975963e18bc7d611ce47a21f470bf111a5346",
+  "after_sha256": "2b502a6e2ae913deba3ada85f05e7033c09377c9abd28acdb95ae61af3ead1fd",
+  "old_pads": [
+    {
+      "pin": "1",
+      "drill": 0.85,
+      "size": [
+        1.85,
+        1.85
+      ]
+    },
+    {
+      "pin": "2",
+      "drill": 0.85,
+      "size": [
+        1.85,
+        1.85
+      ]
+    }
+  ],
+  "new_drill_mm": 1.0,
+  "retained_land_mm": 1.85,
+  "retained_pitch_mm": 4.2,
+  "annular_radial_mm": 0.425,
+  "all_component_poses_preserved": true,
+  "SMB_metadata_correction": "Maximum_body_height8.2mm derived independent extrema; nominal reconstruction7.6mm unchanged.",
+  "physical_wire_fit_pending": true,
+  "order_release": false
+}

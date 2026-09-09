@@ -1,0 +1,653 @@
+{
+  "draft_only": true,
+  "manufacturing_release": false,
+  "routed_connections": [
+    {
+      "net": "CO_FB",
+      "from": "U701.1",
+      "to": "R701.2",
+      "length_mm": 1.592665768149425,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "O2_VMID",
+      "from": "R408.1",
+      "to": "R407.2",
+      "length_mm": 1.6118033988749838,
+      "width_mm": 0.2,
+      "segments": 3
+    },
+    {
+      "net": "O2_B_AIN_N",
+      "from": "C404.1",
+      "to": "C405.1",
+      "length_mm": 1.6499999999999986,
+      "width_mm": 0.2,
+      "segments": 3
+    },
+    {
+      "net": "O2_VMID",
+      "from": "R410.1",
+      "to": "R409.2",
+      "length_mm": 1.6914213562373077,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "HE_REF",
+      "from": "RN501.2",
+      "to": "RN501.4",
+      "length_mm": 4.831370849898466,
+      "width_mm": 0.2,
+      "segments": 8
+    },
+    {
+      "net": "/02  SWITCHED 5 V/TPS_VINA",
+      "from": "C203.1",
+      "to": "U201.1",
+      "length_mm": 2.073528137423859,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "HE_REF",
+      "from": "RN501.4",
+      "to": "R506.1",
+      "length_mm": 2.240685424949238,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "/02  SWITCHED 5 V/TPS_FB",
+      "from": "R201.2",
+      "to": "U201.3",
+      "length_mm": 2.3458511930986634,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "O2_VMID",
+      "from": "U502.6",
+      "to": "TP1012.1",
+      "length_mm": 2.377912103417918,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "/02  SWITCHED 5 V/TPS_FB",
+      "from": "R201.2",
+      "to": "R202.1",
+      "length_mm": 2.5745450986719476,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "O2_A_AIN_N",
+      "from": "R401.2",
+      "to": "U401.10",
+      "length_mm": 4.066656515330033,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "CO_FB",
+      "from": "R702.1",
+      "to": "U701.1",
+      "length_mm": 4.606879330522512,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "O2_B_AIN_P",
+      "from": "C404.2",
+      "to": "R408.2",
+      "length_mm": 3.543643399234443,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "O2_A_AIN_N",
+      "from": "C402.1",
+      "to": "C401.1",
+      "length_mm": 3.961320343612978,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "O2_B_AIN_N",
+      "from": "C404.1",
+      "to": "R407.1",
+      "length_mm": 3.58506475547175,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "BME_VIN",
+      "from": "R601.2",
+      "to": "R602.2",
+      "length_mm": 4.115966454909251,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "O2_B_AIN_P",
+      "from": "C404.2",
+      "to": "C406.1",
+      "length_mm": 6.31274169979695,
+      "width_mm": 0.2,
+      "segments": 7
+    },
+    {
+      "net": "O2_B_AIN_N",
+      "from": "C404.1",
+      "to": "R405.2",
+      "length_mm": 11.771320343559648,
+      "width_mm": 0.2,
+      "segments": 8
+    },
+    {
+      "net": "O2_A_AIN_N",
+      "from": "C402.1",
+      "to": "R403.1",
+      "length_mm": 3.9927426998302877,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "PB_FILTERED_N",
+      "from": "C802.1",
+      "to": "U801.2",
+      "length_mm": 4.160018884604467,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "O2_A_RAW_N",
+      "from": "R401.1",
+      "to": "J401.2",
+      "length_mm": 3.64585119309866,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "HE_EXC_DIV",
+      "from": "R504.2",
+      "to": "R505.1",
+      "length_mm": 4.2955844122715705,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "I2C_SDA",
+      "from": "Q602.2",
+      "to": "U502.15",
+      "length_mm": 4.331833459655234,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "O2_VMID",
+      "from": "R409.2",
+      "to": "C409.1",
+      "length_mm": 5.512741699796949,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "O2_A_AIN_P",
+      "from": "C403.1",
+      "to": "R404.2",
+      "length_mm": 5.554163056054264,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "I2C_SCL",
+      "from": "Q601.2",
+      "to": "U502.16",
+      "length_mm": 5.735996515689493,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "BME_VIN",
+      "from": "R602.2",
+      "to": "R603.1",
+      "length_mm": 5.757387811146553,
+      "width_mm": 0.2,
+      "segments": 5
+    },
+    {
+      "net": "HE_EXC_DIV",
+      "from": "U502.7",
+      "to": "C504.1",
+      "length_mm": 5.984282953316396,
+      "width_mm": 0.2,
+      "segments": 8
+    },
+    {
+      "net": "HE_SENSE",
+      "from": "J501.2",
+      "to": "TP1011.1",
+      "length_mm": 5.1681817558312115,
+      "width_mm": 0.2,
+      "segments": 4
+    },
+    {
+      "net": "O2_B_RAW_N",
+      "from": "J402.2",
+      "to": "J402.2",
+      "length_mm": 5.082462112512353,
+      "width_mm": 0.2,
+      "segments": 3
+    },
+    {
+      "net": "O2_B_RAW_N",
+      "from": "J402.2",
+      "to": "J402.2",
+      "length_mm": 5.182462112512354,
+      "width_mm": 0.2,
+      "segments": 3
+    },
+    {
+      "net": "O2_B_RAW_N",
+      "from": "J402.2",
+      "to": "J402.2",
+      "length_mm": 5.182462112512351,
+      "width_mm": 0.2,
+      "segments": 3
+    },
+    {
+      "net": "POWER_EN",
+      "from": "U201.12",
+      "to": "U801.6",
+      "length_mm": 7.769333459655224,
+      "width_mm": 0.2,
+      "segments": 11
+    },
+    {
+      "net": "I2C_SDA",
+      "from": "R303.2",
+      "to": "J301.21",
+      "length_mm": 5.806489257420239,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "HE_SENSE",
+      "from": "TP1011.1",
+      "to": "R507.1",
+      "length_mm": 7.502763111709065,
+      "width_mm": 0.2,
+      "segments": 8
+    },
+    {
+      "net": "I2C_SDA",
+      "from": "R303.2",
+      "to": "U301.8",
+      "length_mm": 6.5635445888290995,
+      "width_mm": 0.2,
+      "segments": 9
+    },
+    {
+      "net": "CO_TX_CABLE",
+      "from": "J701.3",
+      "to": "R704.2",
+      "length_mm": 5.954913236455254,
+      "width_mm": 0.2,
+      "segments": 7
+    },
+    {
+      "net": "I2C_SCL",
+      "from": "Q601.2",
+      "to": "TP1008.1",
+      "length_mm": 6.908279274847723,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "POWER_EN",
+      "from": "TP1007.1",
+      "to": "U201.12",
+      "length_mm": 7.339965798292763,
+      "width_mm": 0.2,
+      "segments": 8
+    },
+    {
+      "net": "O2_VMID",
+      "from": "C409.1",
+      "to": "U502.6",
+      "length_mm": 9.491389734502937,
+      "width_mm": 0.2,
+      "segments": 10
+    },
+    {
+      "net": "O2_A_AIN_N",
+      "from": "C401.1",
+      "to": "R401.2",
+      "length_mm": 7.975014249152926,
+      "width_mm": 0.2,
+      "segments": 6
+    },
+    {
+      "net": "O2_VMID",
+      "from": "C409.1",
+      "to": "R404.1",
+      "length_mm": 25.113961030678926,
+      "width_mm": 0.2,
+      "segments": 13
+    },
+    {
+      "net": "O2_A_AIN_P",
+      "from": "U401.11",
+      "to": "R402.2",
+      "length_mm": 10.992609065384917,
+      "width_mm": 0.2,
+      "segments": 8
+    },
+    {
+      "net": "HE_ENABLE",
+      "from": "U501.3",
+      "to": "R501.1",
+      "length_mm": 9.798769837220803,
+      "width_mm": 0.2,
+      "segments": 10
+    },
+    {
+      "net": "I2C_SDA",
+      "from": "Q602.2",
+      "to": "TP1009.1",
+      "length_mm": 10.330681755831215,
+      "width_mm": 0.2,
+      "segments": 9
+    },
+    {
+      "net": "O2_A_RAW_P",
+      "from": "R402.1",
+      "to": "J401.1",
+      "length_mm": 25.863275605729694,
+      "width_mm": 0.2,
+      "segments": 13
+    },
+    {
+      "net": "HE_AIN_N",
+      "from": "U502.10",
+      "to": "C505.2",
+      "length_mm": 18.447024653113345,
+      "width_mm": 0.2,
+      "segments": 13
+    },
+    {
+      "net": "HE_EXC_DIV",
+      "from": "R504.2",
+      "to": "U502.7",
+      "length_mm": 25.912710078062585,
+      "width_mm": 0.2,
+      "segments": 16
+    },
+    {
+      "net": "Net-(U801-PDT)",
+      "from": "C804.1",
+      "to": "U801.7",
+      "length_mm": 41.278395503011836,
+      "width_mm": 0.2,
+      "segments": 20
+    },
+    {
+      "net": "CO_RX_CABLE",
+      "from": "J701.4",
+      "to": "R705.2",
+      "length_mm": 12.49339086754028,
+      "width_mm": 0.2,
+      "segments": 7
+    },
+    {
+      "net": "POWER_EN",
+      "from": "U201.12",
+      "to": "R203.2",
+      "length_mm": 16.394848480983505,
+      "width_mm": 0.2,
+      "segments": 11
+    },
+    {
+      "net": "BME_SCL",
+      "from": "J601.3",
+      "to": "Q601.3",
+      "length_mm": 16.478683073676063,
+      "width_mm": 0.2,
+      "segments": 10
+    },
+    {
+      "net": "Net-(U801-ONT)",
+      "from": "C803.1",
+      "to": "U801.3",
+      "length_mm": 29.643344996673,
+      "width_mm": 0.2,
+      "segments": 15
+    },
+    {
+      "net": "POWER_KILL_N",
+      "from": "U801.8",
+      "to": "J301.8",
+      "length_mm": 17.412794712100784,
+      "width_mm": 0.2,
+      "segments": 12
+    },
+    {
+      "net": "I2C_SDA",
+      "from": "Q602.2",
+      "to": "R303.2",
+      "length_mm": 66.24679291125632,
+      "width_mm": 0.2,
+      "segments": 25
+    }
+  ],
+  "held": [
+    [
+      "O2_VMID",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R404",
+      "R403"
+    ],
+    [
+      "O2_VMID",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R409",
+      "R408"
+    ],
+    [
+      "HE_AIN_N",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "C507",
+      "R507"
+    ],
+    [
+      "HE_AIN_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "U502",
+      "R506"
+    ],
+    [
+      "HE_AIN_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R506",
+      "C506"
+    ],
+    [
+      "O2_A_AIN_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "C403",
+      "U401"
+    ],
+    [
+      "O2_B_AIN_P",
+      "endpoint escape requires narrower/custom fanout",
+      "C406",
+      "R406"
+    ],
+    [
+      "O2_A_AIN_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R404",
+      "C401"
+    ],
+    [
+      "HE_AIN_N",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "C507",
+      "U502"
+    ],
+    [
+      "O2_B_AIN_N",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R407",
+      "U401"
+    ],
+    [
+      "I2C_SCL",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "Q601",
+      "U401"
+    ],
+    [
+      "CO_UART_EN",
+      "endpoint escape requires narrower/custom fanout",
+      "J301",
+      "U703"
+    ],
+    [
+      "O2_B_AIN_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R408",
+      "U401"
+    ],
+    [
+      "HE_AIN_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "C505",
+      "U502"
+    ],
+    [
+      "POWER_INT_N",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "U801",
+      "J301"
+    ],
+    [
+      "CO_UART_TX",
+      "endpoint escape requires narrower/custom fanout",
+      "U703",
+      "J301"
+    ],
+    [
+      "I2C_SDA",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "U502",
+      "U401"
+    ],
+    [
+      "CO_UART_EN",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R703",
+      "J301"
+    ],
+    [
+      "CO_UART_RX",
+      "endpoint escape requires narrower/custom fanout",
+      "U703",
+      "J301"
+    ],
+    [
+      "O2_B_RAW_N",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "J402",
+      "R405"
+    ],
+    [
+      "CO_TX_3V0",
+      "endpoint escape requires narrower/custom fanout",
+      "R704",
+      "U703"
+    ],
+    [
+      "CO_RX_3V0",
+      "endpoint escape requires narrower/custom fanout",
+      "U703",
+      "R705"
+    ],
+    [
+      "I2C_SCL",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "J301",
+      "U301"
+    ],
+    [
+      "BME_SDA",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "Q602",
+      "J601"
+    ],
+    [
+      "I2C_SCL",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "U502",
+      "J301"
+    ],
+    [
+      "O2_B_RAW_P",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R406",
+      "J402"
+    ],
+    [
+      "BME_VIN",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "C601",
+      "J601"
+    ],
+    [
+      "HE_ENABLE",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "U501",
+      "J301"
+    ],
+    [
+      "BME_VIN",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R601",
+      "C601"
+    ],
+    [
+      "BME_SDA",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "R604",
+      "Q602"
+    ],
+    [
+      "BME_SCL",
+      "no conservative F.Cu path; multilayer/manual route remains",
+      "Q601",
+      "R603"
+    ]
+  ],
+  "native_DRC_required": true,
+  "power_nets_excluded": [
+    "CO_5V28",
+    "CO_LOGIC_3V0",
+    "CO_SW",
+    "GND",
+    "HE_3V0",
+    "HOST_3V3",
+    "HOST_5V",
+    "Net-(L201-Pad1)",
+    "Net-(L201-Pad2)",
+    "PACK_P",
+    "USB_5V",
+    "USB_CHG_5V",
+    "VOUT_5V",
+    "VSYS"
+  ],
+  "tracks": 406,
+  "notes": "F.Cu signal draft only. Review return paths, high-impedance pickup, thermal and branch current before release. No component movement."
+}

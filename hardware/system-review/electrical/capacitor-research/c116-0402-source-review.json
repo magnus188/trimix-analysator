@@ -1,0 +1,41 @@
+{
+  "status": "primary_specification_verified_candidate_not_yet_adopted",
+  "review_date_local": "2026-09-08",
+  "reference": "C116",
+  "function": "U115 DVDT timing capacitor to ground",
+  "existing_part": "TDK C1608C0G1H332J080AA",
+  "candidate_part": "Murata GRM1555C1H332JE01D",
+  "specification": {
+    "capacitance_F": 3.3e-9,
+    "tolerance_percent": 5,
+    "rated_voltage_V": 50,
+    "dielectric": "C0G",
+    "temperature_coefficient_ppm_per_C": 30,
+    "operating_temperature_C": [-55, 125],
+    "package": "1005 metric / 0402 imperial",
+    "nominal_LWT_mm": [1.0, 0.5, 0.5],
+    "dimension_tolerance_mm": [0.05, 0.05, 0.05],
+    "maximum_LWT_mm": [1.05, 0.55, 0.55],
+    "mounting": "reflow",
+    "suffix_D": "180 mm reel, paper tape W8P2, 10000 pieces"
+  },
+  "primary_source": {
+    "url": "https://search.murata.co.jp/Ceramy/image/img/A01X/G101/ENG/GRM1555C1H332JE01-01A.pdf",
+    "title": "GRM1555C1H332JE01-01A reference sheet",
+    "specification_date": "2024-12-20",
+    "access": "Manufacturer PDF text returned through indexed web search; direct PDF open failed. No locally downloaded PDF is claimed.",
+    "verified_scope": "Exact family, suffix, electrical ratings, package dimensions and reflow mounting."
+  },
+  "distributor_cross_reference": {
+    "lcsc_part": "C1518207",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1555c1h332je01d_C1518207.html",
+    "limit": "Read-only catalogue identity corroboration; neither stock reservation nor JLCPCB assembly qualification."
+  },
+  "adoption_requirements": [
+    "Use a true 0402 land pattern and manufacturer-sized CAD envelope; do not scale a 0603 model.",
+    "Preserve 3.3 nF timing value and all circuit endpoints.",
+    "Update schematic, PCB, purchasing and assembly BOMs, height manifest and Fusion representation together.",
+    "Assign factory assembly and verify native clearances, ground-return connectivity and the combined routed board.",
+    "Do not treat this package substitution as proof of startup, transient or timing performance."
+  ]
+}

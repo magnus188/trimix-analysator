@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-08",
+  "authority": "Manufacturer model-selection page links this development archive",
+  "index_url": "https://www.guition.com/model-selection",
+  "download_url": "https://pan.jczn1688.com/directlink/1/HMI%20display/JC4880P443C_I_W.zip",
+  "manifest_url": "https://pan.jczn1688.com/api/manifest/HMI%20display/JC4880P443C_I_W.zip",
+  "archive_complete_downloaded": false,
+  "verified_shards": [
+    {
+      "seq": 4,
+      "size": 50331648,
+      "sha256": "c30ae66480b29518d514b548c8e49aaab5647e7cb333d686555943a06e9d6e87"
+    },
+    {
+      "seq": 6,
+      "size": 7242354,
+      "sha256": "d7d928910ef4517c2fd09b301168282fb87049b8064e21cf82d5d6256ddecf5b"
+    }
+  ],
+  "retrieval": "Only archive shards4 and6 downloaded, SHA256 matched server manifest; central-directory and selected file extraction with ZIPCRC verified. Partial sparse ZIP was not executed. Vendor binaries were not extracted or run.",
+  "selected_directory_entries": [
+    {
+      "name": "JC4880P443C_I_W/2-Specification/",
+      "header_offset": 220103970,
+      "compressed_bytes": 0,
+      "bytes": 0,
+      "crc32": "00000000"
+    },
+    {
+      "name": "JC4880P443C_I_W/2-Specification/JC4880P443C_I_W Specifications-EN-V1.0.pdf",
+      "header_offset": 220104064,
+      "compressed_bytes": 544121,
+      "bytes": 580606,
+      "crc32": "595e6139"
+    },
+    {
+      "name": "JC4880P443C_I_W/3-Structure_Diagram/",
+      "header_offset": 220648337,
+      "compressed_bytes": 0,
+      "bytes": 0,
+      "crc32": "00000000"
+    },
+    {
+      "name": "JC4880P443C_I_W/3-Structure_Diagram/JC4880P443C_I_W.jpg",
+      "header_offset": 220648435,
+      "compressed_bytes": 117474,
+      "bytes": 128688,
+      "crc32": "7c0263aa"
+    },
+    {
+      "name": "JC4880P443C_I_W/3-Structure_Diagram/JC4880P443C_I_W_Y.dwg",
+      "header_offset": 220766042,
+      "compressed_bytes": 9005956,
+      "bytes": 11515411,
+      "crc32": "ea91f239"
+    },
+    {
+      "name": "JC4880P443C_I_W/3-Structure_Diagram/JC4880P443C_I_W_Y.pdf",
+      "header_offset": 229772133,
+      "compressed_bytes": 166954,
+      "bytes": 170518,
+      "crc32": "9061f15b"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/",
+      "header_offset": 236553050,
+      "compressed_bytes": 0,
+      "bytes": 0,
+      "crc32": "00000000"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/1_PWR.png",
+      "header_offset": 236553140,
+      "compressed_bytes": 63628,
+      "bytes": 105919,
+      "crc32": "31f56a39"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/2_LCD&CSI.png",
+      "header_offset": 236616883,
+      "compressed_bytes": 40070,
+      "bytes": 72573,
+      "crc32": "ccc9b387"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/3_ESP32-P4.png",
+      "header_offset": 236657072,
+      "compressed_bytes": 151091,
+      "bytes": 243530,
+      "crc32": "7ddd34b6"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/4_USB&IO.png",
+      "header_offset": 236808283,
+      "compressed_bytes": 71368,
+      "bytes": 117739,
+      "crc32": "cd2d1f52"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/5_485.png",
+      "header_offset": 236879769,
+      "compressed_bytes": 33357,
+      "bytes": 35885,
+      "crc32": "10529c15"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/6_CODEC&TFCARD.png",
+      "header_offset": 236913241,
+      "compressed_bytes": 75205,
+      "bytes": 127945,
+      "crc32": "8d9e214e"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/7_OTHER.png",
+      "header_offset": 236988570,
+      "compressed_bytes": 8921,
+      "bytes": 16170,
+      "crc32": "832f6746"
+    },
+    {
+      "name": "JC4880P443C_I_W/5-Schematic/JC4880P443_V1.0.pdf",
+      "header_offset": 236997608,
+      "compressed_bytes": 316978,
+      "bytes": 1082588,
+      "crc32": "5ef83a6f"
+    }
+  ],
+  "files": [
+    {
+      "path": "JC4880P443C_I_W_Specifications_EN_V1.0.pdf",
+      "bytes": 580606,
+      "sha256": "50306097eab8b1c4f709803508d5ad19d1f8c0c50ee8087b09e3af2731c94ca3"
+    },
+    {
+      "path": "JC4880P443C_I_W_Y.pdf",
+      "bytes": 170518,
+      "sha256": "718103eacead0a0d3337b49368872c8e8673c80fd79ca476521e2729cf74eecc"
+    },
+    {
+      "path": "JC4880P443_V1.0.pdf",
+      "bytes": 1082588,
+      "sha256": "c7edaaff96dba106fc53f924db0c3054b0b2b81ec9807d59787778cc6fa48c05"
+    }
+  ]
+}

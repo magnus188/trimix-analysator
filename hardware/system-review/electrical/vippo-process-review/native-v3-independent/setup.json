@@ -1,0 +1,12 @@
+{
+  "source_sha256": "d490110c6335a6594a8d2171386926c65a95e0f8ba729feb378c478e8a676a63",
+  "via_uuid": "b3d6a73a-b389-4126-b3c4-3d28ea9ea384",
+  "cases": {
+    "no-local-clearance-rule": "d490110c6335a6594a8d2171386926c65a95e0f8ba729feb378c478e8a676a63",
+    "oversized-land": "c3c1d1388696c081d87568f88e5be46d0417b6178d615a18f2afc65d4546bda2",
+    "fully-opened-via": "f4ccfcc5dc85a5646bf93ee31af3be02bf87ee370036b0d5df604885b20b4d7a",
+    "baseline": "d490110c6335a6594a8d2171386926c65a95e0f8ba729feb378c478e8a676a63",
+    "shifted-via": "bedcd256800f85b467a6a5630b48d5003376c254aa36bbb524e1a25b76a483b6"
+  },
+  "no_authoritative_files_changed": true
+}

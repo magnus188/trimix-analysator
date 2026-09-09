@@ -1,0 +1,28 @@
+{
+  "status": "original handlers fail 3 new activity checks; corrected actual LVGL handlers pass",
+  "logs": [
+    {
+      "path": "hardware/system-review/software/sd-card/evidence/ui-mode-negative.log",
+      "sha256": "7a1dd420235e428ca869b64dd5d7e5fe054a8bbdc4d0f3c1a89785ce2662b459"
+    },
+    {
+      "path": "hardware/system-review/software/sd-card/evidence/ui-mode-pass.log",
+      "sha256": "09b76c5dd19b0b235b903fa9f0d76b296676066addb9143ea8468c8888e39259"
+    }
+  ],
+  "sources": [
+    {
+      "path": "main/ui/screens/analyse/analyse_screen.cpp",
+      "sha256": "d004a71a812d885ce516b53483d40fd968723dd1957c3b4a70a80f13e8446424"
+    },
+    {
+      "path": "main/ui/screens/settings/calibrate_screen.cpp",
+      "sha256": "07b8ebee05b0b1f61e1d152dbc3d1972f63ee9939f3b20a8e8d4ce7dc58ca4df"
+    },
+    {
+      "path": "simulator/tests/test_ui_smoke.cpp",
+      "sha256": "6a8f9ee1bd784f9ec00ffa3aec205053945183b81f3de79eb1b1a4baf742549d"
+    }
+  ],
+  "scope": "Actual LVGL loaded-before-unloaded ordering, direct sensor-setup navigation, timer persistence, reverse and back transitions; no card present."
+}

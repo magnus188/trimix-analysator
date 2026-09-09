@@ -1,0 +1,188 @@
+{
+  "kind": "primary-datasheet calculations plus explicitly assumed transient model",
+  "date": "2026-09-07",
+  "candidate": "TPS259470ARPWR",
+  "preferred_ovlo": {
+    "additional_independent_drift_0": {
+      "rising": {
+        "min_V": 5.262141689760878,
+        "max_V": 5.481028789118638,
+        "per_resistor_fraction": 0.002
+      },
+      "falling": {
+        "min_V": 4.785877406926548,
+        "max_V": 5.001798540020442,
+        "per_resistor_fraction": 0.002
+      }
+    },
+    "additional_independent_drift_0.0005": {
+      "rising": {
+        "min_V": 5.258059363685162,
+        "max_V": 5.485287228164788,
+        "per_resistor_fraction": 0.0025
+      },
+      "falling": {
+        "min_V": 4.78216416243828,
+        "max_V": 5.005684560746241,
+        "per_resistor_fraction": 0.0025
+      }
+    },
+    "additional_independent_drift_0.001": {
+      "rising": {
+        "min_V": 5.253981105997907,
+        "max_V": 5.489549936726078,
+        "per_resistor_fraction": 0.003
+      },
+      "falling": {
+        "min_V": 4.7784546183608185,
+        "max_V": 5.009574477448245,
+        "per_resistor_fraction": 0.003
+      }
+    }
+  },
+  "rejected_or_lower_compatibility_alternatives": [
+    {
+      "top_ohm": 34000,
+      "bottom_ohm": 10000,
+      "tcr_ppm": 25,
+      "rising": {
+        "min_V": 5.173730900199303,
+        "max_V": 5.413821533718013,
+        "per_resistor_fraction": 0.0034999999999999996
+      }
+    },
+    {
+      "top_ohm": 34649,
+      "bottom_ohm": 10000,
+      "tcr_ppm": 25,
+      "rising": {
+        "min_V": 5.249906910617814,
+        "max_V": 5.493816921229278,
+        "per_resistor_fraction": 0.0034999999999999996
+      }
+    },
+    {
+      "top_ohm": 34665,
+      "bottom_ohm": 10000,
+      "tcr_ppm": 25,
+      "rising": {
+        "min_V": 5.251784901629671,
+        "max_V": 5.495789072539263,
+        "per_resistor_fraction": 0.0034999999999999996
+      }
+    },
+    {
+      "top_ohm": 34800,
+      "bottom_ohm": 10000,
+      "tcr_ppm": 10,
+      "rising": {
+        "min_V": 5.279918548982036,
+        "max_V": 5.499585236553107,
+        "per_resistor_fraction": 0.002
+      }
+    }
+  ],
+  "uvlo": {
+    "top_ohm": 21500,
+    "bottom_ohm": 10000,
+    "tcr_ppm": 25,
+    "rising": {
+      "min_V": 3.7065504221848533,
+      "max_V": 3.8730783227922734,
+      "per_resistor_fraction": 0.0034999999999999996
+    },
+    "falling": {
+      "min_V": 3.3711051556178377,
+      "max_V": 3.5344123167711996,
+      "per_resistor_fraction": 0.0034999999999999996
+    }
+  },
+  "capacitor_estimates": {
+    "out_mpn": "C3216X7R1E475K160AC",
+    "out_estimated_min_F": 2.912355e-06,
+    "out_estimated_max_F": 6.123865e-06,
+    "in_plus_out_estimated_max_F": 6.25416e-06,
+    "total_charge_at_5V_C": 3.12708e-05,
+    "out_min_factors": [
+      "90% assumed bias retention",
+      "-10% tolerance",
+      "-15% X7R",
+      "10% engineering aging allowance"
+    ],
+    "out_max_factors": [
+      "+10% tolerance",
+      "+15% X7R",
+      "3% engineering allowance for initial bias increase"
+    ],
+    "not_guaranteed_by_manufacturer_combined_corner": true
+  },
+  "illustrative_transients": [
+    {
+      "assumed_current_A": 1,
+      "assumed_duration_s": 1.2e-06,
+      "starting_V": 5.489549936726078,
+      "estimated_delta_V": 0.4120376808459133,
+      "estimated_peak_V": 5.901587617571992,
+      "minimum_C_for_6V_F": 2.3508665907561e-06,
+      "minimum_C_for_5_5V_F": 0.00011483184058747433
+    },
+    {
+      "assumed_current_A": 2.2,
+      "assumed_duration_s": 1.2e-06,
+      "starting_V": 5.489549936726078,
+      "estimated_delta_V": 0.9064828978610094,
+      "estimated_peak_V": 6.396032834587087,
+      "minimum_C_for_6V_F": 5.17190649966342e-06,
+      "minimum_C_for_5_5V_F": 0.00025263004929244355
+    },
+    {
+      "assumed_current_A": 5,
+      "assumed_duration_s": 1.2e-06,
+      "starting_V": 5.489549936726078,
+      "estimated_delta_V": 2.060188404229567,
+      "estimated_peak_V": 7.5497383409556456,
+      "minimum_C_for_6V_F": 1.1754332953780501e-05,
+      "minimum_C_for_5_5V_F": 0.0005741592029373716
+    }
+  ],
+  "cold_start_estimate": {
+    "dvdt_mpn": "C1608C0G1H332J080AA",
+    "nominal_dVdt_V_per_ms_from_eq4": 0.6060606060606061,
+    "estimated_max_dVdt_V_per_s_assuming_unity_transfer": 1222.3608844516975,
+    "estimated_max_cap_charging_A_assuming_unity_transfer": 0.007485573037662795,
+    "recovery_bypasses_dvdt_on_TPS259470": true,
+    "not_a_datasheet_guaranteed_system_slew_limit": true
+  },
+  "bleed_estimate": {
+    "bleed_ohm": 10000,
+    "max_resistor_fraction": 0.0125,
+    "conservative_min_supervisor_threshold_V": 4.1,
+    "assumed_initial_V": 5.5,
+    "estimated_seconds_to_threshold": 0.018214403500169132
+  },
+  "added_steady_input_budget_A": 0.0014658562184885794,
+  "limitations": [
+    "1.2 us OVLO response is typical only; AUXOFF delay and powered VOL max not specified.",
+    "Assumed surge current is NOT limited to 1 A by this hardware.",
+    "No parasitic inductance, ESR, ESL, source impedance or nonlinear capacitance transient model.",
+    "10 uF comparison is a capacitance budget only; root owns total USB inrush qualification.",
+    "No hardware measurements or fabrication performed."
+  ],
+  "source_receipts": [
+    {
+      "file": "tps25947-ovp-review-datasheet.pdf",
+      "url": "https://www.ti.com/lit/ds/symlink/tps25947.pdf",
+      "sha256": "8f96de389903091650d4f462dcfad3210071c3ae7093623a7978f34baf8a65b4"
+    },
+    {
+      "file": "c3216x7r1e475k160ac-ovp.pdf",
+      "url": "https://product.tdk.cn/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/c3216x7r1e475k160ac.pdf",
+      "sha256": "10189f4cac2dd484fd2b96c5ca4b2f4ca8ed649203ae7dc740b7524fffc8bc30"
+    },
+    {
+      "file": "tnpw-e3-ovp-divider.pdf",
+      "url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "sha256": "98febfdf1770cb27bdbc5aab934c37960d7defba6571568eb2adecb0b3690fa4"
+    }
+  ]
+}

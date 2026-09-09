@@ -1,0 +1,49 @@
+{
+  "selected": {
+    "L101": {
+      "value": "1u / 74437349010",
+      "mpn": "74437349010",
+      "maker": "W\u00fcrth Elektronik",
+      "footprint": "Trimix_Power:L_Wurth_74437349010_7050",
+      "source": "https://www.we-online.com/components/products/datasheet/74437349010.pdf",
+      "max_body_mm": [
+        7.6,
+        6.9,
+        5.0
+      ]
+    },
+    "L201": {
+      "value": "1.5u / XGL4030-152MEC",
+      "mpn": "XGL4030-152MEC",
+      "maker": "Coilcraft",
+      "footprint": "Trimix_Power:L_Coilcraft_XGL4030",
+      "source": "https://www.coilcraft.com/pdfs/xgl4030.pdf",
+      "max_body_mm": [
+        4.3,
+        4.3,
+        3.1
+      ]
+    },
+    "L701": {
+      "value": "1u / XGL4020-102MEC",
+      "mpn": "XGL4020-102MEC",
+      "maker": "Coilcraft",
+      "footprint": "Trimix_Power:L_Coilcraft_XGL4020",
+      "source": "https://www.coilcraft.com/pdfs/xgl4020.pdf",
+      "max_body_mm": [
+        4.3,
+        4.3,
+        2.1
+      ]
+    },
+    "R103": {
+      "value": "4.02k / 1% / cold <=100mA",
+      "mpn": "RC0603FR-074K02L",
+      "maker": "YAGEO",
+      "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RC_GROUP_51_ROHS_L"
+    }
+  },
+  "status": "schematic and exact land libraries; PCB sync pending",
+  "manufacturer_curves_are_typical": true,
+  "physical_thermal_tests_performed": false
+}

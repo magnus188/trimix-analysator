@@ -1,0 +1,378 @@
+{
+  "schema": 1,
+  "scope": "Charge standby portable code and actual ESP worker with explicit hardware boundary stubs",
+  "utc": "2026-09-07T15:26:20.779342+00:00",
+  "status": "passed",
+  "source_sha256": {
+    "hardware/system-review/software/power/off-charge-review/verify_standby.py": "9541391ae62252114dd9ba525ec72ba733d9d093eb4160d4f6729d7f61d3aab4",
+    "main/CMakeLists.txt": "088916d59540bfe50e5c1ccfce8dd9d346b0c26f22954793e5e94d7d1148087f",
+    "main/board/guition_jc4880p443.c": "235884824fa571bf3e050aee7ce87b484e55290afd1b58d6b8f9ae3be2ae81d2",
+    "main/hardware_contract.h": "112a0e382d360a8ba1eb4d71fbbd50edb30c313a6d86f09121d921f902cb18bb",
+    "main/main.cpp": "182b3221a83a92919d824238d4ae1454c6e108e07fa66f948968f2aa85dd9bdd",
+    "main/sensors/bc12_monitor.cpp": "852a745465a360fccc6ebf38e1d9d624b2d05abaf49de93d3da5d31369fa0c1b",
+    "main/sensors/bc12_monitor.h": "92cc357354882ba9c846f1314a4b017bece370ef3043a64da008c2dcdccf8c51",
+    "main/sensors/environment_monitor.h": "c4def80c36b07d106b17ac8427bc334bfcec2bb2e22d3deb8cdbe8a3cee4832e",
+    "main/sensors/power_monitor.cpp": "e3a1e146b27571aa3ff4409f9a508f71d9228c45193da79f9921ce13f88beff8",
+    "main/sensors/power_monitor.h": "6761ed626c5bb8033f93d2b209f654b65e1352bc9883496f4235b48e075c1c04",
+    "main/sensors/sensor_hardware.h": "6cfc89ae7fedfa81d34a6579b26e5585de83d694700648c7ab248eeba69cede3",
+    "main/sensors/sensor_interface.h": "eac20aa8083eab9882fb855eb72ba5e880099fcc34b113e5fca810959f5cf79c",
+    "main/sensors/system_i2c.cpp": "cf79cb9f72e84abafff890ff240a694d010bc96ba0cdc764f2e8a400b7eddd03",
+    "main/sensors/system_i2c.h": "803bb5c753d69e8a8a41ada789a7c79d0ad3a927b503c6cd776284822144ffb3",
+    "main/sensors/usb_input_policy.cpp": "555ee7d9c17c0bd7a6ee219c5b909cda46478bd32fa3faee3759b56884141046",
+    "main/sensors/usb_input_policy.h": "bbae4769f38de699b99b3d2b15a5974476e3594a79a4aaefeef35ad8cfd89191",
+    "main/sensors/usb_source_monitor.cpp": "5930c8a293c7960a2474cf006515880fe189a3dd81c39f8b3968de49505a9f8d",
+    "main/sensors/usb_source_monitor.h": "8b37b952c8052d602349e09c244a9c56600f246c4f57e1d0e981a64de2a1ae71",
+    "main/services/backlight_service.cpp": "4113044b0a8e67ddc58635f9efb7b09d2464eeaeeebd582c0a251daacd2ad23e",
+    "main/services/backlight_service.h": "875ba02fc60daf7fb4d8283f028411925af9aa29cf5b2092ecc7e77ce0010372",
+    "main/services/charge_profile.cpp": "b20f058e551a3fe54ac5a7483684d3431621b58289e8f790a31edd483e96c0dc",
+    "main/services/charge_profile.h": "f52e864c345995a8b30cd379543ba9ab04bafb537644ca676d8d21121dcf4f5d",
+    "main/services/charge_standby_policy.cpp": "7c90649ba07e1b2abb5f0adf37a9c62b2d27e4cfd49cec820d1674bdd1218250",
+    "main/services/charge_standby_policy.h": "01f65613ad451dc9d8f02fd847b72462928b4daa931dbb470f4e1d864fc8ff42",
+    "main/services/gas_calibration_core.h": "f3d2c2432573263873979f4feaa8aa430b34ebb513e4508d7d4eb9c03e690440",
+    "main/services/maintenance_service.cpp": "edf05da0ad8b7b7040f43f5584747982eb9f8bb5828376ed6788db83e79f0c66",
+    "main/services/maintenance_service.h": "1c9b30e540c0ed73d784f308b47bcb139c067e746e779fc78bf4f096e216c917",
+    "main/services/oxygen_selection_service.h": "187beded70701955330d96edaf490f8f41dc2fcffe99fefb31eb8640bd4c83d9",
+    "main/services/storage_service.h": "510b96782f732d23551e93b6860a7d72a390859afa660ba57fb977d12a9ac8ed",
+    "main/services/system_power.cpp": "743fa696b559ffd86e13fdefc9aaad2d29e286993b4b2fcd444d8208bca4c678",
+    "main/services/system_power.h": "f3f1913af049f550c3fca6ad4847feb442a62344563c28fd6954db0c87e0ebef",
+    "main/third_party/bme280/bme280.h": "6f144510e103f0ab1a24244a71f7ff8ab7f23147b4899aa7bfd0f526062d2163",
+    "main/third_party/bme280/bme280_defs.h": "541bbd32498b8603bc8fe8eafac26b15d09fb032d37448ca88e7aa398d6a0769",
+    "scripts/run_tests.sh": "61387f5198971feba7b245292f80f0bab86e3b1d9bb231673e8c9a450b12e79e",
+    "simulator/CMakeLists.txt": "c9ca878bb190c68592d2f764d85f6c6ae85d5545efd82e2935ab5a14dfa1fb5f",
+    "simulator/mocks/backlight_service_mock.cpp": "971283e513b57e0c341ff804c0ec268b8a2e815b6a32b672e364d80cef92a85d",
+    "simulator/stubs/esp_err.h": "d987f8a338c5b321fe906f1d99529ce1e9a153e115267b0bafeb9e4f4e99088d",
+    "simulator/stubs/esp_log.h": "6aabcd642cc53afb809c8e1cc064066a14f90a23b4848a215ceb5012f2c19b74",
+    "tests/backlight_stubs/board/guition_jc4880p443.h": "584436787a0da5160645707e4fc073c04e1781cfb3f789f4e17e8d06c0cec903",
+    "tests/power_worker_stubs/driver/gpio.h": "97f82910cc9fa9225d1c7621e8ee8f0ccff4c911b5b7e9f7de2eaad07ca0db33",
+    "tests/power_worker_stubs/esp_system.h": "616f599eba4e201cb6768758af489e6c7ab323f736d65bcb100a4f8bca17bc5a",
+    "tests/power_worker_stubs/esp_timer.h": "f8cdb80a5667a12bfe8a1be27ce97e4c1ff297c1eba4219668150cb2a6c000c6",
+    "tests/power_worker_stubs/freertos/FreeRTOS.h": "c695c3884fb6b9fd9536b101f1a4d2afde98cb3181598037586ee3bee680c71a",
+    "tests/power_worker_stubs/freertos/task.h": "4337176aa40c95f946c8d824fb9bf44d0cd3293cc7833b4f5f6d23354ad83523",
+    "tests/test_backlight_standby.cpp": "1d680822fcdbfa493a2dc32d166d221985ce0512d372114ae6da0940c096719e",
+    "tests/test_charge_standby.cpp": "5a28192431f19f6053712b7cae855e480451ab2cbfd2d9dbef93a83de28400f1",
+    "tests/test_power_worker_standby.cpp": "f4231ff3ad938bcc35915bc4bb5479d0e8ab5e4c3c4263b9c197037695d3af3e"
+  },
+  "source_unchanged": true,
+  "checks": [
+    {
+      "name": "compiler",
+      "command": [
+        "/usr/bin/c++",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/compiler.log",
+      "sha256": "042af9433fb0dd5784acb36e7f4de32c0c64bb8a17741dc90013c2895d32855a"
+    },
+    {
+      "name": "compile-charge-core-asan-ubsan",
+      "command": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-Itests/power_worker_stubs",
+        "-Itests/backlight_stubs",
+        "-Isimulator/stubs",
+        "-Imain",
+        "tests/test_charge_standby.cpp",
+        "main/services/charge_profile.cpp",
+        "main/services/charge_standby_policy.cpp",
+        "main/sensors/power_monitor.cpp",
+        "-o",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/charge-core-asan-ubsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/compile-charge-core-asan-ubsan.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "charge-core-asan-ubsan",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/charge-core-asan-ubsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/charge-core-asan-ubsan.log",
+      "sha256": "cf267bfb148c4921a71572e3d9dc02b91d85304dc8e2372db876a1c0db7307e7"
+    },
+    {
+      "name": "compile-backlight-asan-ubsan",
+      "command": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-Itests/power_worker_stubs",
+        "-Itests/backlight_stubs",
+        "-Isimulator/stubs",
+        "-Imain",
+        "tests/test_backlight_standby.cpp",
+        "main/services/backlight_service.cpp",
+        "-o",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/backlight-asan-ubsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/compile-backlight-asan-ubsan.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "backlight-asan-ubsan",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/backlight-asan-ubsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/backlight-asan-ubsan.log",
+      "sha256": "72d27c87da5b805c41e310d7dac597df567586a253c67205cd1c2ff7364ee31d"
+    },
+    {
+      "name": "compile-worker-asan-ubsan",
+      "command": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer",
+        "-DESP_PLATFORM=1",
+        "-Itests/power_worker_stubs",
+        "-Itests/backlight_stubs",
+        "-Isimulator/stubs",
+        "-Imain",
+        "tests/test_power_worker_standby.cpp",
+        "main/services/system_power.cpp",
+        "main/services/charge_standby_policy.cpp",
+        "main/services/maintenance_service.cpp",
+        "main/services/backlight_service.cpp",
+        "main/sensors/power_monitor.cpp",
+        "main/sensors/usb_input_policy.cpp",
+        "main/sensors/usb_source_monitor.cpp",
+        "main/sensors/bc12_monitor.cpp",
+        "-o",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/compile-worker-asan-ubsan.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "worker-asan-ubsan-normal",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "normal"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-normal.log",
+      "sha256": "bc2e1275f749a980dc9c47c1bc32d2c1835bf1962b3982ac8340a351f9f1e5da"
+    },
+    {
+      "name": "worker-asan-ubsan-maintenance",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "maintenance"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-maintenance.log",
+      "sha256": "581b0753462170beecd0078ea1668a6af11a5a807cadc221c858a7b9314577e1"
+    },
+    {
+      "name": "worker-asan-ubsan-maintenance-last",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "maintenance-last"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-maintenance-last.log",
+      "sha256": "581b0753462170beecd0078ea1668a6af11a5a807cadc221c858a7b9314577e1"
+    },
+    {
+      "name": "worker-asan-ubsan-bus-loss",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "bus-loss"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-bus-loss.log",
+      "sha256": "b658b7fefc26cac445b99b2f048e2709ab2845ee6f2069e749cb4bb2c0f96d9a"
+    },
+    {
+      "name": "worker-asan-ubsan-probation",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "probation"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-probation.log",
+      "sha256": "39646293fb4ad07a43f94fcd1e3b81ad753f57b11437c867027a2809b9985577"
+    },
+    {
+      "name": "worker-asan-ubsan-charger-irq",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "charger-irq"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-charger-irq.log",
+      "sha256": "bc2e1275f749a980dc9c47c1bc32d2c1835bf1962b3982ac8340a351f9f1e5da"
+    },
+    {
+      "name": "worker-asan-ubsan-kill-retry",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-asan-ubsan",
+        "kill-retry"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-asan-ubsan-kill-retry.log",
+      "sha256": "9e31cd38a0d971f9869b3133bf4d4fa2754c27ac9f2a9201fae0a1a21d5978df"
+    },
+    {
+      "name": "compile-backlight-tsan",
+      "command": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-g",
+        "-fsanitize=thread",
+        "-fno-omit-frame-pointer",
+        "-Itests/power_worker_stubs",
+        "-Itests/backlight_stubs",
+        "-Isimulator/stubs",
+        "-Imain",
+        "tests/test_backlight_standby.cpp",
+        "main/services/backlight_service.cpp",
+        "-o",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/backlight-tsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/compile-backlight-tsan.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "backlight-tsan",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/backlight-tsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/backlight-tsan.log",
+      "sha256": "72d27c87da5b805c41e310d7dac597df567586a253c67205cd1c2ff7364ee31d"
+    },
+    {
+      "name": "compile-worker-tsan",
+      "command": [
+        "/usr/bin/c++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pthread",
+        "-g",
+        "-fsanitize=thread",
+        "-fno-omit-frame-pointer",
+        "-DESP_PLATFORM=1",
+        "-Itests/power_worker_stubs",
+        "-Itests/backlight_stubs",
+        "-Isimulator/stubs",
+        "-Imain",
+        "tests/test_power_worker_standby.cpp",
+        "main/services/system_power.cpp",
+        "main/services/charge_standby_policy.cpp",
+        "main/services/maintenance_service.cpp",
+        "main/services/backlight_service.cpp",
+        "main/sensors/power_monitor.cpp",
+        "main/sensors/usb_input_policy.cpp",
+        "main/sensors/usb_source_monitor.cpp",
+        "main/sensors/bc12_monitor.cpp",
+        "-o",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-tsan"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/compile-worker-tsan.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "worker-tsan-maintenance",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-tsan",
+        "maintenance"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-tsan-maintenance.log",
+      "sha256": "581b0753462170beecd0078ea1668a6af11a5a807cadc221c858a7b9314577e1"
+    },
+    {
+      "name": "worker-tsan-maintenance-last",
+      "command": [
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/worker-tsan",
+        "maintenance-last"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/worker-tsan-maintenance-last.log",
+      "sha256": "581b0753462170beecd0078ea1668a6af11a5a807cadc221c858a7b9314577e1"
+    },
+    {
+      "name": "cmake-configure",
+      "command": [
+        "cmake",
+        "-S",
+        "simulator",
+        "-B",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/cmake"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/cmake-configure.log",
+      "sha256": "7a5ab56d55ce5eba1961c09056279187554b3b4aa188cd3285bd64ba0f26d8c5"
+    },
+    {
+      "name": "cmake-build",
+      "command": [
+        "cmake",
+        "--build",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/cmake",
+        "--target",
+        "test_charge_standby",
+        "test_backlight_standby",
+        "test_power_worker_standby",
+        "test_power_environment",
+        "test_usb_input_policy",
+        "test_storage_maintenance_race",
+        "-j",
+        "4"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/cmake-build.log",
+      "sha256": "f87b1823cb823ff0ab9385d1a0a04dea32ed6741e4f9536b07d6d016b4561118"
+    },
+    {
+      "name": "cmake-ctest",
+      "command": [
+        "ctest",
+        "--test-dir",
+        "/var/folders/04/bnfywths6rg8h51hdv1jf40c0000gn/T/trimix-standby-verification-1jse2cn5/cmake",
+        "-R",
+        "charge_standby|backlight_standby|power_worker_|test_power_environment|usb_input_policy|storage_maintenance_race",
+        "--output-on-failure"
+      ],
+      "exit_code": 0,
+      "log": "hardware/system-review/software/power/off-charge-review/standby-evidence/cmake-ctest.log",
+      "sha256": "1d3d9f0e9a1efe7c6669da838221fb30231e896a798649c9ffb23c47cf1de189"
+    }
+  ],
+  "production_profile": "CommissioningInhibited; J104 OPEN; no UI/NVS qualification",
+  "physical_tests": "none",
+  "full_firmware_builds": "separate parent integration receipt"
+}

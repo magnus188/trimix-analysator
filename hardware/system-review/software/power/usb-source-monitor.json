@@ -1,0 +1,51 @@
+{
+  "generated_utc": "2026-09-07T11:43:13.650378+00:00",
+  "physical_hardware_tested": false,
+  "scope": "Pure managed-bus TUSB320LAI source observation and explicit disabled-policy interrupt acknowledgement",
+  "source_sha256": {
+    "main/sensors/usb_source_monitor.h": "a1c0755a00aa62b17883ff67438c7f563b51f48a958f431167c221a166fa0fcb",
+    "main/sensors/usb_source_monitor.cpp": "5930c8a293c7960a2474cf006515880fe189a3dd81c39f8b3968de49505a9f8d",
+    "tests/test_usb_source.cpp": "3a1e33da192420e07d800862dbaa7468122fc5c6b63d23e0b36462636f8b7b8c",
+    "main/sensors/system_i2c.h": "803bb5c753d69e8a8a41ada789a7c79d0ad3a927b503c6cd776284822144ffb3",
+    "hardware/system-review/electrical/sources/tusb320lai.pdf": "62f7b3f65338e25ebd6fd46ef04474ba806b06b1cc04bc0b3d7b8191b01ca87d"
+  },
+  "hardware_contract": {
+    "address_7bit": 71,
+    "part": "TUSB320LAIRWBR",
+    "qualified_revision": 2,
+    "port_strap": "GND sink",
+    "enable": "EN_N low",
+    "external_ilim_logic": "Not implemented or validated by this driver"
+  },
+  "api_contract": {
+    "poll": "Read-only; sticky interrupt is never automatically acknowledged.",
+    "initialize_disabled_policy": "Caller must hold ILIM permission LOW; changes only accessory-disable bit without W1C.",
+    "acknowledge_change": "Caller must hold ILIM permission LOW; masked W1C plus current source/generation/readback verification.",
+    "default_current_ma": 0,
+    "meaning_of_default_zero": "No numeric current permission inferred without USB/BC1.2 power policy."
+  },
+  "commands": [
+    "c++ -std=c++17 -Wall -Wextra -Werror -Isimulator/stubs -Imain tests/test_usb_source.cpp main/sensors/usb_source_monitor.cpp -o /tmp/trimix-test-usb-source",
+    "/tmp/trimix-test-usb-source",
+    "c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Isimulator/stubs -Imain tests/test_usb_source.cpp main/sensors/usb_source_monitor.cpp -o /tmp/trimix-test-usb-source-sanitized",
+    "/tmp/trimix-test-usb-source-sanitized"
+  ],
+  "assertions_passed": 51,
+  "assertions_failed": 0,
+  "asan_ubsan_assertions_passed": 51,
+  "asan_ubsan_diagnostics": 0,
+  "logs": {
+    "usb-source-tests.log": "4ec6a861635c88f5ad53334a271019337def7bb1448fb4129f3c501849e3acaf",
+    "usb-source-asan-ubsan.log": "4ec6a861635c88f5ad53334a271019337def7bb1448fb4129f3c501849e3acaf"
+  },
+  "documentation_sha256": "a12637dfac2654094f6fba822f8708252da8feae79f02744466644ba11f49cde",
+  "binary_sha256": {
+    "/tmp/trimix-test-usb-source": "eb69bf0c47d337aa3d75df20fbbb70eba907048512e70933861b46b67402df86",
+    "/tmp/trimix-test-usb-source-sanitized": "9003b02bae31e28c9fa8d87e2812ae0576d6bd3394418157e2238e19df6b2a23"
+  },
+  "pending": [
+    "Root power-policy and shared-bus integration; independent hardware permission/latch assessment.",
+    "Actual CC controller, cable/receptacle, dead-battery, source change, stuck-GPIO and I2C fault tests.",
+    "BC1.2 detection and any charging enable must be implemented and qualified separately."
+  ]
+}

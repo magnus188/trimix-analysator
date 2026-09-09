@@ -1,0 +1,1044 @@
+{
+  "board_sha256": "41393691dd716fe36a1ac9332ae1904d966b9017070489201ec7aef48b894cb1",
+  "source_sha256": "c923d4089a2f41379cdfe414671334aef104d732ca95206d2386324e8ecde60e",
+  "witnesses": [
+    {
+      "source": "U101.22",
+      "target": "C107.1",
+      "status": "explicit_native_witness",
+      "net": "/01  CHARGING + BATTERY/BQ_REGN",
+      "source_layer": "F.Cu",
+      "target_layer": "B.Cu",
+      "ordered_item_uuids": [
+        "eed76df9-0cf4-47bd-930d-c836f7b19a69",
+        "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+        "783842d0-a13b-460a-ab89-171d90ebc5c7",
+        "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+        "b19e720e-3c28-4c4e-b834-274dda82040f",
+        "cd6172e0-6a2c-4498-ad13-0aa259df7c1d"
+      ],
+      "ordered_edges": [
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "eed76df9-0cf4-47bd-930d-c836f7b19a69",
+          "to_uuid": "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.5375,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+          "to_uuid": "783842d0-a13b-460a-ab89-171d90ebc5c7",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "783842d0-a13b-460a-ab89-171d90ebc5c7",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.3522782990761707,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "783842d0-a13b-460a-ab89-171d90ebc5c7",
+          "to_uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "barrel_type": "via",
+          "from_layer": "F.Cu",
+          "to_layer": "B.Cu",
+          "drill_mm": [
+            0.2,
+            0.2
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "to_uuid": "b19e720e-3c28-4c4e-b834-274dda82040f",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "b19e720e-3c28-4c4e-b834-274dda82040f",
+          "layer": "B.Cu",
+          "full_item_length_mm": 2.031311152925617,
+          "width_mm": 0.25
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "b19e720e-3c28-4c4e-b834-274dda82040f",
+          "to_uuid": "cd6172e0-6a2c-4498-ad13-0aa259df7c1d",
+          "layer": "B.Cu"
+        }
+      ],
+      "layer_summary": {
+        "F.Cu": {
+          "full_item_length_mm": 0.8897782990761707,
+          "minimum_width_mm": 0.2,
+          "track_uuids": [
+            "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+            "783842d0-a13b-460a-ab89-171d90ebc5c7"
+          ]
+        },
+        "B.Cu": {
+          "full_item_length_mm": 2.031311152925617,
+          "minimum_width_mm": 0.25,
+          "track_uuids": [
+            "b19e720e-3c28-4c4e-b834-274dda82040f"
+          ]
+        }
+      },
+      "barrel_transition_count": 1,
+      "full_item_estimate_ohm_20C_25um_1p6mm": 0.007755215695994392,
+      "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+    },
+    {
+      "source": "U101.22",
+      "target": "R101.1",
+      "status": "explicit_native_witness",
+      "net": "/01  CHARGING + BATTERY/BQ_REGN",
+      "source_layer": "F.Cu",
+      "target_layer": "F.Cu",
+      "ordered_item_uuids": [
+        "eed76df9-0cf4-47bd-930d-c836f7b19a69",
+        "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+        "783842d0-a13b-460a-ab89-171d90ebc5c7",
+        "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+        "b6869f07-5bbb-40b0-9a42-666e94052c3d",
+        "4500da3f-da61-4d09-bfaa-aa9ee37a53d2",
+        "c9be422f-5cfc-4cf9-a79a-237a68a18df6",
+        "2043f03a-3f8e-41a6-8165-650c9b53ed9a",
+        "9bbf5015-8990-43c9-a074-55cabaa7df9a",
+        "cf2ec95d-274f-425a-99a1-da6adbf12d1c",
+        "31e84a5b-e7c2-4082-b8a9-5171558ec661",
+        "b87a7237-f7fb-4c4e-ab51-2e8c24c73e2f",
+        "b9bfe304-fcd3-405b-8635-313950272d8e",
+        "5473829d-1420-41c1-aff9-90b9ce335037",
+        "a2abc9d1-29d2-4381-a397-b77e8d777893",
+        "9bb0fe66-cd82-4acc-b7bb-02523cb84062",
+        "9262c0e7-15c4-4d73-ae86-eb33aece0c4d",
+        "0ecfb0eb-2375-4afa-997c-60ac975748f3",
+        "98bb92ba-955f-408c-82ce-e9083f6b4202",
+        "7c93d082-4820-453b-9f25-8bb0942202f1",
+        "fa53e1b9-8883-4366-8507-e5e3213a2d13",
+        "fd2999c9-bcfd-48af-97fd-7c93d315339b",
+        "02f0f6a8-d22d-4038-a63c-c579dbe2757d",
+        "6f177d80-4fe6-44da-925a-12345ffcee9b",
+        "a1204210-6f2e-4a49-a853-ac71b521173a",
+        "f0b1a438-91c5-4746-a3bd-419c9f62c606",
+        "f77323b4-e208-40c6-9677-839fb4074fe0",
+        "7b86bfad-a620-4f23-9307-6603eb0c559a",
+        "fade7f5c-7832-4236-b7b5-0afba458dcb6",
+        "6dbf4f4c-64c5-483b-9f6e-6f3de6aa3100",
+        "6be1f2cd-a339-40fa-9b7f-9ad95a6cbc62",
+        "a969a702-1a71-4d01-9de2-61f18a00767c",
+        "e631361e-0ce2-44bd-a7c6-ac6edc780c59",
+        "d6742b30-6e0f-4052-a12a-9502aa7870d5",
+        "77c6586d-75a0-4dce-b683-ef5fbe401dbe",
+        "f9f96d7b-c33a-446a-87b2-18343fa713f5",
+        "fd32b87a-6794-41eb-ad37-155c00cff281",
+        "fff36002-a0b0-48df-9661-905f39001aec",
+        "f116cd20-9595-4e82-8ddd-6abb122015eb",
+        "037b9b46-2b28-4da0-8c20-fb46f1bed852"
+      ],
+      "ordered_edges": [
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "eed76df9-0cf4-47bd-930d-c836f7b19a69",
+          "to_uuid": "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.5375,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+          "to_uuid": "783842d0-a13b-460a-ab89-171d90ebc5c7",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "783842d0-a13b-460a-ab89-171d90ebc5c7",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.3522782990761707,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "783842d0-a13b-460a-ab89-171d90ebc5c7",
+          "to_uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "barrel_type": "via",
+          "from_layer": "F.Cu",
+          "to_layer": "In2.Cu",
+          "drill_mm": [
+            0.2,
+            0.2
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "to_uuid": "b6869f07-5bbb-40b0-9a42-666e94052c3d",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "b6869f07-5bbb-40b0-9a42-666e94052c3d",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 1.55,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "b6869f07-5bbb-40b0-9a42-666e94052c3d",
+          "to_uuid": "4500da3f-da61-4d09-bfaa-aa9ee37a53d2",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "4500da3f-da61-4d09-bfaa-aa9ee37a53d2",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 0.21213203435596428,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "4500da3f-da61-4d09-bfaa-aa9ee37a53d2",
+          "to_uuid": "c9be422f-5cfc-4cf9-a79a-237a68a18df6",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "c9be422f-5cfc-4cf9-a79a-237a68a18df6",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 4.45,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "c9be422f-5cfc-4cf9-a79a-237a68a18df6",
+          "to_uuid": "2043f03a-3f8e-41a6-8165-650c9b53ed9a",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "2043f03a-3f8e-41a6-8165-650c9b53ed9a",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 2.95,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "2043f03a-3f8e-41a6-8165-650c9b53ed9a",
+          "to_uuid": "9bbf5015-8990-43c9-a074-55cabaa7df9a",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "9bbf5015-8990-43c9-a074-55cabaa7df9a",
+          "barrel_type": "via",
+          "from_layer": "In2.Cu",
+          "to_layer": "B.Cu",
+          "drill_mm": [
+            0.25,
+            0.25
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "9bbf5015-8990-43c9-a074-55cabaa7df9a",
+          "to_uuid": "cf2ec95d-274f-425a-99a1-da6adbf12d1c",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "cf2ec95d-274f-425a-99a1-da6adbf12d1c",
+          "layer": "B.Cu",
+          "full_item_length_mm": 0.9192388155425119,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "cf2ec95d-274f-425a-99a1-da6adbf12d1c",
+          "to_uuid": "31e84a5b-e7c2-4082-b8a9-5171558ec661",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "31e84a5b-e7c2-4082-b8a9-5171558ec661",
+          "layer": "B.Cu",
+          "full_item_length_mm": 0.1,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "31e84a5b-e7c2-4082-b8a9-5171558ec661",
+          "to_uuid": "b87a7237-f7fb-4c4e-ab51-2e8c24c73e2f",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "b87a7237-f7fb-4c4e-ab51-2e8c24c73e2f",
+          "layer": "B.Cu",
+          "full_item_length_mm": 0.7,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "b87a7237-f7fb-4c4e-ab51-2e8c24c73e2f",
+          "to_uuid": "b9bfe304-fcd3-405b-8635-313950272d8e",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "b9bfe304-fcd3-405b-8635-313950272d8e",
+          "layer": "B.Cu",
+          "full_item_length_mm": 0.9192388155425119,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "b9bfe304-fcd3-405b-8635-313950272d8e",
+          "to_uuid": "5473829d-1420-41c1-aff9-90b9ce335037",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "5473829d-1420-41c1-aff9-90b9ce335037",
+          "barrel_type": "via",
+          "from_layer": "B.Cu",
+          "to_layer": "In2.Cu",
+          "drill_mm": [
+            0.25,
+            0.25
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "5473829d-1420-41c1-aff9-90b9ce335037",
+          "to_uuid": "a2abc9d1-29d2-4381-a397-b77e8d777893",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "a2abc9d1-29d2-4381-a397-b77e8d777893",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 2.793071785686863,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "a2abc9d1-29d2-4381-a397-b77e8d777893",
+          "to_uuid": "9bb0fe66-cd82-4acc-b7bb-02523cb84062",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "9bb0fe66-cd82-4acc-b7bb-02523cb84062",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 2.8251106173033294,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "9bb0fe66-cd82-4acc-b7bb-02523cb84062",
+          "to_uuid": "9262c0e7-15c4-4d73-ae86-eb33aece0c4d",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "9262c0e7-15c4-4d73-ae86-eb33aece0c4d",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 0.20615528128088303,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "9262c0e7-15c4-4d73-ae86-eb33aece0c4d",
+          "to_uuid": "0ecfb0eb-2375-4afa-997c-60ac975748f3",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "0ecfb0eb-2375-4afa-997c-60ac975748f3",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 0.32015621187164245,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "0ecfb0eb-2375-4afa-997c-60ac975748f3",
+          "to_uuid": "98bb92ba-955f-408c-82ce-e9083f6b4202",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "98bb92ba-955f-408c-82ce-e9083f6b4202",
+          "layer": "In2.Cu",
+          "full_item_length_mm": 0.51478150704935,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "98bb92ba-955f-408c-82ce-e9083f6b4202",
+          "to_uuid": "7c93d082-4820-453b-9f25-8bb0942202f1",
+          "layer": "In2.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "7c93d082-4820-453b-9f25-8bb0942202f1",
+          "barrel_type": "via",
+          "from_layer": "In2.Cu",
+          "to_layer": "F.Cu",
+          "drill_mm": [
+            0.25,
+            0.25
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "7c93d082-4820-453b-9f25-8bb0942202f1",
+          "to_uuid": "fa53e1b9-8883-4366-8507-e5e3213a2d13",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "fa53e1b9-8883-4366-8507-e5e3213a2d13",
+          "layer": "F.Cu",
+          "full_item_length_mm": 4.244997055358224,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "fa53e1b9-8883-4366-8507-e5e3213a2d13",
+          "to_uuid": "fd2999c9-bcfd-48af-97fd-7c93d315339b",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "fd2999c9-bcfd-48af-97fd-7c93d315339b",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.9192388155425119,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "fd2999c9-bcfd-48af-97fd-7c93d315339b",
+          "to_uuid": "02f0f6a8-d22d-4038-a63c-c579dbe2757d",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "02f0f6a8-d22d-4038-a63c-c579dbe2757d",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.15,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "02f0f6a8-d22d-4038-a63c-c579dbe2757d",
+          "to_uuid": "6f177d80-4fe6-44da-925a-12345ffcee9b",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "6f177d80-4fe6-44da-925a-12345ffcee9b",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.8,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "6f177d80-4fe6-44da-925a-12345ffcee9b",
+          "to_uuid": "a1204210-6f2e-4a49-a853-ac71b521173a",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "a1204210-6f2e-4a49-a853-ac71b521173a",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.8485281374238571,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "a1204210-6f2e-4a49-a853-ac71b521173a",
+          "to_uuid": "f0b1a438-91c5-4746-a3bd-419c9f62c606",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "f0b1a438-91c5-4746-a3bd-419c9f62c606",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.1,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "f0b1a438-91c5-4746-a3bd-419c9f62c606",
+          "to_uuid": "f77323b4-e208-40c6-9677-839fb4074fe0",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "f77323b4-e208-40c6-9677-839fb4074fe0",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.1,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "f77323b4-e208-40c6-9677-839fb4074fe0",
+          "to_uuid": "7b86bfad-a620-4f23-9307-6603eb0c559a",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "7b86bfad-a620-4f23-9307-6603eb0c559a",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.1,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "7b86bfad-a620-4f23-9307-6603eb0c559a",
+          "to_uuid": "fade7f5c-7832-4236-b7b5-0afba458dcb6",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "fade7f5c-7832-4236-b7b5-0afba458dcb6",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.275,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "fade7f5c-7832-4236-b7b5-0afba458dcb6",
+          "to_uuid": "6dbf4f4c-64c5-483b-9f6e-6f3de6aa3100",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "6dbf4f4c-64c5-483b-9f6e-6f3de6aa3100",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.575,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "6dbf4f4c-64c5-483b-9f6e-6f3de6aa3100",
+          "to_uuid": "6be1f2cd-a339-40fa-9b7f-9ad95a6cbc62",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "6be1f2cd-a339-40fa-9b7f-9ad95a6cbc62",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.28284271247461906,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "6be1f2cd-a339-40fa-9b7f-9ad95a6cbc62",
+          "to_uuid": "a969a702-1a71-4d01-9de2-61f18a00767c",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "a969a702-1a71-4d01-9de2-61f18a00767c",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.025,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "a969a702-1a71-4d01-9de2-61f18a00767c",
+          "to_uuid": "e631361e-0ce2-44bd-a7c6-ac6edc780c59",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "e631361e-0ce2-44bd-a7c6-ac6edc780c59",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.03535533905932738,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "e631361e-0ce2-44bd-a7c6-ac6edc780c59",
+          "to_uuid": "d6742b30-6e0f-4052-a12a-9502aa7870d5",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "d6742b30-6e0f-4052-a12a-9502aa7870d5",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.03535533905932738,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "d6742b30-6e0f-4052-a12a-9502aa7870d5",
+          "to_uuid": "77c6586d-75a0-4dce-b683-ef5fbe401dbe",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "77c6586d-75a0-4dce-b683-ef5fbe401dbe",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.025,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "77c6586d-75a0-4dce-b683-ef5fbe401dbe",
+          "to_uuid": "f9f96d7b-c33a-446a-87b2-18343fa713f5",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "f9f96d7b-c33a-446a-87b2-18343fa713f5",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.45961940777125593,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "f9f96d7b-c33a-446a-87b2-18343fa713f5",
+          "to_uuid": "fd32b87a-6794-41eb-ad37-155c00cff281",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "fd32b87a-6794-41eb-ad37-155c00cff281",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.4472135954999579,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "fd32b87a-6794-41eb-ad37-155c00cff281",
+          "to_uuid": "fff36002-a0b0-48df-9661-905f39001aec",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "fff36002-a0b0-48df-9661-905f39001aec",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.2229574808635009,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "fff36002-a0b0-48df-9661-905f39001aec",
+          "to_uuid": "f116cd20-9595-4e82-8ddd-6abb122015eb",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "f116cd20-9595-4e82-8ddd-6abb122015eb",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.3684087403957729,
+          "width_mm": 0.15
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "f116cd20-9595-4e82-8ddd-6abb122015eb",
+          "to_uuid": "037b9b46-2b28-4da0-8c20-fb46f1bed852",
+          "layer": "F.Cu"
+        }
+      ],
+      "layer_summary": {
+        "F.Cu": {
+          "full_item_length_mm": 14.904294922524526,
+          "minimum_width_mm": 0.15,
+          "track_uuids": [
+            "2cfb78c2-4a73-4b65-971c-4ca10c8a94e6",
+            "783842d0-a13b-460a-ab89-171d90ebc5c7",
+            "fa53e1b9-8883-4366-8507-e5e3213a2d13",
+            "fd2999c9-bcfd-48af-97fd-7c93d315339b",
+            "02f0f6a8-d22d-4038-a63c-c579dbe2757d",
+            "6f177d80-4fe6-44da-925a-12345ffcee9b",
+            "a1204210-6f2e-4a49-a853-ac71b521173a",
+            "f0b1a438-91c5-4746-a3bd-419c9f62c606",
+            "f77323b4-e208-40c6-9677-839fb4074fe0",
+            "7b86bfad-a620-4f23-9307-6603eb0c559a",
+            "fade7f5c-7832-4236-b7b5-0afba458dcb6",
+            "6dbf4f4c-64c5-483b-9f6e-6f3de6aa3100",
+            "6be1f2cd-a339-40fa-9b7f-9ad95a6cbc62",
+            "a969a702-1a71-4d01-9de2-61f18a00767c",
+            "e631361e-0ce2-44bd-a7c6-ac6edc780c59",
+            "d6742b30-6e0f-4052-a12a-9502aa7870d5",
+            "77c6586d-75a0-4dce-b683-ef5fbe401dbe",
+            "f9f96d7b-c33a-446a-87b2-18343fa713f5",
+            "fd32b87a-6794-41eb-ad37-155c00cff281",
+            "fff36002-a0b0-48df-9661-905f39001aec",
+            "f116cd20-9595-4e82-8ddd-6abb122015eb"
+          ]
+        },
+        "In2.Cu": {
+          "full_item_length_mm": 15.821407437548032,
+          "minimum_width_mm": 0.15,
+          "track_uuids": [
+            "b6869f07-5bbb-40b0-9a42-666e94052c3d",
+            "4500da3f-da61-4d09-bfaa-aa9ee37a53d2",
+            "c9be422f-5cfc-4cf9-a79a-237a68a18df6",
+            "2043f03a-3f8e-41a6-8165-650c9b53ed9a",
+            "a2abc9d1-29d2-4381-a397-b77e8d777893",
+            "9bb0fe66-cd82-4acc-b7bb-02523cb84062",
+            "9262c0e7-15c4-4d73-ae86-eb33aece0c4d",
+            "0ecfb0eb-2375-4afa-997c-60ac975748f3",
+            "98bb92ba-955f-408c-82ce-e9083f6b4202"
+          ]
+        },
+        "B.Cu": {
+          "full_item_length_mm": 2.6384776310850238,
+          "minimum_width_mm": 0.15,
+          "track_uuids": [
+            "cf2ec95d-274f-425a-99a1-da6adbf12d1c",
+            "31e84a5b-e7c2-4082-b8a9-5171558ec661",
+            "b87a7237-f7fb-4c4e-ab51-2e8c24c73e2f",
+            "b9bfe304-fcd3-405b-8635-313950272d8e"
+          ]
+        }
+      },
+      "barrel_transition_count": 4,
+      "full_item_estimate_ohm_20C_25um_1p6mm": 0.1793380084010433,
+      "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+    },
+    {
+      "source": "U101.21",
+      "target": "C103.2",
+      "status": "explicit_native_witness",
+      "net": "/01  CHARGING + BATTERY/BQ_BTST",
+      "source_layer": "F.Cu",
+      "target_layer": "B.Cu",
+      "ordered_item_uuids": [
+        "661f022c-f2bb-48e1-9aeb-943a003efa8c",
+        "a5ec49d7-01f1-4b16-b669-79dd34562998",
+        "011e3a7d-71d6-4bbb-a3b6-b0b3c0349550",
+        "df5f1c9c-5920-4429-b47b-d58aa96bd19c",
+        "aa4c0055-ac76-46d7-811b-8cbda426deaf"
+      ],
+      "ordered_edges": [
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "661f022c-f2bb-48e1-9aeb-943a003efa8c",
+          "to_uuid": "a5ec49d7-01f1-4b16-b669-79dd34562998",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "a5ec49d7-01f1-4b16-b669-79dd34562998",
+          "layer": "F.Cu",
+          "full_item_length_mm": 0.5590169943749473,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "a5ec49d7-01f1-4b16-b669-79dd34562998",
+          "to_uuid": "011e3a7d-71d6-4bbb-a3b6-b0b3c0349550",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "011e3a7d-71d6-4bbb-a3b6-b0b3c0349550",
+          "barrel_type": "via",
+          "from_layer": "F.Cu",
+          "to_layer": "B.Cu",
+          "drill_mm": [
+            0.2,
+            0.2
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "011e3a7d-71d6-4bbb-a3b6-b0b3c0349550",
+          "to_uuid": "df5f1c9c-5920-4429-b47b-d58aa96bd19c",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "df5f1c9c-5920-4429-b47b-d58aa96bd19c",
+          "layer": "B.Cu",
+          "full_item_length_mm": 0.7964923100695951,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "df5f1c9c-5920-4429-b47b-d58aa96bd19c",
+          "to_uuid": "aa4c0055-ac76-46d7-811b-8cbda426deaf",
+          "layer": "B.Cu"
+        }
+      ],
+      "layer_summary": {
+        "F.Cu": {
+          "full_item_length_mm": 0.5590169943749473,
+          "minimum_width_mm": 0.2,
+          "track_uuids": [
+            "a5ec49d7-01f1-4b16-b669-79dd34562998"
+          ]
+        },
+        "B.Cu": {
+          "full_item_length_mm": 0.7964923100695951,
+          "minimum_width_mm": 0.2,
+          "track_uuids": [
+            "df5f1c9c-5920-4429-b47b-d58aa96bd19c"
+          ]
+        }
+      },
+      "barrel_transition_count": 1,
+      "full_item_estimate_ohm_20C_25um_1p6mm": 0.004899752846309362,
+      "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+    },
+    {
+      "source": "U101.19",
+      "target": "C103.1",
+      "status": "explicit_native_witness",
+      "net": "/01  CHARGING + BATTERY/BQ_SW",
+      "source_layer": "F.Cu",
+      "target_layer": "B.Cu",
+      "ordered_item_uuids": [
+        "ad4af7b6-ef34-404a-87e2-2eafbd6ec607",
+        "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+        "402ab89b-b56d-460a-bcb3-695874bc62b7",
+        "2d2d5429-8476-4689-9e3c-da1d50e41752",
+        "a2c1463b-264a-4d68-8a4f-06f10ea1d503",
+        "fbe44321-04e7-4ee8-9a7c-f894fe46160c",
+        "d2c8968a-21c0-4fd2-9c70-2fee2ad151d7"
+      ],
+      "ordered_edges": [
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "ad4af7b6-ef34-404a-87e2-2eafbd6ec607",
+          "to_uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.9375,
+          "width_mm": 0.45
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+          "to_uuid": "402ab89b-b56d-460a-bcb3-695874bc62b7",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "402ab89b-b56d-460a-bcb3-695874bc62b7",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.5,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "402ab89b-b56d-460a-bcb3-695874bc62b7",
+          "to_uuid": "2d2d5429-8476-4689-9e3c-da1d50e41752",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "2d2d5429-8476-4689-9e3c-da1d50e41752",
+          "layer": "F.Cu",
+          "full_item_length_mm": 1.25,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "2d2d5429-8476-4689-9e3c-da1d50e41752",
+          "to_uuid": "a2c1463b-264a-4d68-8a4f-06f10ea1d503",
+          "layer": "F.Cu"
+        },
+        {
+          "kind": "barrel",
+          "uuid": "a2c1463b-264a-4d68-8a4f-06f10ea1d503",
+          "barrel_type": "via",
+          "from_layer": "F.Cu",
+          "to_layer": "B.Cu",
+          "drill_mm": [
+            0.25,
+            0.25
+          ]
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "a2c1463b-264a-4d68-8a4f-06f10ea1d503",
+          "to_uuid": "fbe44321-04e7-4ee8-9a7c-f894fe46160c",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "fbe44321-04e7-4ee8-9a7c-f894fe46160c",
+          "layer": "B.Cu",
+          "full_item_length_mm": 0.9334880824091971,
+          "width_mm": 0.2
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "fbe44321-04e7-4ee8-9a7c-f894fe46160c",
+          "to_uuid": "d2c8968a-21c0-4fd2-9c70-2fee2ad151d7",
+          "layer": "B.Cu"
+        }
+      ],
+      "layer_summary": {
+        "F.Cu": {
+          "full_item_length_mm": 4.6875,
+          "minimum_width_mm": 0.2,
+          "track_uuids": [
+            "c080da6b-3dac-4bb9-b195-21a9a2e50659",
+            "402ab89b-b56d-460a-bcb3-695874bc62b7",
+            "2d2d5429-8476-4689-9e3c-da1d50e41752"
+          ]
+        },
+        "B.Cu": {
+          "full_item_length_mm": 0.9334880824091971,
+          "minimum_width_mm": 0.2,
+          "track_uuids": [
+            "fbe44321-04e7-4ee8-9a7c-f894fe46160c"
+          ]
+        }
+      },
+      "barrel_transition_count": 1,
+      "full_item_estimate_ohm_20C_25um_1p6mm": 0.012470824963980501,
+      "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+    },
+    {
+      "source": "C107.2",
+      "target": "GNDvia16.05,78.05",
+      "status": "explicit_native_witness",
+      "net": "GND",
+      "source_layer": "B.Cu",
+      "target_layer": "B.Cu",
+      "ordered_item_uuids": [
+        "cbded003-798a-4c8f-8512-30da5c6fc7de",
+        "0965795c-380a-425e-9285-f72691924797",
+        "17d7cffd-21ed-4b7b-bfa5-65d7f8062f72"
+      ],
+      "ordered_edges": [
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "cbded003-798a-4c8f-8512-30da5c6fc7de",
+          "to_uuid": "0965795c-380a-425e-9285-f72691924797",
+          "layer": "B.Cu"
+        },
+        {
+          "kind": "trace",
+          "uuid": "0965795c-380a-425e-9285-f72691924797",
+          "layer": "B.Cu",
+          "full_item_length_mm": 1.6486737093797548,
+          "width_mm": 0.25
+        },
+        {
+          "kind": "native_adjacency",
+          "from_uuid": "0965795c-380a-425e-9285-f72691924797",
+          "to_uuid": "17d7cffd-21ed-4b7b-bfa5-65d7f8062f72",
+          "layer": "B.Cu"
+        }
+      ],
+      "layer_summary": {
+        "B.Cu": {
+          "full_item_length_mm": 1.6486737093797548,
+          "minimum_width_mm": 0.25,
+          "track_uuids": [
+            "0965795c-380a-425e-9285-f72691924797"
+          ]
+        }
+      },
+      "barrel_transition_count": 0,
+      "full_item_estimate_ohm_20C_25um_1p6mm": 0.003248618146561093,
+      "length_interpretation": "Complete native trace-item lengths; pad overlaps and entry/exit in mid-segment are not clipped. This is not exact end-to-end resistance."
+    }
+  ],
+  "new_via_uuid": "17d7cffd-21ed-4b7b-bfa5-65d7f8062f72",
+  "new_via_nearest_SMT_surface_gaps_mm": [
+    {
+      "ref": "L101",
+      "pin": "1",
+      "surface_gap_mm": 0.5500009972602129,
+      "foreign_net": true
+    },
+    {
+      "ref": "C107",
+      "pin": "2",
+      "surface_gap_mm": 0.7490629972890019,
+      "foreign_net": false
+    },
+    {
+      "ref": "C104",
+      "pin": "1",
+      "surface_gap_mm": 1.9397749975323677,
+      "foreign_net": true
+    },
+    {
+      "ref": "Q101",
+      "pin": "1",
+      "surface_gap_mm": 2.027060999535024,
+      "foreign_net": true
+    },
+    {
+      "ref": "C103",
+      "pin": "1",
+      "surface_gap_mm": 2.2252059997990727,
+      "foreign_net": true
+    },
+    {
+      "ref": "Q101",
+      "pin": "2",
+      "surface_gap_mm": 2.4514259975403547,
+      "foreign_net": false
+    }
+  ],
+  "C107_courtyard_bounds_mm": [
+    12.255,
+    78.105,
+    15.495,
+    80.145
+  ],
+  "carrier_requested_opening_mm": [
+    11.955,
+    77.805,
+    15.795,
+    80.445
+  ],
+  "body_max_mm": [
+    2.2,
+    1.45,
+    1.45
+  ],
+  "assembly_clearance_mm": 0.15,
+  "B_Cu_Fusion_Z_mm": 20.5,
+  "body_with_assembly_Fusion_Z_mm": [
+    18.9,
+    20.5
+  ],
+  "no_accepted_CAD_modification": true,
+  "limits": [
+    "Native witness full item lengths include land overlap; not a clipped physical path or dynamic impedance.",
+    "Zones are excluded from these witnesses; separate ground-plane coverage check required."
+  ]
+}

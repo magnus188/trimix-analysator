@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "manifest_archive_and_CAD_hash_checks": 191,
+  "active_delivery_broken_links": [],
+  "canonical_board_sha256": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788",
+  "unchanged_approval_sha256": "daab92a20c5177621c927585a7270acf066d1771d886d6be1e37c0f719c434e2",
+  "promotion_manifest_sha256": "9527cdfc587b394343cfe29e6d39910aeb9dfa51b5411456b751778f6e44eaca",
+  "delivery_manifest_sha256": "9eab148a0b56a6720978d66e0071c3302917a95e1c9d998e2f95dc9b4573b5c7",
+  "EDA_source_changed": false,
+  "order_release": false
+}

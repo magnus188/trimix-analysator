@@ -1,9 +1,17 @@
 # Power system, P1.1 review draft — 2026-09-05
 
-Open **[kicad/power/Trimix_Power.kicad_pro](kicad/power/Trimix_Power.kicad_pro)**.
-The [four-page PDF](verification/power/Trimix_Power.pdf) has an overview and
+> **Historical power-only draft, superseded.** Do not build or program from
+> the values, connectors or charging instructions below. The current combined
+> source is `pcb/analyzer/Trimix_Analyzer`; use the
+> [current electrical integration review](system-review/electrical/README.md)
+> and its interface contract. Current [USB integration](USB_CHARGING.md) and
+> [analyser design](ANALYZER_DESIGN.md) replace this draft's power policy and pin map.
+> This historical body is preserved for provenance.
+
+Open **[pcb/power/Trimix_Power.kicad_pro](pcb/power/Trimix_Power.kicad_pro)**.
+The [four-page PDF](pcb/verification/power/Trimix_Power.pdf) has an overview and
 three circuit sheets. This is the replacement power design. The original
-`kicad/Trimix.kicad_sch` is preserved for later recovery of the sensor circuits;
+`pcb/archive/deprecated-kicad-import/Trimix.kicad_sch` is preserved for later recovery of the sensor circuits;
 it is not electrically included in this new project.
 
 P1.1 improves the presentation: numbered section frames, aligned headings,
@@ -14,15 +22,15 @@ sheet and overview use A3; the regulator and gauge sheets use A4.
 
 This layout revision preserves all 41 component values, footprints, symbol
 selections, DNP states and electrical net memberships. The saved P1 project
-and verification files are in `verification/power/before-presentation-layout.zip`.
-Comparison evidence is in `verification/power/presentation-preservation.json`.
+and verification files are in `pcb/verification/power/before-presentation-layout.zip`.
+Comparison evidence is in `pcb/verification/power/presentation-preservation.json`.
 
 The circuit is a review draft, not a manufacturing release. The original
 empty PCB has not been populated or routed. Charger firmware has not been
 implemented. Assigned footprints are provisional until the orderable parts
 and mechanical drawings are checked.
 
-A separate [3D placement preview](kicad/power/preview/README.md) now shows
+A separate [3D placement preview](pcb/power/previews/README.md) now shows
 the 41 parts on a temporary 90 × 64 mm outline. It has no routing, nine
 placeholder footprints and two approximate 3D bodies. It is an educational
 view of the component groups, not a validated PCB layout or safety result.
@@ -174,7 +182,7 @@ this session, so this remains a physical interface check before connection.
 ## Parts and layout still needed
 
 See [power-inventory.csv](power-inventory.csv) for order evidence and
-[verification/power/pcb-bom.csv](verification/power/pcb-bom.csv) for the PCB
+[pcb/verification/power/pcb-bom.csv](pcb/verification/power/pcb-bom.csv) for the PCB
 components. A completed order is evidence of purchase, not a counted stocktake.
 
 - BQ25895 was requested by the owner but not found by exact-name order
@@ -219,7 +227,7 @@ KiCad 10.0.6 exports the complete four-page schematic and reports **zero ERC
 errors and zero warnings**, with no rule exclusions or reduced severities.
 Power flags only represent external supplies and the regulated system source
 after L101; they are not physical components. Netlist membership comparison
-and pin-number checks are recorded in `verification/power/connectivity-audit.json`.
+and pin-number checks are recorded in `pcb/verification/power/connectivity-audit.json`.
 ERC and connectivity checks do not validate USB compliance, cell suitability,
 component authenticity, charging behavior or the future PCB layout.
 

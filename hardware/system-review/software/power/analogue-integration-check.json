@@ -1,0 +1,136 @@
+{
+  "generated_utc": "2026-09-07T11:33:11.898850+00:00",
+  "scope": "Bounded read-only analogue-network/production-ADC integration check; no repeated full pin audit",
+  "physical_tested": false,
+  "blocking_mismatch_found": false,
+  "source_sha256": {
+    "hardware/system-review/electrical/analyzer-netlist.xml": "9975137b95bde1780e09bac859504e4535db308cc12b412d48f45cd5943c0337",
+    "main/sensors/ads122c04.cpp": "b0028bf0e1d60f0f61c7c04d2a67a1d0e269ccf66977350c1130e8c8225619ff",
+    "main/sensors/ads122c04.h": "532680e14e03fb28b6347ad5b9b610b2212f5df5f809550fa2b2fc93f3c0190e",
+    "main/sensors/gas_acquisition_config.h": "e9f3370e29fad3694793312182f1ef5d8b2417cf0f0505bcb46a99515ac83da8",
+    "main/sensors/acquisition_engine.cpp": "f913ba653105977fa6d3cdf5b5bab19ba460dd5d37d75af5e03009627a61c1a3"
+  },
+  "primary_sources": {
+    "adc": "https://www.ti.com/lit/ds/symlink/ads122c04.pdf",
+    "matched_array": "https://www.vishay.com/doc?28770=",
+    "ldo": "https://www.ti.com/lit/ds/symlink/tps7a20.pdf"
+  },
+  "profiles": {
+    "O2": 1,
+    "He": 2
+  },
+  "mux": {
+    "U401_0x40_MUX0_gain8_PGA": "J401+ through R402 to AIN0 minus J401- through R401 to AIN1",
+    "U401_0x40_MUX6_gain8_PGA": "J402 center through R406 to AIN2 minus shield through R405 to AIN3",
+    "U502_0x41_MUX0_gain1_bypass": "RN501 HE_REF through R506 to AIN0 minus J501.2 HE_SENSE through R507 to AIN1",
+    "U502_0x41_MUXA_gain1_bypass": "AIN2=HE_EXC_DIV relative AVSS; software multiplies by2",
+    "U502_0x41_MUXB_gain1_bypass": "AIN3=O2_VMID relative AVSS"
+  },
+  "nominal_RC": {
+    "O2_diff": {
+      "expression": "((Rcell+200 ohm) || 2 Mohm) * (1 uF + 10 nF/2)",
+      "zero_source_tau_ms": 0.201,
+      "open_input_tau_ms": 2010.0,
+      "warning": "Source impedance and real capacitance unmeasured; open input decay is slow and is not a reliable disconnected-cell test."
+    },
+    "He_diff": {
+      "expression": "(Rmidpoint+2*680 ohm+1 kohm) * 1.005 uF",
+      "zero_source_tau_ms": 2.3718
+    },
+    "excitation_monitor": {
+      "expression": "(10k||10k)*100n",
+      "tau_ms": 0.5
+    },
+    "bias_node": {
+      "expression": "(10k||10k)*1u",
+      "tau_ms": 5
+    },
+    "O2_input_common_mode": {
+      "individual_tau_ms": 10,
+      "coupled_symmetric_four_input_tau_ms": 10.385677655436824,
+      "assumption": "Identical nominal10nF input capacitors, four1Mohm links and1uF VMID capacitor; not tolerance-qualified."
+    }
+  },
+  "settling": {
+    "driver_preconversion_ms": 100,
+    "simple_10tau_required_Rcell_upper_ohm": 9750.248756218907,
+    "simple_10tau_required_He_midpoint_R_upper_ohm": 7590.248756218907,
+    "ten_tau_remaining_fraction": 4.5399929762484854e-05,
+    "guaranteed_analogue_24_bit_settling": false,
+    "note": "These resistance conditions ignore capacitor tolerance and the coupled common-mode network; no upper settling guarantee can be assigned from the unmeasured sensor."
+  },
+  "resistor_only_initial_bounds": {
+    "divider_ratio": [
+      0.4995,
+      0.5005
+    ],
+    "O2_VMID_at_exact_HOST3V3_v": [
+      1.64835,
+      1.6516499999999996
+    ],
+    "O2_differential_bias_loading_ohm": [
+      1980000,
+      2020000
+    ],
+    "RN501_Thevenin_ohm": [
+      999,
+      1001
+    ],
+    "scope": "Ratios conservatively use individual0.1% tolerance; matched-array tracking can improve correlation. No unspecified discrete-resistor TCR bound is assumed."
+  },
+  "ADC_and_LDO_limits": {
+    "ADC_internal_reference_at25C_TSSOP_v": [
+      2.044928,
+      2.051072
+    ],
+    "O2_nominal_LSB_v": 3.0517578125e-08,
+    "He_nominal_LSB_v": 2.44140625e-07,
+    "O2_range_from_reference_only_v": [
+      0.255616,
+      0.256384
+    ],
+    "O2_fullscale_input_requirements_at3V3_v": [
+      0.32819200000000004,
+      2.9718080000000002
+    ],
+    "O2_symmetric_input_extremes_including_bias_resistor_initial_tolerance_v": [
+      1.51887608,
+      1.7811239199999995
+    ],
+    "TPS7A2030_regulated_output_v": [
+      2.955,
+      3.045
+    ],
+    "He_excitation_monitor_input_v": [
+      1.4760225,
+      1.5240224999999998
+    ],
+    "He_ideal_diff_max_abs_v": 1.5240224999999998,
+    "minimum_HOST_for_HE_midpoint_up_to3_045_v": 2.945,
+    "qualification": "LDO limits require its specified line/load/temperature and effective COUT conditions. Midpoint0..excitation is an assumed passive electrical envelope, not MD62 characterization. ADC reference-only bounds omit offset, gain, drift and noise."
+  },
+  "noise_typical_not_maximum": {
+    "O2_gain8_normal20SPS_uV_RMS": 0.64,
+    "He_gain1_bypass_normal20SPS_uV_RMS": 5.04,
+    "note": "TI shorted-input characterization only; actual gas pp requires measured sensitivity, source impedance, leakage and environmental error. Input-current and bypass offset/gain figures are typical, not guaranteed worst-case limits."
+  },
+  "timing": {
+    "nominal_single_shot_s": 0.0500126953125,
+    "oscillator_limited_single_shot_max_s": 0.05103336256377551,
+    "conversion_timeout_ms": 150,
+    "ordinary_frame_measurements": 4,
+    "probe_frame_measurements": 5,
+    "worker_delay_ms": 200,
+    "ideal_no_bus_max_frame_hz": 1.2499206593331478,
+    "ideal_no_bus_probe_max_frame_hz": 1.0525612495053271,
+    "note": "20SPS describes each ADC integration setting, not delivered gas frames. Bus traffic, polling, RTOS ticks, contention, faults and reinitialization lower frame rate."
+  },
+  "holds": [
+    "Confirm cell/MD62 source impedance and step settling; capacitors still need selected tolerance/DC-bias/temperature qualification.",
+    "Confirm HOST3V3 minimum and MD62 midpoint extrema. Bias1.4..1.9V gate alone does not prove AVDD headroom for every0..HE3V0 midpoint.",
+    "Verify physical noise, leakage, cable effects, mains/switching coupling and load-induced drift; a nominal24-bit code is not gas accuracy.",
+    "Measure remote excitation and thermal/gas response; board excitation/2 does not measure cable drop.",
+    "Nominal3.0V LDO permits up to3.045V under tolerance; any sensor requirement of never exceeding3.000V would require separate resolution."
+  ],
+  "report_sha256": "ab139ae366b1c0aa4d913f59d6c986939e6c027421e01d5a02a9f26602f349dc"
+}

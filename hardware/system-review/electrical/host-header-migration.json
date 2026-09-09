@@ -1,0 +1,43 @@
+{
+  "old_pose": [
+    24.725,
+    38.765
+  ],
+  "new_pose": [
+    27.265,
+    69.245,
+    180
+  ],
+  "centre_preserved_mm": [
+    25.995,
+    54.005
+  ],
+  "physical_contacts": 25,
+  "logical_pin7": "NC and post omitted",
+  "signal_net_functions_changed": false,
+  "drill_mm": 1.02,
+  "land_mm": 1.7,
+  "configured_orderability_confirmed": false,
+  "ripped_up_J301_nets": [
+    "CHG_INT_N",
+    "CO_UART_EN",
+    "CO_UART_RX",
+    "CO_UART_TX",
+    "HE_ENABLE",
+    "HOST_3V3",
+    "HOST_5V",
+    "I2C_SCL",
+    "I2C_SDA",
+    "POWER_INT_N",
+    "POWER_KILL_N",
+    "USB_ILIM_AUTH"
+  ],
+  "removed_copper_counts": {
+    "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb": 22,
+    "hardware/system-review/electrical/routing-candidate/native/Trimix_Analyzer.kicad_pcb": 291
+  },
+  "authoritative_after_sha256": "ea6c529cdf0b3a1e9b026ae3feb117e94662f1983c6928d73832846ee8c8567d",
+  "routing_and_DRC_required": true,
+  "order_release": false,
+  "follow_up_correction": "Kept an unpopulated NC PCB land7 to maintain native schematic parity. The physical header still has25posts with post7 omitted; the matching cavity7 is blocked."
+}

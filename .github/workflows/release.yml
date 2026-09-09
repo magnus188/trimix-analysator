@@ -64,7 +64,7 @@ jobs:
         run: |
           git fetch --tags --force
           HEADER_VERSION="$(sed -nE 's/^#define TRIMIX_ANALYZER_VERSION "([0-9]+\.[0-9]+\.[0-9]+)"/\1/p' main/version.h)"
-          LATEST_VERSION="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' | sed 's/^v//' | sort -V | tail -n 1)"
+          LATEST_VERSION="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' | sed -nE 's/^v((0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*))$/\1/p' | sort -V | tail -n 1)"
           LATEST_VERSION="${LATEST_VERSION:-0.0.0}"
 
           # A deliberately raised header version (the P4 migration starts at
@@ -117,6 +117,7 @@ jobs:
       - name: Check pre-v3 firmware size
         env:
           BUILD_DIR: ${{ github.workspace }}/build/esp32p4-pre3
+          PARTITIONS_FILE: ${{ github.workspace }}/partitions.esp32p4.pre3.csv
         run: ./scripts/check_firmware_size.sh
 
       - name: Build v3+ ESP32-P4 firmware
@@ -143,6 +144,12 @@ jobs:
           VERSION="${{ steps.version.outputs.new_version }}"
           cp build/esp32p4-pre3/Trimix_analyzer.bin "Trimix_analyzer_esp32p4_pre3_v${VERSION}.bin"
           cp build/esp32p4-v3/Trimix_analyzer.bin "Trimix_analyzer_esp32p4_v3_v${VERSION}.bin"
+
+      - name: Validate OTA application identities and create digest manifest
+        run: >-
+          python3 scripts/verify_release.py
+          --version "${{ steps.version.outputs.new_version }}"
+          --asset-dir . --output release-ota-manifest.json
 
       - name: Create pre-v3 first-install image
         uses: espressif/esp-idf-ci-action@v1
@@ -187,6 +194,7 @@ jobs:
             build/esp32p4-v3/Trimix_analyzer.elf
             build/esp32p4-v3/Trimix_analyzer.map
             build/esp32p4-v3/flasher_args.json
+            release-ota-manifest.json
 
       - name: Generate changelog
         id: changelog
@@ -211,15 +219,39 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Create GitHub release
+      - name: Stage GitHub release for digest verification
+        id: staged-release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.new_version }}
           name: Trimix Analyzer v${{ steps.version.outputs.new_version }}
           body: ${{ steps.changelog.outputs.changelog }}
-          files: Trimix_analyzer_esp32p4_*_v${{ steps.version.outputs.new_version }}.bin
-          draft: false
+          files: |
+            Trimix_analyzer_esp32p4_*_v${{ steps.version.outputs.new_version }}.bin
+            release-ota-manifest.json
+          fail_on_unmatched_files: true
+          draft: true
           prerelease: false
+
+      - name: Verify uploaded digests and publish complete release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ steps.staged-release.outputs.id }}
+          RELEASE_VERSION: ${{ steps.version.outputs.new_version }}
+        shell: bash
+        run: |
+          # A missing/mismatched server digest leaves a draft, invisible to /latest.
+          VERIFIED=false
+          for ATTEMPT in $(seq 1 10); do
+            if gh api "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" > uploaded-release.json &&
+               python3 scripts/verify_release.py --version "$RELEASE_VERSION" --asset-dir . --release-json uploaded-release.json; then
+              VERIFIED=true
+              break
+            fi
+            sleep 3
+          done
+          [ "$VERIFIED" = true ] || { echo "Release remains a draft: OTA validation failed." >&2; exit 1; }
+          gh release edit "v${RELEASE_VERSION}" --draft=false
 
       - name: Commit version update
         shell: bash

@@ -1,0 +1,179 @@
+{
+  "purpose": "manufacturer-model suitability probe; not a device qualification",
+  "model_url": "https://www.ti.com/lit/zip/SLVMDI3",
+  "model_sha256": "d821da6eaa928be12fad9c71c6804fdd9ae11725b8ef8bd2ca244a2cb686485c",
+  "runner_sha256": "e4d14e5391b58b5aac7a42f81ed6011caff01529c4b344b9efef0208a636181b",
+  "simulator_sha256": "501e9b4981fe810571fe349000112590db4379377887ace04b2aa38d529d1e9a",
+  "model_unchanged": true,
+  "physical_design_qualified": false,
+  "cases": [
+    {
+      "rlim_ohm": 19200,
+      "load_ohm": 1,
+      "status": "numerically completed",
+      "output_sanity_passed": false,
+      "errors": [],
+      "load_result": 0,
+      "run_result": 0,
+      "values": {
+        "time": {
+          "points": 6117,
+          "last": 0.012,
+          "min": 0.0,
+          "max": 0.012
+        },
+        "v(out)": {
+          "points": 6117,
+          "last": 1.0007200448495244e-11,
+          "min": -4.126656636049814e-08,
+          "max": 2.739570834908695e-09
+        },
+        "v(vin)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 5.0,
+          "max": 5.0
+        },
+        "v(en)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 0.0,
+          "max": 5.0
+        },
+        "i(vsup)": {
+          "points": 6117,
+          "last": -0.0004399650090007094,
+          "min": -0.0004399935843170448,
+          "max": -0.00040116000012805394
+        }
+      },
+      "log_start": 13
+    },
+    {
+      "rlim_ohm": 20500,
+      "load_ohm": 1,
+      "status": "numerically completed",
+      "output_sanity_passed": false,
+      "errors": [],
+      "load_result": 0,
+      "run_result": 0,
+      "values": {
+        "time": {
+          "points": 6117,
+          "last": 0.012,
+          "min": 0.0,
+          "max": 0.012
+        },
+        "v(out)": {
+          "points": 6117,
+          "last": 1.0007161889998715e-11,
+          "min": -4.126656641900787e-08,
+          "max": 2.7395707764021747e-09
+        },
+        "v(vin)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 5.0,
+          "max": 5.0
+        },
+        "v(en)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 0.0,
+          "max": 5.0
+        },
+        "i(vsup)": {
+          "points": 6117,
+          "last": -0.0004399650090011535,
+          "min": -0.0004399935843170448,
+          "max": -0.00040116000012805394
+        }
+      },
+      "log_start": 216
+    },
+    {
+      "rlim_ohm": 1000,
+      "load_ohm": 1,
+      "status": "numerically completed",
+      "output_sanity_passed": false,
+      "errors": [],
+      "load_result": 0,
+      "run_result": 0,
+      "values": {
+        "time": {
+          "points": 6117,
+          "last": 0.012,
+          "min": 0.0,
+          "max": 0.012
+        },
+        "v(out)": {
+          "points": 6117,
+          "last": 1.000776655457553e-11,
+          "min": -4.126682273689875e-08,
+          "max": 2.7396055107397756e-09
+        },
+        "v(vin)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 5.0,
+          "max": 5.0
+        },
+        "v(en)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 0.0,
+          "max": 5.0
+        },
+        "i(vsup)": {
+          "points": 6117,
+          "last": -0.00043996500900169084,
+          "min": -0.0004399935843180262,
+          "max": -0.00040116000012903536
+        }
+      },
+      "log_start": 419
+    },
+    {
+      "rlim_ohm": 20500,
+      "load_ohm": 1000,
+      "status": "numerically completed",
+      "output_sanity_passed": false,
+      "errors": [],
+      "load_result": 0,
+      "run_result": 0,
+      "values": {
+        "time": {
+          "points": 6117,
+          "last": 0.012,
+          "min": 0.0,
+          "max": 0.012
+        },
+        "v(out)": {
+          "points": 6117,
+          "last": -2.449865097047434e-09,
+          "min": -4.044467453796947e-08,
+          "max": 3.6591194074405755e-09
+        },
+        "v(vin)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 5.0,
+          "max": 5.0
+        },
+        "v(en)": {
+          "points": 6117,
+          "last": 5.0,
+          "min": 0.0,
+          "max": 5.0
+        },
+        "i(vsup)": {
+          "points": 6117,
+          "last": -0.00043996500900292986,
+          "min": -0.0004399935843170448,
+          "max": -0.00040116000012805394
+        }
+      },
+      "log_start": 622
+    }
+  ]
+}

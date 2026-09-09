@@ -1,0 +1,60 @@
+{
+  "generated_utc": "2026-09-07T13:23:59.896556+00:00",
+  "scope": "Narrow authorization-feedback recovery correction; no flashing or physical measurement",
+  "production_source_sha256": {
+    "main/sensors/usb_input_policy.h": "bbae4769f38de699b99b3d2b15a5974476e3594a79a4aaefeef35ad8cfd89191",
+    "main/sensors/usb_input_policy.cpp": "555ee7d9c17c0bd7a6ee219c5b909cda46478bd32fa3faee3759b56884141046",
+    "main/services/system_power.cpp": "8dbc445aa130577a6465929a54b0cd2677568d9cf8cfe9b051bbe66c43e59701",
+    "main/services/system_power.h": "849f8b57a2c244e209e5b95b75f9f77520e119dcbebe0f9fad8d19c8bd1733ff",
+    "tests/test_usb_input_policy.cpp": "5e06fb42539b4fa59224bbabb7111f5ef4563ae3eb2c69886f49e51897ee639a"
+  },
+  "named_assertions_passed": 23,
+  "named_assertions_failed": 0,
+  "new_named_assertions": 12,
+  "additional_stable_feedback_polls": 1000,
+  "failed_hardware_rearm_iterations": 20,
+  "asan_ubsan_diagnostics": 0,
+  "commands": [
+    "c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -I main tests/test_usb_input_policy.cpp main/sensors/usb_input_policy.cpp -o /tmp/trimix_usb_feedback_policy_test",
+    "/tmp/trimix_usb_feedback_policy_test > hardware/system-review/software/power/usb-latch-feedback-asan-ubsan.log"
+  ],
+  "log_sha256": "26a5e70f7bc6fcf237f349a3189036ac561d380728337d7e84b814bd176ee9d0",
+  "binary_sha256": "4658dd2657226c6b1b22da759fcc5c47c0b3a98cafba8a64331ad6b67a14acef",
+  "readme_sha256": "43b6072d4cc6cb6211875f7866142b679a630b6d4a145910e4434361fc1455f5",
+  "physical_hardware_tested": false,
+  "target_builds": "Owned by root after final source freeze; not claimed by this receipt",
+  "gpio": "GPIO49 / J301.13 shared CHG_INT_N and inverted authorization latch feedback; GPIO52 unchanged",
+  "rtos_minimum_delay_arithmetic_verified": [
+    {
+      "hz": 100,
+      "requested_ms": 2,
+      "ticks": 2,
+      "earliest_tick_phase_ms": 10.0
+    },
+    {
+      "hz": 100,
+      "requested_ms": 40,
+      "ticks": 5,
+      "earliest_tick_phase_ms": 40.0
+    },
+    {
+      "hz": 1000,
+      "requested_ms": 2,
+      "ticks": 3,
+      "earliest_tick_phase_ms": 2.0
+    },
+    {
+      "hz": 1000,
+      "requested_ms": 40,
+      "ticks": 41,
+      "earliest_tick_phase_ms": 40.0
+    }
+  ],
+  "integration_followup": {
+    "source": "main/services/system_power.cpp",
+    "sha256": "17ff9ca4ee49c21e98874b1b26dfa226ca4c69af79e42f577e880749ee070e4a",
+    "change": "The live getter retains the last successful GPIO command when evidence is stale; confirmed authorization becomes false and status Fault. No portable policy change.",
+    "verification": "Both ESP-IDF builds repeated successfully; current combined source/binary receipt in verification/software-final.json",
+    "original_adapter_review_hash_preserved": true
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb": "2b502a6e2ae913deba3ada85f05e7033c09377c9abd28acdb95ae61af3ead1fd",
+  "hardware/system-review/electrical/Trimix_Main_PCB_Reviewed_Placement.step": "450e1f4400e6962d6e34a10c7382b8f6e0a40f15d5c6c77fd1c272538c7de70a",
+  "hardware/system-review/electrical/component-height-contract.csv": "cbc3d1e09006980b8630642139d062a3c6a74c14f8d52133f8077be8a7dc5223",
+  "hardware/system-review/electrical/component-height-contract.json": "3f6dbd43af5cec17963fa74322ba3a5398c7e3317eff2b66e6c2ed9084c895a9",
+  "stage": "J102 drill-only revision to1.00mm; J402 maximum-height metadata8.2mm. Component poses unchanged; native DRC0violations/254unconnected/0parity. Routing candidate remains isolated."
+}

@@ -1,0 +1,54 @@
+{
+  "board": "hardware/system-review/electrical/routing-candidate/permission-links-proposal/host-shared-bridge/r115-local/r115-coordinated-frozen.kicad_pcb",
+  "board_sha256": "2bd02e4f0fe23f39540e4fdef1f5d8b53661cb42427eb014a053b181a77cd320",
+  "R301_PCB_pose_mm_deg": [
+    11.95,
+    71.15
+  ],
+  "J301_PCB_pose_mm_deg": [
+    27.265,
+    69.245,
+    180
+  ],
+  "R301_MPN": "RC0603FR-0710KL",
+  "source": "https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-0710KL",
+  "manufacturer_dimensions_max_mm": [
+    1.7,
+    0.9,
+    0.55
+  ],
+  "source_specsheet_generated": "2026-09-06",
+  "source_verified": "2026-09-08",
+  "R301_world_max_with_Z_assembly_allowance_mm": [
+    61.49999999999999,
+    48.39999999999999,
+    22.1,
+    63.199999999999996,
+    49.3,
+    22.8
+  ],
+  "Z_assembly_allowance_mm": 0.15,
+  "J301_mated_engineering_allocation_world_mm": [
+    73.645,
+    48.495,
+    22.1,
+    79.145,
+    83.495,
+    34.6
+  ],
+  "axis_gaps_mm": [
+    10.445,
+    0,
+    0
+  ],
+  "intersects_mated_allocation": false,
+  "installed_CAD_v2_R301_pose_mm_deg": [
+    25.75,
+    71.8,
+    0
+  ],
+  "CAD_receipt": "hardware/system-review/mechanical/verification/placement-v2-height-coverage.json",
+  "CAD_receipt_sha256": "095147aad21feb8e5a28f159494b036051ac68fc986e41f251d8a848d9eaeba3",
+  "disposition": "Current routed R301 is already relocated clear by10.445mm inX. No new PCB movement is needed. Existing Fusion v2 collision remains historical until the new synchronized routed STEP/height contract is imported and checked. The mated box is an engineering allocation, not a measured cable maximum.",
+  "physical_mating_qualified": false
+}

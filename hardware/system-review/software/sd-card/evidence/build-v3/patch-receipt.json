@@ -1,0 +1,33 @@
+{
+  "component": "espressif/esp_hosted",
+  "version": "2.12.9",
+  "idf_version": "5.5.4",
+  "patch": "2.12.9-guition-sdmmc.patch",
+  "patch_sha256": "3c944880c521bbfff15982101abdf51b53ffe36d90803cbd115e976ffe588a69",
+  "files": [
+    {
+      "path": "host/port/esp/freertos/src/port_esp_hosted_host_sdio.c",
+      "upstream_sha256": "7444f0f1e1dbd818df550ceb3f4c25d2d2e0ff3b5147d51c15668d71b0445fb5",
+      "patched_sha256": "a1386e307b44d07168c8e1604a89689f6a06fd208b829288d52cffbd41e0673d"
+    },
+    {
+      "path": "host/drivers/transport/sdio/sdio_drv.c",
+      "upstream_sha256": "82bd368fbc3967e1369debb7822db4bd115f654920450a40000344d1dcc8e0d8",
+      "patched_sha256": "f1ab8aaed1215dd0cbbb699bbbb9f6f1adde2b2e1dca7f33594d82443663df58"
+    },
+    {
+      "path": "host/drivers/transport/transport_drv.c",
+      "upstream_sha256": "f2291db3898b93d0afbc43656af559435d0401bf72e9212b797ab304d9e93dec",
+      "patched_sha256": "1b5b6365effa81e54171cad6f7d9e49e36178b6515ec1d035a98c59b8ab647b5"
+    },
+    {
+      "path": "host/api/src/esp_hosted_api.c",
+      "upstream_sha256": "85264c52d867df4f858f97e7d16bf3c14d39e3d470b35c24de2aef2b2af6903b",
+      "patched_sha256": "81b63ba2df16cd3e34a1c11509cb03805d4686c129a1210a7ac0660c211435b8"
+    }
+  ],
+  "status": "EXACT_PATCH_APPLIED_TO_BUILD_COPY",
+  "manifest_sha256": "b3f3ad587048fd586005667acf8d3725185fd2b4da92e8d86b0fd186d424c4d0",
+  "source": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/managed_components/espressif__esp_hosted",
+  "output": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/build/esp32p4-v3/guition-hosted-sdmmc"
+}

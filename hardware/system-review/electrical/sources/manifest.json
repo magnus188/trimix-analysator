@@ -1,0 +1,40 @@
+{
+  "retrieved_utc": "2026-09-07T10:42:51.164312+00:00",
+  "sources": [
+    {
+      "file": "spx3819.pdf",
+      "url": "https://www.maxlinear.com/ds/spx3819.pdf",
+      "sha256": "43b63129331150a20339623920ea9f7be758d93e700a3459beb190d483ad35a2"
+    },
+    {
+      "file": "esp32-p4.pdf",
+      "url": "https://www.espressif.com/sites/default/files/documentation/esp32-p4_datasheet_en.pdf",
+      "sha256": "fb4f3e91cc2ac519ec08cdec3dac9cb62b546cf5402ead1c5b83595a21bb6bc6"
+    },
+    {
+      "file": "txu0202.pdf",
+      "url": "https://www.ti.com/lit/ds/symlink/txu0202.pdf",
+      "sha256": "f8e3f51edcccf12c7e991bec54cf1747a7fd84dccd23b875f326a3e631241ef2"
+    },
+    {
+      "file": "tps61023.pdf",
+      "url": "https://www.ti.com/lit/ds/symlink/tps61023.pdf",
+      "sha256": "bf570e31319644e553658db428adfc763012c0e368c979acc18df2d2ea35516f"
+    },
+    {
+      "file": "ltc2954.pdf",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/2954fb.pdf",
+      "error": "The read operation timed out"
+    },
+    {
+      "file": "max17048.pdf",
+      "url": "https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf",
+      "error": "The read operation timed out"
+    },
+    {
+      "file": "ads122c04.pdf",
+      "url": "https://www.ti.com/lit/ds/symlink/ads122c04.pdf",
+      "sha256": "2380301f98deb11efb06810f265a79ea1c75ca1df488833cd74d32364d5030b3"
+    }
+  ]
+}

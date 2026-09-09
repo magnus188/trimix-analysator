@@ -1,0 +1,218 @@
+[
+  {
+    "channel": "O2",
+    "assumed_source_ohm": 0,
+    "gain": 0.999900009999,
+    "residual_100ms_fraction": 0.0,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442725,
+    "board_resistors_only_rms_uV": 0.06399941692442725,
+    "all_resistors_0_to10Hz_rms_uV": 0.005732632119610525,
+    "variance_by_resistor_V2": {
+      "R401_R402": 4.095515815085157e-15,
+      "assumed_cell_resistance": 0.0,
+      "R404": 2.0477579075426093e-19,
+      "R403": 2.0477579075425477e-19,
+      "R409": 2.4675122977931366e-47,
+      "R410": 2.4675122977931366e-47,
+      "R408": 7.997578685404723e-46,
+      "R407": 7.997578870222605e-46
+    },
+    "numeric_integral_relative_error": -0.0005006061644021731
+  },
+  {
+    "channel": "O2",
+    "assumed_source_ohm": 100,
+    "gain": 0.9998500224966257,
+    "residual_100ms_fraction": 0.0,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442727,
+    "board_resistors_only_rms_uV": 0.052257264343482546,
+    "all_resistors_0_to10Hz_rms_uV": 0.0070206040320776285,
+    "variance_by_resistor_V2": {
+      "R401_R402": 2.730207380004112e-15,
+      "assumed_cell_resistance": 1.365103690002056e-15,
+      "R404": 3.0714833025046015e-19,
+      "R403": 3.0714833025046496e-19,
+      "R409": 2.467097052734956e-47,
+      "R410": 2.467097052734956e-47,
+      "R408": 9.189800625913692e-49,
+      "R407": 9.189763399388747e-49
+    },
+    "numeric_integral_relative_error": -0.00033257636120076484
+  },
+  {
+    "channel": "O2",
+    "assumed_source_ohm": 1000,
+    "gain": 0.9994003597841298,
+    "residual_100ms_fraction": 0.0,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442727,
+    "board_resistors_only_rms_uV": 0.026166791213680096,
+    "all_resistors_0_to10Hz_rms_uV": 0.014025558230143238,
+    "variance_by_resistor_V2": {
+      "R401_R402": 6.822448808492685e-16,
+      "assumed_cell_resistance": 3.411224404246343e-15,
+      "R404": 1.228040785528728e-18,
+      "R403": 1.2280407855286395e-18,
+      "R409": 4.49321797326709e-47,
+      "R410": 4.49321797326709e-47,
+      "R408": 9.908344173566135e-50,
+      "R407": 9.90824530362323e-50
+    },
+    "numeric_integral_relative_error": -8.053458834667016e-05
+  },
+  {
+    "channel": "O2",
+    "assumed_source_ohm": 10000,
+    "gain": 0.9949258780220883,
+    "residual_100ms_fraction": 5.51807121557113e-05,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442732,
+    "board_resistors_only_rms_uV": 0.010034339679332283,
+    "all_resistors_0_to10Hz_rms_uV": 0.03851956199707549,
+    "variance_by_resistor_V2": {
+      "R401_R402": 7.990474787732903e-17,
+      "assumed_cell_resistance": 3.995237393866451e-15,
+      "R404": 1.0391612461446821e-17,
+      "R403": 1.0391612461446462e-17,
+      "R409": 7.0343331660865725e-47,
+      "R410": 7.0343331660865725e-47,
+      "R408": 1.926584662566132e-47,
+      "R407": 2.0654360216884348e-47
+    },
+    "numeric_integral_relative_error": -6.439558113857657e-06
+  },
+  {
+    "channel": "O2",
+    "assumed_source_ohm": 100000,
+    "gain": 0.9522902580706603,
+    "residual_100ms_fraction": 0.35246990304524917,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442726,
+    "board_resistors_only_rms_uV": 0.01425485850357427,
+    "all_resistors_0_to10Hz_rms_uV": 0.060549746178022265,
+    "variance_by_resistor_V2": {
+      "R401_R402": 7.785448751419485e-18,
+      "assumed_cell_resistance": 3.892724375709743e-15,
+      "R404": 9.770777110275253e-17,
+      "R403": 9.770777110275166e-17,
+      "R409": 4.773203246293638e-46,
+      "R410": 4.773203246293638e-46,
+      "R408": 3.742846687253939e-48,
+      "R407": 3.7903362857554044e-48
+    },
+    "numeric_integral_relative_error": 2.095616239428111e-06
+  },
+  {
+    "channel": "O2",
+    "assumed_source_ohm": 1000000,
+    "gain": 0.6666222251850066,
+    "residual_100ms_fraction": 0.8613676735886043,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442816,
+    "board_resistors_only_rms_uV": 0.03695993049680429,
+    "all_resistors_0_to10Hz_rms_uV": 0.06351289877574405,
+    "variance_by_resistor_V2": {
+      "R401_R402": 5.459777808676359e-19,
+      "assumed_cell_resistance": 2.7298889043381797e-15,
+      "R404": 6.827452422738661e-16,
+      "R403": 6.827452422738694e-16,
+      "R409": 2.119844398001036e-44,
+      "R410": 2.119844398001036e-44,
+      "R408": 8.669808066593305e-46,
+      "R407": 9.214680731765838e-46
+    },
+    "numeric_integral_relative_error": 7.042165555137814e-07
+  },
+  {
+    "channel": "He",
+    "assumed_source_ohm": 0,
+    "gain": 0.9999999999999997,
+    "residual_100ms_fraction": 0.0,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442725,
+    "board_resistors_only_rms_uV": 0.06399941692442725,
+    "all_resistors_0_to10Hz_rms_uV": 0.019621819686893777,
+    "variance_by_resistor_V2": {
+      "RN501_equivalent": 1.7304473763491658e-15,
+      "R506": 1.1767042159174328e-15,
+      "assumed_MD62_resistance": 0.0,
+      "R507": 1.1887737744000666e-15
+    },
+    "numeric_integral_relative_error": -4.854106195673058e-05
+  },
+  {
+    "channel": "He",
+    "assumed_source_ohm": 100,
+    "gain": 0.9999999999999994,
+    "residual_100ms_fraction": 0.0,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442725,
+    "board_resistors_only_rms_uV": 0.06267753396034939,
+    "all_resistors_0_to10Hz_rms_uV": 0.020026981816283873,
+    "variance_by_resistor_V2": {
+      "RN501_equivalent": 1.6605946195253229e-15,
+      "R506": 1.1292043412772195e-15,
+      "assumed_MD62_resistance": 1.674521033159131e-16,
+      "R507": 1.1386743025482091e-15
+    },
+    "numeric_integral_relative_error": -4.378985110198297e-05
+  },
+  {
+    "channel": "He",
+    "assumed_source_ohm": 1000,
+    "gain": 0.9999999999999996,
+    "residual_100ms_fraction": 1.376676550535194e-13,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442723,
+    "board_resistors_only_rms_uV": 0.05363674076526867,
+    "all_resistors_0_to10Hz_rms_uV": 0.023326919956316694,
+    "variance_by_resistor_V2": {
+      "RN501_equivalent": 1.219025406746031e-15,
+      "R506": 8.289372765873012e-16,
+      "assumed_MD62_resistance": 1.2190254067460309e-15,
+      "R507": 8.289372765873011e-16
+    },
+    "numeric_integral_relative_error": -2.6483133202082065e-05
+  },
+  {
+    "channel": "He",
+    "assumed_source_ohm": 10000,
+    "gain": 1.0000000000000004,
+    "residual_100ms_fraction": 0.0003261490783441623,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442727,
+    "board_resistors_only_rms_uV": 0.028211602576406068,
+    "all_resistors_0_to10Hz_rms_uV": 0.041526473279115114,
+    "variance_by_resistor_V2": {
+      "RN501_equivalent": 3.401740609231699e-16,
+      "R506": 2.313183614277556e-16,
+      "assumed_MD62_resistance": 3.300030846737587e-15,
+      "R507": 2.2440209757815597e-16
+    },
+    "numeric_integral_relative_error": -1.3876492415354491e-05
+  },
+  {
+    "channel": "He",
+    "assumed_source_ohm": 100000,
+    "gain": 0.9999999999999961,
+    "residual_100ms_fraction": 0.38006100355950334,
+    "all_resistors_0_to_infinity_rms_uV": 0.06399941692442715,
+    "board_resistors_only_rms_uV": 0.010673049077947108,
+    "all_resistors_0_to10Hz_rms_uV": 0.0606601229239824,
+    "variance_by_resistor_V2": {
+      "RN501_equivalent": 5.1688273314257276e-17,
+      "R506": 3.514802585369495e-17,
+      "assumed_MD62_resistance": 3.982011390046384e-15,
+      "R507": 2.7077677452315413e-17
+    },
+    "numeric_integral_relative_error": -1.2128641398989615e-05
+  },
+  {
+    "channel": "He",
+    "assumed_source_ohm": 1000000,
+    "gain": 1.0000000000000138,
+    "residual_100ms_fraction": 0.9059567895666056,
+    "all_resistors_0_to_infinity_rms_uV": 0.0639994169244277,
+    "board_resistors_only_rms_uV": 0.005462488500726992,
+    "all_resistors_0_to10Hz_rms_uV": 0.06352117006806818,
+    "variance_by_resistor_V2": {
+      "RN501_equivalent": 1.6115381989323356e-17,
+      "R506": 1.0958459752739882e-17,
+      "assumed_MD62_resistance": 4.0660865860461475e-15,
+      "R507": 2.7649388785113804e-18
+    },
+    "numeric_integral_relative_error": -1.5521484013514275e-05
+  }
+]

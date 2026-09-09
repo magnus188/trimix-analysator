@@ -1,0 +1,104 @@
+USB Engineering Change Notice
+
+
+
+                USB ENGINEERING CHANGE NOTICE
+
+Title: Suspend Current Limit Changes
+Applies to: Universal Serial Bus Specification, Revision 2.0
+
+Summary of ECN:
+This ECN raises the maximum suspend current to 2.5 mA for all devices except InterChip USB
+(ICUSB) devices. ICUSBdevice suspend current limit remains at 150 µA.
+
+For the purposes of establishing suspend current limits, there is no difference between a high-
+power device and a low-power device, nor is there a difference between devices with
+DEVICE_REMOTE_WAKEUP feature enabled and those without DEVICE_REMOTE_WAKEUP
+feature enabled. All devices (except ICUSB) have a maximum suspend current limit of 2.5 mA.
+
+NOTE: This ECN affects the core USB 2.0 specification. Previous ECNs and specifications
+(except ICUSB) that make reference to the former 500 µA limit should be read according to this
+ECN to permit the new 2.5 mA suspend current limit.
+
+Reasons for ECN:
+Simplification of hardware designs, reduced development effort and cost and time wasted
+waiting for automatic suspend current waivers. Furthermore, the USB Battery Charging
+Specification presumes that 2.5 mA suspend current is available to all devices.
+
+Impact on existing peripherals and systems:
+No impact on currently certified devices. Hosts with very tight suspend current budgets may be
+affected by new bus-powered hubs drawing higher suspend current prior to configuration, or by
+new low-power devices using the new limit.
+
+Hardware Implications:
+Devices that formerly required waivers for (2.5 mA > ICCSL > 500 µA) no longer require
+waivers. Bus-powered hubs may require up to 12.5 mA prior to configuration, 2.5 mA for the hub
+electronics and 2.5 mA for each port with an attached device.
+
+Software Implications:
+Host power-management software will need to be aware of the higher potential suspend current
+when budgeting low-power states and when configuring bus-powered hubs.
+
+Compliance Testing Implications:
+All tests that verify 500 µA suspend current are replaced by 2.5 mA suspend current tests. A
+new test for configured bus-powered hubs permits 12.5 mA suspend current.
+
+Time-averaging schemes for determining suspend current compliance (Section 7.2.3) are
+unchanged by this ECN.
+
+
+
+
+USB ECN :2.5 mA Suspend Current for All Devices Except ICUSB                            1
+USB Engineering Change Notice
+
+
+
+
+Changes to USB-IF Full and Low Speed Compliance Test Procedure Section D.6, Step 2
+        • Pass
+                  1) Measured current is 2.5 mA or less
+             OR
+                  2)   Device is a configured bus-powered hub AND measured current is 12.5 mA or less
+        • Fail
+                  1)   Measured current exceeds 12.5 mA AND device is a configured bus-powered hub
+             OR
+                  2)   Measured current exceeds 2.5 mA
+
+Specification Changes:
+
+All changes (except repagination and indexing) occur in Chapter 7.
+
+Chapter 7 changes:
+
+Replace Section 7.2.3 Paragraph 1 with the following:
+       All USB Devices (except bus‐powered hubs) may draw up to 2.5 mA during suspend. Configured
+       bus‐powered hubs and configured bus‐powered compound devices may consume a maximum
+       suspend current of 12.5 mA. This limit includes the 2.5 mA suspend current that must be
+       available for each externally‐available downstream port on the hub. Unconfigured bus‐powered
+       hubs and compound devices operate as a low‐power devices and must limit suspend current to
+       2.5 mA. When computing suspend current, the current from VBUS through the bus pull‐up and
+       pull‐down resistors must be included.
+
+Replace Section 7.2.3 Paragraph 2 Sentence 4 with the following:
+
+        The average current cannot exceed the average suspend current limit (ICCS or ICCSHUB, see
+        Table 7-7) during any 1.0-second interval (TSUSAVG1).
+
+Change reference to “ICCS(H/L)” from ICCS in Figure 7‐48 to “ICCS”
+
+Change Table 7‐7 ICCSH and ICCSL as follows:
+        Suspended Device                 ICCS       Section 7.2.3         2.5             mA
+        (except Configured Bus‐
+        Powered Hub)
+        Suspended Configured Bus‐        ICCSHUB    Section 7.2.3         12.5            mA
+        Powered Hub
+
+
+Remove Table 7‐7 Note 15
+
+
+
+
+USB ECN :2.5 mA Suspend Current for All Devices Except ICUSB                                   2
+

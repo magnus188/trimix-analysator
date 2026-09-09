@@ -1,0 +1,50 @@
+{
+  "generated_utc": "2026-09-07T12:07:32.401963+00:00",
+  "physical_hardware_tested": false,
+  "scope": "Independent bounded review and fault-injection tests of combined USB current policy and read-only physical adapter review",
+  "source_sha256": {
+    "main/sensors/usb_input_policy.h": "2befc8dd54814324499395767a340b2801c9acf8d8d5b4c7e101f26d18b64da9",
+    "main/sensors/usb_input_policy.cpp": "eff3b2ef9298d1a95409cbd6a3335bcbb29b655ce8cd45f952e46861709ddc15",
+    "main/services/system_power.cpp": "7ca50b8078e043c1d1f0a3feec4f58885738d841496b82373b494fd57c9fcca2",
+    "main/sensors/power_monitor.h": "68a434d7cadc7b1e085408228289fdd7a40ab90009a4c671a0300bfe5f14724f",
+    "main/sensors/power_monitor.cpp": "68fe6fbb19658c6167b3a9ce8e27db5f054054b3664e974ebd872f8f796d0353",
+    "tests/test_usb_input_policy.cpp": "b86b279a14f6354f8991e6af31bca9e67a9b7f2294877dbc23d6c39cfe49ae85",
+    "main/hardware_contract.h": "c9fb7ed97d4086429a5be261df11c0d23623a33aa12e549838d897636cb0ac31"
+  },
+  "production_edited_by_reviewer": false,
+  "reviewer_test_edits": [
+    "tests/test_usb_input_policy.cpp"
+  ],
+  "original_sequencing_suite": "passed, including 1000 stable polling steps",
+  "additional_assertions_passed": 11,
+  "additional_assertions_failed": 0,
+  "asan_ubsan_additional_assertions_passed": 11,
+  "asan_ubsan_diagnostics": 0,
+  "findings_fixed_by_parent": [
+    "Fresh power-good/current-fault/charger-configuration evidence after current-limit write.",
+    "Fresh BC1.2 classification after current-limit write.",
+    "CC detach stops active BC1.2 detection while BQ power-good may remain high.",
+    "Externally lowered permission epoch invalidates a stale armed fast path after unobserved maintenance."
+  ],
+  "electrical_finding_unresolved_at_review": "BQ25895 pin table explicitly disallows ILIM settings below500mA;4.02k98mA extrapolation cannot support a cold-source safety claim. Parent/electrical agent reassessing upstream limiter.",
+  "commands": [
+    "c++ -std=c++17 -Wall -Wextra -Werror -Isimulator/stubs -Imain tests/test_usb_input_policy.cpp main/sensors/usb_input_policy.cpp -o /tmp/trimix-test-usb-input-policy",
+    "/tmp/trimix-test-usb-input-policy > hardware/system-review/software/power/usb-input-policy-review-after.log",
+    "c++ -std=c++17 -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer -g -Isimulator/stubs -Imain tests/test_usb_input_policy.cpp main/sensors/usb_input_policy.cpp -o /tmp/trimix-test-usb-input-policy-sanitized",
+    "/tmp/trimix-test-usb-input-policy-sanitized > hardware/system-review/software/power/usb-input-policy-review-asan-ubsan.log"
+  ],
+  "logs": {
+    "usb-input-policy-review-before.log": "c9c52534710f6d908ce62279a75727a178cbefb0c7c43ca63a6b74314ef3d836",
+    "usb-input-policy-review-after.log": "784cfbde2a385f2f96ed68f5f6bd686f52dc51d24cebda649016cb52cb6c98de",
+    "usb-input-policy-review-asan-ubsan.log": "784cfbde2a385f2f96ed68f5f6bd686f52dc51d24cebda649016cb52cb6c98de"
+  },
+  "binary_sha256": {
+    "/tmp/trimix-test-usb-input-policy": "5f7e7eb36cdf995a664ebb4c67c2b42d1f9fe247fd89be7bed9281c610cf4f00",
+    "/tmp/trimix-test-usb-input-policy-sanitized": "9aee4e98296a0ce772f5f582e27c0814d037f7d7aff4e64e20082a3c3f6f1ed9"
+  },
+  "pending": [
+    "Whole-tree hardware builds and final electrical source/latch contract.",
+    "Physical source/cable/MCU-stall/maintenance/rail collapse fault tests.",
+    "GPIO command is not a measurement of permission-latch Q or actual current."
+  ]
+}

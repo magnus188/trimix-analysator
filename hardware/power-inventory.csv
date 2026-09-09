@@ -5,7 +5,7 @@ MAX17048G bare TDFN8,5PCS lot x1,Completed order 2026-02-20,Use U301; confirm ph
 TPS63020DSJR or DSJT bare VSON14,5PCS lot x1,Completed order 2026-02-20,Use U201 adjustable IC,https://www.aliexpress.com/item/1005008807916943.html
 TPS63020 module,3.3V x2,Completed order 2026-02-20,Not substituted for the custom 5 V circuit,https://www.aliexpress.com/item/1005007967030664.html
 BQ25895RTWR,Owner requested; quantity unknown,Exact-name AliExpress order search returned no result,Use U101; stock not independently confirmed,
-Integrated power inductor,10PCS 0650 7x7x5mm 1UH,Completed order 2026-02-20,L101 candidate only; saturation DCR and footprint unverified,https://www.aliexpress.com/item/1005001648530241.html
+Integrated power inductor,10PCS 0650 7x7x5mm 1UH,Completed order 2026-02-20,Owned generic part remains unqualified; current L101 selects Wurth 74437349010 from the system-review BOM,https://www.aliexpress.com/item/1005001648530241.html
 SMD resistor assortment,0603-720pcs 36 values,Completed order 2026-02-20,Check exact values and tolerances against BOM,https://www.aliexpress.com/item/1005010426363196.html
 Through-hole resistor assortment,300PCS with box 1/4W 30 values,Completed order 2025-06-17,Bench prototyping; not the assigned 0603 footprints,https://www.aliexpress.com/item/1005009197685412.html
 Ceramic through-hole capacitor,100nF 50V 100pcs,Completed order 2025-06-17,Not a substitute for power IC SMD bypassing,https://www.aliexpress.com/item/1005007175123984.html
@@ -14,8 +14,9 @@ Electrolytic assortment,120 pcs 10 values,Completed order 2025-06-17,Does not es
 1S 4A double-MOS PCM board,1 lot,Completed order 2025-07-17,Not used; protected FMA holder selected,https://www.aliexpress.com/item/1005005780163351.html
 TP4056 Type-C modules,10PCS,Completed order 2025-06-17,Not used; BQ25895 selected,https://www.aliexpress.com/item/1005008337271054.html
 Semitec 103AT-2 characteristic 10k NTC,1 external pack sensor required,No order matched NTC search,Must source or confirm; J103 is its PCB connection,
-Coilcraft XFL4020-152ME 1.5uH,1 required,TI datasheet recommended component; no stock evidence,L201 sourcing candidate,
+Coilcraft XFL4020-152ME 1.5uH,1 required,TI datasheet recommended component; no stock evidence,Historical candidate superseded by L201 XGL4030-152MEC; use final system-review BOM,
 Power-stage X5R or X7R ceramic capacitors,See PCB BOM,Orders found did not establish suitable SMD parts,Select exact MPNs and DC-bias curves,
 2N7002 and LED and switches and PCB connectors,See PCB BOM,Not independently confirmed,Stock or sourcing and connector mechanical choices pending,
-ATORCH cell fixture; HIDANCE DL24P; LiitoKala Lii-500S,Orders from 2026-08-30,Shown awaiting delivery,Potential future test equipment; not counted as in stock,
-GCT USB4720-03-A,1 required,User authorized replacement on 2026-09-06; manufacturer drawing reviewed,Selected; dedicated 0.60 mm USB PCB with fitted CC resistors; stock and completed mechanical qualification pending,https://gct.co/connector/usb4720
+ATORCH cell fixture; LiitoKala Lii-500S,Orders from 2026-08-30,Shown awaiting delivery,Arrival of these two items not confirmed; DL24/P separately confirmed in current lab record,
+GCT USB4720-03-A,1 required,User authorized replacement on 2026-09-06; manufacturer drawing reviewed,Selected; dedicated 0.60 mm six-wire USB PCB; TUSB320LAI supplies CC terminations on main PCB; stock and manufacturing/mechanical qualification pending,https://gct.co/connector/usb4720
+DL24/P electronic load,Exact model/version to record,Owner confirms available 2026-09-08,Available for qualified discharge/load tests; see system-review/lab-equipment.md; no test results yet,

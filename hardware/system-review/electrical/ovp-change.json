@@ -1,0 +1,9 @@
+{
+  "U115": "TPS259470ARPWR",
+  "protected": "USB_OVP_5V",
+  "OVLO": "(34k+649)/10k0.1%10ppm",
+  "MR_pullup": "33k1% conservative23uA leak budget",
+  "C114": "shared4.7u25V1206,notduplicatebulk",
+  "no_physical_transient_proof": true,
+  "order_release": false
+}

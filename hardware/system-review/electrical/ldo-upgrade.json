@@ -1,0 +1,34 @@
+{
+  "status": "schematic applied; PCB sync and fresh checks required",
+  "changes": [
+    {
+      "ref": "U501",
+      "new_mpn": "TPS7A2030PDBVR",
+      "DNP": "C503",
+      "LDO_NC_coordinate": [
+        109.22,
+        83.82
+      ],
+      "capacitor_NC_coordinate": [
+        127.0,
+        95.25
+      ],
+      "removed_wires_or_labels": 3
+    },
+    {
+      "ref": "U702",
+      "new_mpn": "TPS7A2030PDBVR",
+      "DNP": "C706",
+      "LDO_NC_coordinate": [
+        304.8,
+        96.52
+      ],
+      "capacitor_NC_coordinate": [
+        381.0,
+        111.76
+      ],
+      "removed_wires_or_labels": 4
+    }
+  ],
+  "source": "https://www.ti.com/lit/ds/symlink/tps7a20.pdf"
+}

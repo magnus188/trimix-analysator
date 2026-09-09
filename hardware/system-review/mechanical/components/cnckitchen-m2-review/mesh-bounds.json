@@ -1,0 +1,23 @@
+{
+  "status": "NOMINAL_MESH_BOUNDS_CHECKED",
+  "source_sha256": "842dab0238d08b75a0e2457b5413a18170936c2bab1443e556bf4d83d4dd69fa",
+  "triangles": 55640,
+  "bounds_mm": [
+    [
+      -1.7998578548431396,
+      -1.7998578548431396,
+      -1.3877787807814457e-16
+    ],
+    [
+      1.7998578548431396,
+      1.7998578548431396,
+      3.0
+    ]
+  ],
+  "extent_mm": [
+    3.5997157096862793,
+    3.5997157096862793,
+    3.0
+  ],
+  "limit": "Manufacturer STL units interpreted as millimetres and compared with published nominal data; tessellation is not a tolerance-qualified BRep or mechanical fit proof."
+}

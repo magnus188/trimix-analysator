@@ -1,0 +1,79 @@
+{
+  "passed": 217,
+  "failed": [],
+  "calculations": {
+    "helium_unpowered_input_current_mA": {
+      "before_100ohm": 28.02802802802803,
+      "after_680ohm": 4.121768827651181,
+      "TI_absolute_max_mA": 10,
+      "conservative_after_zero_clamp_drop_mA": 4.563386916328092,
+      "conservative_5V5_fault_source_zero_clamp_drop_mA": 8.096331625743389,
+      "conditions": "HE3V <=3.1V, AVDD=0V; 0.3V clamp illustration plus conservative zero-drop bounds. Waveform/backpower not validated"
+    },
+    "helium_RC": {
+      "tau_min_nominal_ms": 2.3718,
+      "corner_max_nominal_Hz": 67.10302010789079,
+      "source_impedance_assumption_ohm": 0,
+      "tau_has_no_upper_bound_without_sensor_source_impedance": true
+    },
+    "oxygen_PGA_gain8": {
+      "full_scale_V": 0.256,
+      "individual_input_limits_at_fullscale_V": [
+        0.328,
+        2.972
+      ],
+      "nominal_fullscale_symmetric_input_extremes_V": [
+        1.5219999999999998,
+        1.778
+      ]
+    },
+    "BQ_hardware_ILIM_A": {
+      "min": 1.056105610561056,
+      "nominal": 1.1833333333333333,
+      "max": 1.3131313131313131,
+      "specification_conditions": "KILIM specified at1.5A. Backup only; TPS22950 defines default. ILIM <500mA unsupported; rejected4.02k extrapolation is not used."
+    },
+    "BQ_cold_voltage_V": {
+      "nominal": 4.208,
+      "min": 4.18696,
+      "max": 4.2290399999999995,
+      "cell_acceptance": "unknown"
+    },
+    "MD62_LDO_heat": {
+      "output_current_A": 0.12,
+      "typical_rail_loss_W": 0.24,
+      "theta_JA_datasheet_C_per_W": 187.1,
+      "rail_loss_temperature_rise_C": 44.903999999999996,
+      "worst_5V15_to_2V955_W": 0.2634,
+      "note": "ignores ground current, copper/layout, nearby heat, enclosure; not a thermal pass"
+    },
+    "known_5V_load_floor": {
+      "host_nominal_A": 0.32,
+      "MD62_max_A": 0.12,
+      "total_A": 0.44,
+      "total_W": 2.2,
+      "excluded": "CO current undocumented, button LED, ADCs, gauge, losses, startup peaks"
+    },
+    "upstream_cold_current_mA": {
+      "TI_table_min": 34,
+      "typical": 50,
+      "max": 66,
+      "R_kohm": 19.2,
+      "scope": "Exact TPS22950CQDDCRQ1 table point; resistor tolerance, entire board current and brief overshoot still require qualification; not arbitrary ILIM extrapolation"
+    },
+    "critical_1210_cap_estimated_min_uF": {
+      "each": 12.117600000000001,
+      "three_output": 36.3528,
+      "PMID_required": 8.2,
+      "TPS_output_required": 22,
+      "scope": "TDK C3225X7R1C226M250AC typical bias curve with explicit engineering deratings, not a guaranteed combined minimum"
+    },
+    "I2C_4k7_rise_time": {
+      "R_ohm": 4700,
+      "C_200pF_ns": 796.4620000000001,
+      "C_400pF_ns": 1592.9240000000002,
+      "C_for_1000ns_pF": 251.11053634699454,
+      "note": "lumped host-side approximation; module translator/pullups/cable require waveform test"
+    }
+  }
+}

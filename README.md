@@ -1,6 +1,17 @@
 # Trimix Analyzer ESP32 Firmware
 
-ESP32-P4/LVGL firmware for the Trimix Analyzer on the native-portrait Guition JC4880P443C_I_W (JC-ESP32P4-M3). The application includes WiFi settings, revision-safe OTA updates, NVS-backed settings, and mock sensor readings while the analyzer hardware drivers are completed.
+ESP32-P4/LVGL firmware for the Trimix Analyzer on the native-portrait Guition JC4880P443C_I_W (JC-ESP32P4-M3). It includes Wi-Fi, revision-specific HTTPS OTA, persistent settings/calibration, hardware sensor and power drivers, and a separate deterministic simulator. Physical firmware reports unavailable hardware instead of substituting simulated gas or battery readings.
+
+**Prototype order status: HOLD.** Follow the [whole-system review](hardware/system-review/README.md) for current evidence and unresolved interfaces. No physical charging, thermal, sealing or reference-gas qualification has been completed. The accuracy targets of ±0.2 percentage points O2 and ±0.5 points He remain unproven. Charging is deliberately inhibited and J104 stays open until the cell, protection and temperature-sensing requirements are qualified.
+
+## Project layout
+
+The repository root is the main software workspace: firmware lives in `main/`,
+with host tests in `tests/`, simulator support in `simulator/` and development
+tools in `scripts/`. Mechanical and electronics files are grouped under the
+[hardware overview](hardware/README.md): Fusion CAD is in `hardware/cad/`,
+KiCad PCB projects are in `hardware/pcb/`, and Bambu Studio projects are in
+`hardware/cad/rev04/3d-print/printing/bambu-studio/`.
 
 ## Quick Start with ESP-IDF
 
@@ -85,7 +96,7 @@ Open `http://localhost:8080`. The generated site must be served over HTTP rather
 
 ## Hardware Requirements
 
-The current hardware reference is the project BOM at `../BOM.md`. The BOM describes the full analyzer electronics, while the firmware target is the Guition JC4880P443 board.
+Use the [current electrical design](hardware/ANALYZER_DESIGN.md), [part qualification ledger](hardware/system-review/electrical/part-qualification.csv) and [main-board delivery index](hardware/system-review/electrical/main-final/README.md). These are prototype review files, not purchasing approval. Earlier enclosure/PCB snapshots preserve historical component choices.
 
 ### Controller and Display
 - **ESP32-P4NRW32** application processor with 32 MB in-package PSRAM. Original pre-v3 boards are configured for their detected 16 MB flash; the v3 profile retains the 32 MB layout used by newer hardware.
@@ -93,37 +104,38 @@ The current hardware reference is the project BOM at `../BOM.md`. The BOM descri
 - Native **480x800 MIPI-DSI IPS display** with ST7701 controller and GT911 capacitive touch.
 
 ### Power, Charging, and Battery
-- **USB-C 5 V sink input** with CC1/CC2 5.1 kOhm pulldowns, 1.5 A PPTC fuse, SMAJ5.0A VBUS TVS diode, and 10 uF VBUS bulk capacitance.
-- **BQ24074** 1S Li-ion charger with power path, configured for about 500 mA charge current and about 1.0 A USB input current limit.
-- **DW01A + 8205A** 1S battery protection for overcharge, overdischarge, and overcurrent switching.
-- **TPS63020 fixed 3.3 V buck-boost** for the main regulated rail.
-- **SPX3819M5-L-3-0TR 3.0 V LDO** for the MD62 helium sensor rail.
-- **AP22802AW5-7 load switch** and **LTC2954CTS8-1 push-button power controller** are BOM options for rail control and soft power.
+- **GCT USB4720-03-A** on a separate thin USB board, with TUSB320LAI CC detection and PI3USB9201 BC1.2 detection on the main board. USB-A-to-C and C-to-C behaviour remains subject to the documented source-current and startup tests.
+- **BQ25895RTWR** 1S power-path charger, with TPS259470 overvoltage protection and TPS22950-Q1 input limiting. No USB-PD or high-voltage negotiation is provided; charging remains inhibited during commissioning.
+- **Protected FMA FPML1S2P050C holder**, using its protected output. Holder/protection ratings, cell identity and NTC mounting require qualification.
+- **TPS63020** configured for 5 V, with LM66100 host reverse isolation. Guition JP1 power entry remains a separate unresolved interface; do not power it through an unqualified harness.
+- **TPS7A2030** regulated 3.0 V supply for the MD62.
+- **LTC2954** hardware push-button shutdown plus firmware-managed normal shutdown.
 - **MAX17048** 1S I2C fuel gauge.
-- **2x 18650 cells in 1S2P** using a parallel battery holder.
-- **Waterproof metal push button**, 1NO momentary or latching.
+- **2x 18650 cells in 1S2P**, owner-stated 3400 mAh each; no validated cell charge limits are inferred from capacity.
+- **Normally-open momentary power button**; its final mechanical part and sealing remain unqualified.
 
 ### Sensors and Analog Front End
-- **ADS1115** 16-bit ADC for analog gas sensor readings.
-- **BMP280** pressure and temperature sensor.
-- **MD62 He sensor** for helium measurement, powered from the dedicated 3.0 V rail.
-- **R17JJ-CCR oxygen sensor** for oxygen measurement.
-- **SMB PCB connector** for coax sensor connection.
-- **I2C pullups** on SDA/SCL if they are not already present on the board.
+- Two **ADS122C04IPWR** 24-bit ADCs in TSSOP-16: U401 oxygen at 0x40 and U502 helium at 0x41. Initial profiles use 20 samples/s and the internal 2.048 V reference.
+- Actual **BME280** breakout for humidity, temperature and pressure. A BMP280 cannot provide humidity.
+- Retained **MD62 thermal-conductivity sensor** on regulated 3.0 V, with fixed matched bridge reference. Its helium response and compensation must be characterized with reference mixtures.
+- **AO2 or R17JJ-CCR**, one installed oxygen sensor at a time. J401 and J402 have separate differential inputs; touchscreen selection and calibration identities persist independently.
+- **ZE07-CO experimental module**, measuring CO rather than CO2. It is not a breathing-gas safety certification device. Its manufacturer excludes applications involving human safety; see the [CO review and manual](hardware/system-review/electrical/co-module-use-review.md). No undocumented recalibration commands are enabled. Fresh, valid chamber conditions and module warm-up are required before its reading is displayed.
 
 ### Wiring Notes
 ```
 Signal/Rail       | Current hardware expectation
 ------------------|------------------------------------------------
-Sensor I2C        | ADS1115, BMP280, and MAX17048 on shared I2C
-Analog gas inputs | R17JJ-CCR O2 and MD62 He routed through ADS1115
-3.3 V rail        | ESP32, ADS1115, BMP280, MAX17048, display/touch logic
-3.0 V rail        | MD62 helium sensor through SPX3819M5-L-3-0TR
-USB-C VBUS        | BQ24074 input through PPTC and TVS protection
-Board I2C         | GPIO8 SCL / GPIO7 SDA; GT911 and future sensor devices share the bus
+External I2C      | GPIO28 SDA / GPIO29 SCL; managed 100 kHz sensor/power bus
+Analog gas inputs | AO2/JJ differential paths and MD62 bridge into ADS122C04
+HOST_3V3          | Supplied by Guition; external load margin remains unqualified
+3.0 V rail        | MD62 through TPS7A2030; measure voltage at actual sensor leads
+USB-C VBUS        | Protected/limited 5 V path to BQ25895
+Display I2C       | GPIO7 SDA / GPIO8 SCL; separate touch/audio board bus
+Onboard SD        | Slot 0: CLK43 CMD44 D0-3=39-42; LDO4 card supply
+C6 SDIO           | Slot 1: CLK18 CMD19 D0-3=14-17; shared-controller arbitration
 ```
 
-Final sensor connector and ADS1115 channel mapping should be documented in a dedicated sensor-board configuration when the analyzer schematic is locked. Display pins, timings, and the manual ST7701S initialization table live in `main/board/`.
+The [electrical/firmware/harness contract](hardware/system-review/electrical/interface-contract.md) defines logical contact mapping. The [owner photo and mechanical registration](hardware/system-review/integration-photo/README.md) place the Guition header and both USB sockets at the top and SD access on the left. Mated connector heights, cable routes and service access need their own clearance evidence. Display pins, timings and the ST7701S initialization table live in `main/board/`.
 
 ## Software Architecture
 
@@ -141,8 +153,8 @@ Final sensor connector and ADS1115 channel mapping should be documented in a ded
 
 #### 3. Sensor Interface (`main/sensors/sensor_interface.cpp/h`)
 - Abstracted sensor reading functions
-- Mock readings for development
-- Calibration entrypoints for future hardware-backed implementation
+- Separate physical acquisition and deterministic simulator backends
+- Persistent sensor selection and versioned calibration; stale, clipped and faulty samples are rejected
 
 #### 4. Screen Management (`main/ui/screens/screen_manager.cpp/h`)
 - LVGL-based UI screens
@@ -175,8 +187,8 @@ Final sensor connector and ADS1115 channel mapping should be documented in a ded
    - Version information
 
 2. **Analyse Screen**
-   - Professional gas analysis panel with deterministic simulator streams
-   - Live O2, He, CO2, environmental readings, stability state, trend chart, planned depth, MOD, density, gas-use mode, and averaged capture controls
+   - Gas analysis panel with physical and separately identified simulator sources
+   - O2, He, experimental CO, environmental readings, stability, trend chart, planned depth, MOD, density, gas-use mode and averaged capture controls
    - Captures require stable samples and save an averaged analysis result to history
    - Stable averaged readings can update the selected cylinder profile and prepare an export-ready label payload
 
@@ -186,7 +198,7 @@ Final sensor connector and ADS1115 channel mapping should be documented in a ded
    - Production calculator logic covered by host tests
 
 4. **History Screen**
-   - Captured analysis records only, with gas-use mode, mix fractions, CO2, planned depth, MOD, density, and advisory state
+   - Captured analysis records with gas-use mode, mix fractions, CO, planned depth, MOD, density and advisory state; legacy CO2 fields remain distinct and are not relabelled as CO
 
 5. **Cylinder Profiles Screen**
    - Persistent cylinder slots with selected cylinder, recheck state, stored mix, gas-use mode, planned depth, and label preview
@@ -203,7 +215,7 @@ Final sensor connector and ADS1115 channel mapping should be documented in a ded
    - GitHub release check and OTA install flow
 
 9. **Calibrate Sensors Screen**
-   - Guided O2 ambient-air, CO2 zero, and CO2 reference calibration flow with stable-sample gating while hardware driver support is completed
+   - Guided known-gas oxygen and helium calibration with stability/fault checks and separate AO2/JJ/He records; failed saves retain the previous calibration
 
 10. **Safety Settings Screen**
    - User-configured PPO2, density, and CO2 advisory limits used by Analyse
@@ -252,9 +264,9 @@ Dependencies are automatically downloaded during the build process.
 
 ## Sensor Hardware and Calibration Status
 
-Sensor readings are currently provided by deterministic simulator profiles while the hardware-backed ADS1115, BMP280, MAX17048, R17JJ-CCR O2, and MD62 He support is completed. The sensor boundary exposes timestamped O2, He, CO2, pressure, temperature, humidity, status, and source fields so the Analyse workflow can run against simulated streams now and hardware streams later.
+Physical firmware implements ADS122C04 acquisition, environmental and power monitoring, sensor selection and calibration persistence. Host tests exercise faults and state transitions; they do not establish actual sensor performance, wiring or charging behaviour. The simulator remains explicitly identified and does not substitute readings in physical firmware.
 
-The Analyse, History, Calibrate Sensors, and Safety Settings screens are functional in the host/simulator path. Calibration actions are simulation-safe state changes until hardware driver support is added.
+AO2, JJ-CCR and helium have separate records. Replacing a sensor requires calibration. Helium corrections must come from measured reference mixtures and held-out validation, including environmental and oxygen cross-effects. Historical/simulated CO2 fields remain distinct; this build has no installed CO2 measurement module. See the [software review](hardware/system-review/software/README.md).
 
 ## Performance Characteristics
 
@@ -265,9 +277,7 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 - **Rotation**: none; pixels and touch coordinates stay in native portrait orientation
 
 ### Power Consumption
-- **Active display**: ~300mA @ 5V
-- **Idle**: ~150mA @ 5V
-- **Sleep mode**: <1mA @ 5V (future enhancement)
+Whole-device active, idle, charging and hardware-off consumption remains unmeasured. Qualify backlight, radio, SD writes, heaters, converters and cable losses together; a display-only typical value is not a system budget. See the [bench equipment and test plan](hardware/system-review/lab-equipment.md).
 
 ## Differences from Original
 
@@ -275,13 +285,13 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 1. **480x800 portrait touch display**
 2. **Capacitive touch**
 3. **Tear-safe MIPI-DSI output** with no full-frame software rotation
-4. **Lower power consumption** (compared to the prior full-computer platform)
-5. **Faster boot time** (<5 seconds vs ~30 seconds)
+4. **Software-defined sensor selection and calibration**
+5. **Versioned OTA and persistent storage**; boot-time and power comparisons remain unmeasured
 
 ### Current Limitations
-1. Sensor drivers are still mocked until hardware-backed ADS1115, BMP280, MAX17048, R17JJ-CCR O2, and MD62 He support is completed.
-2. Simulator streams are deterministic and intended for UI/UX validation until hardware drivers land.
-3. Settings are intentionally stored in NVS; no general file system is required for current behavior.
+1. Physical fit, source protection, cell charging, thermal behaviour and gas accuracy remain unqualified; PCB order readiness is on hold.
+2. Simulator streams support repeatable UI/logic tests; they are not physical measurement evidence.
+3. Settings, calibration and recent history remain in NVS. [Optional onboard SD logging](hardware/system-review/software/sd-card/README.md) automatically records analysis/calibration sessions, raw samples and events. Device Settings provides status, safe eject and retry. Digital tests pass; actual card operation, power loss and simultaneous Wi-Fi use remain untested. Absent or faulty media leaves local analysis available.
 
 ## Development Notes
 
@@ -301,7 +311,7 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 ### Common Issues
 
 1. **Display not working**
-   - Check power supply (5V, 2A minimum)
+   - Verify the qualified 5 V power entry and source-current budget; follow the staged first-power procedure
    - Verify display cable connections
    - Confirm the PCB/module markings read `Guition JC4880P443` / `JC-ESP32P4-M3`
    - Confirm `make board-info` and the selected build profile agree
@@ -313,7 +323,7 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 
 3. **Sensors not reading**
    - Check I2C bus connections
-   - Verify sensor addresses (i2cdetect)
+   - Check device identities and bus errors in firmware diagnostics; use the documented I2C pin/address map
    - Check power supply to sensors
 
 4. **Build errors**
@@ -323,9 +333,8 @@ The Analyse, History, Calibrate Sensors, and Safety Settings screens are functio
 
 ### Debug Commands
 ```bash
-# Check I2C devices
+# Read firmware diagnostics; no generic I2C-scan console is assumed
 idf.py monitor
-# In ESP32 console, use I2C scan functionality
 
 # Memory usage
 idf.py size

@@ -1,0 +1,8 @@
+{
+  "source_footprint": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints/Package_DFN_QFN.pretty/Texas_RTW_WQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm_ThermalVias.kicad_mod",
+  "new_library_id": "Trimix_Power:TI_RTW24_4x4_ThermalVias_ServicePad",
+  "all_copper_drills_paste_mask_and_courtyard_identical": true,
+  "only_change": "two bottom-right silk corner lines omitted to avoid TP1014 mask opening",
+  "pin1_mark_retained": true,
+  "native_parity_required": true
+}

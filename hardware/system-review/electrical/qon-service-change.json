@@ -1,0 +1,10 @@
+{
+  "removed_optional": "SW101",
+  "replacement": "TP1014",
+  "ground_reference": "TP1001",
+  "external_power_button_unchanged": true,
+  "host_firmware_never_enters_ship_mode": true,
+  "manual_recovery_retained": true,
+  "physical_probe_access_and_fault_recovery_pending": true,
+  "EL13_usb_depleted_pack_recovery_still_unproven": true
+}

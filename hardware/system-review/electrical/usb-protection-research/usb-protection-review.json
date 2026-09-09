@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-07",
+  "status": "recommendation pending native implementation and audit",
+  "sources": {
+    "tpd4e05u06.pdf": {
+      "sha256": "c167cf1e72a5473a4d2c59b6a3c0251498701da05b7785919b9ceaae3b3e02c6",
+      "bytes": 2801466,
+      "url": "https://www.ti.com/lit/ds/symlink/tpd4e05u06.pdf"
+    },
+    "tpd1e10b06.pdf": {
+      "sha256": "6ffe72cb5f5e607fcafd05eef9809632402241eb44cd859a3652f43a35323da9",
+      "bytes": 2371535,
+      "url": "https://www.ti.com/lit/ds/symlink/tpd1e10b06.pdf"
+    }
+  },
+  "signal_esd": {
+    "mpn": "TPD4E05U06DQAR",
+    "pins": {
+      "1": "CC1",
+      "2": "CC2",
+      "3": "GND",
+      "4": "USB_DP",
+      "5": "USB_DM",
+      "6": "NC",
+      "7": "NC",
+      "8": "GND",
+      "9": "NC",
+      "10": "NC"
+    },
+    "max_body_mm": [
+      2.6,
+      1.1,
+      0.55
+    ],
+    "note": "DQA ground land variant needs supply-specific audit; NC is not internal pass-through"
+  },
+  "vbus_esd": {
+    "mpn": "TPD1E10B06DYAR",
+    "pins": {
+      "1": "USB_5V",
+      "2": "GND"
+    },
+    "max_terminal_span_mm": 1.7,
+    "body_width_before_flash_mm": 0.85,
+    "max_height_mm": 0.77,
+    "max_surge_clamp_1A_V": 10,
+    "max_surge_clamp_5A_V": 14
+  },
+  "passed_digitally": [
+    "Manufacturer pin tables reviewed",
+    "Active production orderables present in current downloaded addenda"
+  ],
+  "missing_evidence": [
+    "Coordinated VBUS overvoltage/transient protection for limiter 6 V absolute maximum",
+    "System ESD performance",
+    "Final quoted package land variant"
+  ],
+  "physical_testing_pending": [
+    "Hot-plug waveforms at limiter input",
+    "Discharge robustness of assembled port",
+    "Harness ground-return performance"
+  ]
+}

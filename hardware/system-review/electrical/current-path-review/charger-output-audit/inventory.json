@@ -1,0 +1,1571 @@
+{
+  "source_manifest": {
+    "netlist.xml": {
+      "source": "hardware/system-review/electrical/analyzer-netlist.xml",
+      "sha256": "e63de8b7c7aa6b2e4429779e0dfd505191ec9a4e18d6459d323c22bebeae81b1",
+      "source_same_after_copy": true
+    },
+    "authoritative.kicad_pcb": {
+      "source": "hardware/kicad/analyzer/Trimix_Analyzer.kicad_pcb",
+      "sha256": "c27e9fc9f946ce87a21ea21fdbb2cfda4c8776cce5b3ad0d0723cf04d7e45012",
+      "source_same_after_copy": true
+    },
+    "routing-snapshot.kicad_pcb": {
+      "source": "hardware/system-review/electrical/routing-candidate/native/Trimix_Analyzer.kicad_pcb",
+      "sha256": "b4e4d0b9f8e41cf1de1cf5215d66de0d0c490becd4c52028119dcc60c4080688",
+      "source_same_after_copy": true
+    }
+  },
+  "netlist_VSYS_capacitor_inventory": [
+    {
+      "ref": "C104",
+      "value": "22u / 16V X7R / 20%",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "fields": {
+        "MPN": "C3225X7R1C226M250AC",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": "2.8",
+        "Effective_capacitance_review": "5.5V typical bias~90%; engineering 12.1176u each after .8tol*.85temp*.9aging; combined corners not guaranteed",
+        "Footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3225X7R1C226M250AC",
+        "Description": "Unpolarized capacitor"
+      },
+      "pins": {
+        "1": "VSYS",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "C105",
+      "value": "22u / 16V X7R / 20%",
+      "footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "fields": {
+        "MPN": "C3225X7R1C226M250AC",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": "2.8",
+        "Effective_capacitance_review": "5.5V typical bias~90%; engineering 12.1176u each after .8tol*.85temp*.9aging; combined corners not guaranteed",
+        "Footprint": "Capacitor_SMD:C_1210_3225Metric",
+        "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3225X7R1C226M250AC",
+        "Description": "Unpolarized capacitor"
+      },
+      "pins": {
+        "1": "VSYS",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "C201",
+      "value": "22u / 25V X5R / 20%",
+      "footprint": "Capacitor_SMD:C_1206_3216Metric",
+      "fields": {
+        "MPN": "C3216X5R1E226M160AB",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": "1.8",
+        "Effective_capacitance_review": "5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup",
+        "Footprint": "Capacitor_SMD:C_1206_3216Metric",
+        "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB",
+        "Description": "Unpolarized capacitor"
+      },
+      "pins": {
+        "1": "VSYS",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "C202",
+      "value": "22u / 25V X5R / 20%",
+      "footprint": "Capacitor_SMD:C_1206_3216Metric",
+      "fields": {
+        "MPN": "C3216X5R1E226M160AB",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": "1.8",
+        "Effective_capacitance_review": "5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup",
+        "Footprint": "Capacitor_SMD:C_1206_3216Metric",
+        "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB",
+        "Description": "Unpolarized capacitor"
+      },
+      "pins": {
+        "1": "VSYS",
+        "2": "GND"
+      }
+    },
+    {
+      "ref": "C801",
+      "value": "100n / 50V X7R / 10%",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "fields": {
+        "MPN": "C1608X7R1H104K080AA",
+        "Manufacturer": "TDK",
+        "Maximum_body_height_mm": "0.9",
+        "Footprint": "Capacitor_SMD:C_0603_1608Metric",
+        "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA",
+        "Description": "Unpolarized capacitor"
+      },
+      "pins": {
+        "1": "VSYS",
+        "2": "GND"
+      }
+    }
+  ],
+  "netlist_L101": {
+    "ref": "L101",
+    "value": "1u / 74437349010",
+    "fields": {
+      "Package_Status": "PROVISIONAL: verify exact purchased part before fabrication",
+      "MPN": "74437349010",
+      "Manufacturer": "W\u00fcrth Elektronik",
+      "Footprint": "Trimix_Power:L_Wurth_74437349010_7050",
+      "Datasheet": "https://www.we-online.com/components/products/datasheet/74437349010.pdf",
+      "Description": "Inductor"
+    },
+    "pins": {
+      "1": "/01  CHARGING + BATTERY/BQ_SW",
+      "2": "VSYS"
+    }
+  },
+  "boards": {
+    "authoritative.kicad_pcb": {
+      "U101": {
+        "component": {
+          "ref": "U101",
+          "value": "BQ25895RTWR",
+          "package": "Texas_RTW_WQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm_ThermalVias",
+          "x": 13.0,
+          "y": 84.0,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "U101",
+            "Value": "BQ25895RTWR",
+            "Datasheet": "http://www.ti.com/lit/ds/symlink/bq25895.pdf",
+            "Description": "I2C Controlled Single Cell (Li-Ion / Li-Polymer) 5A Fast Charger with MaxCharge, USB BC1.2 Detection, 3.9..14V VBUS, 3.840..4.608V charge voltage range, 1.5 MHz (buck mode) and 500 kHz /1.5 MHz (boost mode), WQFN-24",
+            "KiLib_Generator": "package/no_lead",
+            "MPN": "BQ25895RTWR",
+            "Manufacturer": "Texas Instruments"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "",
+            "net": "",
+            "x": 12.325,
+            "y": 83.325,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "",
+            "net": "",
+            "x": 12.325,
+            "y": 84.675,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "",
+            "net": "",
+            "x": 13.675,
+            "y": 83.325,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "",
+            "net": "",
+            "x": 13.675,
+            "y": 84.675,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "1",
+            "net": "USB_CHG_5V",
+            "x": 11.0375,
+            "y": 82.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "unconnected-(U101-D+-Pad2)",
+            "x": 11.0375,
+            "y": 83.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "3",
+            "net": "unconnected-(U101-D--Pad3)",
+            "x": 11.0375,
+            "y": 83.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "4",
+            "net": "/01  CHARGING + BATTERY/CHG_STAT_N",
+            "x": 11.0375,
+            "y": 84.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "5",
+            "net": "I2C_SCL",
+            "x": 11.0375,
+            "y": 84.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "6",
+            "net": "I2C_SDA",
+            "x": 11.0375,
+            "y": 85.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "7",
+            "net": "CHG_INT_N",
+            "x": 11.75,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "8",
+            "net": "GND",
+            "x": 12.25,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "9",
+            "net": "/01  CHARGING + BATTERY/CHG_CE_N",
+            "x": 12.75,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "10",
+            "net": "BQ_ILIM",
+            "x": 13.25,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "11",
+            "net": "/01  CHARGING + BATTERY/PACK_TS",
+            "x": 13.75,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "12",
+            "net": "/01  CHARGING + BATTERY/BQ_QON_N",
+            "x": 14.25,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "13",
+            "net": "PACK_P",
+            "x": 14.9625,
+            "y": 85.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "14",
+            "net": "PACK_P",
+            "x": 14.9625,
+            "y": 84.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "15",
+            "net": "VSYS",
+            "x": 14.9625,
+            "y": 84.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "16",
+            "net": "VSYS",
+            "x": 14.9625,
+            "y": 83.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "17",
+            "net": "GND",
+            "x": 14.9625,
+            "y": 83.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "18",
+            "net": "GND",
+            "x": 14.9625,
+            "y": 82.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "19",
+            "net": "/01  CHARGING + BATTERY/BQ_SW",
+            "x": 14.25,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "20",
+            "net": "/01  CHARGING + BATTERY/BQ_SW",
+            "x": 13.75,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "21",
+            "net": "/01  CHARGING + BATTERY/BQ_BTST",
+            "x": 13.25,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "22",
+            "net": "/01  CHARGING + BATTERY/BQ_REGN",
+            "x": 12.75,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "23",
+            "net": "/01  CHARGING + BATTERY/BQ_PMID",
+            "x": 12.25,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "24",
+            "net": "unconnected-(U101-DSEL-Pad24)",
+            "x": 11.75,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 11.9,
+            "y": 82.9,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 11.9,
+            "y": 84.0,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 11.9,
+            "y": 85.1,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 82.9,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 84.0,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 84.0,
+            "layers": [
+              "F.Cu",
+              "F.Mask"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 84.0,
+            "layers": [
+              "B.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 85.1,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 14.1,
+            "y": 82.9,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 14.1,
+            "y": 84.0,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 14.1,
+            "y": 85.1,
+            "layers": [
+              "*.Cu"
+            ]
+          }
+        ]
+      },
+      "L101": {
+        "component": {
+          "ref": "L101",
+          "value": "1u / 74437349010",
+          "package": "L_Wurth_74437349010_7050",
+          "x": 13.5,
+          "y": 76.5,
+          "rotation": 90.0,
+          "side": "top",
+          "props": {
+            "Reference": "L101",
+            "Value": "1u / 74437349010",
+            "Datasheet": "https://www.we-online.com/components/products/datasheet/74437349010.pdf",
+            "Description": "Inductor",
+            "KiLib_Generator": "inductor/SMD",
+            "Package_Status": "PROVISIONAL: verify exact purchased part before fabrication",
+            "MPN": "74437349010",
+            "Manufacturer": "W\u00fcrth Elektronik"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "/01  CHARGING + BATTERY/BQ_SW",
+            "x": 13.5,
+            "y": 79.225,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "VSYS",
+            "x": 13.5,
+            "y": 73.775,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C104": {
+        "component": {
+          "ref": "C104",
+          "value": "22u / 16V X7R / 20%",
+          "package": "C_1210_3225Metric",
+          "x": 19.6,
+          "y": 75.25,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "C104",
+            "Value": "22u / 16V X7R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3225X7R1C226M250AC",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3225X7R1C226M250AC",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "2.8",
+            "Effective_capacitance_review": "5.5V typical bias~90%; engineering 12.1176u each after .8tol*.85temp*.9aging; combined corners not guaranteed"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 18.125,
+            "y": 75.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 21.075000000000003,
+            "y": 75.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C105": {
+        "component": {
+          "ref": "C105",
+          "value": "22u / 16V X7R / 20%",
+          "package": "C_1210_3225Metric",
+          "x": 8.199999,
+          "y": 85.75,
+          "rotation": 90.0,
+          "side": "top",
+          "props": {
+            "Reference": "C105",
+            "Value": "22u / 16V X7R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3225X7R1C226M250AC",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3225X7R1C226M250AC",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "2.8",
+            "Effective_capacitance_review": "5.5V typical bias~90%; engineering 12.1176u each after .8tol*.85temp*.9aging; combined corners not guaranteed"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 8.199999,
+            "y": 87.225,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 8.199999,
+            "y": 84.275,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C201": {
+        "component": {
+          "ref": "C201",
+          "value": "22u / 25V X5R / 20%",
+          "package": "C_1206_3216Metric",
+          "x": 16.7,
+          "y": 61.75,
+          "rotation": 90.0,
+          "side": "top",
+          "props": {
+            "Reference": "C201",
+            "Value": "22u / 25V X5R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3216X5R1E226M160AB",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "1.8",
+            "Effective_capacitance_review": "5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 16.7,
+            "y": 63.225,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 16.7,
+            "y": 60.275,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C202": {
+        "component": {
+          "ref": "C202",
+          "value": "22u / 25V X5R / 20%",
+          "package": "C_1206_3216Metric",
+          "x": 19.7,
+          "y": 72.25,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "C202",
+            "Value": "22u / 25V X5R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3216X5R1E226M160AB",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "1.8",
+            "Effective_capacitance_review": "5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 18.224999999999998,
+            "y": 72.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 21.175,
+            "y": 72.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C801": {
+        "component": {
+          "ref": "C801",
+          "value": "100n / 50V X7R / 10%",
+          "package": "C_0603_1608Metric",
+          "x": 5.75,
+          "y": 58.0,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "C801",
+            "Value": "100n / 50V X7R / 10%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C1608X7R1H104K080AA",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "0.9"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 4.975,
+            "y": 58.0,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 6.525,
+            "y": 58.0,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      }
+    },
+    "routing-snapshot.kicad_pcb": {
+      "U101": {
+        "component": {
+          "ref": "U101",
+          "value": "BQ25895RTWR",
+          "package": "Texas_RTW_WQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm_ThermalVias",
+          "x": 13.0,
+          "y": 84.0,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "U101",
+            "Value": "BQ25895RTWR",
+            "Datasheet": "http://www.ti.com/lit/ds/symlink/bq25895.pdf",
+            "Description": "I2C Controlled Single Cell (Li-Ion / Li-Polymer) 5A Fast Charger with MaxCharge, USB BC1.2 Detection, 3.9..14V VBUS, 3.840..4.608V charge voltage range, 1.5 MHz (buck mode) and 500 kHz /1.5 MHz (boost mode), WQFN-24",
+            "KiLib_Generator": "package/no_lead",
+            "MPN": "BQ25895RTWR",
+            "Manufacturer": "Texas Instruments"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "",
+            "net": "",
+            "x": 12.325,
+            "y": 83.325,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "",
+            "net": "",
+            "x": 12.325,
+            "y": 84.675,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "",
+            "net": "",
+            "x": 13.675,
+            "y": 83.325,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "",
+            "net": "",
+            "x": 13.675,
+            "y": 84.675,
+            "layers": [
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "1",
+            "net": "USB_CHG_5V",
+            "x": 11.0375,
+            "y": 82.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "unconnected-(U101-D+-Pad2)",
+            "x": 11.0375,
+            "y": 83.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "3",
+            "net": "unconnected-(U101-D--Pad3)",
+            "x": 11.0375,
+            "y": 83.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "4",
+            "net": "/01  CHARGING + BATTERY/CHG_STAT_N",
+            "x": 11.0375,
+            "y": 84.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "5",
+            "net": "I2C_SCL",
+            "x": 11.0375,
+            "y": 84.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "6",
+            "net": "I2C_SDA",
+            "x": 11.0375,
+            "y": 85.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "7",
+            "net": "CHG_INT_N",
+            "x": 11.75,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "8",
+            "net": "GND",
+            "x": 12.25,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "9",
+            "net": "/01  CHARGING + BATTERY/CHG_CE_N",
+            "x": 12.75,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "10",
+            "net": "BQ_ILIM",
+            "x": 13.25,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "11",
+            "net": "/01  CHARGING + BATTERY/PACK_TS",
+            "x": 13.75,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "12",
+            "net": "/01  CHARGING + BATTERY/BQ_QON_N",
+            "x": 14.25,
+            "y": 85.9625,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "13",
+            "net": "PACK_P",
+            "x": 14.9625,
+            "y": 85.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "14",
+            "net": "PACK_P",
+            "x": 14.9625,
+            "y": 84.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "15",
+            "net": "VSYS",
+            "x": 14.9625,
+            "y": 84.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "16",
+            "net": "VSYS",
+            "x": 14.9625,
+            "y": 83.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "17",
+            "net": "GND",
+            "x": 14.9625,
+            "y": 83.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "18",
+            "net": "GND",
+            "x": 14.9625,
+            "y": 82.75,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "19",
+            "net": "/01  CHARGING + BATTERY/BQ_SW",
+            "x": 14.25,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "20",
+            "net": "/01  CHARGING + BATTERY/BQ_SW",
+            "x": 13.75,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "21",
+            "net": "/01  CHARGING + BATTERY/BQ_BTST",
+            "x": 13.25,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "22",
+            "net": "/01  CHARGING + BATTERY/BQ_REGN",
+            "x": 12.75,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "23",
+            "net": "/01  CHARGING + BATTERY/BQ_PMID",
+            "x": 12.25,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "24",
+            "net": "unconnected-(U101-DSEL-Pad24)",
+            "x": 11.75,
+            "y": 82.0375,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 11.9,
+            "y": 82.9,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 11.9,
+            "y": 84.0,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 11.9,
+            "y": 85.1,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 82.9,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 84.0,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 84.0,
+            "layers": [
+              "F.Cu",
+              "F.Mask"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 84.0,
+            "layers": [
+              "B.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 13.0,
+            "y": 85.1,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 14.1,
+            "y": 82.9,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 14.1,
+            "y": 84.0,
+            "layers": [
+              "*.Cu"
+            ]
+          },
+          {
+            "pin": "25",
+            "net": "GND",
+            "x": 14.1,
+            "y": 85.1,
+            "layers": [
+              "*.Cu"
+            ]
+          }
+        ]
+      },
+      "L101": {
+        "component": {
+          "ref": "L101",
+          "value": "1u / 74437349010",
+          "package": "L_Wurth_74437349010_7050",
+          "x": 13.5,
+          "y": 76.5,
+          "rotation": 90.0,
+          "side": "top",
+          "props": {
+            "Reference": "L101",
+            "Value": "1u / 74437349010",
+            "Datasheet": "https://www.we-online.com/components/products/datasheet/74437349010.pdf",
+            "Description": "Inductor",
+            "KiLib_Generator": "inductor/SMD",
+            "Package_Status": "PROVISIONAL: verify exact purchased part before fabrication",
+            "MPN": "74437349010",
+            "Manufacturer": "W\u00fcrth Elektronik"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "/01  CHARGING + BATTERY/BQ_SW",
+            "x": 13.5,
+            "y": 79.225,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "VSYS",
+            "x": 13.5,
+            "y": 73.775,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C104": {
+        "component": {
+          "ref": "C104",
+          "value": "22u / 16V X7R / 20%",
+          "package": "C_1210_3225Metric",
+          "x": 19.6,
+          "y": 75.25,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "C104",
+            "Value": "22u / 16V X7R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3225X7R1C226M250AC",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3225X7R1C226M250AC",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "2.8",
+            "Effective_capacitance_review": "5.5V typical bias~90%; engineering 12.1176u each after .8tol*.85temp*.9aging; combined corners not guaranteed"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 18.125,
+            "y": 75.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 21.075000000000003,
+            "y": 75.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C105": {
+        "component": {
+          "ref": "C105",
+          "value": "22u / 16V X7R / 20%",
+          "package": "C_1210_3225Metric",
+          "x": 8.199999,
+          "y": 85.75,
+          "rotation": 90.0,
+          "side": "top",
+          "props": {
+            "Reference": "C105",
+            "Value": "22u / 16V X7R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3225X7R1C226M250AC",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3225X7R1C226M250AC",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "2.8",
+            "Effective_capacitance_review": "5.5V typical bias~90%; engineering 12.1176u each after .8tol*.85temp*.9aging; combined corners not guaranteed"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 8.199999,
+            "y": 87.225,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 8.199999,
+            "y": 84.275,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C201": {
+        "component": {
+          "ref": "C201",
+          "value": "22u / 25V X5R / 20%",
+          "package": "C_1206_3216Metric",
+          "x": 17.0,
+          "y": 61.75,
+          "rotation": 90.0,
+          "side": "top",
+          "props": {
+            "Reference": "C201",
+            "Value": "22u / 25V X5R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3216X5R1E226M160AB",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "1.8",
+            "Effective_capacitance_review": "5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 17.0,
+            "y": 63.225,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 17.0,
+            "y": 60.275,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C202": {
+        "component": {
+          "ref": "C202",
+          "value": "22u / 25V X5R / 20%",
+          "package": "C_1206_3216Metric",
+          "x": 19.7,
+          "y": 72.25,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "C202",
+            "Value": "22u / 25V X5R / 20%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C3216X5R1E226M160AB",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C3216X5R1E226M160AB",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "1.8",
+            "Effective_capacitance_review": "5.5V typical bias~50%; engineering~6.73u each after tolerance/temp/aging; validate ripple/startup"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 18.224999999999998,
+            "y": 72.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 21.175,
+            "y": 72.25,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      },
+      "C801": {
+        "component": {
+          "ref": "C801",
+          "value": "100n / 50V X7R / 10%",
+          "package": "C_0603_1608Metric",
+          "x": 5.75,
+          "y": 58.0,
+          "rotation": 0.0,
+          "side": "top",
+          "props": {
+            "Reference": "C801",
+            "Value": "100n / 50V X7R / 10%",
+            "Datasheet": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=C1608X7R1H104K080AA",
+            "Description": "Unpolarized capacitor",
+            "KiLib_Generator": "SMD_2terminal_chip_molded",
+            "MPN": "C1608X7R1H104K080AA",
+            "Manufacturer": "TDK",
+            "Maximum_body_height_mm": "0.9"
+          },
+          "attributes": [
+            "smd"
+          ]
+        },
+        "pads": [
+          {
+            "pin": "1",
+            "net": "VSYS",
+            "x": 4.975,
+            "y": 58.0,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          },
+          {
+            "pin": "2",
+            "net": "GND",
+            "x": 6.525,
+            "y": 58.0,
+            "layers": [
+              "F.Cu",
+              "F.Mask",
+              "F.Paste"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "notes": [
+    "Snapshots are for part/net/placement inventory; no claim every same-net item is physically connected.",
+    "C102 is PMID input capacitance and is excluded from VSYS total.",
+    "VSYS total does not establish local BQ output-loop adequacy."
+  ]
+}

@@ -47,9 +47,24 @@ set(TRIMIX_COMMON_INCLUDE_DIRS
 )
 
 set(TRIMIX_UI_SOURCES
+    "${TRIMIX_ROOT}/main/services/sd_log_core.cpp"
+    "${TRIMIX_ROOT}/main/services/sd_log_files.cpp"
+    "${TRIMIX_ROOT}/main/services/sd_log_format.cpp"
+    "${TRIMIX_ROOT}/main/services/sd_log_service.cpp"
     "${TRIMIX_ROOT}/main/version.cpp"
     "${TRIMIX_ROOT}/main/analysis/analysis_calculator.cpp"
     "${TRIMIX_ROOT}/main/sensors/sensor_interface.cpp"
+    "${TRIMIX_ROOT}/main/sensors/sensor_hardware.cpp"
+    "${TRIMIX_ROOT}/main/sensors/ads122c04.cpp"
+    "${TRIMIX_ROOT}/main/sensors/ze07_co.cpp"
+    "${TRIMIX_ROOT}/main/sensors/co_qualification.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_core.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_journal.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_service.cpp"
+    "${TRIMIX_ROOT}/main/services/oxygen_selection_core.cpp"
+    "${TRIMIX_ROOT}/main/services/oxygen_selection_service.cpp"
+    "${TRIMIX_ROOT}/main/services/blob_journal.cpp"
+    "${TRIMIX_ROOT}/main/services/storage_service.cpp"
     "${TRIMIX_ROOT}/main/services/analysis_history.cpp"
     "${TRIMIX_ROOT}/main/services/cylinder_profiles.cpp"
     "${TRIMIX_ROOT}/main/services/mix_label_service.cpp"
@@ -114,12 +129,46 @@ add_test(NAME analysis_calculator COMMAND test_analysis_calculator)
 add_executable(test_sensor_interface
     "${TRIMIX_ROOT}/tests/test_sensor_interface.cpp"
     "${TRIMIX_ROOT}/main/sensors/sensor_interface.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_core.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_journal.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_service.cpp"
+    "${TRIMIX_ROOT}/main/services/oxygen_selection_core.cpp"
+    "${TRIMIX_ROOT}/main/services/oxygen_selection_service.cpp"
+    "${TRIMIX_ROOT}/main/services/blob_journal.cpp"
+    "${TRIMIX_ROOT}/main/services/storage_service.cpp"
 )
 target_include_directories(test_sensor_interface PRIVATE
     "${CMAKE_CURRENT_LIST_DIR}/stubs"
     ${TRIMIX_COMMON_INCLUDE_DIRS}
 )
 add_test(NAME sensor_interface COMMAND test_sensor_interface)
+
+add_executable(test_gas_acquisition
+    "${TRIMIX_ROOT}/tests/test_gas_acquisition.cpp"
+    "${TRIMIX_ROOT}/main/sensors/ads122c04.cpp"
+    "${TRIMIX_ROOT}/main/sensors/ze07_co.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_core.cpp"
+    "${TRIMIX_ROOT}/main/services/gas_calibration_journal.cpp"
+)
+target_include_directories(test_gas_acquisition PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME gas_acquisition COMMAND test_gas_acquisition)
+
+add_executable(test_co_qualification "${TRIMIX_ROOT}/tests/test_co_qualification.cpp"
+    "${TRIMIX_ROOT}/main/sensors/co_qualification.cpp" "${TRIMIX_ROOT}/main/sensors/ze07_co.cpp")
+target_include_directories(test_co_qualification PRIVATE "${TRIMIX_ROOT}/main")
+add_test(NAME co_qualification COMMAND test_co_qualification)
+add_executable(test_co_hardware_worker "${TRIMIX_ROOT}/tests/sd_log_optional_stubs.cpp" "${TRIMIX_ROOT}/tests/test_co_hardware_worker.cpp"
+    "${TRIMIX_ROOT}/main/sensors/sensor_hardware.cpp" "${TRIMIX_ROOT}/main/sensors/acquisition_engine.cpp"
+    "${TRIMIX_ROOT}/main/sensors/ads122c04.cpp" "${TRIMIX_ROOT}/main/sensors/co_qualification.cpp"
+    "${TRIMIX_ROOT}/main/sensors/ze07_co.cpp" "${TRIMIX_ROOT}/main/services/ota_core.cpp"
+    "${TRIMIX_ROOT}/tests/third_party/cjson/cJSON.c")
+target_compile_definitions(test_co_hardware_worker PRIVATE ESP_PLATFORM=1)
+target_include_directories(test_co_hardware_worker PRIVATE "${TRIMIX_ROOT}/tests/co_worker_stubs"
+    "${TRIMIX_ROOT}/tests/power_worker_stubs" "${TRIMIX_ROOT}/tests/backlight_stubs"
+    "${TRIMIX_ROOT}/simulator/stubs" "${TRIMIX_ROOT}/tests/third_party/cjson" "${TRIMIX_ROOT}/main")
+target_link_libraries(test_co_hardware_worker PRIVATE Threads::Threads)
+add_test(NAME co_hardware_worker COMMAND test_co_hardware_worker)
+add_test(NAME co_optional_uart_absent COMMAND test_co_hardware_worker missing-uart)
 
 add_executable(test_analysis_history
     "${TRIMIX_ROOT}/tests/test_analysis_history.cpp"
@@ -148,3 +197,103 @@ add_test(NAME cylinder_profiles COMMAND test_cylinder_profiles)
 add_executable(test_ui_smoke "${CMAKE_CURRENT_LIST_DIR}/tests/test_ui_smoke.cpp")
 target_link_libraries(test_ui_smoke PRIVATE trimix_host_app)
 add_test(NAME ui_smoke COMMAND test_ui_smoke)
+
+add_executable(test_oxygen_selection "${TRIMIX_ROOT}/tests/test_oxygen_selection.cpp" "${TRIMIX_ROOT}/main/services/oxygen_selection_core.cpp")
+add_executable(test_ota_storage "${TRIMIX_ROOT}/tests/test_ota_storage.cpp"
+    "${TRIMIX_ROOT}/main/services/ota_core.cpp" "${TRIMIX_ROOT}/main/services/blob_journal.cpp"
+    "${TRIMIX_ROOT}/main/services/storage_service.cpp" "${TRIMIX_ROOT}/main/services/maintenance_service.cpp"
+    "${TRIMIX_ROOT}/tests/third_party/cjson/cJSON.c")
+target_include_directories(test_ota_storage PRIVATE "${TRIMIX_ROOT}/tests/third_party/cjson")
+add_executable(test_power_environment "${TRIMIX_ROOT}/tests/test_power_environment.cpp"
+    "${TRIMIX_ROOT}/main/sensors/power_monitor.cpp" "${TRIMIX_ROOT}/main/sensors/environment_monitor.cpp"
+    "${TRIMIX_ROOT}/main/services/charge_profile.cpp"
+    "${TRIMIX_ROOT}/main/third_party/bme280/bme280.c")
+foreach(review_test test_oxygen_selection test_ota_storage test_power_environment)
+    target_include_directories(${review_test} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+    add_test(NAME ${review_test} COMMAND ${review_test})
+endforeach()
+
+add_executable(test_acquisition_engine "${TRIMIX_ROOT}/tests/test_acquisition_engine.cpp"
+    "${TRIMIX_ROOT}/main/sensors/acquisition_engine.cpp" "${TRIMIX_ROOT}/main/sensors/ads122c04.cpp")
+target_include_directories(test_acquisition_engine PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME acquisition_engine COMMAND test_acquisition_engine)
+
+find_package(Threads REQUIRED)
+add_executable(test_charge_standby "${TRIMIX_ROOT}/tests/test_charge_standby.cpp"
+    "${TRIMIX_ROOT}/main/services/charge_profile.cpp" "${TRIMIX_ROOT}/main/services/charge_standby_policy.cpp"
+    "${TRIMIX_ROOT}/main/sensors/power_monitor.cpp")
+target_include_directories(test_charge_standby PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME charge_standby COMMAND test_charge_standby)
+add_executable(test_usb_input_path "${TRIMIX_ROOT}/tests/test_usb_input_path.cpp"
+    "${TRIMIX_ROOT}/main/sensors/power_monitor.cpp" "${TRIMIX_ROOT}/main/services/charge_profile.cpp")
+target_include_directories(test_usb_input_path PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME usb_input_path COMMAND test_usb_input_path)
+add_executable(test_backlight_standby "${TRIMIX_ROOT}/tests/test_backlight_standby.cpp"
+    "${TRIMIX_ROOT}/main/services/backlight_service.cpp")
+target_include_directories(test_backlight_standby PRIVATE "${TRIMIX_ROOT}/tests/backlight_stubs"
+    "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+target_link_libraries(test_backlight_standby PRIVATE Threads::Threads)
+add_test(NAME backlight_standby COMMAND test_backlight_standby)
+add_executable(test_power_worker_standby "${TRIMIX_ROOT}/tests/sd_log_optional_stubs.cpp" "${TRIMIX_ROOT}/tests/test_power_worker_standby.cpp"
+    "${TRIMIX_ROOT}/main/services/system_power.cpp" "${TRIMIX_ROOT}/main/services/charge_standby_policy.cpp"
+    "${TRIMIX_ROOT}/main/services/maintenance_service.cpp" "${TRIMIX_ROOT}/main/services/backlight_service.cpp"
+    "${TRIMIX_ROOT}/main/sensors/power_monitor.cpp" "${TRIMIX_ROOT}/main/sensors/usb_input_policy.cpp"
+    "${TRIMIX_ROOT}/main/sensors/usb_source_monitor.cpp" "${TRIMIX_ROOT}/main/sensors/bc12_monitor.cpp")
+target_compile_definitions(test_power_worker_standby PRIVATE ESP_PLATFORM=1)
+target_include_directories(test_power_worker_standby PRIVATE "${TRIMIX_ROOT}/tests/power_worker_stubs"
+    "${TRIMIX_ROOT}/tests/backlight_stubs" "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+target_link_libraries(test_power_worker_standby PRIVATE Threads::Threads)
+foreach(power_case normal maintenance maintenance-last bus-loss probation charger-irq kill-retry
+        hiz-requalify hiz-ignored hiz-maintenance hiz-maintenance-wait hiz-delay hiz-timeout hiz-adc-ignored
+        legacy-dcp legacy-cdp legacy-gap legacy-detach legacy-replug legacy-reset
+        legacy-before-detection legacy-during-detection legacy-after-collection)
+    add_test(NAME power_worker_${power_case} COMMAND test_power_worker_standby ${power_case})
+endforeach()
+add_executable(test_storage_maintenance_race "${TRIMIX_ROOT}/tests/test_storage_maintenance_race.cpp"
+    "${TRIMIX_ROOT}/main/services/storage_service.cpp" "${TRIMIX_ROOT}/main/services/blob_journal.cpp"
+    "${TRIMIX_ROOT}/main/services/maintenance_service.cpp")
+target_include_directories(test_storage_maintenance_race PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+target_link_libraries(test_storage_maintenance_race PRIVATE Threads::Threads)
+add_test(NAME storage_maintenance_race COMMAND test_storage_maintenance_race)
+
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+add_test(NAME system_review_tools COMMAND "${Python3_EXECUTABLE}" "${TRIMIX_ROOT}/tests/test_system_review_tools.py")
+
+add_executable(test_usb_source "${TRIMIX_ROOT}/tests/test_usb_source.cpp" "${TRIMIX_ROOT}/main/sensors/usb_source_monitor.cpp")
+target_include_directories(test_usb_source PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME usb_source COMMAND test_usb_source)
+
+add_executable(test_bc12_source "${TRIMIX_ROOT}/tests/test_bc12_source.cpp" "${TRIMIX_ROOT}/main/sensors/bc12_monitor.cpp")
+target_include_directories(test_bc12_source PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME bc12_source COMMAND test_bc12_source)
+add_executable(test_usb_input_policy "${TRIMIX_ROOT}/tests/test_usb_input_policy.cpp" "${TRIMIX_ROOT}/main/sensors/usb_input_policy.cpp")
+target_include_directories(test_usb_input_policy PRIVATE "${CMAKE_CURRENT_LIST_DIR}/stubs" ${TRIMIX_COMMON_INCLUDE_DIRS})
+add_test(NAME usb_input_policy COMMAND test_usb_input_policy)
+
+# Compile the actual ESP storage branch with a fault-injectable low-level NVS
+# adapter. Each startup state runs in a fresh process, matching singleton init.
+add_executable(test_esp_storage_adapter "${TRIMIX_ROOT}/tests/test_esp_storage_adapter.cpp"
+    "${TRIMIX_ROOT}/main/services/storage_service.cpp"
+    "${TRIMIX_ROOT}/main/services/blob_journal.cpp")
+target_compile_definitions(test_esp_storage_adapter PRIVATE ESP_PLATFORM=1)
+target_include_directories(test_esp_storage_adapter PRIVATE
+    "${TRIMIX_ROOT}/tests/esp_storage_stubs" "${TRIMIX_ROOT}/main")
+target_link_libraries(test_esp_storage_adapter PRIVATE Threads::Threads)
+foreach(storage_case no-free-pages new-nvs-version pending-rollback accepted-upgrade valid-image)
+    add_test(NAME esp_storage_${storage_case} COMMAND test_esp_storage_adapter ${storage_case})
+endforeach()
+
+add_executable(test_sd_log "${TRIMIX_ROOT}/main/services/sd_log_format.cpp" "${TRIMIX_ROOT}/tests/test_sd_log.cpp" "${TRIMIX_ROOT}/main/services/sd_log_core.cpp" "${TRIMIX_ROOT}/main/services/sd_log_files.cpp")
+target_include_directories(test_sd_log PRIVATE "${TRIMIX_ROOT}/main" "${TRIMIX_ROOT}/simulator/stubs")
+target_link_libraries(test_sd_log PRIVATE Threads::Threads)
+add_test(NAME sd_logging COMMAND test_sd_log)
+
+add_executable(test_sd_maintenance "${TRIMIX_ROOT}/tests/test_sd_maintenance.cpp" "${TRIMIX_ROOT}/main/services/sd_log_core.cpp" "${TRIMIX_ROOT}/main/services/maintenance_service.cpp" "${TRIMIX_ROOT}/main/services/storage_service.cpp" "${TRIMIX_ROOT}/main/services/blob_journal.cpp")
+target_include_directories(test_sd_maintenance PRIVATE "${TRIMIX_ROOT}/main")
+target_link_libraries(test_sd_maintenance PRIVATE Threads::Threads)
+add_test(NAME sd_maintenance COMMAND test_sd_maintenance)
+
+add_test(NAME guition_sdmmc COMMAND "${Python3_EXECUTABLE}" "${TRIMIX_ROOT}/tests/test_guition_sdmmc.py")
+if(CMAKE_C_FLAGS MATCHES "fsanitize=address")
+    set_tests_properties(guition_sdmmc PROPERTIES ENVIRONMENT "TRIMIX_SDMMC_SANITIZE=address,undefined;ASAN_OPTIONS=detect_leaks=0")
+endif()

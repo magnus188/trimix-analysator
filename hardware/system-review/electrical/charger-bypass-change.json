@@ -1,0 +1,16 @@
+{
+  "removed_optional": [
+    "D101",
+    "R106"
+  ],
+  "added_bypass": "C108",
+  "retained_bulk": [
+    "C104",
+    "C105"
+  ],
+  "new_probe": "TP1013",
+  "probe_access": "backside; board removed; no paste",
+  "no_added_carrier_pocket": true,
+  "native_candidate_geometry_checked": true,
+  "physical_loop_noise_and_stability_pending": true
+}

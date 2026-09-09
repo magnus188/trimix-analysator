@@ -1,0 +1,2929 @@
+Battery Charging Specification
+                       Revision 1.2
+                   December 7, 2010
+                 Copyright © 2010, USB Implementers Forum, Inc.
+                               All rights reserved.
+
+A LICENSE IS HEREBY GRANTED TO REPRODUCE THIS SPECIFICATION FOR
+INTERNAL USE ONLY. NO OTHER LICENSE, EXPRESS OR IMPLIED, BY ESTOPPEL OR
+OTHERWISE, IS GRANTED OR INTENDED HEREBY.
+
+USB-IF AND THE AUTHORS OF THIS SPECIFICATION EXPRESSLY DISCLAIM ALL
+LIABILITY FOR INFRINGEMENT OF INTELLECTUAL PROPERTY RIGHTS, RELATING
+TO IMPLEMENTATION OF INFORMATION IN THIS SPECIFICATION. USB-IF AND THE
+AUTHORS OF THIS SPECIFICATION ALSO DO NOT WARRANT OR REPRESENT THAT
+SUCH IMPLEMENTATION(S) WILL NOT INFRINGE THE INTELLECTUAL PROPERTY
+RIGHTS OF OTHERS.
+
+THIS SPECIFICATION IS PROVIDED "AS IS” AND WITH NO WARRANTIES, EXPRESS OR
+IMPLIED, STATUTORY OR OTHERWISE. ALL WARRANTIES ARE EXPRESSLY
+DISCLAIMED. NO WARRANTY OF MERCHANTABILITY, NO WARRANTY OF NON-
+INFRINGEMENT, NO WARRANTY OF FITNESS FOR ANY PARTICULAR PURPOSE, AND
+NO WARRANTY ARISING OUT OF ANY PROPOSAL, SPECIFICATION, OR SAMPLE.
+
+IN NO EVENT WILL USB-IF OR USB-IF MEMBERS BE LIABLE TO ANOTHER FOR THE
+COST OF PROCURING SUBSTITUTE GOODS OR SERVICES, LOST PROFITS, LOSS OF
+USE, LOSS OF DATA OR ANY INCIDENTAL, CONSEQUENTIAL, INDIRECT, OR SPECIAL
+DAMAGES, WHETHER UNDER CONTRACT, TORT, WARRANTY, OR OTHERWISE,
+ARISING IN ANY WAY OUT OF THE USE OF THIS SPECIFICATION, WHETHER OR NOT
+SUCH PARTY HAD ADVANCE NOTICE OF THE POSSIBILITY OF SUCH DAMAGES.
+
+
+
+
+ii
+   Battery Charging Specification, Revision 1.2                            December 7, 2010
+
+
+Contributors
+Mark Lai                       Allion Test Labs
+Sammy Mbanta                   Astec Power
+Abel Astley                    Broadcom
+Kenneth Ma                     Broadcom
+Shimon Elkayam                 Broadcom
+Gaurav Singh                   Cypress
+Dan Ellis                      DisplayLink
+Graham Connolly                Fairchild
+Oscar Freitas                  Fairchild
+Joel Silverman                 Kawasaki
+Pat Crowe                      MQP Electronics
+Juha Heikkila                  Nokia
+Richard Petrie                 Nokia
+Sten Carlsen                   Nokia
+Jeroen Kleinpenning            NXP Semiconductors
+Terry Remple, Chair            Qualcomm
+Dave Haglan                    SMSC
+Mark Bohm                      SMSC
+Morgan Monks                   SMSC
+Tim Knowlton                   SMSC
+Morten Christiansen            ST Ericsson
+Nicolas Florenchie             ST Ericsson
+Shaun Reemeyer                 ST Ericsson
+George Paparrizos              Summit Microelectronics
+Adam Burns                     Synopsys
+Wei Ming                       Telecommunication Metrology Center of MII
+Jean Picard                    Texas Instruments
+Ivo Huber                      Texas Instruments
+Pasi Palojarvi                 Texas Instruments
+Steven Tom                     Texas Instruments
+Ed Beeman                      USB-IF
+Mark Paxson                    USB-IF
+
+
+
+
+                                                                                         iii
+     Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+Revision History
+Revision        Date             Author             Description
+BC1.0           Mar 8, 2007      Terry Remple       First release
+
+BC1.1           April 15, 2009   Terry Remple       Major updates to all sections. Added Data Contact
+                                                    Detect protocol, and Accessory Charger Adapter.
+
+BC1.2           Oct 5, 2010      Terry Remple       Following items indicate changes from BC1.1 to
+                                 Adam Burns         BC1.2. References below to Section, Figures and
+                                                    Tables refer to BC1.2, unless BC1.1 is specifically
+                                                    indicated.
+
+                                                    1. Allow DCPs to output more than 1.5A. Allows
+                                                    Portable Devices (PDs) with switch mode chargers to
+                                                    draw more power. Section 4.4.1.
+
+                                                    2. Increase minimum CDP current to 1.5A. Without
+                                                    change, PDs had to draw less than 500mA, to avoid
+                                                    CDP shutdown. Table 5-2.
+
+                                                    3. Indicate that ICDP max and IDCP max limits of 5A
+                                                    come from USB 2.0, and are safety limits. Table 5-2
+                                                    note 1.
+
+                                                    4. Allow PDs to draw up to 1.5A during HS chirp and
+                                                    traffic. Remove previous limits of 560mA and 900mA
+                                                    which was based on HS common mode ranges.
+                                                    Section 3.5.
+
+                                                    5. Require CDPs to support 1.5A during HS chirp and
+                                                    traffic. Affects CDP common mode range.
+                                                    Section 3.5.
+
+                                                    6. Reduce maximum PD current from 1.8A to 1.5A, to
+                                                    avoid shutdown when attached to CDP. Table 5-2.
+
+                                                    7. Rename Docking Station to ACA-Dock, to avoid
+                                                    confusion with other types of Docking Stations.
+
+                                                    8. Require ACA-Dock to differentiate itself from an
+                                                    ACA, by enabling VDM_SRC during no activity.
+                                                    Section 3.2.4.4.
+
+                                                    9. Allow CDP to leave VDM_SRC enabled while
+                                                    peripheral not connected. Section 3.2.4.2.
+
+                                                    10. Remove ICHG_SHTDWN. This was a recommended
+                                                    max output current for Charging Ports with VBUS
+                                                    grounded. BC1.1 Section 4.1.
+
+                                                    11. Require VDP_SRC to not pull D+ below 2.2V when
+                                                    D+ is being pulled to VDP_UP through RDP_UP.
+                                                    Require VDM_SRC to not pull D- below 2.2V when D- is
+                                                    being pulled high. Required for ACA-Dock support.
+                                                    Table 5-1 notes 1 and 2.
+
+
+iv
+Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+
+                                               12. Make DCD current source optional for PDs.
+                                               Section 3.2.3.
+
+                                               13. Make DCD timeout required for PDs. Section
+                                               3.2.3.
+
+                                               14. Make Secondary Detection optional for PDs.
+                                               Section 4.6.2.
+
+                                               15. Make Good Battery Algorithm required behavior
+                                               for PDs. Section 3.2.4.
+
+                                               16. Remove resistive detection. BC1.1 Section 3.9.
+
+                                               17. Change PD Required Operating Range to include
+                                               4.5V at 500mA. Figure 4-3.
+
+                                               18. Allow any downstream port to act as a DCP.
+                                               Section 4.1.3.
+
+                                               19. Require PDs to enable VDP_SRC or RDP_PU when
+                                               charging from a DCP. Section 3.3.2.
+
+                                               20. Allow chargers to renegotiate current with PD by
+                                               dropping and reasserting VBUS. Section 4.1.3.
+
+                                               21. Require PDs to discharge their own VBUS input
+                                               after VBUS drops to support charger port
+                                               renegotiation request. Section 4.6.3.
+
+                                               22. Allow PDs to disconnect and repeat Charger
+                                               Detection multiple times while attached, with specified
+                                               timing. Section 4.6.3.
+
+                                               23. Reduce DCP input impedance between D+, D- to
+                                               VBUS and ground from 1MΩ to 300kΩ. Section 4.4.3.
+
+                                               24. Require CDPs to recover after over-current
+                                               condition. Section 4.2.2.
+
+                                               25. Allow greater DCP undershoot for large load
+                                               current steps, to enable low quiescent current
+                                               chargers required by Europe. Section 4.4.2.
+
+                                               26. Define ACAs and ACA-Docks as types of
+                                               Charging Ports. Section 1.4.5.
+
+                                               27. Use session valid voltage range defined in EH
+                                               and OTG Supplement rev 2.0. Section 3.2.2.
+
+                                               28. Only devices that can operate stand-alone from
+                                               internal battery power are allowed to use the Dead
+                                               Battery Provision. Section 2.2.
+
+                                               29. Allow compound PDs to draw ISUSP plus an
+
+
+                                                                                                         v
+     Battery Charging Specification, Revision 1.2                                          December 7, 2010
+
+
+                                                    additional ISUSP for each downstream port.
+                                                    Section 2.1.
+
+                                                    30. Remove requirement for vendors to provide
+                                                    typical and maximum connect time for products
+                                                    having a Dead or Weak Battery for compliance
+                                                    testing. Section 2.
+
+                                                    31. Remove references to no battery from Dead
+                                                    Battery Provision. Section 2.
+
+                                                    32. Require PD using Dead Battery Provision to
+                                                    enable VDP_SRC from TDBP_ATT_VDPSRC after attach to
+                                                    TDBP_VDPSRC_CON before connect. Section 2.2.
+
+                                                    33. Added DBP – Configured Clause, which allows
+                                                    PD with Dead Battery to draw ICFG_MAX for
+                                                    TDBP_FUL_FNCTN without having to pass USBCV.
+                                                    Section 2.3.
+
+                                                    34. Note constraints when trying to charge from an
+                                                    OTG A-device. Section 1.6.
+
+                                                    35. Change IDP_SINK and IDM_SINK range from
+                                                    50-150uA to 25-175uA to ease PHY design. Table 5-2
+                                                    note 1.
+
+                                                    36. Allow USB 3.0 devices to implement BC charger
+                                                    detection protocols, and to use USB 3.0 ranges for
+                                                    IUNIT and ICFG_MAX. Section 1.7.
+
+                                                    37. Rename previous ACA to Micro ACA, and define
+                                                    the Standard ACA. Section 6.
+
+                                                    38. Add caps to OTG and Accessory Ports on ACA to
+                                                    support Attach Detection Protocol (ADP). Figure 6-3.
+
+                                                    39. Change ACA ID resistance tolerances from 5% to
+                                                    1% to ease PHY design. Table 5-3.
+
+                                                    40. Remove requirements on ACA switching
+                                                    time(TACA_ID_VBUS) to ease ACA design. BC1.1
+                                                    Section 6.5.
+
+                                                    41. Add state diagram for PDs attached to ACA.
+                                                    Section 6.2.7.
+
+                                                    42. Require PDs to limit current from ACA such that
+                                                    VBUS remains above VACA_OPR. Section 6.2.2.
+
+                                                    43. Change minimum ACA operating voltage
+                                                    (VACA_OPR) from 3.0V to 4.1V. Table 5-1.
+
+                                                    44. Remove requirement that ACA VBUS resistances
+                                                    (RACA_CHG_DIS) be greater than 10k when
+                                                    VBUS_CHG is greater than 6.5V. PDs are
+
+
+vi
+Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+                                               responsible for protecting themselves against higher
+                                               voltages on VBUS. BC1.1 Section 6.7.
+
+                                               45. Require ACAs to continue providing power to OTG
+                                               device from Charging Port, even if ground offsets or
+                                               USB reset cause D- to go below VDAT_REF.
+                                               Section 6.2.6.
+
+                                               46. Change charger shutdown recovery time
+                                               (TSHTDWN_REC) from 2 seconds to 2 minutes. Table
+                                               5-5.
+
+                                               47. Indicate that ACA-Dock is required to pull D+ to
+                                               VDP_UP with RDP_UP when VBUS is asserted.
+                                               Section 3.2.4.4.
+
+                                               48. Remove statements regarding devices with
+                                               multiple receptacles. Covered in Multiple Receptacle
+                                               white paper at http://www.usb.org/developers/docs/.
+
+                                               49. Improve readability by adding and updating
+                                               drawings, re-structuring sections, and clarifying text.
+
+
+
+
+                                                                                                         vii
+             Battery Charging Specification, Revision 1.2                                                                                   December 7, 2010
+
+
+Table of Contents
+1. Introduction ...................................................................................................................................................... 1
+       1.1 Scope ................................................................................................................................................. 1
+       1.2 Background ........................................................................................................................................ 1
+       1.3 Reference Documents ........................................................................................................................ 1
+       1.4 Definitions of Terms............................................................................................................................ 2
+             1.4.1 Accessory Charger Adaptor.................................................................................................. 2
+             1.4.2 ACA-Dock ............................................................................................................................. 2
+             1.4.3 Attach versus Connect.......................................................................................................... 2
+             1.4.4 Charging Downstream Port .................................................................................................. 2
+             1.4.5 Charging Port ........................................................................................................................ 2
+             1.4.6 Dead Battery Threshold ........................................................................................................ 2
+             1.4.7 Dedicated Charging Port ...................................................................................................... 3
+             1.4.8 Downstream Port .................................................................................................................. 3
+             1.4.9 Micro ACA ............................................................................................................................. 3
+             1.4.10 Portable Device..................................................................................................................... 3
+             1.4.11 Rated Current ....................................................................................................................... 3
+             1.4.12 Standard ACA ....................................................................................................................... 3
+             1.4.13 Standard Downstream Port .................................................................................................. 3
+             1.4.14 USB Charger......................................................................................................................... 3
+             1.4.15 Weak Battery Threshold ....................................................................................................... 3
+       1.5 Parameter Values ............................................................................................................................... 4
+       1.6 OTG Considerations ........................................................................................................................... 4
+       1.7 Super Speed Considerations ............................................................................................................. 4
+2. Dead Battery Provision.................................................................................................................................... 4
+       2.1 Background ........................................................................................................................................ 4
+       2.2 DBP – Unconfigured Clause .............................................................................................................. 4
+       2.3 DBP – Configured Clause .................................................................................................................. 5
+3. Charging Port Detection .................................................................................................................................. 6
+       3.1 Overview ............................................................................................................................................. 6
+       3.2 Charger Detection Hardware .............................................................................................................. 7
+             3.2.1 Overview ............................................................................................................................... 8
+             3.2.2 VBUS Detect ......................................................................................................................... 8
+             3.2.3 Data Contact Detect ............................................................................................................. 9
+             3.2.4 Primary Detection ............................................................................................................... 14
+             3.2.5 Secondary Detection .......................................................................................................... 22
+             3.2.6 ACA Detection .................................................................................................................... 25
+       3.3 Charger Detection Algorithms .......................................................................................................... 27
+             3.3.1 Weak Battery Algorithm ...................................................................................................... 27
+             3.3.2 Good Battery Algorithm ...................................................................................................... 29
+       3.4 Charger Detection Timing................................................................................................................. 31
+             3.4.1 Data Contact Detect Timing................................................................................................ 31
+             3.4.2 Detection Timing, CDP ....................................................................................................... 34
+       3.5 Ground Current and Noise Margins ................................................................................................. 35
+4. Charging Port and Portable Device Requirements .................................................................................... 36
+       4.1 Charging Port Requirements ............................................................................................................ 36
+             4.1.1 Overshoot ........................................................................................................................... 36
+             4.1.2 Maximum Current ............................................................................................................... 36
+             4.1.3 Detection Renegotiation ..................................................................................................... 36
+             4.1.4 Shutdown Operation ........................................................................................................... 36
+             4.1.5 Failure Voltage .................................................................................................................... 36
+             4.1.6 Multiple Ports ...................................................................................................................... 36
+
+
+
+      viii
+           Battery Charging Specification, Revision 1.2                                                                                December 7, 2010
+
+
+           Charging Downstream Port .............................................................................................................. 37
+           4.2
+           4.2.1 Required Operating Range ................................................................................................. 37
+           4.2.2 Shutdown Operation ........................................................................................................... 37
+           4.2.3 Undershoot ......................................................................................................................... 38
+           4.2.4 Detection Signaling ............................................................................................................. 38
+           4.2.5 Connector ........................................................................................................................... 38
+      4.3 ACA-Dock ......................................................................................................................................... 38
+           4.3.1 Required Operating Range ................................................................................................. 38
+           4.3.2 Undershoot ......................................................................................................................... 38
+           4.3.3 Detection Signaling ............................................................................................................. 38
+           4.3.4 Connector ........................................................................................................................... 38
+      4.4 Dedicated Charging Port .................................................................................................................. 39
+           4.4.1 Required Operating Range ................................................................................................. 39
+           4.4.2 Undershoot ......................................................................................................................... 40
+           4.4.3 Detection Signaling ............................................................................................................. 40
+           4.4.4 Connector ........................................................................................................................... 40
+      4.5 Accessory Charger Adapter ............................................................................................................. 40
+           4.5.1 Required Operating Range ................................................................................................. 40
+           4.5.2 Undershoot ......................................................................................................................... 40
+           4.5.3 Detection Signaling ............................................................................................................. 40
+           4.5.4 Connector ........................................................................................................................... 41
+      4.6 Portable Device ................................................................................................................................ 41
+           4.6.1 Allowed Operating Range ................................................................................................... 41
+           4.6.2 Detection Signaling ............................................................................................................. 41
+           4.6.3 Detection Renegotiation ..................................................................................................... 42
+           4.6.4 Connector ........................................................................................................................... 42
+5. Parameter Values ........................................................................................................................................... 43
+6. Accessory Charger Adapter ......................................................................................................................... 48
+      6.1 Introduction ....................................................................................................................................... 48
+      6.2 Micro ACA ........................................................................................................................................ 49
+           6.2.1 Micro ACA Ports ................................................................................................................. 49
+           6.2.2 Micro ACA Connectivity Options......................................................................................... 50
+           6.2.3 Micro ACA Architecture ...................................................................................................... 51
+           6.2.4 Micro ACA Modes of Operation .......................................................................................... 52
+           6.2.5 Implications of not Supporting Micro ACA Detection .......................................................... 53
+           6.2.6 Micro ACA Requirements ................................................................................................... 53
+           6.2.7 Portable Device State Diagram .......................................................................................... 55
+      6.3 Standard ACA................................................................................................................................... 57
+           6.3.1 Standard ACA Ports ........................................................................................................... 57
+           6.3.2 Standard ACA Architecture................................................................................................. 58
+           6.3.3 Standard ACA Modes of Operation .................................................................................... 59
+           6.3.4 Implications of not Supporting Standard ACA Detection .................................................... 60
+           6.3.5 Standard ACA Requirements ............................................................................................. 60
+
+
+
+
+                                                                                                                                                               ix
+     Battery Charging Specification, Revision 1.2                                                                                    December 7, 2010
+
+
+                                                                        Figures
+Figure 3-1 System Overview ............................................................................................................................. 6
+Figure 3-2 Charger Detection Hardware ........................................................................................................... 8
+Figure 3-3 Data Pin Offset .............................................................................................................................. 10
+Figure 3-4 Data Contact Detect, Not Attached ............................................................................................... 11
+Figure 3-5 Data Contact Detect, Standard Downstream Port......................................................................... 13
+Figure 3-6 Primary Detection, DCP ................................................................................................................ 14
+Figure 3-7 Primary Detection, CDP ................................................................................................................ 16
+Figure 3-8 Primary Detection, SDP ................................................................................................................. 18
+Figure 3-9 Primary Detection, ACA-Dock ....................................................................................................... 19
+Figure 3-10 Primary Detection, ACA............................................................................................................... 21
+Figure 3-11 Secondary Detection, DCP .......................................................................................................... 23
+Figure 3-12 Secondary Detection, CDP .......................................................................................................... 24
+Figure 3-13 ACA Detection ............................................................................................................................. 26
+Figure 3-14 Weak Battery Algorithm ............................................................................................................... 27
+Figure 3-15 Good Battery Algorithm ............................................................................................................... 29
+Figure 3-16 DCD Timing, Contact After Start ................................................................................................. 31
+Figure 3-17 DCD Timing, Contact Before Start .............................................................................................. 32
+Figure 3-18 DCD Timing, No Contact ............................................................................................................. 33
+Figure 3-19 Detection Timing, CDP ................................................................................................................ 34
+Figure 4-1 CDP Required Operating Range ................................................................................................... 37
+Figure 4-2 DCP Required Operating Range ................................................................................................... 39
+Figure 4-3 Portable Device Allowed Operating Range ................................................................................... 41
+Figure 6-1 Accessory Charger Adapter .......................................................................................................... 48
+Figure 6-2 Micro ACA Ports ............................................................................................................................ 49
+Figure 6-3 Micro ACA Architecture ................................................................................................................. 51
+Figure 6-4 Portable Device State Diagram ..................................................................................................... 55
+Figure 6-5 Standard ACA Ports ...................................................................................................................... 57
+Figure 6-6 Standard ACA Architecture ........................................................................................................... 58
+
+
+                                                                         Tables
+Table 5-1 Voltages .......................................................................................................................................... 43
+Table 5-2 Currents .......................................................................................................................................... 44
+Table 5-3 Resistances .................................................................................................................................... 45
+Table 5-4 Capacitances .................................................................................................................................. 46
+Table 5-5 Times .............................................................................................................................................. 47
+Table 6-1 Micro ACA Connectivity Options..................................................................................................... 50
+Table 6-2 Micro ACA Modes of Operation ...................................................................................................... 52
+Table 6-3 Standard ACA Connectivity Options ............................................................................................... 58
+Table 6-4 Standard ACA Modes of Operation ................................................................................................ 59
+
+
+
+
+x
+  Battery Charging Specification, Revision 1.2          December 7, 2010
+
+
+
+
+                                            Acronyms
+ACA       Accessory Charger Adapter
+CDP       Charging Downstream Port
+DBP       Dead Battery Provision
+DCD       Data Contact Detect
+DCP       Dedicated Charging Port
+FS        Full Speed
+HS        High-Speed
+LS        Low-Speed
+OTG       On-The-Go
+PC        Personal Computer
+PD        Portable Device
+PHY       Physical Layer Interface for High-Speed USB
+PS2       Personal System 2
+SDP       Standard Downstream Port
+SRP       Session Request Protocol
+TPL       Targeted Peripheral List
+USB       Universal Serial Bus
+USBCV     USB Command Verifier
+USB-IF    USB Implementers Forum
+VBUS      Voltage line of the USB interface
+
+
+
+
+                                                                      xi
+    Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+1. Introduction
+
+1.1       Scope
+The Battery Charging Working Group is chartered with creating specifications that define limits as well as
+detection, control and reporting mechanisms to permit devices to draw current in excess of the USB 2.0
+specification for charging and/or powering up from dedicated chargers, hosts, hubs and charging
+downstream ports. These mechanisms are backward compatible with USB 2.0 compliant hosts and
+peripherals.
+
+
+1.2       Background
+The USB ports on personal computers are convenient places for Portable Devices (PDs) to draw current for
+charging their batteries. This convenience has led to the creation of USB Chargers that simply expose a
+USB standard-A receptacle. This allows PDs to use the same USB cable to charge from either a PC or from
+a USB Charger.
+
+If a PD is attached to a USB host or hub, then the USB 2.0 specification requires that after connecting, a PD
+must draw less than:
+     • 2.5 mA average if the bus is suspended
+     • 100 mA if bus is not suspended and not configured
+     • 500 mA if bus is not suspended and configured for 500 mA
+
+If a PD is attached to a Charging Port, (i.e. CDP, DCP, ACA-Dock or ACA), then it is allowed to draw
+IDEV_CHG without having to be configured or follow the rules of suspend.
+
+In order for a PD to determine how much current it is allowed to draw from an upstream USB port, there
+need to be mechanisms that allow the PD to distinguish between a Standard Downstream Port and a
+Charging Port. This specification defines just such mechanisms.
+
+Since PDs can be attached to USB chargers from various manufacturers, it is important that all provide an
+acceptable user experience. This specification defines the requirements for a compliant USB charger, which
+is referred to in this spec as a USB Charger.
+
+If a PD has a Dead or Weak Battery, then the Connect Timing Engineering Change Notice (ECN) issued by
+the USB-IF on the USB 2.0 spec allows that device to draw up to IUNIT while attached but not connected.
+The conditions associated with this ECN are contained in Section 2 of this specification, and are referred to
+as the Dead Battery Provision (DBP).
+
+1.3       Reference Documents
+The following specifications contain information relevant to the Battery Charging Specification.
+
+      •    OTG and Embedded Host Supplement, Revision 2.0
+      •    USB 2.0 Specification
+      •    USB 3.0 Specification
+
+
+
+
+1
+   Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+1.4       Definitions of Terms
+This section contains definitions for some of the terms used in this specification.
+
+1.4.1      Accessory Charger Adaptor
+An Accessory Charger Adaptor (ACA) is an adaptor which allows a single USB port to be attached to both a
+charger and another device at the same time.
+
+The following terminology is used when referring to an ACA:
+
+      •    ACA-A      An ACA with ID resistance of RID_A
+      •    ACA-B      An ACA with ID resistance of RID_B
+      •    ACA-C      An ACA with ID resistance of RID_C
+
+See Section 6 for details on an ACA.
+
+1.4.2      ACA-Dock
+An ACA-Dock is a docking station that has one upstream port, and zero or more downstream ports. The
+upstream port can be attached to a PD, and is capable of sourcing ICDP to the PD. An ACA-Dock signals it
+is an ACA-Dock to the PD by enabling VDM_SRC during USB idle, and by pulling ID to ground through a
+resistance of RID_A. See Section 3.2.4.4 for more details.
+
+1.4.3      Attach versus Connect
+This specification makes a distinction between the words “attach” and “connect”. A downstream device is
+considered to be attached to an upstream port when there is a physical cable between the two.
+
+A downstream device is considered to be connected to an upstream port when it is attached to the upstream
+port, and when the downstream device has pulled either the D+ or D- data line high through a 1.5 kΩ
+resistor, in order to enter Low-Speed, Full-Speed or High-Speed signaling.
+
+1.4.4      Charging Downstream Port
+A Charging Downstream Port (CDP) is a downstream port on a device that complies with the USB 2.0
+definition of a host or a hub, except that it shall support the Charging Downstream Port features specified
+herein.
+
+A CDP shall output a voltage of VDM_SRC on its D- line when it senses a voltage greater than VDAT_REF but
+less than VLGC on its D+ line when not connected to a peripheral. A CDP shall not output a voltage of
+VDM_SRC on its D- line from the time that the peripheral is connected, to the time that the peripheral is
+disconnected.
+
+1.4.5      Charging Port
+A Charging Port is a DCP, CDP, ACA-Dock or ACA.
+
+1.4.6      Dead Battery Threshold
+The Dead Battery Threshold is defined as the maximum charge level of a battery such that below this
+threshold, a device is assured of not being able to power up successfully.
+
+A Dead Battery is defined as one that is below the Dead Battery Threshold.
+
+
+
+
+                                                                                                              2
+    Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+1.4.7   Dedicated Charging Port
+A Dedicated Charging Port (DCP) is a downstream port on a device that outputs power through a USB
+connector, but is not capable of enumerating a downstream device. A DCP shall source IDCP at an average
+voltage of VCHG.
+
+A DCP shall short the D+ line to the D- line.
+
+1.4.8   Downstream Port
+In this specification, a Downstream Port refers to either a Standard Downstream Port or a Charging
+Downstream Port.
+
+1.4.9   Micro ACA
+A Micro ACA is an ACA with a Micro-AB receptacle on the Accessory Port.
+
+1.4.10 Portable Device
+A PD as used in this specification is a device which is compliant with this specification and the USB 2.0
+specification, and can draw charging current from USB.
+
+1.4.11 Rated Current
+The Rated Current of a Charging Port is the amount of current that a Charging Port can output and still
+maintain a VBUS voltage of VCHG. The Rated Current of a DCP is required to be within IDCP, and the rated
+current of a CDP or ACA-Dock is required to be within ICDP.
+
+1.4.12 Standard ACA
+A Standard ACA is an ACA with a Standard-A receptacle on the Accessory Port.
+
+1.4.13 Standard Downstream Port
+In this specification, a Standard Downstream Port (SDP) refers to a downstream port on a device that
+complies with the USB 2.0 definition of a host or hub. An SDP expects a downstream device with a good
+battery to draw less than 2.5 mA average when unconnected or suspended, up to 100 mA maximum when
+connected and not configured and not suspended, and up to 500 mA maximum if so configured and not
+suspended. A downstream device can be enumerated when it is connected to an SDP.
+
+An SDP pulls the D+ and D- lines to ground through two 15 kΩ (typical) resistors.
+
+An SDP may have the ability to sense when a PD is driving the D+ line to VDP_SRC, and then manage its
+power states accordingly. PDs are required to drive D+ to VDP_SRC whenever they draw more than ISUSP
+while attached but not connected, as described in the Dead Battery Provision.
+
+1.4.14 USB Charger
+A USB Charger is a device with a DCP, such as a wall adapter or car power adapter.
+
+1.4.15 Weak Battery Threshold
+The Weak Battery Threshold is defined as the minimum charge level of a battery such that above this
+threshold, a device is assured of being able to power up successfully.
+
+
+
+
+3
+   Battery Charging Specification, Revision 1.2                                          December 7, 2010
+
+
+A Weak Battery is defined as one that is above the Dead Battery Threshold and below the Weak Battery
+Threshold. A device with a Weak Battery may or may not be able to power up a device successfully.
+A Good Battery is defined as one that is above the Weak Battery Threshold.
+
+
+1.5       Parameter Values
+Parameter names are used throughout this specification instead of parameter values. All parameter values
+are found in Section 5.
+
+
+1.6       OTG Considerations
+A PD with a Dead Battery cannot differentiate between a PC and an OTG A-device. Thus, a PD will treat
+both the same.
+
+If an OTG A-device is connected to a PD with a dead battery, then the OTG A-device is under no obligation
+to provide any more current than it normally would to any device on its Targeted Peripheral List (TPL).
+
+An OTG A-device is allowed to stop driving VBUS after a time of TA_WAIT_BCON (See OTG 2.0 Specification
+for value) while waiting for the B-device to connect. Thus, a PD with a Dead Battery may not have time for
+significant charging when attached to an OTG A-device, if it does not connect.
+
+
+1.7       Super Speed Considerations
+SuperSpeed ports defined in USB 3.0 are allowed to implement the charger detection mechanisms defined
+in this spec. When a PD detects it is attached to a SuperSpeed port, then ICFG_MAX changes to 900mA, and
+IUNIT changes to 150mA.
+
+
+2. Dead Battery Provision
+2.1       Background
+The USB 2.0 specification allows a downstream device to draw a suspend current of up to ISUSP from a SDP
+when the device is not connected or when the bus is suspended. If the bus is not suspended and the device
+is configured, then USB 2.0 allows a device to draw up to ICFG_MAX, depending on the configuration the host
+enables.
+
+This limit of only ISUSP when not connected can be problematic for PDs with a Dead Battery or a Weak
+Battery. Some PDs require more than IUNIT for several seconds just to power up. Thus, PDs with Dead
+Batteries or Weak Batteries may not be able to power up when attached to an SDP if they can only draw
+ISUSP when not connected.
+
+USB 2.0 allows a PD that is a compound device to draw ISUSP for each downstream port while attached but
+not connected or during suspend.
+
+
+2.2       DBP – Unconfigured Clause
+A PD with a Dead or Weak Battery is allowed to draw IUNIT from a Downstream Port using the DBP while not
+configured, providing it behaves as follows:
+
+      •    Reduces current to ISUSP after timeout
+              o If PD is not ready to connect and be enumerated within TSVLD_CON_WKB after attach, then it
+                 shall reduce its current to ISUSP
+
+
+
+                                                                                                             4
+    Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+
+      •    Enables VDP_SRC when attached but not connected
+              o PD shall enable VDP_SRC within TDBP_ATT_VDPSRC of attach
+              o PD shall connect within TDBP_VDPSRC_CON of disabling VDP_SRC
+
+      •    Uses current to power up and enumerate, or reach Weak Battery Threshold and enumerate, as soon
+           as possible
+               o PD shall not use the DBP current to perform unrelated tasks, such as:
+                        Charging beyond the Weak Battery Threshold
+                        Making a phone call
+                        Playing a song, video or game
+                        Establishing a wireless connection
+               o Only devices that can operate stand-alone from internal battery power are allowed to use the
+                   DBP.
+
+      •    Passes inrush test
+              o PD with Dead or Weak Battery shall pass USB-IF compliance inrush test
+
+The unconfigured state includes the time that the PD is attached and not connected, and the time that the
+PD is connected and not configured. A PD enters the configured state by receiving a
+SET_CONFIGURATION command from the host.
+
+
+2.3       DBP – Configured Clause
+A PD with a Dead or Weak Battery is allowed to draw its configured current, (which can be up to ICFG_MAX),
+from a Standard Downstream Port using the Dead Battery Provision (DBP) while configured, and not have to
+pass USBCV tests, providing it behaves as follows:
+
+      •    Responds to received tokens
+              o PD shall respond to any tokens addressed to it, with either a NAK or any other valid USB
+                 response
+
+      •    Responds to USB reset
+              o Upon receipt of USB reset, a PD shall reduce its current to IUNIT. PD is allowed to
+                 disconnect upon receiving a reset. While disconnected, PD is allowed to use the DBP –
+                  Unconfigured Clause.
+
+      •    Responds to USB suspend
+              o Upon receipt of USB suspend, PD shall either remain connected, and reduce its current to
+                 ISUSP, or it shall disconnect. While disconnected, the PD is allowed to use the DBP –
+                 Unconfigured Clause.
+
+      •    Provides full USB functionality after timeout, or disconnects
+              o After a time of TDBP_FUL_FNCTN from attach, a PD shall either remain connected and be able
+                  to pass USBCV, or it shall disconnect. While disconnected, the PD is allowed to use the
+                  DBP – Unconfigured Clause.
+
+      •    Uses current to reach Weak Battery Threshold and provide full USB functionality as soon as
+           possible
+              o PD shall not use the DBP current to perform unrelated tasks, such as:
+                       Charging beyond the Weak Battery Threshold
+                       Making a phone call
+                       Playing a song, video or game
+                       Establishing a wireless connection
+
+
+
+5
+   Battery Charging Specification, Revision 1.2                                               December 7, 2010
+
+
+      •    Provides full USB functionality upon reaching Weak Battery Threshold
+              o PD shall provide full USB functionality upon reaching Weak Battery Threshold if this occurs
+                  before TDBP_FUL_FNCTN after attach.
+
+      •    PD informs user within TDBP_INFORM of attach that it is charging and not available for other functions
+
+
+3. Charging Port Detection
+3.1       Overview
+Figure 3-1 shows several examples of a PD attached to an SDP or Charging Port.
+
+
+
+
+                                          Figure 3-1 System Overview
+
+
+
+
+                                                                                                                6
+    Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+In the first example, a Std-A to Micro-B cable is used to attach a PD to an SDP, CDP or DCP. In the second
+example, a DCP has a captive cable. This cable does not have wires for D+ or D-, but instead shorts the D+
+and D- pins at the Micro-B plug.
+
+In the third example, an ACA is required to have a captive cable that attaches to the Portable Device, and
+this cable is required to have wires for D+, D- and ID. The ACA is also required to have a port that can be
+attached to a DCP or CDP. The cabling for this port is described in Section 6.2.1.
+
+In the fourth example, an ACA-Dock does not have a cable at all, but instead has a captive Micro-A plug. An
+ACA-Dock receives power from a Proprietary Charger, that is attached to the ACA-Dock through a
+proprietary cable.
+
+
+3.2   Charger Detection Hardware
+This section briefly describes the hardware used to do charger detection. The following sections provide
+more details of its operation.
+
+
+
+
+7
+   Battery Charging Specification, Revision 1.2                                         December 7, 2010
+
+
+3.2.1   Overview
+Figure 3-2 shows the charger detection hardware for a PD.
+
+
+
+
+                                Figure 3-2 Charger Detection Hardware
+3.2.2   VBUS Detect
+Each PD shall have a session valid comparator that detects when VBUS is greater than its internal session
+valid threshold. Its internal session valid threshold shall be within VOTG_SESS_VLD.
+
+
+
+
+                                                                                                            8
+    Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+3.2.3     Data Contact Detect
+3.2.3.1    Overview
+Data Contact Detect (DCD) uses a current source, IDP_SRC, to detect when the data pins have made contact
+during an attach event. A PD is not required to implement DCD. If a PD does not implement DCD, then it
+shall wait a time of TDCD_TIMEOUT min after the attach event before starting Primary Detection.
+
+DCD is able to detect data pin contact whenever a PD is attached to an SDP or CDP. The primary benefit of
+DCD is that it allows a PD to start Primary Detection as soon as the data pins have made contact, and then
+connect, without having to wait for a timer to expire. As per the USB Connect Timing ECN, a powered up
+USB device is required to connect to a USB host within TSVLD_CON_PWD of the attach event.
+
+
+DCD is also able to detect data pin contact for most cases of a PD attached to a DCP or ACA. Cases where
+DCD may not work include:
+
+    •     DCP with too much leakage current
+    •     ACA with charger and FS or HS B-device on Accessory Port
+    •     ACA-Dock
+    •     PS2 port that pulls D+ high
+    •     Proprietary chargers that pull D+ high
+
+Since DCD does not work in all cases, a PD is required to proceed to Primary Detection within
+TDCD_TIMEOUT max after the attach event if pin contact has not been detected on the D+ or ID pins. See
+Section 3.3.2.
+
+
+
+
+9
+   Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+
+
+3.2.3.2   Problem Description
+USB plugs and receptacles are designed such that when the plug is inserted into the receptacle, the power
+pins make contact before the data pins make contact. This is illustrated in Figure 3-3.
+
+
+
+
+                                        Figure 3-3 Data Pin Offset
+
+As a result, when a PD is attached to an upstream port, the PD will detect VBUS before the data pins have
+made contact. The time between power pins and data pins making contact depends on how fast the plug is
+inserted into the receptacle. Delays of more than two hundred milliseconds have been observed.
+
+The way that a PD distinguishes between a Charging Port and an SDP is to look at the data lines. If the PD
+does Primary Detection before the data pins have made contact, then the Primary Detection protocol is such
+that the PD will determine that it is attached to an SDP.
+
+If a PD is attached to a DCP, and incorrectly determines that it is attached to an SDP, then the PD would
+draw ISUSP while waiting to be enumerated. Since a DCP will not enumerate the PD, the PD will not be
+able to charge.
+
+
+
+
+                                                                                                            10
+     Battery Charging Specification, Revision 1.2                             December 7, 2010
+
+
+3.2.3.3    Data Contact Detect, Not Attached
+Figure 3-4 shows the case where the PD is not attached to a remote device.
+
+
+
+
+                               Figure 3-4 Data Contact Detect, Not Attached
+The protocol for Data Contact Detect is as follows:
+
+     •    PD detects VBUS asserted
+     •    PD turns on IDP_SRC and the D- pull-down resistor
+     •    PD waits for D+ line to be low for a time of TDCD_DBNC
+     •    PD turns off IDP_SRC and D- pull-down resistor
+
+
+
+11
+   Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+
+When nothing is attached to the PD, the D+ line stays high. The minimum value of IDP_SRC is such that it is
+able to hold D+ at VLGC_HI for worst case leakages in the PD due to RDAT_LKG and VDAT_LKG.
+
+
+
+
+                                                                                                          12
+     Battery Charging Specification, Revision 1.2                                      December 7, 2010
+
+
+
+
+3.2.3.4   Data Contact Detect, Standard Downstream Port
+Figure 3-5 shows the case where the PD is attached to an SDP.
+
+
+
+                Portable Device                                         Standard Downstream Port
+                                                              VBUS
+
+                                             VOTG_SESS_VLD
+
+     RDAT_LKG                                                     D+                        RDAT_LKG
+
+                               VDP_SRC                                       RDP_DWN
+
+     VDAT_LKG                                                                               VDAT_LKG
+                               VLGC_HI
+                                           IDP_SRC
+
+                 DCP_DET
+
+                                                VDAT_REF
+
+
+
+                                     IDP_SINK
+
+
+
+
+       PHY       CHG_DET
+                                                                                              PHY
+                                                VDAT_REF
+
+
+
+                                    IDM_SINK
+
+
+                              VDM_SRC
+
+     RDAT_LKG                                                     D-                        RDAT_LKG
+
+                                                                             RDM_DWN
+                                       RDM_DWN
+     VDAT_LKG                                                                               VDAT_LKG
+
+
+                            ID Comparators          ID
+                                     REF          Pull-up
+                                                             ID
+
+                                                                  GND
+
+
+
+                           Figure 3-5 Data Contact Detect, Standard Downstream Port
+
+When the PD is attached to an SDP, the D+ line is pulled low by RDP_DWN in the SDP. The maximum value
+of IDP_SRC is such that RDP_DWN pulls D+ to VLGC_LOW for worst values of RDAT_LKG, VDAT_LKG and
+RDP_DWN.
+
+
+
+
+13
+   Battery Charging Specification, Revision 1.2                                         December 7, 2010
+
+
+3.2.4     Primary Detection
+Primary Detection is used to distinguish between an SDP and different types of Charging Ports. A PD is
+required to implement Primary Detection.
+
+3.2.4.1    Primary Detection, DCP
+Figure 3-6 shows how Primary Detection works when a PD is attached to a DCP.
+
+
+
+
+                                    Figure 3-6 Primary Detection, DCP
+
+
+
+
+                                                                                                         14
+     Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+During Primary Detection the PD shall turn on VDP_SRC and IDM_SINK. Since a DCP is required to short D+
+to D- through a resistance of RDCP_DAT, the PD will detect a voltage on D- that is close to VDP_SRC.
+
+A PD shall compare the voltage on D- with VDAT_REF. If D- is greater than VDAT_REF, then the PD is allowed
+to detect that it is attached to either a DCP or CDP. A PD is optionally allowed to compare D- with VLGC as
+well, and only determine that it is attached to a DCP or CDP if D- is greater than VDAT_REF, but less than
+VLGC. The reason for this option is as follows.
+
+PS2 ports pull D+/- high. If a PD is attached to a PS2 port, and the PD only checks for D- greater than
+VDAT_REF, then a PD attached to a PS2 port would determine that it is attached to a DCP or CDP and
+proceed to draw IDEV_CHG. This much current could potentially damage a PS2 port. By only determining it is
+attached to DCP or CDP if D- is less than VLGC, the PD can avoid causing damage to a PS2 port.
+
+On the other hand, some proprietary chargers also pull D+/- high. If a PD is attached to one of these
+chargers, and it determined it was not attached to a charger because D- was greater than VLGC, then the PD
+would determine that it was attached to an SDP, and only be able to draw ISUSP.
+
+The choice of whether or not to compare D- to VLGC depends on whether the PD is more likely to be
+attached to a PS2 port, or to a proprietary charger.
+
+
+
+
+15
+   Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+3.2.4.2   Primary Detection, CDP
+Figure 3-7 shows how Primary Detection works when a PD is attached to a CDP.
+
+
+
+
+                                   Figure 3-7 Primary Detection, CDP
+A CDP is required to behave in either one of two ways when a remote device is not connected to it. The first
+way that a CDP is allowed to behave is to enable VDM_SRC within TCP_VDM_EN of a disconnect, and then
+disable VDM_SRC within TCP_VDM_DIS of a connect. When using this option, a CDP is not required to enable
+IDP_SINK, or to compare D+ to VDAT_REF.
+
+The second way a CDP is allowed to behave is to compare D+ with VDAT_REF and VLGC. When D+ is
+greater than VDAT_REF and less than VLGC, the CDP shall enable VDM_SRC. When D+ is less than VDAT_REF
+
+
+
+
+                                                                                                          16
+     Battery Charging Specification, Revision 1.2                                       December 7, 2010
+
+
+or greater than VLGC, the CDP shall disable VDM_SRC. Note that a CDP is required to compare D+ to VLGC,
+in order to disable VDM_SRC when the PD connects. See Section 3.4.2 for timing.
+
+
+During Primary Detection the PD shall turn on VDP_SRC and IDM_SINK. A PD shall compare the voltage on D-
+with VDAT_REF. If D- is greater than VDAT_REF, then the PD is allowed to determine that it is attached to
+either a DCP or CDP. A PD is optionally allowed to compare D- with VLGC as well, and only determine that it
+is attached to a DCP or CDP if D- is greater than VDAT_REF, but less than VLGC. See Section 3.2.4.1 for
+more details.
+
+
+
+
+17
+   Battery Charging Specification, Revision 1.2                                          December 7, 2010
+
+
+3.2.4.3   Primary Detection, SDP
+Figure 3-8 shows how Primary Detection works when a PD is attached to an SDP.
+
+               Portable Device                                        Standard Downstream Port
+                                                            VBUS
+
+                                           VOTG_SESS_VLD
+
+    RDAT_LKG                                                    D+                             RDAT_LKG
+
+                             VDP_SRC                                           RDP_DWN
+
+    VDAT_LKG                                                                                   VDAT_LKG
+                             VLGC_HI
+                                         IDP_SRC
+
+                DCP_DET
+
+                                              VDAT_REF
+
+
+
+                                   IDP_SINK
+
+
+
+
+      PHY       CHG_DET
+                                                                                                 PHY
+                                              VDAT_REF
+
+
+
+                                  IDM_SINK
+
+
+                            VDM_SRC
+
+    RDAT_LKG                                                    D-                             RDAT_LKG
+
+                                                                               RDM_DWN
+                                     RDM_DWN
+    VDAT_LKG                                                                                   VDAT_LKG
+
+
+                          ID Comparators          ID
+                                   REF          Pull-up
+                                                           ID
+
+                                                                GND
+
+
+
+                                           Figure 3-8 Primary Detection, SDP
+
+During Primary Detection the PD shall turn on VDP_SRC and IDM_SINK. When a voltage of VDP_SRC is applied
+to D+, an SDP will continue pulling D- low through RDM_DWN.
+
+A PD shall compare the voltage on D- with VDAT_REF. If D- is less than VDAT_REF, then the PD is allowed to
+determine that it is attached to an SDP. A PD is optionally allowed to compare D- with VLGC as well, and
+determine that it is attached to an SDP if D- is greater thanVLGC. See Section 3.2.4.1 for more details.
+
+
+
+
+                                                                                                          18
+     Battery Charging Specification, Revision 1.2                                                    December 7, 2010
+
+
+3.2.4.4   Primary Detection, ACA-Dock
+Figure 3-9 shows how Primary Detection works when a PD that supports ACA Detection is attached to an
+ACA-Dock.
+
+                Portable Device                                         ACA-Dock
+                                                            VBUS
+
+                                            VOTG_SESS_VLD
+
+     RDAT_LKG                                                    D+
+
+                             VDP_SRC                                                                         Power
+                                                                                 Power Mgr
+                                                                                                             Supply
+     VDAT_LKG
+                              VLGC_HI
+                                        IDP_SRC
+
+                 DCP_DET                                                              Hub
+                                               VDAT_REF
+                                                                             Upstrm
+                                                                              Port          Port 1           Periph
+                                                                      VBUS
+                                    IDP_SINK
+
+
+                                                                             VDP_UP
+
+       PHY       CHG_DET                                                D+
+                                                                                            Port 2           Periph
+                                               VDAT_REF                      RDP_UP
+
+
+
+                                   IDM_SINK
+                                                                        D-
+
+                             VDM_SRC
+
+     RDAT_LKG                                                    D-                         Port N           Periph
+
+
+                                      RDM_DWN
+     VDAT_LKG
+                                                                                 VDM_SRC
+
+                           ID Comparators          ID
+                                    REF          Pull-up
+                                                            ID                   RID_A
+
+                                                            GND
+
+
+
+
+                                      Figure 3-9 Primary Detection, ACA-Dock
+
+An ACA-Dock is a docking station that has one upstream port, and zero or more downstream ports. The
+upstream port can be attached to a PD, and is capable of sourcing ICDP to the PD.
+
+
+
+
+19
+   Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+
+When an ACA-Dock is powered, but nothing is attached to its upstream port, it is required to bias the pins on
+its upstream port as follows:
+
+    •   VBUS        VCHG
+    •   D+          VDP_UP
+    •   D-          VDM_SRC
+    •   ID          RID_A
+    •   GND         GND
+
+The VBUS pin is at VCHG because the ACA-Dock is ready to provide power to a PD. The ACA_Dock is
+required to pull D+ to VDP_UP through RDP_UP because the VBUS pin is greater than VOTG_SESS_VLD.
+
+An ACA-Dock is required to enable VDM_SRC whenever D+/- have been inactive (at idle J state) for a time of
+TCP_VDM_EN. An ACA-Dock is required to disable VDM_SRC within TCP_VDM_DIS of any activity on D+/-.
+
+An ACA-Dock is required to present an impedance to ground on ID of RID_A whenever it is powered. It is
+required to present an impedance to ground on ID of RID_FLOAT when it is not powered.
+
+
+When a PD that supports ACA detects the following conditions, it shall determine that it is attached to an
+ACA-Dock:
+
+    •   VBUS > VOTG_SESS_VLD
+    •   D+ at VLGC_HI
+    •   VDAT_REF < D- < VLGC
+    •   ID at RID_A
+
+Note that a PD attached to an ACA-Dock is required to compare D- with VLGC. If a PD were attached to an
+ACA that had a LS peripheral on its Accessory Port, then the ID pin of the PD would be pulled to ground
+through RID_A, and the D- pin would be at VLGC_HI instead of VDM_SRC. In order to distinguish between an
+ACA with a LS device and an ACA-Dock, the PD is required to detect if D- is above or below VLGC.
+
+The VDP_SRC in the PD shall be such that D+ remains at a logic high while the ACA-Dock is pulling D+ to
+VDP_UP through RDP_UP. The reason for this is so that the ACA-Dock does not detect activity on D+, which
+could cause it to turn off its VDM_SRC before the PD completes its Primary Detection.
+
+
+
+
+                                                                                                             20
+     Battery Charging Specification, Revision 1.2                                         December 7, 2010
+
+
+3.2.4.5   Primary Detection, Micro ACA
+Figure 3-10 shows how Primary Detection works when a PD that supports ACA Detection is attached to a
+Micro ACA.
+
+
+
+
+                                    Figure 3-10 Primary Detection, ACA
+
+A PD that supports ACA Detection is required to monitor the resistance on the ID pin whenever VBUS is
+greater than VOTG_SESS_VLD. If the ID resistance is RID_B or RID_C, then the PD knows that it is attached to
+an ACA. If the ID resistance is RID_A, then the PD could be attached to either an ACA with a B-device on its
+Accessory Port, or to an ACA-Dock.
+
+
+
+
+21
+   Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+In order to distinguish between an ACA with an B-device, and an ACA-Dock, the PD shall compare the
+voltage on D- with VDAT_REF and VLGC to detect what it is attached to as follows:
+
+    •   D- < VDAT_REF                ACA with FS B-device on Accessory Port
+    •   VDAT_REF < D- < VLGC         ACA-Dock
+    •   VLGC < D-                    ACA with LS B-device on Accessory Port
+
+The PD shall do the above detection on D- after attach, and before connect, as shown in the Good Battery
+Algorithm.
+
+
+After doing Primary Detection, a PD that supports ACA Detection shall continue to monitor the ID line. If this
+resistance changes, the PD shall respond according to the state machine defined in Section 6.2.7.
+
+An ACA is required to do a form of Primary Detection over the DP_CHG and DN_CHG lines to detect if a
+Charging Port is attached to the ACA Charger Port. This detection is done with the lines highlighted in
+yellow, and is described in Section 6.2.6.
+
+3.2.5   Secondary Detection
+Secondary Detection can be used to distinguish between a DCP and a CDP. PDs that are not ready to be
+enumerated within TSVLD_CON_PWD of detecting VBUS are required to implement Secondary Detection. PDs
+that are ready to be enumerated are allowed to bypass Secondary Detection. See Section 3.3.2 on Good
+Battery Algorithm.
+
+
+
+
+                                                                                                            22
+     Battery Charging Specification, Revision 1.2                                     December 7, 2010
+
+
+3.2.5.1   Secondary Detection, DCP
+Figure 3-11 shows how Secondary Detection works when a PD is attached to a DCP.
+
+
+
+
+                                  Figure 3-11 Secondary Detection, DCP
+During Secondary Detection, a PD shall output VDM_SRC on D-, turn on IDP_SINK, and compare the voltage
+on D+ to VDAT_REF. Since a DCP is required to short D+ to D- through a resistance of RDCP_DAT, the
+voltage on D+ will be close to VDM_SRC, which is above VDAT_REF.
+
+
+
+
+23
+   Battery Charging Specification, Revision 1.2                                                December 7, 2010
+
+
+If a PD detects that D+ is greater than VDAT_REF, it knows that it is attached to a DCP. It is then required to
+enable VDP_SRC or pull D+ to VDP_UP through RDP_UP, as defined in the Good Battery Algorithm in
+Section 3.3.2.
+
+A PD is not required to compare D+ to VLGC during Secondary Detection.
+
+3.2.5.2   Secondary Detection, CDP
+Figure 3-12 shows how Secondary Detection works when a PD is attached to a CDP.
+
+
+
+               Portable Device                                        Charging Downstream Port
+                                                            VBUS
+
+                                           VOTG_SESS_VLD
+
+    RDAT_LKG                                                    D+                                      RDAT_LKG
+
+                             VDP_SRC                                             RDP_DWN
+
+    VDAT_LKG                                                                                            VDAT_LKG
+                             VLGC_HI
+                                         IDP_SRC
+
+                DCP_DET                                                                     PRTBL_DET
+
+                                              VDAT_REF                VDAT_REF
+
+
+
+                                   IDP_SINK                                      IDP_SINK
+
+
+
+
+      PHY       CHG_DET
+                                                                                                         PHY
+                                              VDAT_REF
+
+
+
+                                  IDM_SINK
+
+                                                                                 VDM_SRC
+                            VDM_SRC
+
+    RDAT_LKG                                                    D-                                      RDAT_LKG
+
+                                                                                 RDM_DWN
+                                     RDM_DWN
+    VDAT_LKG                                                                                            VDAT_LKG
+
+
+                          ID Comparators          ID
+                                   REF          Pull-up
+                                                           ID
+
+                                                                GND
+
+
+
+                                       Figure 3-12 Secondary Detection, CDP
+
+
+
+
+                                                                                                                   24
+     Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+During Secondary Detection, a PD shall output VDM_SRC on D-, turn on IDP_SINK, and compare the voltage
+on D+ to VDAT_REF. Since a CDP does not short D+ to D-, the voltage on D+ will be close to ground, which
+is below VDAT_REF.
+
+If a PD detects that D+ is less than VDAT_REF, it knows that it is attached to a CDP. It is then required to turn
+off VDP_SRC and VDM_SRC, as shown in the Good Battery Algorithm in Section 3.3.2, and is allowed to draw
+IDEV_CHG.
+
+A PD is not required to compare D+ to VLGC during Secondary Detection.
+
+3.2.6    ACA Detection
+ACA Detection allows a PD to detect when it is attached to an ACA, and to detect what type of device is
+attached to the ACA Accessory Port. See Section 6 for a description of the ACA.
+
+A PD is not required to support ACA Detection. Only PDs that have a Micro-AB receptacle can support ACA
+Detection, since the ACA OTG Port has a captive cable terminating in a Micro-A plug.
+
+PDs that support ACA Detection are required to implement the Good Battery Algorithm defined in
+Section 3.3.2.
+
+
+
+
+25
+   Battery Charging Specification, Revision 1.2                                                          December 7, 2010
+
+
+Figure 3-13 shows how ACA Detection works when a PD is attached to a Micro ACA.
+
+               Portable Device
+                                                           VBUS
+
+                                           VOTG_SESS_VLD
+
+    RDAT_LKG                                               D+
+
+                             VDP_SRC
+
+    VDAT_LKG
+                             VLGC_HI
+                                         IDP_SRC
+
+                DCP_DET
+
+                                              VDAT_REF
+
+
+
+                                   IDP_SINK
+
+
+                                                                                    Micro ACA
+     PHY        CHG_DET
+
+                                              VDAT_REF                 VBUS             Accessory               VBUS_ACC
+                                                                                         Switch
+
+                                  IDM_SINK                               D+                                     DP_ACC
+
+                            VDM_SRC
+
+    RDAT_LKG                                                      D-                                            DN_ACC
+                                                                                                                ID_ACC
+
+                                     RDM_DWN
+    VDAT_LKG                                                                  Charger                           VBUS_CHG
+                                                                              Switch
+                          ID Comparators          ID
+                                   REF          Pull-up
+                                                                                             Adapter            DP_CHG
+                                                                  ID
+                                                                                            Controller          DN_CHG
+                                                                  GND
+
+
+
+
+                                                    Figure 3-13 ACA Detection
+
+A PD detects the presence of an ACA by sensing the resistance on the ID pin. There are five different
+resistance values that shall be detected during ACA Detection, namely: RID_GND, RID_C, RID_B, RID_A and
+RID_FLOAT. PDs that support ACA Detection shall monitor the ID resistance during the entire time that VBUS
+is asserted, and respond according to the PD State Machine in Section 6.2.7.
+
+
+
+
+                                                                                                                         26
+     Battery Charging Specification, Revision 1.2                                     December 7, 2010
+
+
+3.3     Charger Detection Algorithms
+3.3.1    Weak Battery Algorithm
+Figure 3-14 shows an example charger detection algorithm for a PD with a Weak Battery. Other algorithms
+are allowed, providing they comply with the DBP.
+
+
+
+
+                                    Figure 3-14 Weak Battery Algorithm
+
+
+
+
+27
+   Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+A PD is required to have internal voltage thresholds that lie within VOTG_SESS_VLD, VDAT_REF and VLGC. In
+the above algorithm, a PD compares VBUS, D+ and D- with its internal thresholds. It does not compare
+VBUS, D+ and D- with the min or max value of VOTG_SESS_VLD, VDAT_REF or VLGC.
+
+In the above example, a PD with a Weak Battery detects VBUS greater than VOTG_SESS_VLD, and applies a
+voltage of VDP_SRC on the D+ pin. If the voltage on D- is greater than its VDAT_REF, or if the ID pin is not
+floating, the PD is allowed to draw IDEV_CHG. Else the PD is allowed to draw IUNIT.
+
+The VLGC term shown in magenta could be added to prevent a PD from charging from PS2 ports and some
+proprietary chargers.
+
+
+
+
+                                                                                                           28
+      Battery Charging Specification, Revision 1.2                                                                     December 7, 2010
+
+
+3.3.2      Good Battery Algorithm
+Figure 3-15 shows the charger detection algorithm that a PD with a Good Battery is required to implement.
+
+                                                                  Check
+                                                                  VBUS                   Good Battery              ACA Detection
+                                                      Else                               Algorithm is               is Optional
+                                                                                          Required
+                                                                                                                    Required for
+                                                          VBUS > VOTG_SESS_VLD              Required               ACA Detection
+
+                                                                Start Tmr                   Optional                Optional for
+                                                               Enable DCD                                          ACA Detection
+
+
+                                                      Else
+
+
+
+                                                               TDCD_TIMEOUT
+                                                                    +
+                                                         D+ < VLGC for TDCD_DBNC
+                                                                    +
+                                                      ID != RID_FLOAT for TDCD_DBNC              ID != RID_FLOAT for TDCD_DBNC
+
+
+                                                             Primary Detection
+                                                               D+ = VDP_SRC
+
+
+                                                                                      ID != RID_FLOAT
+
+                              D- > VDAT_REF                   ( D- < VDAT_REF
+                                     &                                +
+                                D- < VLGC                        D- > VLGC )
+                                     &                                &
+                              ID = RID_FLOAT                   ID = RID_FLOAT
+
+
+
+
+                                   Else
+     Ready to be
+     enumerated
+                        Secondary Detection
+                           D- = VDM_SRC
+
+                                                                               ID = RID_A           ID = RID_A       ID = RID_B    ID = RID_C
+                                                                                   &                     &
+                                                                            ( D- > VDAT_REF      ( D- < VDAT_REF
+                   D+ > VDAT_REF          D+ < VDAT_REF                            &                     +
+                                                                               D- < VLGC )          D- > VLGC )
+
+
+      Connect      D+ > VDAT_REF
+
+
+     DCP / CDP         DCP                     CDP                  SDP          ACA-Dock               ACA-A          ACA-B        ACA-C
+       IDCP            IDCP                    ICDP                ISUSP           ICDP                  IDCP           IDCP         IDCP
+
+
+                                             Figure 3-15 Good Battery Algorithm
+A PD shall implement the Good Battery Algorithm when attached to an SDP or Charging Port. A PD is
+allowed to include additional branches for detecting devices or ports other than an SDP or Charging Port.
+Any such branches shall not cause additional activity on D+/- and/or ID that would interfere or be confused
+with the next expected event when the PD is attached to an SDP or Charging Port. Branches are also
+allowed after any final step in detection, and these branches may include additional activity on D+/- and/or
+ID, except that when a PD is attached to a DCP, it shall maintain D+ greater than VDAT_REF while VBUS is
+asserted.
+
+
+29
+   Battery Charging Specification, Revision 1.2                                                December 7, 2010
+
+
+
+Upon detecting VBUS greater than its VOTG_SESS_VLD threshold, a PD shall start a timer with a timeout value
+of TDCD_TIMEOUT. A PD that supports DCD is allowed to enable its IDP_SRC and monitor for D+ being at
+VLGC_LOW for TDCD_DBNC. A PD that supports ACA Detection is allowed to monitor for ID not floating for
+TDCD_DBNC. If the DCD timer expires before the D+ or ID conditions are detected, the PD shall proceed to
+Primary Detection.
+
+If a PD detects that ID is not floating for a time of TDCD_DBNC, then it is allowed to proceed directly to one of
+the ACA states, without having to do Primary Detection and without having to assert VDP_SRC.
+
+
+During Primary Detection, a PD shall enable VDP_SRC, and compare D- with VDAT_REF. A PD may optionally
+compare D- with VLGC to avoid damaging a PS2 port. See Section 3.2.4.1. A PD that supports ACA
+Detection is required to detect the resistance on the ID line.
+
+If a PD Detects that it is attached to either a DCP or CDP during Primary Detection, and it is ready to be
+enumerated, then it is allowed to take the branch where it connects. If a PD is not ready to be enumerated,
+then it is required to do Secondary Detection.
+
+
+During Secondary Detection, the PD shall disable VDP_SRC, enable VDM_SRC and compare D+ with
+VDAT_REF. If D+ is greater than VDAT_REF, then the PD is attached to a DCP. The PD shall disable
+VDM_SRC, and either enable VDP_SRC or pull D+ to VDP_UP through RDP_UP.
+
+If D+ is less than VDAT_REF, then the PD is attached to a CDP. The PD shall disable VDM_SRC, and leave
+both D+ and D- low until it is ready to connect and be enumerated.
+
+
+A PD that is attached to a DCP shall either enable VDP_SRC or pull D+ high within TSVLD_CON_PWD of attach.
+
+
+A PD that supports ACA Detection is required to monitor the resistance on the ID line. If a resistance of
+RID_A is detected, then the PD shall compare D- with both VDAT_REF and VLGC, to determine if it is attached
+to an ACA-Dock or an ACA-A. See Section 3.2.4.4 for more details.
+
+
+
+
+                                                                                                                30
+     Battery Charging Specification, Revision 1.2                                     December 7, 2010
+
+
+3.4     Charger Detection Timing
+3.4.1    Data Contact Detect Timing
+To initiate Data Contact Detect, the PD shall enable IDP_SRC and either IDM_SINK or RDM_DWN. When the PD
+detects that the D+ line has been low for a time of TDCD_DBNC, then the PD knows that the data pins have
+made contact.
+
+Figure 3-16 shows the timing associated with Data Contact Detect (DCD) when pins make contact after DCD
+starts.
+
+
+                   VBUS at
+                   Portable
+                   Device
+
+
+                   Allowed      ISUSP
+                   charging
+                   current       0mA
+
+        Portable
+                                   on
+         Device    IDP_SRC
+                                   off
+
+
+                                   on
+                   RDM_DWN
+                                   off
+                                                TDCD_DBNC
+                              VLGC_HI
+                   D+
+                             VLGC_LOW
+
+                                            Data pins
+                                         make contact
+
+                                  Figure 3-16 DCD Timing, Contact After Start
+
+
+
+
+31
+   Battery Charging Specification, Revision 1.2                                       December 7, 2010
+
+
+Figure 3-17 shows the timing associated with Data Contact Detect when pins have made contact before
+DCD starts.
+
+
+
+
+                            Figure 3-17 DCD Timing, Contact Before Start
+
+
+
+
+                                                                                                      32
+     Battery Charging Specification, Revision 1.2                                       December 7, 2010
+
+
+Figure 3-18 shows the timing associated with Data Contact Detect when contact is not detected.
+
+
+                   VBUS at
+                   Portable
+                   Device
+
+                   Allowed      ISUSP
+                   charging
+                   current       0mA
+
+       Portable
+                                   on
+        Device     IDP_SRC
+                                   off
+
+
+                                   on
+                   RDM_DWN
+                                   off
+                                                            TDCD_TIMEOUT
+                              VLGC_HI
+                   D+
+                             VLGC_LOW
+                                                                Data pins don’t
+                                                               make contact, or
+                                                                are pulled high
+
+                                         Figure 3-18 DCD Timing, No Contact
+
+
+
+
+33
+   Battery Charging Specification, Revision 1.2                                       December 7, 2010
+
+
+3.4.2   Detection Timing, CDP
+Figure 3-19 shows the timing associated with Primary and Secondary Detection when a PD is attached to a
+CDP, for the case where the CDP compares D+ to VDAT_REF and VLGC, and enables VDM_SRC accordingly.
+A CDP is also allowed to leave VDM_SRC enabled while a remote device is not connected. See
+Section 3.2.4.2 for more details.
+
+
+
+
+                                  Figure 3-19 Detection Timing, CDP
+
+
+
+
+                                                                                                      34
+     Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+Notes:
+   1) The timing for a LS PD is the same as shown above, except that a LS PD will pull D- high, instead of
+       D+.
+
+Figure 3-19 shows the Primary and Secondary Detection timing for a PD attached to a CDP. During Primary
+Detection, the PD turns on VDP_SRC and IDM_SINK. The CDP is required to have VDM_SRC on D- within a
+time of TVDMSRC_EN from when D+ is above VDAT_REF. After a time of TVDPSRC_ON, the PD is allowed to
+check the status of the D- line. If D- is above VDAT_REF (and optionally below VLGC, see Section 3.2.4.1)
+then the PD is attached to a Charging Port, and is allowed to draw IDEV_CHG.
+
+In order to do Secondary Detection, the PD is required to disable VDP_SRC and IDM_SNK, and enable
+VDM_SRC and IDP_SINK. After a time of TVDMSRC_ON, the PD is allowed to check the status of the D+ line.
+Since a CDP does not source a voltage on D+, D+ is below VDAT_REF and the PD is attached to a CDP.
+
+If the PD was powered up at the time VBUS was detected, then it shall connect within a time of
+TSVLD_CON_PWD. The CDP shall disable IDP_SINK within TCON_IDPSNK_DIS of detecting the connect.
+
+
+3.5    Ground Current and Noise Margins
+As shown in Figure 7-47 of the USB 2.0 specification, a current of 100 mA through the ground wire of a USB
+cable can result in a voltage difference of 25 mV between the host ground and the device ground. This
+ground difference has the effect of reducing noise margins for both signaling and charger detection.
+
+The maximum current that a PD is allowed to draw from a CDP is IDEV_CHG. A PD that draws more than
+ICFG_MAX from a CDP is required to support LS, FS, HS and chirp signaling when the local ground is
+VGND_OFFSET max higher than the remote ground. A host port that grants the CDP handshake is required to
+support LS, FS, HS and chirp signaling when the local ground is VGND_OFFSET max lower than the remote
+ground.
+
+When the ground offset is VGND_OFFSET max, the PD and CDP are required to have a greater common
+mode range than what is called out in USB 2.0.
+
+
+
+
+35
+   Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+4. Charging Port and Portable Device Requirements
+This section describes the requirements for the following:
+
+      •    Charging Downstream Port (CDP)
+      •    ACA-Dock
+      •    Dedicated Charging Port (DCP)
+      •    Accessory Charger Adapter (ACA)
+      •    Portable Device (PD)
+
+
+4.1       Charging Port Requirements
+The following requirements apply to all types of Charging Ports, including CDP, ACA-Dock, DCP and ACA.
+
+4.1.1      Overshoot
+The output voltage of a Charging Port shall not exceed VCHG_OVRSHT for any step change in load current,
+nor when the Charging Port is powered on or off.
+
+4.1.2      Maximum Current
+The output current of a Charging Port shall not exceed ICDP max under any condition.
+
+4.1.3      Detection Renegotiation
+A downstream port is allowed to act as an SDP, CDP or DCP, and to change between these roles. In order
+to force an attached PD to repeat the charging detection procedure, a downstream port is required to:
+
+      •    stop driving VBUS
+      •    allow VBUS to drop to less than VBUS_LKG
+      •    wait for a time of TVBUS_REAPP
+      •    start driving VBUS
+
+4.1.4      Shutdown Operation
+If the current drawn by a PD causes a Charging Port to go outside of its Required Operating Range, then the
+Charging Port is allowed to shut down. All types of shut down are allowed outside the Required Operating
+Range of a Charging Port, including:
+
+      •    Turning off VBUS
+      •    Constant current limiting
+      •    Foldback current limiting
+
+4.1.5      Failure Voltage
+The output voltage of a Charging Port shall remain within VCHG_FAIL for any single point failure in the
+Charging Port.
+
+4.1.6      Multiple Ports
+For a device with multiple Charging Ports, each Charging Port shall stay within its Required Operating
+Range regardless of the operation of the other Charging Ports.
+
+
+
+
+                                                                                                          36
+     Battery Charging Specification, Revision 1.2                                          December 7, 2010
+
+
+4.2     Charging Downstream Port
+The following requirements apply to a CDP.
+
+4.2.1      Required Operating Range
+A CDP shall output a voltage of VCHG for all currents less than ICDP min. The voltage on VBUS is averaged
+over a time of TVBUS_AVG. For load currents greater than ICDP min, a CDP is allowed to shut down. Once in
+shutdown, the requirements in Section 4.1.4 apply.
+
+
+Figure 4-1 shows several example load curves for a CDP. Load curves are required to cross the line at ICDP
+min within a voltage range of VCHG. Load curves that cross the line at VCHG min for currents less than
+ICDP min are not allowed.
+
+                                    Required Operating
+                                     Range for CDP                        Must Cross
+        5.25
+        5.0                                                                            Allowed
+        4.75
+
+
+                      Must Not
+        4.0            Cross
+
+Voltage
+                                        Not
+ (volts)
+                                      Allowed
+
+        3.0
+                                                                                                 VBUS
+                                                                                                 turned
+                                                                                                 off
+
+        2.0
+
+
+
+
+                                                                                    Continuous Current
+        1.0                                                                         Regulation Allowed
+                                     VBUS
+                                     turned                                          Current-Limit Trip
+                                         off                                         Operation Allowed
+
+           0
+               0            0.5                1.0           1.5              2.0                           5.0
+                                                         Current
+                                                          (amps)
+                                  Figure 4-1 CDP Required Operating Range
+
+
+4.2.2      Shutdown Operation
+If a CDP goes into shutdown during a current overload condition, it shall recover and output a voltage of
+VCHG within a time of TSHTDWN_REC when the current overload condition has been removed.
+
+
+
+
+37
+   Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+4.2.3     Undershoot
+The output voltage of a CDP shall be within VCHG_UNDSHT for any step change in load currents that are less
+than ICDP min.
+
+4.2.4     Detection Signaling
+ A CDP is required to behave in either one of two ways when a remote device is not connected to it. The
+first way that a CDP is allowed to behave is to enable VDM_SRC within TCP_VDM_EN of a disconnect, and then
+disable VDM_SRC within TCP_VDM_DIS of a connect. When using this option, a CDP is not required to enable
+IDP_SINK, or to compare D+ to VDAT_REF.
+
+The second way a CDP is allowed to behave is to compare D+ with VDAT_REF and VLGC. When D+ is
+greater than VDAT_REF and less than VLGC, the CDP shall enable VDM_SRC. When D+ is less than VDAT_REF
+or greater than VLGC, the CDP shall disable VDM_SRC. See Section 3.4.2 for timing.
+4.2.5     Connector
+A CDP shall have a Standard-A receptacle.
+
+
+4.3       ACA-Dock
+The following requirements apply to the upstream port of an ACA-Dock.
+
+4.3.1     Required Operating Range
+An ACA-Dock shall have the same Required Operating Range as a CDP.
+
+4.3.2     Undershoot
+An ACA-Dock shall comply with the same undershoot requirements as a CDP.
+
+4.3.3     Detection Signaling
+When a PD is attached to an ACA-Dock, the PD acts as host while drawing current from VBUS. This is
+similar to the case where a PD is attached to an ACA with a peripheral on the Accessory Port.
+
+To inform the PD that it should act as host and draw current, both the ACA-Dock and the ACA are required
+to pull the ID pin to ground through a resistance of RID_A.
+
+An ACA-Dock is required to provide ICDP to the PD, whereas an ACA is required to provide IDCP, and this
+must be shared between the PD and whatever is on the Accessory Port. To inform the PD that it is attached
+to an ACA-Dock as opposed to an ACA, the ACA-Dock shall output a voltage of VDM_SRC on D- as follows:
+
+      •   ACA-Dock shall start outputting VDM_SRC if D+/- are at idle J for a time of TCP_VDM_EN
+
+      •   ACA-Dock shall stop outputting VDM_SRC within TCP_VDM_DIS of any USB activity on D+/-
+
+4.3.4     Connector
+An ACA-Dock shall have a Micro-A plug that can be mated to the Micro-AB receptacle of a PD.
+
+
+
+
+                                                                                                         38
+     Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+4.4     Dedicated Charging Port
+The following requirements apply to a DCP.
+
+4.4.1    Required Operating Range
+A DCP shall output a voltage of VCHG for all currents less than IDCP min. The voltage on VBUS is averaged
+over a time of TVBUS_AVG.
+
+A DCP shall not shut down if the load current is less than IDEV_CHG and the load voltage is greater than
+VDCP_SHTDOWN. A DCP is allowed to shut down for load currents greater than IDEV_CHG max, or for load
+voltages less than VDCP_SHTDWN. Once in shutdown, the requirements in Section 4.1.4 apply.
+
+Figure 4-2 shows several example load curves. DCP load curves are required to cross the constant current
+line at IDEV_CHG max, or the constant voltage line at VDCP_SHTDWN. A DCP is not allowed to shut down in
+the Required Operating Range.
+
+
+
+
+                                Figure 4-2 DCP Required Operating Range
+
+
+
+
+39
+   Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+4.4.2      Undershoot
+For step changes in load current from IDCP_LOW to IDCP_MID, or from IDCP_MID to IDCP_HI, the undershoot
+voltage of a DCP shall be VCHG_UNDSHT. DCPs are required to meet this requirement for load steps from
+mid to hi that occur TDCP_LD_STP after the transition from low to mid. The duration of the undershoot shall be
+TDCP_UNDSHT.
+
+For step changes in load current from IDCP_LOW to IDCP_HI, the output voltage of a DCP is allowed to drop to
+the load voltage of the attached PD for a time of TDCP_UNDSHT. After this time, the output voltage of a DCP
+shall be at VCHG for load currents less than IDCP min.
+
+4.4.3      Detection Signaling
+A DCP shall have an impedance between D+ and D- of RDCP_DAT.
+
+The leakage current on the D+/- pins of a DCP shall be less than or equal to the leakage current that would
+occur from two resistances of RDAT_LKG tied to a voltage of VDAT_LKG. See Figure 3-6.
+
+The capacitance between the D+/- pins and ground of a DCP shall be CDCP_PWR.
+
+4.4.4      Connector
+A DCP shall have a Standard-A receptacle, or a captive cable terminated with a Micro-B plug.
+
+
+4.5       Accessory Charger Adapter
+The following requirements apply to an ACA with a DCP or CDP on its Charger Port.
+
+4.5.1      Required Operating Range
+The Required Operating Range for the OTG Port of an ACA is affected by the following factors:
+
+      •    Device on Charger Port (DCP or CDP)
+      •    Current drawn from Accessory Port
+      •    RACA_CHG_OTG
+      •    VACA_OPR
+
+The current available on the OTG Port is determined by how much current is supplied to the Charger Port,
+and how much current is being drawn from the Accessory Port. The voltage available on the OTG Port is
+determined by the voltage at the Charger Port, the current being drawn from the OTG and Accessory Ports,
+and RACA_CHG_OTG. ACA operation is only required if for Charger Port voltages in the range of VACA_OPR.
+4.5.2      Undershoot
+An ACA with a DCP or CDP on its Charger Port shall comply with the same undershoot requirements as a
+DCP.
+
+4.5.3      Detection Signaling
+An ACA shall pull the ID pin of the OTG port to ground through one of the following resistances, as specified
+in Section 6:
+
+      •    RID_GND, RID_C, RID_B, RID_A, RID_FLOAT
+
+An ACA shall connect the data pins of the OTG Port directly to the data pins of the Accessory Port.
+
+
+
+
+                                                                                                           40
+     Battery Charging Specification, Revision 1.2                                                December 7, 2010
+
+
+4.5.4      Connector
+An ACA shall have a captive cable terminated with a Micro-A plug on its OTG Port.
+
+
+4.6       Portable Device
+The following requirements apply to a PD.
+
+4.6.1      Allowed Operating Range
+A PD shall not draw more than IDEV_CHG max from a Charging Port. A PD shall not pull the output voltage of
+a Charging Port below VDCP_SHTDWN max. Figure 4-3 shows the Allowed Operating Range for a PD.
+
+
+            5.25
+            5.0
+            4.75
+            4.50                       1
+
+            4.0
+Voltage
+ (volts)                                   Allowed Operating Range              Portable Device Operation
+                                              for a Portable Device                    not Allowed
+            3.0
+
+
+
+
+            2.0
+
+
+
+
+            1.0
+
+
+
+
+              0
+                   0             0.5                 1.0                1.5          2.0                     5.0
+                                                                      Current
+                                                                      (amps)
+                           Figure 4-3 Portable Device Allowed Operating Range
+Notes:
+   1) As per USB 2.0 section 7.2.2, the voltage on VBUS can drop from 4.75V at the upstream port down
+       to 4.5V at the downstream port, due to resistive losses in the cable and connectors.
+
+4.6.2      Detection Signaling
+All PDs shall implement the following detection features:
+
+      •    DCD timer (TDCD_TIMEOUT)
+
+
+
+41
+   Battery Charging Specification, Revision 1.2                                         December 7, 2010
+
+
+    •   Primary Detection
+            o To detect between DCP, CDP and SDP
+            o Compare D- to VDAT_REF during Primary Detection
+
+PDs are allowed, but not required, to implement the following detection features:
+
+    •   DCD, using IDP_SRC
+    •   Compare D- to VLGC during Primary Detection
+    •   Secondary Detection
+    •   ACA Detection
+
+4.6.3   Detection Renegotiation
+To restart the charger detection procedure, a downstream port is allowed to remove and then re-assert
+power on VBUS. See Section 4.1.3. In order to detect this drop in VBUS, a PD shall discharge VBUS to less
+than VBUS_LKG within TVLD_VLKG whenever VBUS is removed.
+
+A PD is allowed to disconnect and repeat the charger detection process multiple times while attached. The
+PD is required to wait for a time of at least TCP_VDM_EN max between disconnecting and restarting the
+charger detection process.
+
+4.6.4   Connector
+A PD that mates with an ACA-Dock or ACA shall have a Micro-AB receptacle.
+
+
+
+
+                                                                                                        42
+     Battery Charging Specification, Revision 1.2                                         December 7, 2010
+
+
+5. Parameter Values
+This section lists the values of parameters defined in this specification.
+
+                                              Table 5-1 Voltages
+
+            Parameter                        Symbol             Conditions   Min    Max      Units    Ref
+ ACA operating voltage                VACA_OPR                               4.1    6.0       V      6.2.6
+ VBUS Leakage Voltage                 VBUS_LKG                                      0.7       V      4.1.3
+ Charging Port Output Voltage         VCHG                                   4.75   5.25      V        4
+ Charging Port Failure Voltage        VCHG_FAIL                              -0.3   9.0       V      4.1.5
+ Charging Port Overshoot
+                                      VCHG_OVRSHT                                   6.0       V      4.1.1
+ Voltage
+ Charging Port Undershoot
+                                      VCHG_UNDSHT                            4.1              V      4.2.2
+ Voltage
+ Data Line Leakage Voltage            VDAT_LKG                                0     3.6       V      3.2.3
+ Data Detect Voltage                  VDAT_REF                               0.25   0.4       V       3.2
+ Data Sink Voltage                    VDAT_SINK                                     0.15      V      3.4.2
+ DCP Shut Down Voltage                VDCP_SHTDWN                                   2.0       V      4.4.1
+ D- Source Voltage                    VDM_SRC                 Note 1         0.5    0.7       V       3.2
+ D+ Source Voltage                    VDP_SRC                 Note 2         0.5    0.7       V       3.2
+ D+ pull-up Voltage                   VDP_UP                                 3.0    3.6       V      3.2.4.4
+ Ground offset voltage between
+                                      VGND_OFFSET                                   375       mV      3.5
+ Host and PD
+ Logic Threshold                      VLGC                                   0.8    2.0       V      3.2.3
+ Logic High                           VLGC_HI                                2.0    3.6       V      3.2.3
+ Logic Low                            VLGC_LOW                                0     0.8       V      3.2.3
+ OTG Session Valid Voltage            VOTG_SESS_VLD                          0.8    4.0       V       3.1
+
+
+Notes:
+   1) VDM_SRC shall be able to source at least 250uA when D- is between 0.5V and 0.7V. VDM_SRC shall
+       not pull D- below 2.2V when D- is pulled to VDP_UP through RDP_UP.
+
+     2) VDP_SRC shall be able to source at least 250uA when D+ is between 0.5V and 0.7V. VDP_SRC shall
+        not pull D+ below 2.2V when D+ is pulled to VDP_UP through RDP_UP.
+
+
+
+
+43
+   Battery Charging Specification, Revision 1.2                                              December 7, 2010
+
+
+                                              Table 5-2 Currents
+
+           Parameter                        Symbol            Conditions        Min     Max     Units    Ref
+ Charging Downstream Port
+                                    ICDP                   Note 1               1.5     5.0       A       4.2
+ Rated Current
+ Maximum Configured Current
+                                    ICFG_MAX               Note 2                       500      mA       2.1
+ when connected to a SDP
+ Dedicated Charging Port Rated
+                                    IDCP                   Note 1               0.5     5.0       A      4.4.1
+ Current
+ DCP current, low range             IDCP_LOW                                             30      mA      4.4.2
+ DCP current, middle range          IDCP_MID                                    30      100      mA      4.4.2
+ DCP current, high range            IDCP_HI                                     100              mA      4.4.2
+ Allowed PD Current Draw from
+                                    IDEV_CHG                                            1.5       A       4.6
+ Charging Port
+ D- Sink Current                    IDM_SINK               Note 3               25      175       µA      3.2
+ D+ Sink Current                    IDP_SINK               Note 3               25      175       µA      3.2
+ Data Contact Detect Current
+                                    IDP_SRC                                      7       13       uA     3.2.3
+ Source
+ Leakage current on ID_OTG pin
+                                    IID_LKG_CONT                                 -1      1        µA     6.2.6
+ from contamination
+                                                           Averaged over
+ Suspend current                    ISUSP                                               2.5      mA       2.1
+                                                           1sec
+ Unit load current                  IUNIT                  Note 4                       100      mA       2.1
+
+Notes
+   1) The maximum current is for safety reasons, as per USB 2.0 section 7.2.1.2.1.
+
+   2) If a PD is attached to a SuperSpeed port, then ICFG_MAX is 900mA.
+
+   3) For source currents less than IDP_SINK min, the D+ current sink is required to pull the D+ voltage to
+      VDAT_SINK. For D+ voltages less than VLGC max, the D+ current sink shall not sink more than
+      IDP_SINK max. The same requirements apply to IDM_SINK and D-.
+
+   4) IUNIT is averaged over 250ms. If a PD is attached to a SuperSpeed port, the IUNIT is 150mA.
+
+
+
+
+                                                                                                              44
+     Battery Charging Specification, Revision 1.2                                          December 7, 2010
+
+
+                                           Table 5-3 Resistances
+
+            Parameter                        Symbol          Conditions       Min    Max      Units    Ref
+ Charger to Accessory port           RACA_CHG_ACC           Note 1                    400     mΩ      6.2.6
+ OTG to Accessory port               RACA_OTG_ACC           Note 1                    200     mΩ      6.2.6
+ Charger to OTG port                 RACA_CHG_OTG           Note 1                    200     mΩ      6.2.6
+ Data line leakage resistance        RDAT_LKG                                 300              kΩ     4.4.3
+ Dedicated Charging Port
+                                     RDCP_DAT                                         200      Ω      4.4.3
+ resistance across D+/-
+ D- Pull-down resistance             RDM_DWN                                 14.25   24.8      kΩ      3.2
+ D+ Pull-down resistance             RDP_DWN                                 14.25   24.8      kΩ      3.2
+ D+ Pull-up resistance               RDP_UP                                   900    1575      Ω      3.2.4.4
+ ACA ID pull-down, OTG device
+                                     RID_A                  Note 1,2,4        122     126      kΩ     6.2.4
+ as A-device
+ ACA ID pull-down, OTG device
+                                     RID_B                  Note 1,2,4        67      69       kΩ     6.2.4
+ as B-device, can’t connect
+ ACA ID pull-down, OTG device
+                                     RID_C                  Note 1,2,4        36      37       kΩ     6.2.4
+ as B-device, can connect
+ ACA ID pull-down when
+                                     RID_FLOAT              Note 2,3          220              kΩ     6.2.4
+ ID_OTG pin is floating
+ ACA ID pull-down when
+                                     RID_GND                Note 2,3                   1       kΩ     6.2.4
+ ID_OTG pin is grounded
+ OTG to ACA ground resistance        ROTG_ACA_GND                                     100     mΩ      6.2.6
+
+Notes
+   1) The ACA shall meet this parameter requirement when VBUS_CHG is at VACA_OPR.
+
+     2) The ACA shall meet this parameter requirement when its ID_OTG pin is at VDAT_LKG. When
+        detecting these resistances, an OTG device shall allow for an additional leakage current of
+        IID_LKG_CONT due to contamination.
+
+     3) The ACA shall meet this parameter requirement when its VBUS_CHG pin is at VBUS_LKG.
+
+     4) Nominal values for these resistors are RID_A = 124k, RID_B = 68k and RID_C = 36.5k
+
+
+
+
+45
+  Battery Charging Specification, Revision 1.2                                  December 7, 2010
+
+
+                                       Table 5-4 Capacitances
+
+         Parameter                      Symbol          Conditions   Min   Max     Units    Ref
+Dedicated Charging Port
+capacitance from D+ or D- to      CDCP_PWR                                  1        nF    4.4.3
+VBUS or GND
+Micro ACA Capacitance from
+                                  CMACA_VBUS                          1     2        uF    6.2.3
+VBUS to GND
+Standard ACA Capacitance
+                                  CSACA_VBUS                         10    100       nF    6.3.2
+from VBUS to GND
+
+
+
+
+                                                                                             46
+     Battery Charging Specification, Revision 1.2                                    December 7, 2010
+
+
+                                              Table 5-5 Times
+
+            Parameter                      Symbol          Conditions     Min   Max     Units    Ref
+ Connect to D+ sink disable          TCON_IDPSNK_DIS                            10       ms      3.4
+ Time for Charging Port to
+                                     TCP_VDM_DIS                                10       ms     3.2.4.2
+ remove VDM_SRC on D-
+ Time for Charging Port to assert
+                                     TCP_VDM_EN                                 200      ms     3.2.4.2
+ VDM_SRC on D-
+ Attach to VDP_SRC enable during
+                                     TDBP_ATT_VDPSRC                             1      sec      2.2
+ DBP
+ Attach to full USB functionality
+                                     TDBP_FUL_FNCTN                             15      min      2.3
+ for configured PD under DBP
+ Attach to PD informing user it is
+                                     TDBP_INFORM                                 1      min      2.3
+ charging
+ VDP_SRC disable to connect
+                                     TDBP_VDPSRC_CON                             1      sec      2.2
+ during DBP
+ Data contact detect debounce        TDCD_DBNC                            10             ms     3.4.1
+ DCD Timeout                         TDCD_TIMEOUT                         300   900      ms     3.2.3.1
+ DCP recovery time between
+                                     TDCP_LD_STP                          20             ms     4.4.2
+ load steps
+ DCP undershoot voltage time         TDCP_UNDSHT                                10       ms     4.4.2
+ Charger shut down recover time      TSHTDWN_REC                                 2      min     4.2.2
+ Session valid to connect time for
+                                     TSVLD_CON_PWD                               1      sec     3.2.3.1
+ powered up peripheral
+ Session valid to connect for PD
+                                     TSVLD_CON_WKB                              45      min      2.2
+ with Dead or Weak Battery
+ VBUS voltage averaging time         TVBUS_AVG                                  250      ms     4.2.1
+                                                         VBUS less than
+ Time for VBUS to be reapplied       TVBUS_REAPP                          100            ms     4.1.3
+                                                         VBUS_LKG
+ D- voltage source disable time      TVDMSRC_DIS                                20       ms      3.4
+ D- voltage source enable time       TVDMSRC_EN                                 20       ms      3.4
+ D+ voltage source on time           TVDPSRC_ON                           40             ms      3.4
+ D- voltage source on time           TVDMSRC_ON                           40             ms      3.4
+ Time for VBUS to decay to                               Time from
+ VBUS_LKG                            TVLD_VLKG           VBUS not               500      ms     4.6.3
+                                                         driven
+
+
+
+
+47
+   Battery Charging Specification, Revision 1.2                                            December 7, 2010
+
+
+6. Accessory Charger Adapter
+
+6.1       Introduction
+As PDs get smaller, it becomes more desirable for the PD to only have one external connector. If the only
+connector a device has is a USB connector, then a problem arises when the user wants to attach the device
+to a charger at the same time as it is already attached to something else.
+
+For example, consider a user in a car with a cell phone that is attached to a headset. If the phone battery
+goes low, the user would like to charge the phone, and at the same time continue to talk through the
+headset. If the phone has only one connector, it is not possible to attach both a headset and a charger to
+the phone through the same connector.
+
+Another example would be as follows. Consider a PD that has a single connector, which can also act as a
+handheld PC. When such a device is put into an ACA-Dock, it would act as a host to various USB
+peripherals, such as a hub, keyboard, mouse, printer, etc. However, while in the ACA-Dock, the device
+should also be able to charge at the same time.
+
+The purpose of this section is to describe a method that allows a single USB port to be attached to both a
+charger and another device at the same time. This method makes use of an Accessory Charger Adapter
+(ACA), as shown in Figure 6-1.
+
+
+
+
+                                  Figure 6-1 Accessory Charger Adapter
+
+An ACA has the following three ports:
+
+      •    OTG Port
+      •    Accessory Port
+      •    Charger Port
+
+The OTG Port shall have a captive cable that terminates with a Mircro-A plug. Only OTG devices (ie those
+with a Micro-AB receptacle) can be attached to the OTG Port.
+
+
+
+
+                                                                                                              48
+     Battery Charging Specification, Revision 1.2                                              December 7, 2010
+
+
+Accessories attached to the Accessory Port can communicate with the OTG device using normal USB
+signaling.
+
+The Charger Port allows the ACA to be attached to a Charging Port. Power from the Charger Port is
+available to both the OTG device and the accessory. An ACA is required to label the Charger Port as
+Charger Only. The reason for this is that the ACA does not support USB communication between the OTG
+Port and the Charger Port. The Charger Port is only used for power. An ACA is also required to provide an
+indicator that shows when the Charger Port is able to provide power to the OTG and Accessory Ports.
+
+There are two types of ACAs:
+
+      •    Micro ACA
+      •    Standard ACA
+
+A Micro ACA has a Micro-AB receptacle on the Accessory Port, and can be attached to either an A-device or
+B-device. A Standard ACA has a Standard-A receptacle on the Accessory Port, and can only be attached to
+a B-device.
+
+
+6.2       Micro ACA
+6.2.1      Micro ACA Ports
+Figure 6-2 shows the ports of a Micro ACA.
+
+                                                                           Allowed cables include:
+                                                                                  µ-A to µ-B
+                                                                                µ-A to captive
+                                                                                 µ-B to Std-A
+          OTG Device                                Micro ACA                     µ-B to µ-A
+
+                                                                           µ-A or
+                    µ-AB     µ-A            OTG                   µ-AB
+                    Recep    Plug           Port                  Recep
+                                                                            µ-B            Plug      Accessory
+                                                                            Plug
+                                                               Accessory
+                                                                    Port
+                                                        Charger
+                                                         Port                      Connector can
+                                                                               optionally be replaced
+                                                         µ-B                     with captive cable
+                                                        Recep
+                                                         µ-B
+                                                         Plug
+                                   Connector can                                                        CDP
+                                                                               Std-A   Std-A
+                               optionally be replaced
+                                                                               Plug    Recep
+                                                                                                         or
+                                 with captive cable                                                     DCP
+
+
+                                        Figure 6-2 Micro ACA Ports
+
+Various cables can be uses to attach the Accessory Port of a Micro ACA to an accessory, including:
+    • Micro-A to Micro-B
+    • Micro-A to captive
+    • Micro-B to Standard-A
+    • Micro-B to Micro-A
+
+
+
+49
+   Battery Charging Specification, Revision 1.2                                               December 7, 2010
+
+
+
+
+A Micro ACA shall have one of the following mechanical interfaces for its Charger Port:
+   • Micro-B receptacle
+   • Captive cable terminating in a Standard-A plug
+   • Captive cable terminating in a charger
+
+
+
+6.2.2   Micro ACA Connectivity Options
+Table 6-1 shows the different combinations of devices that can be attached to each Micro ACA port, and
+provides comments on their operation.
+
+                               Table 6-1 Micro ACA Connectivity Options
+   OTG Port     Charger Port    Accessory     HNP        SRP        OTG Dev               Accessory
+                                Port          Support    Support    Charges From          Draws Current
+                                                                                          From
+
+   nothing      Charging        B-dev         -          -          -                     Charger Port
+                Port
+   nothing      Charging        A-dev         -          -          -                     -
+                Port
+
+   OTG dev      nothing         B-dev         yes        yes        -                     OTG Port
+   OTG dev      nothing         A-dev         yes        yes        Accessory Port        -
+   OTG dev      nothing         charger       -          -          Accessory Port        -
+
+   OTG dev      PC, OTG dev     nothing       -          -          -                     -
+   OTG dev      PC, OTG dev     B-dev         yes        yes        -                     OTG Port
+   OTG dev      PC, OTG dev     A-dev         yes        yes        Accessory Port        -
+   OTG dev      PC, OTG dev     charger       -          -          Accessory Port        -
+
+   OTG dev      Charging        nothing       -          -          Charger Port          -
+                Port
+   OTG dev      Charging        B-dev         yes        no         Charger Port          Charger Port
+                Port
+   OTG dev      Charging        A-dev         yes        yes        Charger Port          -
+                Port
+   OTG dev      Charging        charger       -          -          Charger Port          -
+                Port
+
+
+An ACA does not allow data communication through the Charger Port. The ACA only allows charging from
+the Charger Port when a Charging Port is attached. It does not allow charging from the Charger Port
+whenever an SDP or an OTG device is attached.
+
+In the case where both an OTG device and a B-device are charging from the Charger Port, it is not
+necessary to support SRP, since VBUS is already asserted at both the OTG Port and Accessory Port.
+
+The OTG device is required to limit the current it draws from the ACA such that VBUS_OTG remains above
+VACA_OPR min.
+
+
+
+
+                                                                                                           50
+     Battery Charging Specification, Revision 1.2                                      December 7, 2010
+
+
+6.2.3    Micro ACA Architecture
+Figure 6-3 shows the architecture of a Micro ACA.
+
+
+
+
+                                    Figure 6-3 Micro ACA Architecture
+
+The Accessory Switch allows current to flow between VBUS_OTG and VBUS_ACC. The Charger Switch
+allows current to flow from VBUS_CHG and VBUS_OTG. The Adapter Controller performs several
+functions. These functions include:
+
+     •   sensing the state of the ID_ACC pin, (grounded or floating)
+     •   outputting a state onto the ID_OTG pin, (RID_GND, RID_A, RID_B, RID_C or RID_FLOAT)
+     •   using the DP_CHG and DN_CHG pins to detect if a Charging Port is attached to the Charger Port
+     •   sensing the voltage on the VBUS_ACC pin
+     •   controlling the Charger and Accessory Switches
+
+
+
+
+51
+   Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+6.2.4   Micro ACA Modes of Operation
+The operation of the Micro ACA is shown in Table 6-2, and is described below. The table assumes that an
+OTG device is always attached to the OTG Port.
+
+                                 Table 6-2 Micro ACA Modes of Operation
+  Row     Charger          Accessory      VBUS_      ID_ACC      Charger    Access      ID_OTG       OTG
+          Port             Port           ACC In                 Switch     Switch                   Device
+                                                                 Note 1     Note 1
+    1     not Chrg Port    nothing        low        float       open       closed      RID_FLOAT    B-dev
+    2     not Chrg Port    B-device       low        ground      open       closed      RID_GND      A-dev
+    3     not Chrg Port    A-dev off      low        float       open       closed      RID_FLOAT    B-dev
+    4     not Chrg Port    A-dev on       high       float       open       closed      RID_FLOAT    B-dev
+
+    5     Charging Port    nothing        low        float       closed     open        RID_B        B-dev
+    6     Charging Port    B-device       low        ground      closed     closed      RID_A        A-dev
+    7     Charging Port    A-dev off      low        float       closed     open        RID_B        B-dev
+    8     Charging Port    A-dev on       high       float       closed     open        RID_C        B-dev
+
+Notes
+   1) Open refers to the high impedance state of the switch. Closed refers to the low impedance state of
+      the switch.
+
+
+In rows 5 and 7, a Charging Port is attached to the Micro ACA Charger Port, and either nothing is attached to
+the Accessory Port, or an A-device that is not asserting VBUS is attached to the Accessory Port. The ID
+resistance of RID_B indicates to the OTG device that it is allowed to charge, and that it is allowed to initiate
+SRP. The OTG device is not allowed to connect, (that is, leave DP_OTG asserted). The reason for this is
+that if an A-device is on the Accessory Port and is not asserting VBUS, then the USB spec requires the data
+lines remain at a logic low.
+
+In row 8, a Charging Port is attached to the Micro ACA Charger Port, and an A-device that is asserting VBUS
+is attached to the Accessory Port. The ID resistance of RID_C indicates to the OTG device that it is allowed
+to charge, and that it is allowed to connect. However, it is not allowed to do SRP, since the A-device is
+already asserting VBUS.
+
+In row 6, a Charging Port is attached to the Micro ACA Charger Port, and a B-device is attached to the
+Accessory Port. The ID resistance of RID_A indicates to the OTG device that it is allowed to charge, and that
+it should default to acting as host.
+
+
+
+
+                                                                                                              52
+     Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+6.2.5    Implications of not Supporting Micro ACA Detection
+The OTG supplement only defines the floating and ground states on the ID pin. The floating state is any
+impedance greater than 1M, and the ground state is any impedance less than 10Ω. Since the RID_A, RID_B
+and RID_C resistances are between the floating and ground resistance values, an OTG device that does not
+support ACA detection could intepret any of these values as either floating or ground.
+
+If an OTG device interpreted the RID_A resistance as floating, then:
+     • it would not be aware of the opportunity to draw IDEV_CHG from VBUS
+     • it would default to peripheral, when it should default to host
+
+If an OTG device interpreted the RID_B resistance as grounded, then:
+     • it would try to drive VBUS_OTG at the same time as the ACA was driving VBUS_OTG
+     • it would default to host, when it should default to peripheral
+
+If an OTG device interpreted the RID_B resistance as floating, then:
+     • it would not be aware of the opportunity to draw up to IDEV_CHG from VBUS
+     • it would not be aware of the opportunity to do SRP
+     • it would be required to connect, and potentially violate the USB back-drive voltage spec
+
+If an OTG device interpreted the RID_C resistance as grounded, then:
+     • it would try to drive VBUS_OTG at the same time as the ACA was driving VBUS_OTG
+     • it would default to host, when it should default to peripheral
+
+If an OTG device interpreted the RID_C resistance as floating, then:
+     • it would not be aware of the opportunity to draw up to IDEV_CHG from VBUS
+
+
+
+6.2.6    Micro ACA Requirements
+A Micro ACA Charger Port shall draw less than ISUSP when anything other than a Charging Port is attached
+to it.
+
+A Micro ACA shall draw less than ISUSP when a Charging Port is attached to the ACA Charger Port and
+nothing is attached to the OTG Port or Accessory Port.
+
+The resistance between the VBUS_CHG and VBUS_OTG pins of an ACA shall be RACA_CHG_OTG when the
+Charger Switch is closed in Table 6-2, and the voltage on VBUS_CHG is at VACA_OPR.
+
+The resistance between the VBUS_CHG and VBUS_ACC pins of an ACA shall be RACA_CHG_ACC when the
+Accessory Switch is closed in Table 6-2, and the voltage on VBUS_CHG is at VACA_OPR.
+
+The resistance between the VBUS_OTG and VBUS_ACC pins of an ACA shall be RACA_OTG_ACC when the
+Accessory Switch is closed in Table 6-2, and the voltage on VBUS_OTG is at VACA_OPR.
+
+The resistance between the internal ground of the Micro ACA and the ground pin of a Micro-AB receptacle
+attached to the OTG port of an ACA shall be ROTG_ACA_GND. This requirement limits the difference between
+OTG and ACA ground under conditions of high charging current. This in turn allows the OTG device to
+reliably detect the ACA ID resistance under conditions of high charging current.
+
+When a Micro ACA detects VBUS_CHG asserted, it shall output VDP_SRC on DP_CHG. If the ACA detects
+DN_CHG greater than VDAT_REF, then it is allowed to close its Charger Switch for as long as VBUS_CHG
+remains aboveVOTG_SESS_VLD. Note that this could result in the ACA drawing more than ICFG_MAX from a
+PS2 port.
+
+
+
+
+53
+   Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+If the Charger Port was attached to a CDP, then it's possible that DN_CHG may go below VDAT_REF of the
+ACA due to charging currents causing the CDP ground to be lower than the ACA ground. It’s also possible
+that the CDP could issue a USB reset. The ACA shall ignore either of these effects, and continue to leave its
+Charger Switch closed. When VBUS_CHG goes below VOTG_SESS_VLD, then the ACA is required to again
+check for VDN_CHG being greater than VDAT_REF, before opening the Charger Switch.
+
+The Micro ACA is required to have a capacitance of CMACA_VBUS on both the VBUS_OTG and VBUS_ACC
+pins. The reason for this is so that attached devices which support the Attach Detection Protocol (ADP)
+defined in OTG 2.0 can detect when they are attached to an ACA.
+
+
+
+
+                                                                                                          54
+     Battery Charging Specification, Revision 1.2                                             December 7, 2010
+
+
+6.2.7    Portable Device State Diagram
+Figure 6-4 shows the state diagram for a PD attached to an SDP, CDP, DCP, Micro ACA, ACA-Dock or B-
+device.
+
+
+                                                         2
+                                                     Chg & Dock
+                                                       VBUS
+                                                       RID_A
+                                                      VDM_SRC
+
+
+                                                        Chg
+                                                       & Dock
+
+
+
+                  3                                                                           7
+               !Chg & A                                !Chg                                !Chg & B
+                 VBUS                                 + !Dock                                !VBUS
+               RID_FLOAT       A                                                   B       RID_GND
+
+                                           !A                         !B
+                 !Chg
+                                                         1                                  !Chg
+                                                     !Chg & !Acc
+                                                        !VBUS
+                                                      RID_FLOAT
+
+                                         !Chg & !A                 !Chg & !B
+
+                                                        !Chg
+                 Chg
+                                                                                             Chg
+                           Chg & A                                             Chg & B
+
+
+                  4                                                                          6
+                Chg & A                                                                    Chg & B
+                 VBUS                                                                       VBUS
+                 RID_C                                                                      RID_A
+                           A                                                           B
+                                                        Chg
+
+
+
+                                           !A                         !B
+                                                         5
+                                                     Chg & !Acc
+                                                       VBUS
+                                                       RID_B
+
+
+
+                                   Figure 6-4 Portable Device State Diagram
+
+Each bubble represents a state of the PD. The first row in each bubble is the state number.
+
+The first term in the second row indicates whether the attached device is acting like a Charging Port. The
+second term in the second row indicates what would be attached to the Accessory Port of the ACA, if the PD
+is attached to an ACA. The third row indicates whether or not the attached device is driving the PD VBUS
+pin. The fourth row indicates what resistance the attached device is applying to the PD ID pin. In state 2,
+the fifth row indicates that the ACA-Dock is outputting a voltage of VDM_SRC to the D- pin of the PD.
+
+
+
+
+55
+    Battery Charging Specification, Revision 1.2                                                December 7, 2010
+
+
+In state 1, the PD detects that it is not attached to anything, or that it is attached to something that is not
+driving VBUS or pulling ID low.
+
+In state 2, the PD is attached to an ACA-Dock that is driving VBUS. If the PD is removed from the ACA-
+Dock, or if the ACA-Dock stops providing VBUS, the PD transitions to state 1. An ACA-Dock is required to
+let its ID pin float if it is not driving VBUS. If the ACA-Dock were to ground the ID pin while it was not driving
+VBUS, then the PD would incorrectly transition to state 7, where it would attempt to drive VBUS into the
+ACA-Dock.
+
+In state 3, the PD is attached directly to an A-device, or to an ACA that has an A-device on its Accessory
+Port. In either case, the PD is drawing current from the A-device, and not from the ACA Charger Port. This
+is why the second row has the term !Chg. If the A-device presents itself to the PD as a CDP, then the PD
+can draw IDEV_CHG from the A-device.
+
+In state 4, the PD is attached to an ACA that has a charger on its Charger Port, and an A-device on its
+Accessory Port. Detaching the PD from the ACA causes the PD to transition to state 1.
+
+In state 5, the PD is attached to an ACA that has a charger on its Charger Port, and does not have an
+accessory on its Accessory Port.
+
+In state 6, the PD is attached to an ACA that has a charger on its Charger Port, and a B-device on its
+Accessory Port. Detaching the PD from the ACA causes the PD to transition to state 1.
+
+In state 7, the PD is attached to a B-device, or to an ACA that has a B-device on its Accessory Port. This is
+the only state in which the PD is required to output power on VBUS. In states 2 to 6, the PD is able to draw
+power from VBUS.
+
+
+
+
+                                                                                                                  56
+     Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+6.3     Standard ACA
+6.3.1    Standard ACA Ports
+Figure 6-5 shows the ports of a Standard ACA.
+
+
+
+
+                                      Figure 6-5 Standard ACA Ports
+
+Various cables can be uses to attach the Accessory Port of a Standard ACA to an accessory, including:
+    • Standard-A to Micro-B
+    • Standard-A to Standard-B
+    • Standard-A to captive
+
+
+A Standard ACA shall have one of the following mechanical interfaces for its Charger Port:
+    • Micro-B receptacle
+    • Captive cable terminating in a Standard-A plug
+    • Captive cable terminating in a charger
+
+
+
+
+57
+   Battery Charging Specification, Revision 1.2                                       December 7, 2010
+
+
+                              Table 6-3 Standard ACA Connectivity Options
+   OTG Port   Charger Port      Accessory    HNP       SRP       OTG Dev            Accessory
+                                Port         Support   Support   Charges From       Draws Current
+                                                                                    From
+
+   nothing    Charging Port     B-dev        -         -         -                  Charger Port
+
+   OTG dev    nothing           B-dev        yes       yes       -                  OTG Port
+
+   OTG dev    PC, OTG dev       nothing      -         -         -                  -
+   OTG dev    PC, OTG dev       B-dev        yes       yes       -                  OTG Port
+
+   OTG dev    Charging Port     nothing      -         -         Charger Port       -
+   OTG dev    Charging Port     B-dev        yes       no        Charger Port       Charger Port
+
+
+An ACA does not allow data communication through the Charger Port. The ACA only allows charging from
+the Charger Port when a Charging Port is attached. It does not allow charging from the Charger Port
+whenever an SDP or an OTG device is attached.
+
+In the case where both an OTG device and a B-device are charging from the Charger Port, it is not
+necessary to support SRP, since VBUS is already asserted at both the OTG Port and Accessory Port.
+
+The OTG device is required to limit the current it draws from the ACA such that VBUS_OTG remains above
+VACA_OPR min.
+
+
+
+6.3.2   Standard ACA Architecture
+Figure 6-6 shows the architecture of a Standard ACA.
+
+
+
+
+                                 Figure 6-6 Standard ACA Architecture
+
+
+
+
+                                                                                                     58
+     Battery Charging Specification, Revision 1.2                                        December 7, 2010
+
+
+The Charger Switch allows current to flow from VBUS_CHG and VBUS_OTG. Note that unlike the Micro
+ACA, the Standard ACA does not have an Accessory Switch.
+
+
+The Standard ACA is required to have a capacitance of CSACA_VBUS on the VBUS_OTG or VBUS_ACC
+pins. The reason for this is as follows.
+
+The Accessory Port does not have an ID pin, since it uses a Standard-A receptacle. Thus, the Standard
+ACA cannot detect when a plug has been inserted into the Accessory Port, and therefore it cannot inform the
+OTG Device of such an attach event. If a Charging Port were attached to the ACA Charger Port, then the
+accessory would connect, and the OTG device could detect the connect event. If a Charging Port were not
+attached to the ACA Charger Port, then the OTG Device would either have to leave VBUS asserted, or it
+would have to do ADP. In order to allow ADP to work, the combined capacitance on the VBUS_OTG and
+VBUS_ACC pins needs to be CSACA_VBUS.
+
+
+The Adapter Controller performs several functions. These functions include:
+
+     •   outputting a state onto the ID_OTG pin, (RID_GND, RID_A)
+     •   using the DP_CHG and DN_CHG pins to detect if a Charging Port is attached to the Charger Port
+     •   controlling the Charger Switch
+
+6.3.3    Standard ACA Modes of Operation
+The operation of the Standard ACA is shown inTable 6-4, and is described below. The table assumes that
+an OTG device is always attached to the OTG Port.
+
+                               Table 6-4 Standard ACA Modes of Operation
+                     Row    Charger        Accessory   Charger    ID_OTG        OTG
+                            Port           Port        Switch                   Device
+                                                       Note 1
+                      1     non-charger    nothing     open       RID_GND       A-dev
+                      2     non-charger    B-device    open       RID_GND       A-dev
+
+                      3     charger        nothing     closed     RID_A         A-dev
+                      4     charger        B-device    closed     RID_A         A-dev
+
+Notes
+   1) Open refers to the high impedance state of the switch. Closed refers to the low impedance state of
+      the switch.
+
+
+When a PD is attached to a Standard ACA, the ID_OTG pin is either at RID_GND or at RID_A, and the PD is
+always acting as an A-device.
+
+
+
+
+59
+   Battery Charging Specification, Revision 1.2                                           December 7, 2010
+
+
+6.3.4   Implications of not Supporting Standard ACA Detection
+The OTG supplement only defines the floating and ground states on the ID pin. The floating state is any
+impedance greater than 1M, and the ground state is any impedance less than 10Ω. Since the RID_A is
+between the floating and ground resistance values, an OTG device that does not support ACA detection
+could intepret this value as either floating or ground.
+
+If an OTG device interpreted the RID_A resistance as floating, then:
+     • it would not be aware of the opportunity to draw IDEV_CHG from VBUS
+     • it would default to peripheral, when it should default to host
+
+
+
+6.3.5   Standard ACA Requirements
+A Standard ACA Charger Port shall draw less than ISUSP when anything other than a Charging Port is
+attached to it.
+
+A Standard ACA Accessory Port shall draw less than ISUSP when a Charging Port is attached to the ACA
+Charger Port and nothing is attached to the OTG Port or Accessory Port.
+
+The resistance between VBUS_CHG, and either VBUS_OTG or VBUS_ACC of a Standard ACA shall be
+RACA_CHG_OTG when the Charger Switch is closed in Table 6-4, and the voltage on VBUS_CHG is at
+VACA_OPR.
+
+The resistance between the internal ground of the Standard ACA and the ground pin of a Micro-AB
+receptacle attached to the OTG port of an ACA shall be ROTG_ACA_GND. This requirement limits the
+difference between OTG and ACA ground under conditions of high charging current. This in turn allows the
+OTG device to reliably detect the ACA ID resistance under conditions of high charging current.
+
+When a Standard ACA detects VBUS_CHG asserted, it shall output VDP_SRC on DP_CHG. If the ACA
+detects DN_CHG greater than VDAT_REF, then it shall close its Charger Switch for as long as VBUS_CHG
+remains above VOTG_SESS_VLD. Note that this could result in the ACA drawing more than ICFG_MAX from a
+PS2 port.
+
+If the Charger Port was attached to a CDP, then it's possible that DN_CHG may go below VDAT_REF of the
+ACA due to charging currents causing the CDP ground to be lower than the ACA ground. It’s also possible
+that the CDP could issue a USB reset. The ACA shall ignore either of these effects, and continue to leave its
+Charger Switch closed. When VBUS_CHG goes belowVOTG_SESS_VLD, then the ACA is required to again
+check for VDN_CHG being greater than VDAT_REF, before opening the Charger Switch.
+
+
+
+
+                                                                                                          60
+

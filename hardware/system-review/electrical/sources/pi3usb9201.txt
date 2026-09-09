@@ -1,0 +1,429 @@
+                                                                                                                                          PI3USB9201
+                                                                                                           Dual-Role USB Charging-Type Detector
+
+Description                                                                           Features
+                                                                                      
+                                                                                           
+
+
+                                                                                           
+
+                                                                                      
+                                                                                           
+                                                                                           
+                                                                                      
+                                                                                      
+                                                                                      
+
+
+                                                                                      
+                                                                                      
+                                                                                      
+                                                                                               
+                                                                                      
+                                                                                      
+Application(s)                                                                        
+
+
+
+Block Diagram
+
+
+
+
+Notes:
+1. No purposely added lead. Fully EU Directive 2002/95/EC (RoHS), 2011/65/EU (RoHS 2) & 2015/863/EU (RoHS 3) compliant.
+2. See https://www.diodes.com/quality/lead-free/ for more information about Diodes Incorporated’s definitions of Halogen- and Antimony-free, "Green" and Lead-free.
+3. Halogen- and Antimony-free "Green” products are defined as those which contain <900ppm bromine, <900ppm chlorine (<1500ppm total Br + Cl) and <1000ppm
+antimony compounds.
+
+PI3USB9201                                                             www.diodes.com                                                                            April 2025
+Document Number DS41358 Rev 3-2                                                 1                                    © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                        PI3USB9201
+
+
+Pin Configuration (Top View)
+
+
+
+
+Pin Descriptions
+
+
+
+
+PI3USB9201                        www.diodes.com                                               April 2025
+Document Number DS41358 Rev 3-2         2          © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                 PI3USB9201
+
+
+Details Description
+Host Mode
+
+
+
+
+Client Mode: USB Charging Type Detection
+
+
+
+
+                                  “ ”
+
+USB Path ON Mode
+
+
+Power Down Mode
+
+
+
+
+PI3USB9201                                 www.diodes.com                                               April 2025
+Document Number DS41358 Rev 3-2                  3          © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                                                                                     PI3USB9201
+
+
+Maximum Ratings
+
+ Storage Temperature ................................................................................... -65oC to +150oC       Note:
+                                                                                                                               Stresses greater than those listed under MAXIMUM
+ Junction Temperature.................................................................................. -40oC to +125oC        RATINGS may cause permanent damage to the device.
+ Supply Voltage (VDD) ......................................................................................... -0.3V to +6V   This is a stress rating only and functional operation of the
+ Switch I/O Voltage USB (D+/- & USB+/-) .................................................. -0.3V to +6V                        device at these or any other conditions above those
+ Logic I/O Voltage (ENB/ADDR/SCL/SDA/INTB) ................ -0.3V to +6V                                                       indicated in the operational sections of this specification
+                                                                                                                               is not implied. Exposure to absolute maximum rating
+ Switch I/O Current (Continuous) USB ........................................................................50mA
+                                                                                                                               conditions for extended periods may affect reliability.
+ ESD: (All pins) ...................................................................2KV (HBM) and 1KV (CDM)
+
+
+Recommended Operation Conditions
+
+
+
+
+DC Electrical Characteristics
+Min and Max apply for TA between -40°C to 85°C (unless otherwise noted). Typical values are referenced to T A = +25°C, VDD
+= 3.3V.
+
+
+
+
+ Note:
+ 1. On-resistance is the voltage drop between the two terminals at the indicated current through the switch.
+ 2. Limits based on electrical characterization data.
+
+
+Capacitance
+TA = -40°C to 85°C
+
+
+
+
+Switch Path AC Electrical Characteristics
+Min and Max apply for TA between -40°C to 85°C (unless otherwise noted). Typical values are referenced to T A = +25°C, VDD
+= 3.3V.
+
+
+
+
+PI3USB9201                                                                                       www.diodes.com                                                                             April 2025
+Document Number DS41358 Rev 3-2                                                                              4                                  © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                            PI3USB9201
+
+
+
+
+USB Path Switching Characteristics
+Min and Max apply for TA between -40°C to 85°C (unless otherwise noted). Typical values are referenced to T A = +25°C, VDD
+= 3.3V.
+
+
+
+
+Note:
+1) Guaranteed by design.
+2) Time the chip takes to be ready for operation from power-up or disable.
+3) Measured after I2C acknowledgement is received.
+
+
+BC1.2 Electrical Characteristics
+
+
+
+
+I2C Controller DC Electrical Characteristics
+
+
+
+
+PI3USB9201                                                          www.diodes.com                                                 April 2025
+Document Number DS41358 Rev 3-2                                              5         © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                             PI3USB9201
+
+
+
+
+I2C AC Electrical Characteristics Symbol
+
+
+
+
+                           Figure 1. Definition of Timing for Full-Speed Mode Devices on the I2C Bus
+
+Table 1. I2C Slave Address
+
+
+
+
+PI3USB9201                                             www.diodes.com                                                               April 2025
+Document Number DS41358 Rev 3-2                              6                          © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                 PI3USB9201
+
+
+Bus Transaction
+Writing to the Port Registers
+
+
+
+
+                                  Figure 2. Write to Output Port Register
+
+Reading the Port Register
+
+
+
+
+                                       Figure 3. Read from Register
+
+
+
+
+PI3USB9201                                   www.diodes.com                                                             April 2025
+Document Number DS41358 Rev 3-2                    7                        © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                                                     PI3USB9201
+
+Table 2. Registers Map
+                                           Reset
+ Address       Register        Type                    Bit 7        Bit 6         Bit 5       Bit 4        Bit 3          Bit 2              Bit 1             Bit 0
+                                           Value
+                                                                                                                   000=Power Down
+                                                                                                                  001=SDP Host Mode
+                                                                                                                 010=DCP Host Mode
+                                                                                                                 011=CDP Host Mode                          1=Interrupt
+    00h        Control 1    Write/Read      00h      Reserved     Reserved       Reserved   Reserved
+                                                                                                                    100=Client Mode                           Mask
+                                                                                                                      101=reserved
+                                                                                                                      110=reserved
+                                                                                                                   111=USB Path ON
+                                                                                                         0=Client                   0=Enable
+                                                                                                          mode                         USB
+                                                                                                            No                        switch
+                                                                                                         detection                   auto ON
+    01h        Control 2    Write/Read      00h      Reserved     Reserved       Reserved   Reserved
+                                                                                                         1=Client
+                                                                                                                       Reserved     1=Disable                Reserved
+                                                                                                                                       USB
+                                                                                                          mode
+                                                                                                                                      switch
+                                                                                                         detection
+                                                                                                             (1)                     auto ON
+                                                                                                                                               (2)
+
+                 Client                                                                                   1=1A           1=2A              1=2.4A
+                              Read &                 1=DCP        1=SDP          1=CDP                                                                        Others
+    02h          Status
+                               Clear
+                                            00h
+                                                     Detected     Detected       Detected
+                                                                                            Reserved     Charger        Charger            Charger
+                                                                                                                                                             Detected
+                   (3)
+                                                                                                         Detected       Detected          Detected
+                                                                                                                                           1=Plug           1=BC1.2
+                                                                                                                        1=Unplug
+                                                                                                                                          observed         detect pulse
+                 Host         Read &                                                                                   observed in
+    03h         Status(3)      Clear
+                                            00h      Reserved     Reserved       Reserved   Reserved     Reserved
+                                                                                                                       Host mode
+                                                                                                                                           in Host         observed in
+                                                                                                                                            mode           Host mode
+                                                                                                                        SDP/CDP
+                                                                                                                                          SDP/CDP           SDP/CDP
+Notes:
+1) Write 01h bit3 form 0 to 1 for Client mode detect after 00h bit 3-1 = 100 Client mode. For USB-C application, write 1 to 01h bit3 when the system in
+ATTACHED.SNK state. Write 0 to 01h bit3 when it leaves ATTACHED.SNK state. For non-USB-C application, write 1 to 01h bit3 when the system detects the
+existence of VBUS. Write 0 to 01h bit3 when VBUS is removed.
+2) Host mode SDP/CDP data switch on at 01h bit1 = 0 and switch off at 01h bit1 = 1; Client mode data switch will on after BC1.2 detect at 01h bit1 = 0 and keeps
+off at 01h bit1 = 1. Host mode DCP data switch keeps off ignore 01h bit1 = 0 or 1. USB path on mode data switch keeps on ignore 01h bit1 = 0 or 1
+3) Client/Host Status registers will be cleared after I2C read.
+4) For USB-C application, after CC detector detects detach, please program PI3USB9201 to “Power Down” mode.
+
+
+Table 3. State of Operation
+
+
+
+
+Note:
+1) PI3USB9201 follows the Battery Charging 1.2 Specification, using D+/- to determine what is attached. Data Contact Detect, Primary Detection and Secondary
+   Detection included.
+
+
+
+
+PI3USB9201                                                           www.diodes.com                                                                         April 2025
+Document Number DS41358 Rev 3-2                                              8                                  © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                   PI3USB9201
+
+
+
+
+                                   Figure 4. Power up INTB Timing Diagram
+
+
+
+
+                                  Figure 5. INT Mask to INTB Timing Diagram
+
+
+
+
+                                             Figure 6. Flowchart
+
+
+PI3USB9201                                     www.diodes.com                                                             April 2025
+Document Number DS41358 Rev 3-2                      9                        © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                        PI3USB9201
+
+
+Application Diagram
+
+
+
+
+PI3USB9201                        www.diodes.com                                               April 2025
+Document Number DS41358 Rev 3-2        10          © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                        PI3USB9201
+
+
+Part Marking
+
+
+
+
+PI3USB9201                        www.diodes.com                                               April 2025
+Document Number DS41358 Rev 3-2        11          © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                                                 PI3USB9201
+
+
+Packaging Mechanical
+12-UQFN (ZTA)
+
+                                                     12x( a)          A1
+                   A                                                       A3
+
+                                                                            S eating Plane                 U-QFN2020-12
+                                                                                                             (Type C)
+                                         D
+               L                                                                                       Dim Min Max Typ
+                                                                                                        A    0.55 0.65 0.60
+                                                                                                       A1 0.00 0.05 0.02
+                                                                                                       A3     --    -- 0.152
+                                                                                                        b    0.15 0.25 0.20
+                                                                                                        D    1.95 2.05 2.00
+                                                                                                        E    1.95 2.05 2.00
+                                                                       E
+                                                                                                        e        0.40 BSC
+                b
+                                    Pin1 I.D.                     e
+                                                                                                        L    0.45 0.55 0.50
+                                                                                                        k     --    --   0.20
+                                                                                                        z     --    --   0.30
+                                                                                                       All Dimensions in mm
+          z( 4x)                        k( 4x)
+               Note ( a) Actual shape dependent upon the manufacturing technology used.
+
+
+
+
+For latest package info.
+please check: http://www.diodes.com/design/support/packaging/pericom-packaging/packaging-mechanicals-and-thermal-characteristics/
+
+
+Ordering Information
+
+
+Notes:
+
+
+
+
+PI3USB9201                                                             www.diodes.com                                                                   April 2025
+Document Number DS41358 Rev 3-2                                                 12                          © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+                                                                                                                                         PI3USB9201
+
+
+                                                                     IMPORTANT NOTICE
+
+1. DIODES INCORPORATED (Diodes) AND ITS SUBSIDIARIES MAKE NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, WITH REGARDS TO
+ANY INFORMATION CONTAINED IN THIS DOCUMENT, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY RIGHTS (AND THEIR
+EQUIVALENTS UNDER THE LAWS OF ANY JURISDICTION).
+
+2. The Information contained herein is for informational purpose only and is provided only to illustrate the operation of Diodes’ products described herein and
+application examples. Diodes does not assume any liability arising out of the application or use of this document or any product described herein. This
+document is intended for skilled and technically trained engineering customers and users who design with Diodes’ products. Diodes’ products may be used to
+facilitate safety-related applications; however, in all instances customers and users are responsible for (a) selecting the appropriate Diodes products for their
+applications, (b) evaluating the suitability of Diodes’ products for their intended applications, (c) ensuring their applications, which incorporate Diodes’ products,
+comply the applicable legal and regulatory requirements as well as safety and functional-safety related standards, and (d) ensuring they design with
+appropriate safeguards (including testing, validation, quality control techniques, redundancy, malfunction prevention, and appropriate treatment for aging
+degradation) to minimize the risks associated with their applications.
+
+3. Diodes assumes no liability for any application-related information, support, assistance or feedback that may be provided by Diodes from time to time.
+Any customer or user of this document or products described herein will assume all risks and liabilities associated with such use, and will hold Diodes and all
+companies whose products are represented herein or on Diodes’ websites, harmless against all damages and liabilities.
+
+4. Products described herein may be covered by one or more United States, international or foreign patents and pending patent applications. Product
+names and markings noted herein may also be covered by one or more United States, international or foreign trademarks and trademark applications. Diodes
+does not convey any license under any of its intellectual property rights or the rights of any third parties (including third parties whose products and services
+may be described in this document or on Diodes’ website) under this document.
+
+5. Diodes’ products are provided subject to Diodes’ Standard Terms and Conditions of Sale (https://www.diodes.com/about/company/terms-and-
+conditions/terms-and-conditions-of-sales/) or other applicable terms. This document does not alter or expand the applicable warranties provided by Diodes.
+Diodes does not warrant or accept any liability whatsoever in respect of any products purchased through unauthorized sales channel.
+
+6. Diodes’ products and technology may not be used for or incorporated into any products or systems whose manufacture, use or sale is prohibited under
+any applicable laws and regulations. Should customers or users use Diodes’ products in contravention of any applicable laws or regulations, or for any
+unintended or unauthorized application, customers and users will (a) be solely responsible for any damages, losses or penalties arising in connection
+therewith or as a result thereof, and (b) indemnify and hold Diodes and its representatives and agents harmless against any and all claims, damages,
+expenses, and attorney fees arising out of, directly or indirectly, any claim relating to any noncompliance with the applicable laws and regulations, as well as
+any unintended or unauthorized application.
+
+7. While efforts have been made to ensure the information contained in this document is accurate, complete and current, it may contain technical
+inaccuracies, omissions and typographical errors. Diodes does not warrant that information contained in this document is error-free and Diodes is under no
+obligation to update or otherwise correct this information. Notwithstanding the foregoing, Diodes reserves the right to make modifications, enhancements,
+improvements, corrections or other changes without further notice to this document and any product described herein. This document is written in English but
+may be translated into multiple languages for reference. Only the English version of this document is the final and determinative format released by Diodes.
+
+8. Any unauthorized copying, modification, distribution, transmission, display or other use of this document (or any portion hereof) is prohibited. Diodes
+assumes no responsibility for any losses incurred by the customers or users or any third parties arising from any such unauthorized use.
+
+9. This Notice may be periodically updated with the most recent version available at https://www.diodes.com/about/company/terms-and-conditions/important-
+notice
+
+
+
+The Diodes logo is a registered trademark of Diodes Incorporated in the United States and other countries.
+All other trademarks are the property of their respective owners.
+© 2025 Diodes Incorporated. All Rights Reserved.
+
+www.diodes.com
+
+
+
+
+PI3USB9201                                                             www.diodes.com                                                                           April 2025
+Document Number DS41358 Rev 3-2                                               13                                    © 2025 Copyright Diodes Incorporated. All Rights Reserved.
+

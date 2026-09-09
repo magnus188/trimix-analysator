@@ -1,0 +1,22 @@
+{
+  "tag_name": "v0.2.0",
+  "draft": false,
+  "prerelease": false,
+  "body": "Offline publication fixture, not a published release.",
+  "assets": [
+    {
+      "name": "Trimix_analyzer_esp32p4_pre3_v0.2.0.bin",
+      "size": 1980912,
+      "digest": "sha256:161f93d42cd62fc8f0df59722b831a91619b287c129f3398f0fe8927533fd6d4",
+      "state": "uploaded",
+      "browser_download_url": "https://github.com/magnus188/trimix-analysator/releases/download/v0.2.0/Trimix_analyzer_esp32p4_pre3_v0.2.0.bin"
+    },
+    {
+      "name": "Trimix_analyzer_esp32p4_v3_v0.2.0.bin",
+      "size": 1986112,
+      "digest": "sha256:428d966fd33c9ef41aa860ba17220766b03d27b07e0bdd7f10f3e6287fb55d70",
+      "state": "uploaded",
+      "browser_download_url": "https://github.com/magnus188/trimix-analysator/releases/download/v0.2.0/Trimix_analyzer_esp32p4_v3_v0.2.0.bin"
+    }
+  ]
+}

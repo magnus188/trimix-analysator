@@ -1,10 +1,39 @@
 idf_component_register(
     SRCS
+        "board/guition_sdmmc.c"
+        "services/sd_log_core.cpp"
+        "services/sd_log_files.cpp"
+        "services/sd_log_format.cpp"
+        "services/sd_log_service.cpp"
         "main.cpp"                           # app_main
         "version.cpp"                        # version information
         "board/guition_jc4880p443.c"         # Guition display and touch hardware
         "analysis/analysis_calculator.cpp"   # analysis calculations
-        "sensors/sensor_interface.cpp"       # sensors (mock)
+        "sensors/sensor_interface.cpp"       # hardware cache / isolated simulator
+        "sensors/ads122c04.cpp"
+        "sensors/ze07_co.cpp"
+        "sensors/co_qualification.cpp"
+        "sensors/sensor_hardware.cpp"
+        "sensors/system_i2c.cpp"
+        "sensors/power_monitor.cpp"
+        "sensors/environment_monitor.cpp"
+        "sensors/usb_source_monitor.cpp"
+        "sensors/bc12_monitor.cpp"
+        "sensors/usb_input_policy.cpp"
+        "sensors/acquisition_engine.cpp"
+        "third_party/bme280/bme280.c"
+        "services/system_power.cpp"
+        "services/charge_profile.cpp"
+        "services/charge_standby_policy.cpp"
+        "services/oxygen_selection_core.cpp"
+        "services/oxygen_selection_service.cpp"
+        "services/blob_journal.cpp"
+        "services/storage_service.cpp"
+        "services/maintenance_service.cpp"
+        "services/ota_core.cpp"
+        "services/gas_calibration_core.cpp"
+        "services/gas_calibration_journal.cpp"
+        "services/gas_calibration_service.cpp"
         "services/analysis_history.cpp"      # captured analysis history
         "services/cylinder_profiles.cpp"     # cylinder profile storage
         "services/mix_label_service.cpp"     # export-ready mix labels
@@ -49,6 +78,9 @@ idf_component_register(
         board
     REQUIRES
         esp_lcd
+        fatfs
+        sdmmc
+        esp_driver_sdmmc
         esp_timer
         driver
         lvgl

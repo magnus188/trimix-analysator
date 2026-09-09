@@ -8,8 +8,8 @@ import copy, json, math, uuid
 import sexpdata as sx
 
 HW = Path(__file__).resolve().parents[1]
-P = HW / 'kicad/analyzer'
-VERIFY = HW / 'verification/analyzer'
+P = HW / 'pcb/analyzer'
+VERIFY = HW / 'pcb/verification/analyzer'
 LIBS = Path('/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols')
 PROJECT = 'Trimix_Analyzer'
 ROOT_UUID = str(uuid.uuid5(uuid.NAMESPACE_URL, 'trimix:analyzer:A2:root'))

@@ -1,0 +1,1859 @@
+{
+  "status": "Final source-bound placement record; historical search snapshot archived",
+  "source_board_sha256": "9f274fdf198f1bcb871a4fc360e76693f8a5b048553e6a02998141737956514f",
+  "result_board_sha256": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788",
+  "changed": [
+    {
+      "reference": "C107",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "8.0",
+        "PCB_Y_mm": "74.5",
+        "Rotation_deg": "90.0",
+        "Value": "22u / 25V X5R / 20%",
+        "MPN": "C3216X5R1E226M160AB",
+        "Footprint": "C_1206_3216Metric"
+      },
+      "after": {
+        "Side": "bottom",
+        "PCB_X_mm": "13.875",
+        "PCB_Y_mm": "79.125",
+        "Rotation_deg": "0.0",
+        "Value": "47u / 10V X5R / 20%",
+        "MPN": "C2012X5R1A476M125AC",
+        "Footprint": "C_TDK_C2012_Recommended"
+      },
+      "note": "Reviewed native footprint/pose/part delta"
+    },
+    {
+      "reference": "R504",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "18.25",
+        "PCB_Y_mm": "48.0",
+        "Rotation_deg": "0.0",
+        "Value": "10k / 0.1%",
+        "MPN": "RT0603BRD0710KL",
+        "Footprint": "R_0603_1608Metric"
+      },
+      "after": {
+        "Side": "bottom",
+        "PCB_X_mm": "18.25",
+        "PCB_Y_mm": "48.0",
+        "Rotation_deg": "180.0",
+        "Value": "10k / 0.1%",
+        "MPN": "RT0603BRD0710KL",
+        "Footprint": "R_0603_1608Metric"
+      },
+      "note": "Reviewed native footprint/pose/part delta"
+    },
+    {
+      "reference": "C103",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "19.0",
+        "PCB_Y_mm": "82.3",
+        "Rotation_deg": "90.0",
+        "Value": "47n / 50V X7R / 10%",
+        "MPN": "C0805C473K5RACTU",
+        "Footprint": "C_0805_2012Metric"
+      },
+      "after": {
+        "Side": "bottom",
+        "PCB_X_mm": "14.6",
+        "PCB_Y_mm": "80.7",
+        "Rotation_deg": "180.0",
+        "Value": "47n / 50V X7R / 10%",
+        "MPN": "C1005X7R1H473K050BE",
+        "Footprint": "C_TDK_C1005_Recommended"
+      },
+      "note": "Reviewed native footprint/pose/part delta"
+    },
+    {
+      "reference": "R702",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "18.5",
+        "PCB_Y_mm": "58.65",
+        "Rotation_deg": "0.0",
+        "Value": "100k / 0.1%",
+        "MPN": "RT0603BRD07100KL",
+        "Footprint": "R_0603_1608Metric"
+      },
+      "after": {
+        "Side": "top",
+        "PCB_X_mm": "18.8",
+        "PCB_Y_mm": "54.25",
+        "Rotation_deg": "90.0",
+        "Value": "100k / 0.1%",
+        "MPN": "RT0402BRD07100KL",
+        "Footprint": "R_0402_1005Metric"
+      },
+      "note": "Reviewed native footprint/pose/part delta"
+    },
+    {
+      "reference": "U701",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "19.5",
+        "PCB_Y_mm": "56.3",
+        "Rotation_deg": "0.0",
+        "Value": "TPS61023DRLR",
+        "MPN": "TPS61023DRLR",
+        "Footprint": "SOT-563"
+      },
+      "after": {
+        "Side": "top",
+        "PCB_X_mm": "19.5",
+        "PCB_Y_mm": "56.3",
+        "Rotation_deg": "0.0",
+        "Value": "TPS61023DRLR",
+        "MPN": "TPS61023DRLR",
+        "Footprint": "SOT-563"
+      },
+      "note": "Reference-display metadata only; physical pose unchanged"
+    },
+    {
+      "reference": "L701",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "19.5",
+        "PCB_Y_mm": "51.2",
+        "Rotation_deg": "-90.0",
+        "Value": "1u / XGL4020-102MEC",
+        "MPN": "XGL4020-102MEC",
+        "Footprint": "L_Coilcraft_XGL4020"
+      },
+      "after": {
+        "Side": "top",
+        "PCB_X_mm": "19.5",
+        "PCB_Y_mm": "50.65",
+        "Rotation_deg": "-90.0",
+        "Value": "1u / XGL4020-102MEC",
+        "MPN": "XGL4020-102MEC",
+        "Footprint": "L_Coilcraft_XGL4020"
+      },
+      "note": "Reviewed native footprint/pose/part delta"
+    },
+    {
+      "reference": "C702",
+      "before": {
+        "Side": "top",
+        "PCB_X_mm": "21.9",
+        "PCB_Y_mm": "55.2",
+        "Rotation_deg": "90.0",
+        "Value": "22u / 16V X5R / 20%",
+        "MPN": "C2012X5R1C226M125AC",
+        "Footprint": "C_0805_2012Metric"
+      },
+      "after": {
+        "Side": "top",
+        "PCB_X_mm": "21.25",
+        "PCB_Y_mm": "54.2",
+        "Rotation_deg": "0.0",
+        "Value": "22u / 16V X5R / 20%",
+        "MPN": "C2012X5R1C226M125AC",
+        "Footprint": "C_0805_2012Metric"
+      },
+      "note": "Reviewed native footprint/pose/part delta"
+    }
+  ],
+  "all_final_reference_poses": [
+    {
+      "Reference": "C101",
+      "Side": "top",
+      "PCB_X_mm": "8.3",
+      "PCB_Y_mm": "82.3",
+      "Rotation_deg": "180.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C102",
+      "Side": "top",
+      "PCB_X_mm": "8.1",
+      "PCB_Y_mm": "79.1",
+      "Rotation_deg": "90.0",
+      "Value": "22u / 16V X7R / 20%",
+      "MPN": "C3225X7R1C226M250AC",
+      "Footprint": "C_1210_3225Metric"
+    },
+    {
+      "Reference": "C103",
+      "Side": "bottom",
+      "PCB_X_mm": "14.6",
+      "PCB_Y_mm": "80.7",
+      "Rotation_deg": "180.0",
+      "Value": "47n / 50V X7R / 10%",
+      "MPN": "C1005X7R1H473K050BE",
+      "Footprint": "C_TDK_C1005_Recommended"
+    },
+    {
+      "Reference": "C104",
+      "Side": "top",
+      "PCB_X_mm": "19.6",
+      "PCB_Y_mm": "75.25",
+      "Rotation_deg": "0.0",
+      "Value": "22u / 16V X7R / 20%",
+      "MPN": "C3225X7R1C226M250AC",
+      "Footprint": "C_1210_3225Metric"
+    },
+    {
+      "Reference": "C105",
+      "Side": "top",
+      "PCB_X_mm": "8.199999",
+      "PCB_Y_mm": "85.75",
+      "Rotation_deg": "90.0",
+      "Value": "22u / 16V X7R / 20%",
+      "MPN": "C3225X7R1C226M250AC",
+      "Footprint": "C_1210_3225Metric"
+    },
+    {
+      "Reference": "C106",
+      "Side": "top",
+      "PCB_X_mm": "2.95",
+      "PCB_Y_mm": "90.75",
+      "Rotation_deg": "0.0",
+      "Value": "22u / 25V X5R / 20%",
+      "MPN": "C3216X5R1E226M160AB",
+      "Footprint": "C_1206_3216Metric"
+    },
+    {
+      "Reference": "C107",
+      "Side": "bottom",
+      "PCB_X_mm": "13.875",
+      "PCB_Y_mm": "79.125",
+      "Rotation_deg": "0.0",
+      "Value": "47u / 10V X5R / 20%",
+      "MPN": "C2012X5R1A476M125AC",
+      "Footprint": "C_TDK_C2012_Recommended"
+    },
+    {
+      "Reference": "C108",
+      "Side": "top",
+      "PCB_X_mm": "16.9",
+      "PCB_Y_mm": "83.1",
+      "Rotation_deg": "90.0",
+      "Value": "4.7u / 16V X5R / 10%",
+      "MPN": "C1608X5R1C475K080AC",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C110",
+      "Side": "top",
+      "PCB_X_mm": "22.7",
+      "PCB_Y_mm": "77.4",
+      "Rotation_deg": "90.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C111",
+      "Side": "top",
+      "PCB_X_mm": "29.025",
+      "PCB_Y_mm": "73.1",
+      "Rotation_deg": "90.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C112",
+      "Side": "top",
+      "PCB_X_mm": "28.0",
+      "PCB_Y_mm": "86.0",
+      "Rotation_deg": "90.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C113",
+      "Side": "top",
+      "PCB_X_mm": "28.25",
+      "PCB_Y_mm": "81.2",
+      "Rotation_deg": "90.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C114",
+      "Side": "bottom",
+      "PCB_X_mm": "9.9",
+      "PCB_Y_mm": "90.0",
+      "Rotation_deg": "0.0",
+      "Value": "4.7u / 25V X7R / 10%",
+      "MPN": "C3216X7R1E475K160AC",
+      "Footprint": "C_1206_3216Metric"
+    },
+    {
+      "Reference": "C115",
+      "Side": "bottom",
+      "PCB_X_mm": "12.0",
+      "PCB_Y_mm": "92.75",
+      "Rotation_deg": "-90.0",
+      "Value": "100n / 50V X7R",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C116",
+      "Side": "bottom",
+      "PCB_X_mm": "16.5",
+      "PCB_Y_mm": "89.05",
+      "Rotation_deg": "-90.0",
+      "Value": "3.3n / 50V C0G / 5%",
+      "MPN": "GRM1555C1H332JE01D",
+      "Footprint": "C_0402_1005Metric"
+    },
+    {
+      "Reference": "C201",
+      "Side": "top",
+      "PCB_X_mm": "17.0",
+      "PCB_Y_mm": "61.75",
+      "Rotation_deg": "90.0",
+      "Value": "22u / 25V X5R / 20%",
+      "MPN": "C3216X5R1E226M160AB",
+      "Footprint": "C_1206_3216Metric"
+    },
+    {
+      "Reference": "C202",
+      "Side": "top",
+      "PCB_X_mm": "19.7",
+      "PCB_Y_mm": "72.25",
+      "Rotation_deg": "0.0",
+      "Value": "22u / 25V X5R / 20%",
+      "MPN": "C3216X5R1E226M160AB",
+      "Footprint": "C_1206_3216Metric"
+    },
+    {
+      "Reference": "C203",
+      "Side": "top",
+      "PCB_X_mm": "11.8",
+      "PCB_Y_mm": "57.7",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C204",
+      "Side": "top",
+      "PCB_X_mm": "8.15",
+      "PCB_Y_mm": "62.1",
+      "Rotation_deg": "180.0",
+      "Value": "22u / 16V X7R / 20%",
+      "MPN": "C3225X7R1C226M250AC",
+      "Footprint": "C_1210_3225Metric"
+    },
+    {
+      "Reference": "C205",
+      "Side": "top",
+      "PCB_X_mm": "8.15",
+      "PCB_Y_mm": "65.5",
+      "Rotation_deg": "180.0",
+      "Value": "22u / 16V X7R / 20%",
+      "MPN": "C3225X7R1C226M250AC",
+      "Footprint": "C_1210_3225Metric"
+    },
+    {
+      "Reference": "C206",
+      "Side": "top",
+      "PCB_X_mm": "8.15",
+      "PCB_Y_mm": "68.9",
+      "Rotation_deg": "180.0",
+      "Value": "22u / 16V X7R / 20%",
+      "MPN": "C3225X7R1C226M250AC",
+      "Footprint": "C_1210_3225Metric"
+    },
+    {
+      "Reference": "C301",
+      "Side": "top",
+      "PCB_X_mm": "18.0",
+      "PCB_Y_mm": "67.0",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C0805C104K5RACTU",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C302",
+      "Side": "top",
+      "PCB_X_mm": "11.5",
+      "PCB_Y_mm": "48.1",
+      "Rotation_deg": "0.0",
+      "Value": "4.7u / 16V X5R / 10%",
+      "MPN": "C1608X5R1C475K080AC",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C303",
+      "Side": "top",
+      "PCB_X_mm": "12.0",
+      "PCB_Y_mm": "49.65",
+      "Rotation_deg": "0.0",
+      "Value": "4.7u / 16V X5R / 10%",
+      "MPN": "C1608X5R1C475K080AC",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C401",
+      "Side": "top",
+      "PCB_X_mm": "1.299999",
+      "PCB_Y_mm": "23.3",
+      "Rotation_deg": "90.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C402",
+      "Side": "top",
+      "PCB_X_mm": "1.299999",
+      "PCB_Y_mm": "26.51",
+      "Rotation_deg": "90.0",
+      "Value": "10n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C403",
+      "Side": "top",
+      "PCB_X_mm": "6.9",
+      "PCB_Y_mm": "32.299999",
+      "Rotation_deg": "0.0",
+      "Value": "10n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C404",
+      "Side": "top",
+      "PCB_X_mm": "12.6",
+      "PCB_Y_mm": "33.0",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C405",
+      "Side": "top",
+      "PCB_X_mm": "12.6",
+      "PCB_Y_mm": "34.6",
+      "Rotation_deg": "0.0",
+      "Value": "10n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C406",
+      "Side": "top",
+      "PCB_X_mm": "10.2",
+      "PCB_Y_mm": "33.0",
+      "Rotation_deg": "90.0",
+      "Value": "10n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C407",
+      "Side": "top",
+      "PCB_X_mm": "10.95",
+      "PCB_Y_mm": "28.5",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C408",
+      "Side": "top",
+      "PCB_X_mm": "14.15",
+      "PCB_Y_mm": "28.5",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C409",
+      "Side": "top",
+      "PCB_X_mm": "9.1",
+      "PCB_Y_mm": "36.3",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C501",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "42.7",
+      "Rotation_deg": "0.0",
+      "Value": "4.7u / 16V X5R / 10%",
+      "MPN": "C1608X5R1C475K080AC",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C502",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "48.7",
+      "Rotation_deg": "0.0",
+      "Value": "4.7u / 16V X5R / 10%",
+      "MPN": "C1608X5R1C475K080AC",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C503",
+      "Side": "top",
+      "PCB_X_mm": "8.5",
+      "PCB_Y_mm": "46.3",
+      "Rotation_deg": "0.0",
+      "Value": "10n / 50V X7R / 10% / DNP",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C504",
+      "Side": "top",
+      "PCB_X_mm": "8.5",
+      "PCB_Y_mm": "48.1",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C505",
+      "Side": "top",
+      "PCB_X_mm": "9.2",
+      "PCB_Y_mm": "51.5",
+      "Rotation_deg": "90.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C506",
+      "Side": "top",
+      "PCB_X_mm": "16.649999",
+      "PCB_Y_mm": "34.025",
+      "Rotation_deg": "90.0",
+      "Value": "10n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C507",
+      "Side": "top",
+      "PCB_X_mm": "6.65",
+      "PCB_Y_mm": "38.1",
+      "Rotation_deg": "90.0",
+      "Value": "10n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H103K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C508",
+      "Side": "top",
+      "PCB_X_mm": "15.5",
+      "PCB_Y_mm": "38.4",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C509",
+      "Side": "top",
+      "PCB_X_mm": "12.25",
+      "PCB_Y_mm": "38.4",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C601",
+      "Side": "top",
+      "PCB_X_mm": "19.5",
+      "PCB_Y_mm": "42.1",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 25V X7R / 10%",
+      "MPN": "C2012X7R1E105K125AB",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C701",
+      "Side": "top",
+      "PCB_X_mm": "15.1",
+      "PCB_Y_mm": "50.5",
+      "Rotation_deg": "90.0",
+      "Value": "22u / 25V X5R / 20%",
+      "MPN": "C3216X5R1E226M160AB",
+      "Footprint": "C_1206_3216Metric"
+    },
+    {
+      "Reference": "C702",
+      "Side": "top",
+      "PCB_X_mm": "21.25",
+      "PCB_Y_mm": "54.2",
+      "Rotation_deg": "0.0",
+      "Value": "22u / 16V X5R / 20%",
+      "MPN": "C2012X5R1C226M125AC",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C703",
+      "Side": "top",
+      "PCB_X_mm": "19.25",
+      "PCB_Y_mm": "61.3",
+      "Rotation_deg": "90.0",
+      "Value": "22u / 16V X5R / 20%",
+      "MPN": "C2012X5R1C226M125AC",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C704",
+      "Side": "top",
+      "PCB_X_mm": "2.25",
+      "PCB_Y_mm": "57.0",
+      "Rotation_deg": "90.0",
+      "Value": "1u / 25V X7R / 10%",
+      "MPN": "C2012X7R1E105K125AB",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C705",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "60.5",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 25V X7R / 10%",
+      "MPN": "C2012X7R1E105K125AB",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C706",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "62.75",
+      "Rotation_deg": "0.0",
+      "Value": "10n / 50V X7R / 10% / DNP",
+      "MPN": "C0805C103K5RACTU",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C707",
+      "Side": "top",
+      "PCB_X_mm": "21.7",
+      "PCB_Y_mm": "68.925",
+      "Rotation_deg": "90.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C0805C104K5RACTU",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C708",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "65.0",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C0805C104K5RACTU",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C801",
+      "Side": "top",
+      "PCB_X_mm": "5.75",
+      "PCB_Y_mm": "58.0",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C802",
+      "Side": "top",
+      "PCB_X_mm": "14.8",
+      "PCB_Y_mm": "57.5",
+      "Rotation_deg": "0.0",
+      "Value": "100n / 50V X7R / 10%",
+      "MPN": "C1608X7R1H104K080AA",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "C803",
+      "Side": "top",
+      "PCB_X_mm": "12.25",
+      "PCB_Y_mm": "69.35",
+      "Rotation_deg": "0.0",
+      "Value": "33n / 50V X7R / 10%",
+      "MPN": "C0805C333K5RACTU",
+      "Footprint": "C_0805_2012Metric"
+    },
+    {
+      "Reference": "C804",
+      "Side": "top",
+      "PCB_X_mm": "17.0",
+      "PCB_Y_mm": "65.0",
+      "Rotation_deg": "0.0",
+      "Value": "1u / 16V X7R / 10%",
+      "MPN": "C0603C105K4RACTU",
+      "Footprint": "C_0603_1608Metric"
+    },
+    {
+      "Reference": "H1",
+      "Side": "top",
+      "PCB_X_mm": "25.6",
+      "PCB_Y_mm": "92.0",
+      "Rotation_deg": "0.0",
+      "Value": "M2 NPTH 2.30",
+      "MPN": "",
+      "Footprint": "Mechanical_M2_NPTH_2.30mm"
+    },
+    {
+      "Reference": "H2",
+      "Side": "top",
+      "PCB_X_mm": "4.4",
+      "PCB_Y_mm": "6.0",
+      "Rotation_deg": "0.0",
+      "Value": "M2 NPTH 2.30",
+      "MPN": "",
+      "Footprint": "Mechanical_M2_NPTH_2.30mm"
+    },
+    {
+      "Reference": "J101",
+      "Side": "top",
+      "PCB_X_mm": "14.75",
+      "PCB_Y_mm": "97.0",
+      "Rotation_deg": "0.0",
+      "Value": "USB HARNESS: 5V/GND/CC1/CC2/D+/D-",
+      "MPN": "",
+      "Footprint": "USB_Harness_6P_P1.8mm"
+    },
+    {
+      "Reference": "J102",
+      "Side": "top",
+      "PCB_X_mm": "14.9",
+      "PCB_Y_mm": "93.0",
+      "Rotation_deg": "0.0",
+      "Value": "PACK PIGTAIL",
+      "MPN": "",
+      "Footprint": "Battery_Pigtail_2x22AWG_P4.2_D1.00_Pad1.85"
+    },
+    {
+      "Reference": "J103",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "77.725",
+      "Rotation_deg": "0.0",
+      "Value": "PACK NTC: 103AT-2",
+      "MPN": "M20-9990246",
+      "Footprint": "PinHeader_1x02_P2.54mm_Vertical"
+    },
+    {
+      "Reference": "J104",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "69.725",
+      "Rotation_deg": "0.0",
+      "Value": "ARM: OPEN",
+      "MPN": "M20-9990246",
+      "Footprint": "PinHeader_1x02_P2.54mm_Vertical"
+    },
+    {
+      "Reference": "J301",
+      "Side": "top",
+      "PCB_X_mm": "27.265",
+      "PCB_Y_mm": "69.245",
+      "Rotation_deg": "180.0",
+      "Value": "GUITION JP1 / 2x13",
+      "MPN": "HTSW-113-07-L-D-007",
+      "Footprint": "Samtec_HTSW-113-07-L-D-007_P2.54mm_Key7"
+    },
+    {
+      "Reference": "J401",
+      "Side": "top",
+      "PCB_X_mm": "4.9",
+      "PCB_Y_mm": "24.46",
+      "Rotation_deg": "0.0",
+      "Value": "AO2 / 3-pin cable",
+      "MPN": "M20-9990346",
+      "Footprint": "PinHeader_1x03_P2.54mm_Vertical"
+    },
+    {
+      "Reference": "J402",
+      "Side": "top",
+      "PCB_X_mm": "4.45",
+      "PCB_Y_mm": "16.6",
+      "Rotation_deg": "0.0",
+      "Value": "SMB male-centre / Amphenol142138",
+      "MPN": "142138",
+      "Footprint": "SMB_Amphenol_142138"
+    },
+    {
+      "Reference": "J501",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "34.96",
+      "Rotation_deg": "0.0",
+      "Value": "MD62 cable / <=30 cm",
+      "MPN": "M20-9990346",
+      "Footprint": "PinHeader_1x03_P2.54mm_Vertical"
+    },
+    {
+      "Reference": "J601",
+      "Side": "top",
+      "PCB_X_mm": "26.45",
+      "PCB_Y_mm": "21.525",
+      "Rotation_deg": "180.0",
+      "Value": "BME280 harness",
+      "MPN": "B4B-XH-A(LF)(SN)",
+      "Footprint": "JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+    },
+    {
+      "Reference": "J701",
+      "Side": "top",
+      "PCB_X_mm": "26.45",
+      "PCB_Y_mm": "29.525",
+      "Rotation_deg": "180.0",
+      "Value": "ZE07-CO harness",
+      "MPN": "B4B-XH-A(LF)(SN)",
+      "Footprint": "JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical"
+    },
+    {
+      "Reference": "J801",
+      "Side": "top",
+      "PCB_X_mm": "3.724999",
+      "PCB_Y_mm": "51.5",
+      "Rotation_deg": "90.0",
+      "Value": "POWER BUTTON / 1NO",
+      "MPN": "M20-9990246",
+      "Footprint": "PinHeader_1x02_P2.54mm_Vertical"
+    },
+    {
+      "Reference": "J802",
+      "Side": "top",
+      "PCB_X_mm": "5.725",
+      "PCB_Y_mm": "55.3",
+      "Rotation_deg": "90.0",
+      "Value": "BUTTON LED +/-",
+      "MPN": "M20-9990246",
+      "Footprint": "PinHeader_1x02_P2.54mm_Vertical"
+    },
+    {
+      "Reference": "L101",
+      "Side": "top",
+      "PCB_X_mm": "13.5",
+      "PCB_Y_mm": "76.5",
+      "Rotation_deg": "90.0",
+      "Value": "1u / 74437349010",
+      "MPN": "74437349010",
+      "Footprint": "L_Wurth_74437349010_7050"
+    },
+    {
+      "Reference": "L201",
+      "Side": "top",
+      "PCB_X_mm": "13.0",
+      "PCB_Y_mm": "66.0",
+      "Rotation_deg": "180.0",
+      "Value": "1.5u / XGL4030-152MEC",
+      "MPN": "XGL4030-152MEC",
+      "Footprint": "L_Coilcraft_XGL4030"
+    },
+    {
+      "Reference": "L701",
+      "Side": "top",
+      "PCB_X_mm": "19.5",
+      "PCB_Y_mm": "50.65",
+      "Rotation_deg": "-90.0",
+      "Value": "1u / XGL4020-102MEC",
+      "MPN": "XGL4020-102MEC",
+      "Footprint": "L_Coilcraft_XGL4020"
+    },
+    {
+      "Reference": "Q101",
+      "Side": "top",
+      "PCB_X_mm": "20.0",
+      "PCB_Y_mm": "78.75",
+      "Rotation_deg": "0.0",
+      "Value": "2N7002",
+      "MPN": "2N7002-7-F",
+      "Footprint": "SOT-23"
+    },
+    {
+      "Reference": "Q110",
+      "Side": "top",
+      "PCB_X_mm": "18.0",
+      "PCB_Y_mm": "89.5",
+      "Rotation_deg": "180.0",
+      "Value": "DMN2056U-7",
+      "MPN": "DMN2056U-7",
+      "Footprint": "DMN2056U_SOT23_Diodes_Recommended"
+    },
+    {
+      "Reference": "Q111",
+      "Side": "top",
+      "PCB_X_mm": "20.0",
+      "PCB_Y_mm": "86.0",
+      "Rotation_deg": "0.0",
+      "Value": "DMN2056U-7",
+      "MPN": "DMN2056U-7",
+      "Footprint": "SOT-23"
+    },
+    {
+      "Reference": "Q112",
+      "Side": "top",
+      "PCB_X_mm": "24.75",
+      "PCB_Y_mm": "96.75",
+      "Rotation_deg": "0.0",
+      "Value": "DMN2056U-7",
+      "MPN": "DMN2056U-7",
+      "Footprint": "SOT-23"
+    },
+    {
+      "Reference": "Q601",
+      "Side": "top",
+      "PCB_X_mm": "19.5",
+      "PCB_Y_mm": "35.0",
+      "Rotation_deg": "0.0",
+      "Value": "BSS138",
+      "MPN": "BSS138-7-F",
+      "Footprint": "SOT-23"
+    },
+    {
+      "Reference": "Q602",
+      "Side": "top",
+      "PCB_X_mm": "20.5",
+      "PCB_Y_mm": "39.2",
+      "Rotation_deg": "0.0",
+      "Value": "BSS138",
+      "MPN": "BSS138-7-F",
+      "Footprint": "SOT-23"
+    },
+    {
+      "Reference": "R101",
+      "Side": "top",
+      "PCB_X_mm": "14.85",
+      "PCB_Y_mm": "88.95",
+      "Rotation_deg": "0.0",
+      "Value": "5.23k 1%",
+      "MPN": "RC0402FR-075K23L",
+      "Footprint": "R_0402_1005Metric"
+    },
+    {
+      "Reference": "R102",
+      "Side": "top",
+      "PCB_X_mm": "10.9",
+      "PCB_Y_mm": "88.25",
+      "Rotation_deg": "90.0",
+      "Value": "30.1k 1%",
+      "MPN": "RC0603FR-0730K1L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R103",
+      "Side": "top",
+      "PCB_X_mm": "14.5",
+      "PCB_Y_mm": "87.55",
+      "Rotation_deg": "0.0",
+      "Value": "300R / 1% / supported ILIM range",
+      "MPN": "RC0603FR-07300RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R104",
+      "Side": "top",
+      "PCB_X_mm": "5.0",
+      "PCB_Y_mm": "93.0",
+      "Rotation_deg": "180.0",
+      "Value": "100k",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R105",
+      "Side": "top",
+      "PCB_X_mm": "5.75",
+      "PCB_Y_mm": "84.25",
+      "Rotation_deg": "90.0",
+      "Value": "100k",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R107",
+      "Side": "top",
+      "PCB_X_mm": "23.5",
+      "PCB_Y_mm": "75.0",
+      "Rotation_deg": "180.0",
+      "Value": "10k",
+      "MPN": "RC0603FR-0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R110",
+      "Side": "top",
+      "PCB_X_mm": "23.5",
+      "PCB_Y_mm": "73.5",
+      "Rotation_deg": "180.0",
+      "Value": "887k / 1%",
+      "MPN": "RC0603FR-07887KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R111",
+      "Side": "top",
+      "PCB_X_mm": "27.5",
+      "PCB_Y_mm": "77.55",
+      "Rotation_deg": "-90.0",
+      "Value": "33k / 1%",
+      "MPN": "RC0603FR-0733KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R112",
+      "Side": "top",
+      "PCB_X_mm": "29.0",
+      "PCB_Y_mm": "76.75",
+      "Rotation_deg": "90.0",
+      "Value": "10k / 1%",
+      "MPN": "RC0603FR-0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R113",
+      "Side": "top",
+      "PCB_X_mm": "26.0",
+      "PCB_Y_mm": "83.25",
+      "Rotation_deg": "0.0",
+      "Value": "97.6k / 0.1%",
+      "MPN": "RT0603BRD0797K6L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R114",
+      "Side": "top",
+      "PCB_X_mm": "21.75",
+      "PCB_Y_mm": "92.75",
+      "Rotation_deg": "90.0",
+      "Value": "10k / 0.1%",
+      "MPN": "RT0603BRD0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R115",
+      "Side": "top",
+      "PCB_X_mm": "21.4",
+      "PCB_Y_mm": "83.3",
+      "Rotation_deg": "-90.0",
+      "Value": "10k / 0.1%",
+      "MPN": "RT0402BRD0710KL",
+      "Footprint": "R_0402_1005Metric"
+    },
+    {
+      "Reference": "R116",
+      "Side": "top",
+      "PCB_X_mm": "7.75",
+      "PCB_Y_mm": "94.75",
+      "Rotation_deg": "0.0",
+      "Value": "1k / 0.1%",
+      "MPN": "RT0603BRD071KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R117",
+      "Side": "top",
+      "PCB_X_mm": "28.2",
+      "PCB_Y_mm": "97.0",
+      "Rotation_deg": "90.0",
+      "Value": "100k / 1%",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R118",
+      "Side": "top",
+      "PCB_X_mm": "10.75",
+      "PCB_Y_mm": "91.95",
+      "Rotation_deg": "180.0",
+      "Value": "100k / 0.1%",
+      "MPN": "RT0402BRD07100KL",
+      "Footprint": "R_0402_1005Metric"
+    },
+    {
+      "Reference": "R119",
+      "Side": "bottom",
+      "PCB_X_mm": "5.15",
+      "PCB_Y_mm": "88.15",
+      "Rotation_deg": "0.0",
+      "Value": "19.1k / 0.1%",
+      "MPN": "RT0402BRD0719K1L",
+      "Footprint": "R_0402_1005Metric"
+    },
+    {
+      "Reference": "R120",
+      "Side": "top",
+      "PCB_X_mm": "1.925",
+      "PCB_Y_mm": "92.75",
+      "Rotation_deg": "0.0",
+      "Value": "10k / 1%",
+      "MPN": "RC0603FR-0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R121",
+      "Side": "bottom",
+      "PCB_X_mm": "8.75",
+      "PCB_Y_mm": "84.8",
+      "Rotation_deg": "90.0",
+      "Value": "34k / 0.1% / 10ppm",
+      "MPN": "TNPW060334K0BYEA",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R122",
+      "Side": "bottom",
+      "PCB_X_mm": "10.45",
+      "PCB_Y_mm": "87.8",
+      "Rotation_deg": "0.0",
+      "Value": "649R / 0.1% / 10ppm",
+      "MPN": "TNPW0603649RBYEA",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R123",
+      "Side": "bottom",
+      "PCB_X_mm": "13.725",
+      "PCB_Y_mm": "87.6",
+      "Rotation_deg": "0.0",
+      "Value": "10k / 0.1% / 10ppm",
+      "MPN": "TNPW060310K0BYEA",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R124",
+      "Side": "bottom",
+      "PCB_X_mm": "16.0",
+      "PCB_Y_mm": "86.35",
+      "Rotation_deg": "90.0",
+      "Value": "21.5k / 0.1% / 25ppm",
+      "MPN": "TNPW060321K5BEEA",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R125",
+      "Side": "bottom",
+      "PCB_X_mm": "17.75",
+      "PCB_Y_mm": "86.95",
+      "Rotation_deg": "90.0",
+      "Value": "10k / 0.1% / 25ppm",
+      "MPN": "TNPW060310K0BEEA",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R126",
+      "Side": "bottom",
+      "PCB_X_mm": "18.75",
+      "PCB_Y_mm": "90.0",
+      "Rotation_deg": "90.0",
+      "Value": "1.65k / 0.1%",
+      "MPN": "TNPW06031K65BEEA",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R127",
+      "Side": "bottom",
+      "PCB_X_mm": "10.25",
+      "PCB_Y_mm": "92.75",
+      "Rotation_deg": "90.0",
+      "Value": "10k / 1%",
+      "MPN": "RC0603FR-0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R128",
+      "Side": "bottom",
+      "PCB_X_mm": "8.5",
+      "PCB_Y_mm": "92.75",
+      "Rotation_deg": "90.0",
+      "Value": "100k / 1%",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R201",
+      "Side": "top",
+      "PCB_X_mm": "8.8",
+      "PCB_Y_mm": "59.75",
+      "Rotation_deg": "0.0",
+      "Value": "1.62M 1%",
+      "MPN": "RC0603FR-071M62L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R202",
+      "Side": "top",
+      "PCB_X_mm": "8.8",
+      "PCB_Y_mm": "58.05",
+      "Rotation_deg": "0.0",
+      "Value": "180k 1%",
+      "MPN": "RC0603FR-07180KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R203",
+      "Side": "top",
+      "PCB_X_mm": "4.25",
+      "PCB_Y_mm": "67.0",
+      "Rotation_deg": "0.0",
+      "Value": "100k",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R301",
+      "Side": "top",
+      "PCB_X_mm": "11.95",
+      "PCB_Y_mm": "71.15",
+      "Rotation_deg": "0.0",
+      "Value": "10k",
+      "MPN": "RC0603FR-0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R302",
+      "Side": "top",
+      "PCB_X_mm": "3.4",
+      "PCB_Y_mm": "83.5",
+      "Rotation_deg": "0.0",
+      "Value": "4.7k / FIT",
+      "MPN": "RC0603FR-074K7L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R303",
+      "Side": "top",
+      "PCB_X_mm": "19.5",
+      "PCB_Y_mm": "64.5",
+      "Rotation_deg": "90.0",
+      "Value": "4.7k / FIT",
+      "MPN": "RC0603FR-074K7L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R401",
+      "Side": "top",
+      "PCB_X_mm": "8.25",
+      "PCB_Y_mm": "25.5",
+      "Rotation_deg": "90.0",
+      "Value": "100R / 0.1%",
+      "MPN": "RT0603BRD07100RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R402",
+      "Side": "top",
+      "PCB_X_mm": "12.5",
+      "PCB_Y_mm": "18.5",
+      "Rotation_deg": "0.0",
+      "Value": "100R / 0.1%",
+      "MPN": "RT0603BRD07100RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R403",
+      "Side": "top",
+      "PCB_X_mm": "1.3",
+      "PCB_Y_mm": "29.759999",
+      "Rotation_deg": "90.0",
+      "Value": "1M / 1%",
+      "MPN": "RC0603FR-071ML",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R404",
+      "Side": "top",
+      "PCB_X_mm": "1.3",
+      "PCB_Y_mm": "33.0",
+      "Rotation_deg": "90.0",
+      "Value": "1M / 1%",
+      "MPN": "RC0603FR-071ML",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R405",
+      "Side": "top",
+      "PCB_X_mm": "15.0",
+      "PCB_Y_mm": "33.0",
+      "Rotation_deg": "90.0",
+      "Value": "100R / 0.1%",
+      "MPN": "RT0603BRD07100RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R406",
+      "Side": "top",
+      "PCB_X_mm": "1.3",
+      "PCB_Y_mm": "36.3",
+      "Rotation_deg": "90.0",
+      "Value": "100R / 0.1%",
+      "MPN": "RT0603BRD07100RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R407",
+      "Side": "top",
+      "PCB_X_mm": "10.95",
+      "PCB_Y_mm": "30.25",
+      "Rotation_deg": "0.0",
+      "Value": "1M / 1%",
+      "MPN": "RC0603FR-071ML",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R408",
+      "Side": "top",
+      "PCB_X_mm": "14.15",
+      "PCB_Y_mm": "30.25",
+      "Rotation_deg": "0.0",
+      "Value": "1M / 1%",
+      "MPN": "RC0603FR-071ML",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R409",
+      "Side": "top",
+      "PCB_X_mm": "12.25",
+      "PCB_Y_mm": "36.3",
+      "Rotation_deg": "0.0",
+      "Value": "10k / 0.1%",
+      "MPN": "RT0603BRD0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R410",
+      "Side": "top",
+      "PCB_X_mm": "15.5",
+      "PCB_Y_mm": "36.4",
+      "Rotation_deg": "0.0",
+      "Value": "10k / 0.1%",
+      "MPN": "RT0603BRD0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R501",
+      "Side": "top",
+      "PCB_X_mm": "2.2",
+      "PCB_Y_mm": "54.2",
+      "Rotation_deg": "0.0",
+      "Value": "100k",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R504",
+      "Side": "bottom",
+      "PCB_X_mm": "18.25",
+      "PCB_Y_mm": "48.0",
+      "Rotation_deg": "180.0",
+      "Value": "10k / 0.1%",
+      "MPN": "RT0603BRD0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R505",
+      "Side": "top",
+      "PCB_X_mm": "22.0",
+      "PCB_Y_mm": "44.75",
+      "Rotation_deg": "90.0",
+      "Value": "10k / 0.1%",
+      "MPN": "RT0603BRD0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R506",
+      "Side": "top",
+      "PCB_X_mm": "9.0",
+      "PCB_Y_mm": "38.4",
+      "Rotation_deg": "0.0",
+      "Value": "680R / 0.1%",
+      "MPN": "RT0603BRD07680RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R507",
+      "Side": "top",
+      "PCB_X_mm": "3.75",
+      "PCB_Y_mm": "32.25",
+      "Rotation_deg": "0.0",
+      "Value": "680R / 0.1%",
+      "MPN": "RT0603BRD07680RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R601",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "60.5",
+      "Rotation_deg": "90.0",
+      "Value": "0R / fit: 3.3 V",
+      "MPN": "RC0603JR-070RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R602",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "63.75",
+      "Rotation_deg": "90.0",
+      "Value": "0R / DNP: 5 V option",
+      "MPN": "RC0603JR-070RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R603",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "67.0",
+      "Rotation_deg": "90.0",
+      "Value": "4.7k / DNP",
+      "MPN": "RC0603FR-074K7L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R604",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "70.25",
+      "Rotation_deg": "90.0",
+      "Value": "4.7k / DNP",
+      "MPN": "RC0603FR-074K7L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R701",
+      "Side": "top",
+      "PCB_X_mm": "17.05",
+      "PCB_Y_mm": "56.2",
+      "Rotation_deg": "90.0",
+      "Value": "787k / 0.1%",
+      "MPN": "RT0603BRD07787KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R702",
+      "Side": "top",
+      "PCB_X_mm": "18.8",
+      "PCB_Y_mm": "54.25",
+      "Rotation_deg": "90.0",
+      "Value": "100k / 0.1%",
+      "MPN": "RT0402BRD07100KL",
+      "Footprint": "R_0402_1005Metric"
+    },
+    {
+      "Reference": "R703",
+      "Side": "top",
+      "PCB_X_mm": "21.0",
+      "PCB_Y_mm": "63.25",
+      "Rotation_deg": "90.0",
+      "Value": "100k",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R704",
+      "Side": "top",
+      "PCB_X_mm": "24.75",
+      "PCB_Y_mm": "33.4",
+      "Rotation_deg": "0.0",
+      "Value": "100R",
+      "MPN": "RC0603FR-07100RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R705",
+      "Side": "top",
+      "PCB_X_mm": "28.0",
+      "PCB_Y_mm": "33.4",
+      "Rotation_deg": "0.0",
+      "Value": "100R",
+      "MPN": "RC0603FR-07100RL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R801",
+      "Side": "top",
+      "PCB_X_mm": "4.75",
+      "PCB_Y_mm": "75.0",
+      "Rotation_deg": "0.0",
+      "Value": "5.1k",
+      "MPN": "RC0603FR-075K1L",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R802",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "73.5",
+      "Rotation_deg": "90.0",
+      "Value": "10k",
+      "MPN": "RC0603FR-0710KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R803",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "81.25",
+      "Rotation_deg": "90.0",
+      "Value": "100k",
+      "MPN": "RC0603FR-07100KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "R804",
+      "Side": "top",
+      "PCB_X_mm": "1.25",
+      "PCB_Y_mm": "76.75",
+      "Rotation_deg": "90.0",
+      "Value": "1k / DNP",
+      "MPN": "RC0603FR-071KL",
+      "Footprint": "R_0603_1608Metric"
+    },
+    {
+      "Reference": "RN501",
+      "Side": "top",
+      "PCB_X_mm": "7.2",
+      "PCB_Y_mm": "40.9",
+      "Rotation_deg": "0.0",
+      "Value": "2x2k / 1:1 matched",
+      "MPN": "ACASN2001U2001P1AT",
+      "Footprint": "Vishay_ACAS0606_AT_IEC"
+    },
+    {
+      "Reference": "TP1001",
+      "Side": "top",
+      "PCB_X_mm": "21.751277",
+      "PCB_Y_mm": "66.0",
+      "Rotation_deg": "0.0",
+      "Value": "GND",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1002",
+      "Side": "top",
+      "PCB_X_mm": "23.001277",
+      "PCB_Y_mm": "83.0",
+      "Rotation_deg": "0.0",
+      "Value": "USB_5V",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1003",
+      "Side": "top",
+      "PCB_X_mm": "21.501277",
+      "PCB_Y_mm": "90.25",
+      "Rotation_deg": "0.0",
+      "Value": "PACK_P",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1004",
+      "Side": "top",
+      "PCB_X_mm": "21.5",
+      "PCB_Y_mm": "95.5",
+      "Rotation_deg": "0.0",
+      "Value": "VSYS",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1005",
+      "Side": "top",
+      "PCB_X_mm": "15.0",
+      "PCB_Y_mm": "70.5",
+      "Rotation_deg": "0.0",
+      "Value": "VOUT_5V",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1006",
+      "Side": "top",
+      "PCB_X_mm": "22.601277",
+      "PCB_Y_mm": "35.4",
+      "Rotation_deg": "0.0",
+      "Value": "HOST_3V3",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1007",
+      "Side": "bottom",
+      "PCB_X_mm": "21.001277",
+      "PCB_Y_mm": "60.75",
+      "Rotation_deg": "180.0",
+      "Value": "POWER_EN",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1008",
+      "Side": "top",
+      "PCB_X_mm": "24.851277",
+      "PCB_Y_mm": "35.4",
+      "Rotation_deg": "0.0",
+      "Value": "I2C_SCL",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1009",
+      "Side": "top",
+      "PCB_X_mm": "27.101277",
+      "PCB_Y_mm": "35.4",
+      "Rotation_deg": "0.0",
+      "Value": "I2C_SDA",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1010",
+      "Side": "top",
+      "PCB_X_mm": "1.101277",
+      "PCB_Y_mm": "46.2",
+      "Rotation_deg": "0.0",
+      "Value": "HE_3V0",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1011",
+      "Side": "top",
+      "PCB_X_mm": "7.801277",
+      "PCB_Y_mm": "34.2",
+      "Rotation_deg": "0.0",
+      "Value": "HE_SENSE",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1012",
+      "Side": "top",
+      "PCB_X_mm": "7.5",
+      "PCB_Y_mm": "43.25",
+      "Rotation_deg": "0.0",
+      "Value": "O2_VMID",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D1.0mm"
+    },
+    {
+      "Reference": "TP1013",
+      "Side": "bottom",
+      "PCB_X_mm": "10.15",
+      "PCB_Y_mm": "83.9",
+      "Rotation_deg": "180.0",
+      "Value": "CHG_STAT_N",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D0.8mm"
+    },
+    {
+      "Reference": "TP1014",
+      "Side": "top",
+      "PCB_X_mm": "15.1",
+      "PCB_Y_mm": "86.4",
+      "Rotation_deg": "0.0",
+      "Value": "QON SERVICE",
+      "MPN": "",
+      "Footprint": "TestPoint_Pad_D0.8mm"
+    },
+    {
+      "Reference": "U101",
+      "Side": "top",
+      "PCB_X_mm": "13.0",
+      "PCB_Y_mm": "84.0",
+      "Rotation_deg": "0.0",
+      "Value": "BQ25895RTWR",
+      "MPN": "BQ25895RTWR",
+      "Footprint": "TI_RTW24_4x4_ThermalVias_ServicePad"
+    },
+    {
+      "Reference": "U110",
+      "Side": "top",
+      "PCB_X_mm": "25.2",
+      "PCB_Y_mm": "77.4",
+      "Rotation_deg": "0.0",
+      "Value": "TUSB320LAIRWBR",
+      "MPN": "TUSB320LAIRWBR",
+      "Footprint": "Texas_X2QFN-12_1.6x1.6mm_P0.4mm"
+    },
+    {
+      "Reference": "U111",
+      "Side": "top",
+      "PCB_X_mm": "26.45",
+      "PCB_Y_mm": "74.05",
+      "Rotation_deg": "0.0",
+      "Value": "PI3USB9201ZTAEX",
+      "MPN": "PI3USB9201ZTAEX",
+      "Footprint": "PI3USB9201_UQFN2020_12_TypeC"
+    },
+    {
+      "Reference": "U112",
+      "Side": "top",
+      "PCB_X_mm": "25.2",
+      "PCB_Y_mm": "80.5",
+      "Rotation_deg": "0.0",
+      "Value": "SN74AUP1G74DCUR",
+      "MPN": "SN74AUP1G74DCUR",
+      "Footprint": "VSSOP-8_2.3x2mm_P0.5mm"
+    },
+    {
+      "Reference": "U113",
+      "Side": "top",
+      "PCB_X_mm": "25.0",
+      "PCB_Y_mm": "85.8",
+      "Rotation_deg": "0.0",
+      "Value": "TPS3808G01DBVR",
+      "MPN": "TPS3808G01DBVR",
+      "Footprint": "SOT-23-6"
+    },
+    {
+      "Reference": "U114",
+      "Side": "top",
+      "PCB_X_mm": "7.5",
+      "PCB_Y_mm": "90.5",
+      "Rotation_deg": "180.0",
+      "Value": "TPS22950CQDDCRQ1",
+      "MPN": "TPS22950CQDDCRQ1",
+      "Footprint": "TI_DDC0006A"
+    },
+    {
+      "Reference": "U115",
+      "Side": "bottom",
+      "PCB_X_mm": "14.5",
+      "PCB_Y_mm": "90.0",
+      "Rotation_deg": "0.0",
+      "Value": "TPS259470ARPWR",
+      "MPN": "TPS259470ARPWR",
+      "Footprint": "TI_RPW0010A"
+    },
+    {
+      "Reference": "U201",
+      "Side": "top",
+      "PCB_X_mm": "13.0",
+      "PCB_Y_mm": "61.0",
+      "Rotation_deg": "0.0",
+      "Value": "TPS63020DSJR",
+      "MPN": "TPS63020DSJR",
+      "Footprint": "TI_DSJ_14"
+    },
+    {
+      "Reference": "U301",
+      "Side": "top",
+      "PCB_X_mm": "18.0",
+      "PCB_Y_mm": "69.8",
+      "Rotation_deg": "0.0",
+      "Value": "MAX17048G+",
+      "MPN": "MAX17048G+T10",
+      "Footprint": "TDFN-8-1EP_2x2mm_P0.5mm_EP0.8x1.2mm"
+    },
+    {
+      "Reference": "U302",
+      "Side": "top",
+      "PCB_X_mm": "12.0",
+      "PCB_Y_mm": "51.5",
+      "Rotation_deg": "0.0",
+      "Value": "LM66100DCKR",
+      "MPN": "LM66100DCKR",
+      "Footprint": "SOT-363_SC-70-6"
+    },
+    {
+      "Reference": "U401",
+      "Side": "top",
+      "PCB_X_mm": "12.6",
+      "PCB_Y_mm": "23.2",
+      "Rotation_deg": "-90.0",
+      "Value": "ADS122C04IPWR",
+      "MPN": "ADS122C04IPWR",
+      "Footprint": "TSSOP-16_4.4x5mm_P0.65mm"
+    },
+    {
+      "Reference": "U501",
+      "Side": "top",
+      "PCB_X_mm": "4.0",
+      "PCB_Y_mm": "45.7",
+      "Rotation_deg": "90.0",
+      "Value": "TPS7A2030PDBVR",
+      "MPN": "TPS7A2030PDBVR",
+      "Footprint": "SOT-23-5"
+    },
+    {
+      "Reference": "U502",
+      "Side": "top",
+      "PCB_X_mm": "12.6",
+      "PCB_Y_mm": "42.0",
+      "Rotation_deg": "0.0",
+      "Value": "ADS122C04IPWR",
+      "MPN": "ADS122C04IPWR",
+      "Footprint": "TSSOP-16_4.4x5mm_P0.65mm"
+    },
+    {
+      "Reference": "U701",
+      "Side": "top",
+      "PCB_X_mm": "19.5",
+      "PCB_Y_mm": "56.3",
+      "Rotation_deg": "0.0",
+      "Value": "TPS61023DRLR",
+      "MPN": "TPS61023DRLR",
+      "Footprint": "SOT-563"
+    },
+    {
+      "Reference": "U702",
+      "Side": "top",
+      "PCB_X_mm": "19.0",
+      "PCB_Y_mm": "45.4",
+      "Rotation_deg": "0.0",
+      "Value": "TPS7A2030PDBVR",
+      "MPN": "TPS7A2030PDBVR",
+      "Footprint": "SOT-23-5"
+    },
+    {
+      "Reference": "U703",
+      "Side": "top",
+      "PCB_X_mm": "13.0",
+      "PCB_Y_mm": "46.1",
+      "Rotation_deg": "0.0",
+      "Value": "TXU0202DCUR",
+      "MPN": "TXU0202DCUR",
+      "Footprint": "TI_DCU8_CompactSilk"
+    },
+    {
+      "Reference": "U801",
+      "Side": "top",
+      "PCB_X_mm": "13.6",
+      "PCB_Y_mm": "55.0",
+      "Rotation_deg": "0.0",
+      "Value": "LTC2954CTS8-1",
+      "MPN": "LTC2954CTS8-1#TRMPBF",
+      "Footprint": "TSOT-23-8"
+    }
+  ],
+  "native_DRC_pending": false,
+  "native_DRC": "zero violations, zero opens, zero schematic mismatch",
+  "CAD_receipt": "hardware/system-review/mechanical/final-local-checkpoint/summary.json",
+  "CAD_receipt_sha256": "daab92a20c5177621c927585a7270acf066d1771d886d6be1e37c0f719c434e2",
+  "mechanical_cable_qualification_pending": true,
+  "order_release": false
+}

@@ -5,7 +5,7 @@ from collections import defaultdict
 import sexpdata as sx
 
 hw=Path(__file__).resolve().parents[1]
-v=hw/'verification/power'
+v=hw/'pcb/verification/power'
 intent=json.loads((v/'intended-nets.json').read_text())
 root=ET.parse(v/'Trimix_Power-netlist.xml').getroot()
 expected=defaultdict(set); nc=set()

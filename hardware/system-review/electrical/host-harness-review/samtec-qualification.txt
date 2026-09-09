@@ -1,0 +1,2772 @@
+Project Number: Design Qualification Test Report     Tracking Code: 112488_Report_Rev_1
+Requested by: Mark Shireman                        Date: 4/15/2019                    Product Rev: 0
+Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01                              Lot #: N/A   Tech: Peter Chen         Eng: Vico Zhao
+Part description: IDSD\TST                                                                             Qty to test: 45
+Test Start: 2/25/2011         Test Completed: 3/25/2011
+
+
+
+
+                                          Design Qualification Test Report
+
+                                                    IDSD\TST
+                                       IDSD-36-D-06.00-G\TST-136-01-G-D-01
+
+
+
+
+                                                          Page 1 of 54
+    Tracking Code: 112488_Report_Rev_1                          Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                Part description: IDSD\TST
+
+                                                 CERTIFICATION
+
+All instruments and measuring equipment were calibrated to National Institute for Standards and Technology (NIST)
+traceable standards according to IS0 10012-l and ANSI/NCSL 2540-1, as applicable.
+
+All contents contained herein are the property of Samtec. No portion of this report, in part or in full shall be
+reproduced without prior written approval of Samtec.
+
+SCOPE
+         To perform the following tests: Design Qualification Test, Please see test plan.
+
+APPLICABLE DOCUMENTS
+         Standards: EIA Publication 364
+
+TEST SAMPLES AND PREPARATION
+    1)   All materials were manufactured in accordance with the applicable product specification.
+    2)   All test samples were identified and encoded to maintain traceability throughout the test sequences.
+    3)   After soldering, the parts to be used for LLCR and DWV/IR testing were cleaned according to TLWI-0001.
+    4)   Either an automated cleaning procedure or an ultrasonic cleaning procedure may be used.
+    5)   The automated procedure is used with aqueous compatible soldering materials.
+    6) Parts not intended for testing LLCR and DWV/IR are visually inspected and cleaned if necessary.
+    7) Any additional preparation will be noted in the individual test sequences.
+    8) Solder Information: Lead free
+    9) Samtec Test PCBs used: PCB-102989-TST-XX
+
+
+
+
+                                                        Page 2 of 54
+     Tracking Code: 112488_Report_Rev_1                                 Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                        Part description: IDSD\TST
+
+
+                                                          FLOWCHARTS
+Gas Tight
+
+ TEST             GROUP A
+ STEP             192 Points
+
+
+   01             LLCR-1
+   02             Gas Tight
+   03             LLCR-2
+
+Gas Tight = EIA-364 -36A
+LLCR = EIA-364 -23, LLCR
+         use Keithley 58 0 in the dry circuit mode, 10 mA Max
+
+
+IR & DWV
+
+TEST              GROUP A1                   GROUP A2                   GROUP A3                      GROUP B1
+                                             2 Unmated
+                                                                  2 Unmated of Mating
+STEP          2 Mated Sets                    of Part #                                               2 Mated Sets
+                                                                        Part #
+                                            Being Tested
+               Break Down                    Break Down                Break Down
+                                                                                                       Pin-to-Pin
+                Pin-to-Pin                    Pin-to-Pin                Pin-to-Pin
+                                                                                              IR & DWV at test voltage
+           DW V/Break Down               DWV/Break Down             DWV/Break Down
+  01                                                                                      (on both mated sets and on each
+               Voltage                      Voltage                    Voltage
+                                                                                                connector unmated)
+                                                                                                  Thermal Shock
+  02
+                                                                                              (Mated and Undisturbed)
+                                                                                              IR & DWV at test voltage
+  03                                                                                      (on both mated sets and on each
+                                                                                                connector unmated)
+                                                                                                  Cyclic Humidity
+  04
+                                                                                              (Mated and Undisturbed)
+                                                                                              IR & DWV at test voltage
+  05                                                                                      (on both mated sets and on each
+                                                                                                connector unmated)
+
+
+DWV on Group B1 to be performed at Test Voltage
+         DWV test voltage is equal to 75% of the lowest break down voltage from Groups A1, A2 or A3
+Thermal Shock = EIA-364-32, Table II, Test Condition I:
+         -55o C to +85o C 1/2 hour dw ell, 100 cycles
+Hum idity = EIA-364-31, Test Condition B (240 Hours)
+         and Method III (+25°C to +65°C @ 90% RH to 98% RH)
+         ambient pre-condition and delete steps 7a and 7b
+IR = EIA-364-21
+DWV = EIA-364-20, Test Condition 1
+
+                                                                Page 3 of 54
+     Tracking Code: 112488_Report_Rev_1                                 Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                        Part description: IDSD\TST
+
+
+                                                   FLOWCHARTS Continued
+Durability/Mating/Unmating/Gaps
+
+
+TEST                    GROUPB1                                   GROUP B 2                           GR OUP B3
+                      8 Boards                                    8 Boards                             8 Boards
+STEP
+            (Largest position submitted)                (Largest position submitted)         (Largest position submitted)
+  01                  Contact Gaps                        Forces - Mating / Unmating           Forces - Mating / Unmating
+  02                     LLCR-1                                   25 Cycles                             25 Cycles
+  03          Forces - Mating / Unmating                  Forces - Mating / Unmating           Forces - Mating / Unmating
+  04                   25 Cycles                             25 Cycles (50 Total)                 25 Cycles (50 Total)
+  05          Forces - Mating / Unmating                  Forces - Mating / Unmating           Forces - Mating / Unmating
+  06              25 Cycles (50 Total)                       25 Cycles (75 Total)                 25 Cycles (75 Total)
+  07          Forces - Mating / Unmating                  Forces - Mating / Unmating           Forces - Mating / Unmating
+  08              25 Cycles (75 Total)                       25 Cycles (100 Total)                25 C ycles (100 Total)
+  09          Forces - Mating / Unmating                  Forces - Mating / Unmating           Forces - Mating / Unmating
+  10            25 Cycles (100 Total)
+  11          Forces - Mating / Unmating
+  12           C lean w/Compressed Air
+  13                  Contact Gaps
+  14                    LLCR-2
+                   Thermal Shock
+  15
+               (Mated and Undisturbed)
+  16                     LLCR-3
+                   Cyclic Humidity
+  17
+               (Mated and Undisturbed)
+  18                     LLCR-4
+  19          Forces - Mating / Unmating
+
+Thermal Shock = EIA-364-32, Table II, Test Condition I:
+         -55o C to +85o C 1/2 hour dw ell, 100 cycles
+Hum idity = EIA-364-31, Test Condition B (240 Hours)
+         and Method III (+25°C to +65°C @ 90% RH to 98% RH)
+         ambient pre-condition and delete steps 7a and 7b
+Mating / Unm ating Forces = EIA-364-13
+Contact Gaps / Height - No standard method. Usually measured optically.
+LLCR = EIA-364-23, LLCR
+         20 mV Max, 100 mA Max
+         Use Keithley 580 or 3706 in 4 wire dry circuit mode
+
+
+
+
+                                                               Page 4 of 54
+       Tracking Code: 112488_Report_Rev_1                                  Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                           Part description: IDSD\TST
+
+
+                                                       FLOWCHARTS Continued
+
+Thermal Aging
+
+
+TEST                 GROU P A1
+STEP                  8 Boards
+                Thermal Aging (Mated)
+  01                  Contact Gaps
+  02          Forces - Mating / Unmating
+  03                      LLCR-1
+                    Thermal Aging
+  04
+                (Mated and Undisturbed)
+  05                      LLCR-2
+  06          Forces - Mating / Unmating
+  07                  Contact Gaps
+
+Thermal Aging = EIA-364-17, Test Condition 4 (105°C)
+         Time Condition 'B' (250 Hours)
+Mating / Unm ating Forces = EIA-364-13
+Contact Gaps / Height - No standard method. Usually m easured optically.
+LLCR = EIA-364-23, LLCR
+         20 mV Max, 100 mA Max
+         Use Keithley 580 or 3706 in 4 wire dry circuit mode
+
+
+
+Normal Force
+
+ TEST                      GROUP A1                                             GROU P A2
+                       Individual Contacts                                  Individual Contacts
+ STEP
+                            (8-10 min)                                           (8-10 min)
+   01                     Contact Gaps                                         Contact Gaps
+                                                                               Thermal Aging
+   02                     Setup Approved
+                                                                           (Mated and Undisturbed)
+                         Normal Force
+   03          (in the body and soldered on PCB                                 Contact Gaps
+                   unless otherwise specified)
+   04                                                                          Setup Approved
+                                                                              Normal Force
+   05                                                              (in the body and soldered on PCB
+                                                                       unless otherwise specified)
+
+
+Thermal Aging = EIA-364-17, Test Condition 4 (105°C)
+          Time Condition 'B' (250 Hours)
+Normal Force = EIA-364-04
+          (Perpendicular) Displacement Force = 12.7 mm/m in ± 6 mm /min
+          Spec is 50 N @ 1 mm displacement
+Contact Gaps / Height - No standard method. Usually m easured optically
+
+
+                                                                    Page 5 of 54
+    Tracking Code: 112488_Report_Rev_1                               Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                     Part description: IDSD\TST
+
+
+                                                 FLOWCHARTS Continued
+
+Current Carrying Capacity - Double Row
+
+TEST             GROUP B1                          GROUP B2                       GROUP B3
+STEP         3 Mated Assemblies                3 Mated Assemblies             3 Mated Assemblies
+             2 Contacts Powered                4 Contacts Powered             6 Contacts Powered
+ 01                 CCC                                CCC                            CCC
+TEST             GROUP B4                          GROUP B5
+STEP         3 Mated Assemblies               3 Mated Assemblies
+             8 Contacts Powered               All Contacts Powered
+  01                CCC                                CCC
+
+(TIN P LATING) - Tabulate calculated current at RT, 65°C, 75°C and 95°C
+
+         after derating 20% and based on 105°C
+(GOLD PLATING) - Tabulate calculated current at RT, 85°C, 95°C and 115°C
+         after derating 20% and based on 125°C
+CCC, Tem p rise = EIA-364-70
+
+
+Mechanical Shock / Vibration / LLCR
+
+
+TEST           GROUP A1
+STEP            192 Points
+  01              LLCR-1
+  02              Shock
+  03             Vibration
+  04             LLCR-2
+
+
+Mechanical Shock = EIA 364-27 Half Sine,
+         100 g's, 6 milliSeconds (Condition "C") each axis
+V ibration = EIA 364-28, Random Vibration
+         7.56 g RMS, Condition VB --- 2 hours/axis
+LLCR = EIA-364-23, LLCR
+         20 mV Max, 100 mA Max
+         Use Keithley 580 or 3706 in 4 wire dry circuit mode
+
+
+
+
+                                                               Page 6 of 54
+    Tracking Code: 112488_Report_Rev_1                              Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                    Part description: IDSD\TST
+
+
+                                                FLOWCHARTS Continued
+
+Shock / Vibration / nanoSecond Event Detection
+
+
+TEST           GROUP A1
+STEP            60 Points
+            Event Detection,
+  01
+                Shock
+            Event Detection,
+  02
+               Vibration
+
+
+Mechanical Shock = EIA 364-27 Half Sine,
+        100 g' s, 6 milliSeconds (Condition "C") each axis
+V ibration = EIA 364-28, Random Vibration
+        7.56 g RMS, Condition VB --- 2 hours/axis
+E vent detection requirement during Shock / Vibration is 50 nanoseconds minimum
+
+
+
+
+                                                             Page 7 of 54
+   Tracking Code: 112488_Report_Rev_1                        Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                             Part description: IDSD\TST
+
+
+                                        ATTRIBUTE DEFINITIONS
+                           The following is a brief, simplified description of attributes.
+THERMAL SHOCK:
+  1)   EIA-364-32, Thermal Shock (Temperature Cycling) Test Procedure for Electrical Connectors.
+  2)   Test Condition 1: -55°C to +85°C
+  3)   Test Time: ½ hour dwell at each temperature extreme
+  4)   Number of Cycles: 100
+  5)   All test samples are pre-conditioned at ambient.
+  6)   All test samples are exposed to environmental stressing in the mated condition.
+
+THERMAL:
+  1)   EIA-364-17, Temperature Life with or without Electrical Load Test Procedure for Electrical Connectors.
+  2)   Test Condition 4 at 105° C.
+  3)   Test Time Condition B for 250 hours.
+  4)   All test samples are pre-conditioned at ambient.
+  5)   All test samples are exposed to environmental stressing in the mated condition.
+
+HUMIDITY:
+  1)   Reference document: EIA-364-31, Humidity Test Procedure for Electrical Connectors.
+  2)   Test Condition B, 240 Hours.
+  3)   Method III, +25° C to + 65° C, 90% to 98% Relative Humidity excluding sub-cycles 7a and 7b.
+  4)   All samples are pre-conditioned at ambient.
+  5)   All test samples are exposed to environmental stressing in the mated condition.
+
+MECHANICAL SHOCK (Specified Pulse):
+  1)   Reference document: EIA-364-27, Mechanical Shock Test Procedure for Electrical Connectors
+  2)   Test Condition C
+  3)   Peak Value: 100 G
+  4)   Duration: 6 Milliseconds
+  5)   Wave Form: Half Sine
+  6)   Velocity: 12.3 ft/s
+  7)   Number of Shocks: 3 Shocks / Direction, 3 Axis (18 Total)
+
+VIBRATION:
+  1)   Reference document: EIA-364-28, Vibration Test Procedure for Electrical Connectors
+  2)   Test Condition V, Letter B
+  3)   Power Spectral Density: 0.04 G² / Hz
+  4)   G ‘RMS’: 7.56
+  5)   Frequency: 50 to 2000 Hz
+  6)   Duration: 2.0 Hours per axis (3 axis total)
+
+NANOSECOND-EVENT DETECTION:
+  1) Reference document: EIA-364-87, Nanosecond-Event Detection for Electrical Connectors
+  2) Prior to test, the samples were characterized to assure the low nanosecond event being monitored will trigger
+     the detector.
+  3) After characterization it was determined the test samples could be monitored for 50 nanosecond events
+
+
+
+
+                                                     Page 8 of 54
+   Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                            Part description: IDSD\TST
+
+
+                                        ATTRIBUTE DEFINITIONS
+                          The following is a brief, simplified description of attributes.
+
+CONTACT GAPS:
+  1) Gaps above the surrounding plastic surface were measured before and after stressing the contacts (e.g.
+     thermal aging, mechanical cycling, etc.).
+  2) Typically, all contacts on the connector are measured.
+
+MATING/UNMATING:
+  1) Reference document: EIA-364-13, Mating and Unmating Forces Test Procedure for Electrical Connectors.
+  2) The full insertion position was to within 0.003” to 0.004” of the plug bottoming out in the receptacle to
+     prevent damage to the system under test.
+  3) One of the mating parts is secured to a floating X-Y table to prevent damage during cycling.
+
+NORMAL FORCE (FOR CONTACTS TESTED IN THE HOUSING):
+  1) Reference document: EIA-364-04, Normal Force Test Procedure for Electrical Connectors.
+  2) The contacts shall be tested in the connector housing.
+  3) If necessary, a “window” shall be made in the connector body to allow a probe to engage and deflect the
+      contact at the same attitude and distance (plus 0.05 mm [0.002”]) as would occur in actual use.
+  4) The connector housing shall be placed in a holding fixture that does not interfere with or otherwise influence
+      the contact force or deflection.
+  5) Said holding fixture shall be mounted on a floating, adjustable, X-Y table on the base of the Dillon TC2,
+      computer controlled test stand with a deflection measurement system accuracy of 5.0 µm (0.0002”).
+  6) The nominal deflection rate shall be 5 mm (0.2”)/minute.
+  7) Unless otherwise noted a minimum of five contacts shall be tested.
+  8) The force/deflection characteristic to load and unload each contact shall be repeated five times.
+  9) The system shall utilize the TC2 software in order to acquire and record the test data.
+  10) The permanent set of each contact shall be measured within the TC2 software.
+  11) The acquired data shall be graphed with the deflection data on the X-axis and the force data on the Y-axis
+      and a print out will be stored with the Tracking Code paperwork.
+
+INSULATION RESISTANCE (IR):
+     To determine the resistance of insulation materials to leakage of current through or on the surface of these
+     materials when a DC potential is applied.
+  1) PROCEDURE:
+         a. Reference document: EIA-364-21, Insulation Resistance Test Procedure for Electrical Connectors.
+         b. Test Conditions:
+                  i. Between Adjacent Contacts or Signal-to-Ground
+                 ii. Electrification Time 2.0 minutes
+                iii. Test Voltage (500 VDC) corresponds to calibration settings for measuring resistances.
+  2) MEASUREMENTS:
+  3) When the specified test voltage is applied (VDC), the insulation resistance shall not be less than 5000
+     megohms.
+
+
+
+
+                                                    Page 9 of 54
+   Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                            Part description: IDSD\TST
+
+
+                                        ATTRIBUTE DEFINITIONS
+                          The following is a brief, simplified description of attributes.
+DIELECTRIC WITHSTANDING VOLTAGE (DWV):
+     To determine if the sockets can operate at its rated voltage and withstand momentary over potentials due to
+     switching, surges, and other similar phenomenon. Separate samples are used to evaluate the effect of
+     environmental stresses so not to influence the readings from arcing that occurs during the measurement
+     process.
+  1) PROCEDURE:
+         a. Reference document: EIA-364-20, Withstanding Voltage Test Procedure for Electrical Connectors.
+         b. Test Conditions:
+                   i. Between Adjacent Contacts or Signal-to-Ground
+                  ii. Rate of Application 500 V/Sec
+                 iii. Test Voltage (VAC) until breakdown occurs
+  2) MEASUREMENTS/CALCULATIONS
+         a. The breakdown voltage shall be measured and recorded.
+         b. The dielectric withstanding voltage shall be recorded as 75% of the minimum breakdown voltage.
+         c. The working voltage shall be recorded as one-third (1/3) of the dielectric withstanding voltage (one-
+              fourth of the breakdown voltage)..
+
+TEMPERATURE RISE (Current Carrying Capacity, CCC):
+  1) EIA-364-70, Temperature Rise versus Current Test Procedure for Electrical Connectors and Sockets.
+                                                                                                     2
+  2) When current passes through a contact, the temperature of the contact increases as a result of I R (resistive)
+      heating.
+  3) The number of contacts being investigated plays a significant part in power dissipation and therefore
+      temperature rise.
+  4) The size of the temperature probe can affect the measured temperature.
+  5) Copper traces on PC boards will contribute to temperature rise:
+           a. Self heating (resistive)
+           b. Reduction in heat sink capacity affecting the heated contacts
+  6) A de-rating curve, usually 20%, is calculated.
+  7) Calculated de-rated currents at three temperature points are reported:
+           a. Ambient
+           b. 80о C
+           c. 95о C
+           d. 115о C
+  8) Typically, neighboring contacts (in close proximity to maximize heat build up) are energized.
+  9) The thermocouple (or temperature measuring probe) will be positioned at a location to sense the maximum
+      temperature in the vicinity of the heat generation area.
+  10) A computer program, TR 803.exe, ensures accurate stability for data acquisition.
+  11) Hook-up wire cross section is larger than the cross section of any connector leads/PC board traces, jumpers,
+      etc.
+  12) Hook-up wire length is longer than the minimum specified in the referencing standard.
+
+
+
+
+                                                    Page 10 of 54
+  Tracking Code: 112488_Report_Rev_1                        Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                            Part description: IDSD\TST
+
+
+                                       ATTRIBUTE DEFINITIONS
+                          The following is a brief, simplified description of attributes.
+
+LLCR:
+  1) EIA-364-23, Low Level Contact Resistance Test Procedure for Electrical Connectors and Sockets.
+  2) A computer program, LLCR 221.exe, ensures repeatability for data acquisition.
+  3) The following guidelines are used to categorize the changes in LLCR as a result from stressing
+        a. <= +5.0 mOhms: --------------------------- Stable
+        b. +5.1 to +10.0 mOhms: --------------------- Minor
+        c. +10.1 to +15.0 mOhms: ------------------- Acceptable
+        d. +15.1 to +50.0 mOhms: ------------------- Marginal
+        e. +50.1 to +2000 mOhms: ------------------ Unstable
+        f. >+2000 mOhms:---------------------------- Open Failure
+
+GAS TIGHT:
+      To provide method for evaluating the ability of the contacting surfaces in preventing penetration of harsh
+      vapors which might lead to oxide formation that may degrade the electrical performance of the contact
+      system.
+  8) EIA-364-23, Low Level Contact Resistance Test Procedure for Electrical Connectors and Sockets.
+  9) A computer program, LLCR 221.exe, ensures repeatability for data acquisition.
+  10) The following guidelines are used to categorize the changes in LLCR as a result from stressing
+          a. <= +5.0 mOhms: --------------------------- Stable
+          b. +5.1 to +10.0 mOhms: --------------------- Minor
+          c. +10.1 to +15.0 mOhms: ------------------- Acceptable
+          d. +15.1 to +50.0 mOhms: ------------------- Marginal
+          e. +50.1 to +2000 mOhms: ------------------ Unstable
+          f. >+2000 mOhms:---------------------------- Open Failure
+  11) Procedure:
+          a. Reference document: EIA-364-36, Test Procedure for Determination of Gas-Tight Characteristics
+              for Electrical Connectors, Sockets and/or Contact Systems.
+          b. Test Conditions:
+                    i. Class II--- Mated pairs of contacts assembled to their plastic housings.
+                   ii. Reagent grade Nitric Acid shall be used of sufficient volume to saturate the test chamber
+                  iii. The ratio of the volume of the test chamber to the surface area of the acid shall be 10:1.
+                  iv. The chamber shall be saturated with the vapor for at least 15 minutes before samples are
+                       added.
+                   v. Exposure time, 55 to 65 minutes.
+                  vi. The samples shall be no closer to the chamber walls than 1 inches and no closer to the
+                       surface of the acid than 3 inches.
+                 vii. The samples shall be dried after exposure for a minimum of 1 hour.
+                viii. Drying temperature 50о C
+                  ix. The final LLCR shall be conducted within 1 hour after drying.
+
+
+
+
+                                                    Page 11 of 54
+     Tracking Code: 112488_Report_Rev_1                            Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                   Part description: IDSD\TST
+
+                                                           RESULTS
+Temperature Rise, CCC at a 20% de-rating
+    CCC for a 30°C Temperature Rise --------------- 3.4 A per contact with 2 adjacent contacts powered
+    CCC for a 30°C Temperature Rise --------------- 2.9 A per contact with 4 adjacent contacts powered
+    CCC for a 30°C Temperature Rise --------------- 2.4 A per contact with 6 adjacent contacts powered
+    CCC for a 30°C Temperature Rise --------------- 2.2 A per contact with 8 adjacent contacts powered
+    CCC for a 30°C Temperature Rise --------------- 1.6 A per contact with all adjacent contacts powered
+
+Contact Gaps
+Mating&Unmating durability
+    Initial
+           o Min -------------------------------------------------- 0.0131 Inch
+           o Max ------------------------------------------------- 0.0186 Inch
+    After 100 Cycles
+           o Min -------------------------------------------------- 0.0182 Inch
+           o Max ------------------------------------------------- 0.0239 Inch
+Thermal aging
+    Initial
+           o Min -------------------------------------------------- 0.0106 Inch
+           o Max ------------------------------------------------- 0.0216 Inch
+    After thermal aging
+           o Min -------------------------------------------------- 0.0174 Inch
+           o Max ------------------------------------------------- 0.0225 Inch
+Normal force initial
+    Initial
+           o Min -------------------------------------------------- 0.0171 Inch
+           o Max ------------------------------------------------- 0.0199 Inch
+Normal force after thermal
+    Initial
+           o Min -------------------------------------------------- 0.0178 Inch
+           o Max ------------------------------------------------- 0.0201 Inch
+    After thermal aging
+           o Min -------------------------------------------------- 0.0181 Inch
+           o Max ------------------------------------------------- 0.0199 Inch
+
+Mating /unmating force
+Mating&Unmating durability (Largest position submitted):
+
+        Initial
+              o Mating
+                      Min --------------------------------------20.68 Lbs
+                      Max--------------------------------------26.86 Lbs
+              o Unmating
+                      Min --------------------------------------19.16 Lbs
+                      Max--------------------------------------21.94 Lbs
+        After 25 Cycles
+              o Mating
+                      Min --------------------------------------20.37 Lbs
+                      Max--------------------------------------24.94 Lbs
+              o Unmating
+                      Min --------------------------------------18.87 Lbs
+                      Max--------------------------------------21.65 Lbs
+
+
+
+
+                                                            Page 12 of 54
+     Tracking Code: 112488_Report_Rev_1                          Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                 Part description: IDSD\TST
+
+                                                 RESULTS Continued
+       After 50 Cycles
+            o Mating
+                     Min --------------------------------------19.25 Lbs
+                     Max--------------------------------------23.02 Lbs
+            o Unmating
+                     Min --------------------------------------18.28 Lbs
+                     Max--------------------------------------21.39 Lbs
+       After 75 Cycles
+            o Mating
+                     Min --------------------------------------18.21 Lbs
+                     Max--------------------------------------22.56 Lbs
+            o Unmating
+                     Min --------------------------------------18.13 Lbs
+                     Max--------------------------------------20.79 Lbs
+       After 100 Cycles
+            o Mating
+                     Min --------------------------------------18.08 Lbs
+                     Max--------------------------------------21.81 Lbs
+            o Unmating
+                     Min --------------------------------------17.86 Lbs
+                     Max--------------------------------------20.40 Lb
+       After Humidity
+            o Mating
+                     Min --------------------------------------17.79 Lbs
+                     Max--------------------------------------21.39 Lbs
+            o Unmating
+                     Min --------------------------------------17.55 Lbs
+                     Max--------------------------------------20.00 Lbs
+
+Mating/Unmating basic (middle position submitted):
+    Initial
+          o Mating
+                   Min --------------------------------------10.72 Lbs
+                   Max--------------------------------------12.50 Lbs
+          o Unmating
+                   Min --------------------------------------10.30 Lbs
+                   Max--------------------------------------11.36 Lbs
+    After 25 Cycles
+          o Mating
+                   Min --------------------------------------10.36 Lbs
+                   Max--------------------------------------11.95 Lbs
+          o Unmating
+                   Min --------------------------------------10.08 Lbs
+                   Max--------------------------------------11.25 Lbs
+    After 50 Cycles
+          o Mating
+                   Min --------------------------------------- 9.81 Lbs
+                   Max--------------------------------------11.07 Lbs
+          o Unmating
+                   Min --------------------------------------10.08 Lbs
+                   Max--------------------------------------10.67 Lbs
+
+
+
+
+                                                          Page 13 of 54
+     Tracking Code: 112488_Report_Rev_1                           Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                  Part description: IDSD\TST
+
+                                                  RESULTS Continued
+       After 75 Cycles
+            o Mating
+                     Min --------------------------------------- 9.53 Lbs
+                     Max--------------------------------------10.76 Lbs
+            o Unmating
+                     Min --------------------------------------- 9.77 Lbs
+                     Max--------------------------------------10.28 Lbs
+       After 100 Cycles
+            o Mating
+                     Min --------------------------------------- 9.26 Lbs
+                     Max--------------------------------------10.43 Lbs
+            o Unmating
+                     Min --------------------------------------- 9.64 Lbs
+                     Max--------------------------------------10.10 Lb
+
+Mating/Unmating basic (smallest position submitted):
+    Initial
+          o Mating
+                   Min --------------------------------------- 2.45Lbs
+                   Max--------------------------------------- 3.37 Lbs
+          o Unmating
+                   Min --------------------------------------- 2.14 Lbs
+                   Max--------------------------------------- 3.46 Lbs
+    After 25 Cycles
+          o Mating
+                   Min --------------------------------------- 2.12 Lbs
+                   Max--------------------------------------- 2.95 Lbs
+          o Unmating
+                   Min --------------------------------------- 1.74 Lbs
+                   Max--------------------------------------- 2.73 Lbs
+    After 50 Cycles
+          o Mating
+                   Min --------------------------------------- 2.09 Lbs
+                   Max--------------------------------------- 2.82 Lbs
+          o Unmating
+                   Min --------------------------------------- 1.76 Lbs
+                   Max--------------------------------------- 2.65 Lbs
+    After 75 Cycles
+          o Mating
+                   Min --------------------------------------- 1.98 Lbs
+                   Max--------------------------------------- 2.76 Lbs
+          o Unmating
+                   Min --------------------------------------- 1.76 Lbs
+                   Max--------------------------------------- 2.67 Lbs
+    After 100 Cycles
+          o Mating
+                   Min --------------------------------------- 1.87 Lbs
+                   Max--------------------------------------- 2.58 Lbs
+          o Unmating
+                   Min --------------------------------------- 1.81 Lbs
+                   Max--------------------------------------- 2.45 Lb
+
+
+
+
+                                                           Page 14 of 54
+     Tracking Code: 112488_Report_Rev_1                             Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                    Part description: IDSD\TST
+
+                                                    RESULTS Continued
+Thermal aging
+    Initial
+           o Mating
+                  Min --------------------------------------23.35 Lbs
+                  Max--------------------------------------28.22 Lbs
+           o Unmating
+                  Min --------------------------------------19.60 Lbs
+                  Max--------------------------------------21.72 Lbs
+    After thermal aging
+           o Mating
+                  Min --------------------------------------18.92 Lbs
+                  Max--------------------------------------24.81 Lbs
+           o Unmating
+                  Min --------------------------------------17.90 Lbs
+                  Max--------------------------------------20.40 Lbs
+
+Normal Force at 0.48 mm deflection
+    Initial
+           o Min ----------------------------------------------- 351.10 gf     Set ----- 0.0150 mm
+           o Max --------------------------------------------- 413.00 gf       Set ----- 0.0300 mm
+    Thermal
+           o Min ----------------------------------------------- 354.20 gf      Set ----- 0.0100 mm
+           o Max ---------------------------------------------- 404.80 gf       Set ----- 0.0200 mm
+
+LLCR Durability (192 pin LLCR test points)
+    Initial --------------------------------------------------------------- 44.8 mOhms Max
+    After 100 Cycles
+          o <= +5.0 mOhms ----------------------------------- 191 Points ------------------------- Stable
+          o +5.1 to +10.0 mOhms ----------------------------------- 1 Points ------------------------- Minor
+          o +10.1 to +15.0 mOhms --------------------------------- 0 Points ------------------------- Acceptable
+          o +15.1 to +50.0 mOhms --------------------------------- 0 Points ------------------------- Marginal
+          o +50.1 to +2000 mOhms --------------------------------- 0 Points ------------------------- Unstable
+          o >+2000 mOhms ------------------------------------------ 0 Points ------------------------- Open Failure
+    After thermal shock
+          o <= +5.0 mOhms ----------------------------------- 192 Points ------------------------- Stable
+          o +5.1 to +10.0 mOhms ----------------------------------- 0 Points ------------------------- Minor
+          o +10.1 to +15.0 mOhms --------------------------------- 0 Points ------------------------- Acceptable
+          o +15.1 to +50.0 mOhms --------------------------------- 0 Points ------------------------- Marginal
+          o +50.1 to +2000 mOhms --------------------------------- 0 Points ------------------------- Unstable
+          o >+2000 mOhms ------------------------------------------ 0 Points ------------------------- Open Failure
+    After humidity
+          o <= +5.0 mOhms ----------------------------------- 188 Points ------------------------- Stable
+          o +5.1 to +10.0 mOhms ----------------------------------- 4 Points ------------------------- Minor
+          o +10.1 to +15.0 mOhms --------------------------------- 0 Points ------------------------- Acceptable
+          o +15.1 to +50.0 mOhms --------------------------------- 0 Points ------------------------- Marginal
+          o +50.1 to +2000 mOhms --------------------------------- 0 Points ------------------------- Unstable
+          o >+2000 mOhms ------------------------------------------ 0 Points ------------------------- Open Failure
+
+
+
+
+                                                            Page 15 of 54
+     Tracking Code: 112488_Report_Rev_1                           Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                  Part description: IDSD\TST
+
+                                                  RESULTS Continued
+LLCR Thermal Aging (192 pin LLCR test points)
+    Initial --------------------------------------------------------------- 44.8mOhms Max
+    Thermal Aging
+          o <= +5.0 mOhms ----------------------------------- 188 Points ------------------------- Stable
+          o +5.1 to +10.0 mOhms ----------------------------------- 4 Points ------------------------- Minor
+          o +10.1 to +15.0 mOhms --------------------------------- 0 Points ------------------------- Acceptable
+          o +15.1 to +50.0 mOhms --------------------------------- 0 Points ------------------------- Marginal
+          o +50.1 to +2000 mOhms --------------------------------- 0 Points ------------------------- Unstable
+          o >+2000 mOhms ------------------------------------------ 0 Points ------------------------- Open Failure
+
+LLCR Gas Tight (192 pin LLCR test points)
+    Initial --------------------------------------------------------------- 40.0 mOhms Max
+    Gas-Tight
+          o <= +5.0 mOhms ----------------------------------- 192 Points ------------------------- Stable
+          o +5.1 to +10.0 mOhms ----------------------------------- 0 Points ------------------------- Minor
+          o +10.1 to +15.0 mOhms --------------------------------- 0 Points ------------------------- Acceptable
+          o +15.1 to +50.0 mOhms --------------------------------- 0 Points ------------------------- Marginal
+          o +50.1 to +2000 mOhms --------------------------------- 0 Points ------------------------- Unstable
+          o >+2000 mOhms ------------------------------------------ 0 Points ------------------------- Open Failure
+
+LLCR Shock Vib (192 pin LLCR test points)
+    Initial --------------------------------------------------------------- 41.9 mOhms Max
+    S&V
+          o <= +5.0 mOhms ----------------------------------- 191 Points ------------------------- Stable
+          o +5.1 to +10.0 mOhms ----------------------------------- 1 Points ------------------------- Minor
+          o +10.1 to +15.0 mOhms --------------------------------- 0 Points ------------------------- Acceptable
+          o +15.1 to +50.0 mOhms --------------------------------- 0 Points ------------------------- Marginal
+          o +50.1 to +2000 mOhms --------------------------------- 0 Points ------------------------- Unstable
+          o >+2000 mOhms ------------------------------------------ 0 Points ------------------------- Open Failure
+
+Mechanical Shock & Random Vibration:
+           o Shock
+                   No Damage ----------------------------------- ---------------------------------- Passed
+                   50 Nanoseconds ------------------------------ ---------------------------------- Passed
+           o Vibration
+                   No Damage ----------------------------------- ---------------------------------- Passed
+                   50 Nanoseconds ------------------------------ ---------------------------------- Passed
+
+
+
+
+                                                           Page 16 of 54
+     Tracking Code: 112488_Report_Rev_1                             Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                    Part description: IDSD\TST
+
+                                                    RESULTS Continued
+Insulation Resistance minimums, IR
+ Pin-Pin
+     Initial
+            o Mated ------------------------------------------------ 10000Meg Ω ------------------------- Pass
+            o Unmated -------------------------------------------- 10000Meg Ω ------------------------ Pass
+     Thermal
+            o Mated ------------------------------------------------ 10000Meg Ω ------------------------ Pass
+            o Unmated -------------------------------------------- 10000Meg Ω ------------------------ Pass
+     Humidity
+            o Mated ------------------------------------------------ 10000Meg Ω ------------------------ Pass
+            o Unmated -------------------------------------------- 10000Meg Ω ------------------------ Pass
+
+Dielectric Withstanding Voltage minimums, DWV
+     Minimums
+            o Breakdown Voltage -------------------------------- 1700VAC
+            o Test Voltage ----------------------------------------- 1275VAC
+            o Working Voltage ------------------------------------- 425VAC
+Pin - pin
+     Initial DWV -------------------------------------------------- Passed
+     Thermal DWV ----------------------------------------------- Passed
+     Humidity DWV---------------------------------------------- Passed
+
+
+
+
+                                                             Page 17 of 54
+    Tracking Code: 112488_Report_Rev_1                                                                             Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                                                                   Part description: IDSD\TST
+
+                                                                                                 DATA SUMMARIES
+TEMPERATURE RISE (Current Carrying Capacity, CCC):
+  1) High quality thermocouples whose temperature slopes track one another were used for temperature
+     monitoring.
+  2) The thermocouples were placed at a location to sense the maximum temperature generated during testing.
+  3) Temperature readings recorded are those for which three successive readings, 15 minutes apart, differ less
+     than 1° C (computer controlled data acquisition).
+  4) Adjacent contacts were powered:
+        a. Linear configuration with 2 adjacent conductors/contacts powered
+
+                                                                                                                                                                              Base Curve
+                                                                                                             112488                                                           Derated 20 %
+                                                                                                                                                                              RT Peak Amp
+                                                                                                 2(2x1) Contacts in Linear series                                             RT Derated Amp
+                                                                                        Part Numbers: IDSD-36-D-06.00-G/TST-136-01-G-D-01                                     Measured Current
+                                                                                                                                                                              65 ° C
+                                                                                Current Rating per Contact (30 Deg. Rise, 20% Derated) = 3.4 Amps                             65 ° C Peak Amp
+                                       9.0                                                                                                                                    65 ° C Derated Amp
+                                                        Room Temp= 20.2C                                                                                                      75 ° C
+                                                                                                                                                                              75 ° C Peak Amp
+                                       8.0                                                                                                                                    75 ° C Derated Amp
+                                                                                                                                                                              Limit
+                                                                                                                                                                              95 ° C Peak Amp
+                                                  7.4
+                                                                                                                                                                              95 ° C Derated Amp
+                                       7.0                                                                                                                                    95 ° C
+
+
+
+
+    Maximum Current, Amp per Contact
+                                                                                                                                                                              Room Temp
+
+
+                                       6.0        5.9
+                                                                                                                                                               105° C
+                                       5.0                                                                          5.0                                         Limit
+
+
+                                                                                                                                     4.3
+                                       4.0                                                                          4.0
+
+                                                                                                                                     3.4
+                                       3.0
+
+                                                                                                                                                         2.4
+                                       2.0                                                                                                               1.9
+                                                                                    Useful Range
+                                       1.0
+
+
+                                       0.0
+                                             20                  30        40           50               60               70               80       90          100     110
+                                                                                                      Ambient Temperature, ° C
+
+
+
+
+                                                                                                               Page 18 of 54
+Tracking Code: 112488_Report_Rev_1                                                                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                                                         Part description: IDSD\TST
+
+                                                                                         DATA SUMMARIES
+
+                                              b. Linear configuration with 4 adjacent conductors/contacts powered
+
+                                                                                                                                                                       Base Curve
+                                                                                                   112488                                                              Derated 20 %
+                                                                                                                                                                       RT Peak Amp
+                                                                                       4(2x2) Contacts in Linear series                                                RT Derated Amp
+                                                                              Part Numbers: IDSD-36-D-06.00-G/TST-136-01-G-D-01                                        Measured Current
+                                                                                                                                                                       65 ° C
+                                                                         Current Rating per Contact (30 Deg. Rise, 20% Derated) = 2.9 Amps                             65 ° C Peak Amp
+                                   8.0                                                                                                                                 65 ° C Derated Amp
+                                                Room Temp= 19.4 C                                                                                                      75 ° C
+                                                                                                                                                                       75 ° C Peak Amp
+                                                                                                                                                                       75 ° C Derated Amp
+                                   7.0                                                                                                                                 Limit
+                                                                                                                                                                       95 ° C Peak Amp
+                                                                                                                                                                       95 ° C Derated Amp
+                                                                                                                                                                       95 ° C
+
+
+
+
+Maximum Current, Amp per Contact
+                                   6.0
+                                                                                                                                                                       Room Temp
+
+
+
+
+                                   5.0
+                                                                                                                                                        105° C
+                                                                                                                                                         Limit
+                                                                                                          4.3
+                                   4.0
+                                                                                                                           3.7
+                                                                                                          3.4
+                                   3.0                                                                                     2.9
+
+
+                                   2.0                                                                                                            2.1
+                                                                                                                                                  1.7
+                                                                          Useful Range
+                                   1.0
+
+
+
+                                   0.0
+                                         20               30        40         50              60               70               80          90          100     110
+                                                                                            Ambient Temperature, ° C
+
+
+
+
+                                              c. Linear configuration with 6 adjacent conductors/contacts powered
+                                                                                                                                                                       Base Curve
+                                                                                                   112488                                                              Derated 20 %
+                                                                                                                                                                       RT Peak Amp
+                                                                                       6(2X3) Contacts in Linear series                                                RT Derated Amp
+                                                                              Part Numbers:IDSD-36-D-06.00-G/TST-136-01-G-D-01                                         Measured Current
+                                                                                                                                                                       65 ° C
+                                                                         Current Rating per Contact (30 Deg. Rise, 20% Derated) = 2.4 Amps                             65 ° C Peak Amp
+                                   6.0                                                                                                                                 65 ° C Derated Amp
+                                                Room Temp= 20.4 C                                                                                                      75 ° C
+                                                                                                                                                                       75 ° C Peak Amp
+                                                                                                                                                                       75 ° C Derated Amp
+                                              5.2                                                                                                                      Limit
+                                   5.0                                                                                                                                 95 ° C Peak Amp
+                                                                                                                                                                       95 ° C Derated Amp
+                                                                                                                                                                       95 ° C
+
+
+
+
+Maximum Current, Amp per Contact
+                                                                                                                                                                       Room Temp
+                                              4.2
+                                   4.0
+
+                                                                                                                                                        105° C
+                                                                                                          3.5
+                                                                                                                                                         Limit
+
+                                   3.0                                                                                     3.0
+                                                                                                          2.8
+
+                                                                                                                           2.4
+
+                                   2.0
+                                                                                                                                                  1.7
+                                                                                                                                                  1.3
+                                   1.0                                    Useful Range
+
+
+
+
+                                   0.0
+                                         20               30        40         50              60               70               80          90          100     110
+                                                                                            Ambient Temperature, ° C
+
+
+
+
+                                                                                                     Page 19 of 54
+Tracking Code: 112488_Report_Rev_1                                                                         Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                                                           Part description: IDSD\TST
+
+                                                                                           DATA SUMMARIES
+                                              d. Linear configuration with 8 adjacent conductors/contacts powered
+                                                                                                                                                                       Base Curve
+                                                                                                     112488                                                            Derated 20 %
+                                                                                                                                                                       RT Peak Amp
+                                                                                         8(2X4) Contacts in Linear series                                              RT Derated Amp
+                                                                                Part Numbers:IDSD-36-D-06.00-G/TST-136-01-G-D-01                                       Measured Current
+                                                                                                                                                                       65 ° C
+                                                                        Current Rating per Contact (30 Deg. Rise, 20% Derated) = 2.2 Amps                              65 ° C Peak Amp
+                                   6.0                                                                                                                                 65 ° C Derated Amp
+                                               Room Temp= 19.8 C                                                                                                       75 ° C
+                                                                                                                                                                       75 ° C Peak Amp
+                                                                                                                                                                       75 ° C Derated Amp
+                                                                                                                                                                       Limit
+                                   5.0                                                                                                                                 95 ° C Peak Amp
+                                                                                                                                                                       95 ° C Derated Amp
+                                                                                                                                                                       95 ° C
+
+
+
+
+Maximum Current, Amp per Contact
+                                                                                                                                                                       Room Temp
+
+
+                                   4.0
+
+                                                                                                                                                        105° C
+                                                                                                                                                         Limit
+                                                                                                            3.1
+                                   3.0
+                                                                                                                             2.7
+                                                                                                            2.5
+                                                                                                                             2.2
+                                   2.0
+
+                                                                                                                                                  1.5
+                                                                                                                                                  1.2
+                                   1.0                                      Useful Range
+
+
+
+
+                                   0.0
+                                         20              30        40            50              60               70               80        90          100     110
+                                                                                              Ambient Temperature, ° C
+
+
+
+
+                                              e. Linear configuration with all adjacent conductors/contacts powered
+                                                                                                                                                                       Base Curve
+                                                                                                      112488                                                           Derated 20 %
+                                                                                                                                                                       RT Peak Amp
+                                                                                         36(All) Contacts in Linear series                                             RT Derated Amp
+                                                                                Part Numbers:IDSD-36-D-06.00-G/TST-136-01-G-D-01                                       Measured Current
+                                                                                                                                                                       65 ° C
+                                                                         Current Rating per Contact (30 Deg. Rise, 20% Derated) = 1.6 Amps
+                                                                                                                                                                       65 ° C Peak Amp
+                                   4.0                                                                                                                                 65 ° C Derated Amp
+                                               Room Temp= 21.3 C                                                                                                       75 ° C
+                                                                                                                                                                       75 ° C Peak Amp
+                                                                                                                                                                       75 ° C Derated Amp
+                                   3.5                                                                                                                                 Limit
+                                              3.4                                                                                                                      95 ° C Peak Amp
+                                                                                                                                                                       95 ° C Derated Amp
+                                                                                                                                                                       95 ° C
+
+
+
+
+Maximum Current, Amp per Contact
+                                   3.0
+                                                                                                                                                                       Room Temp
+
+                                              2.7
+                                   2.5
+                                                                                                                                                        105° C
+                                                                                                            2.3                                          Limit
+
+                                   2.0                                                                                       1.9
+                                                                                                            1.8
+
+                                   1.5                                                                                       1.6
+
+
+
+                                   1.0                                                                                                            1.1
+                                                                                                                                                  0.9
+                                                                            Useful Range
+                                   0.5
+
+
+
+                                   0.0
+                                         20              30        40            50              60               70               80        90          100     110
+                                                                                              Ambient Temperature, ° C
+
+
+
+
+                                                                                                       Page 20 of 54
+    Tracking Code: 112488_Report_Rev_1                           Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                 Part description: IDSD\TST
+
+                                                 DATA SUMMARIES
+
+CONTACT GAPS:
+Mating&Unmating durability:
+                                       Initial                           After 100 Cycles
+                                       Units:       inches                   Units:       inches
+                              Minimum               0.0131             Minimum           0.0182
+                              Maximum               0.0186             Maximum           0.0239
+                              Average               0.0186             Average           0.0198
+                              St. Dev.              0.0019              St. Dev.         0.0011
+                               Count                  120                Count              120
+
+Thermal aging:
+                                       Initial                             After Thermal
+                                       Units:       inches                   Units:    inches
+                              Minimum               0.0106             Minimum           0.0174
+                              Maximum               0.0216             Maximum           0.0225
+                              Average               0.0186             Average           0.0195
+                              St. Dev.              0.0021              St. Dev.         0.0009
+                               Count                  119                Count             120
+
+Normal force initial:
+                                                             Initial
+                                                             Units:      inches
+                                                   Minimum               0.0171
+                                                   Maximum               0.0199
+                                                    Average              0.0173
+                                                    St. Dev.             0.0008
+                                                     Count                 15
+Normal force after thermal:
+                                       Initial                             After Thermal
+                                       Units:       inches                   Units:    inches
+                              Minimum               0.0178             Minimum           0.0181
+                              Maximum               0.0201             Maximum           0.0199
+                              Average               0.0187             Average           0.0190
+                              St. Dev.              0.0008              St. Dev.         0.0005
+                               Count                  15                 Count             15
+
+
+
+
+                                                         Page 21 of 54
+     Tracking Code: 112488_Report_Rev_1                               Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                      Part description: IDSD\TST
+
+                                                     DATA SUMMARIES
+
+MATING/UNMATING FORCE:
+Mating/Unmating durability (Largest position submitted):
+                                       Initial                                                 After 25 Cycles
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)      Newtons      Force (Lbs)
+Minimum       92.00            20.68             85.23        19.16           90.62           20.37       83.96          18.87
+Maximum      119.46            26.86             97.59        21.94          110.93           24.94       96.31          21.65
+Average      101.51            22.82             90.92        20.44           97.70           21.96       89.40          20.10
+S t Dev        8.56            1.92               4.45         1.00           6.70            1.51         4.62          1.04
+Count            8              8                  8             8             8               8             8             8
+                                After 50 Cycles                                                After 75 Cycles
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)      Newtons      Force (Lbs)
+Minimum       85.62            19.25             81.31        18.28           81.01           18.21       80.62          18.13
+Maximum      102.39            23.02             95.14        21.39          100.33           22.56       92.49          20.79
+Average       94.03            21.14             88.26        19.84           92.23           20.74       86.70          19.49
+S t Dev        5.71            1.28               4.91         1.10           6.42            1.44         4.38          0.98
+Count            8              8                  8             8             8               8             8             8
+                                After 100 Cycles                                                After Humidity
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)      Newtons      Force (Lbs)
+Minimum       80.42            18.08             79.44        17.86          79.15            17.79       78.07          17.55
+Maximum       97.00            21.81             90.72        20.40          95.14            21.39       88.96          20.00
+Average       89.96            20.23             85.50        19.22          87.41            19.65       82.80          18.62
+S t Dev       5.76              1.30             4.50          1.01          5.68             1.28        4.08           0.92
+Count           8                8                 8             8             8                8           8              8
+
+
+
+
+                                                             Page 22 of 54
+     Tracking Code: 112488_Report_Rev_1                               Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                      Part description: IDSD\TST
+
+
+                                                     DATA SUMMARIES
+Mating/Unmating basic (middle position submitted):
+                                       Initial                                                 After 25 Cycles
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)     Newtons       Force (Lbs)
+Minimum       47.67            10.72             45.80        10.30          46.10            10.36       44.82          10.08
+Maximum       55.61            12.50             50.51        11.36          53.16            11.95       50.02          11.25
+Average       50.84            11.43             48.33        10.87          49.35            11.09       47.24          10.62
+S t Dev        2.95            0.66               1.52         0.34           2.81            0.63        1.60           0.36
+Count            8              8                  8             8             8               8            8              8
+                                After 50 Cycles                                                After 75 Cycles
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)     Newtons       Force (Lbs)
+Minimum       43.64             9.81             44.82        10.08          42.37            9.53        43.45           9.77
+Maximum       49.24            11.07             47.47        10.67          47.86            10.76       45.70          10.28
+Average       46.67            10.49             45.74        10.28          45.23            10.17       44.63          10.03
+S t Dev        1.99            0.45               0.89         0.20           2.06            0.46        0.68           0.15
+Count            8              8                  8             8             8               8            8              8
+                                After 100 Cycles
+                      Mating                          Unmating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)
+Minimum       41.19            9.26              42.86         9.64
+Maximum       46.39            10.43             44.92        10.10
+Average       44.07             9.91             43.99         9.89
+S t Dev       1.78              0.40             0.62          0.14
+Count           8                8                 8             8
+
+
+
+
+                                                             Page 23 of 54
+     Tracking Code: 112488_Report_Rev_1                               Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                      Part description: IDSD\TST
+
+
+                                                     DATA SUMMARIES
+Mating/Unmating basic (smallest position submitted):
+                                       Initial                                                 After 25 Cycles
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)      Newtons      Force (Lbs)
+Minimum       10.89            2.45               9.51         2.14           9.42            2.12        7.75           1.74
+Maximum       15.01            3.37              15.40         3.46          13.14            2.95        12.16          2.73
+Average       12.97            2.92              11.46         2.58          11.29            2.54        9.87           2.22
+S t Dev        1.40            0.31               1.87         0.42           1.27            0.28         1.51          0.34
+Count            8              8                  8             8             8               8             8             8
+                                After 50 Cycles                                                After 75 Cycles
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)      Newtons      Force (Lbs)
+Minimum       9.32             2.09               7.85         1.76          8.83             1.98        7.85           1.76
+Maximum       12.55            2.82              11.77         2.65          12.26            2.76        11.87          2.67
+Average       11.08            2.49               9.65         2.17          10.67            2.40        9.51           2.14
+S t Dev        1.15            0.26               1.37         0.31           1.22            0.27         1.27          0.29
+Count            8              8                  8             8             8               8             8             8
+                                After 100 Cycles
+                      Mating                          Unmating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)
+Minimum        8.34            1.87               8.04         1.81
+Maximum       11.48            2.58              10.89         2.45
+Average       10.11            2.27               9.26         2.08
+S t Dev       1.02             0.23              0.86          0.19
+Count           8               8                  8             8
+
+Thermal aging:
+                                       Initial                                                  After Thermals
+                      Mating                          Unmating                       Mating                      Unm ating
+             Newtons      Force (Lbs)            Newtons    Force (Lbs)      Newtons     Force (Lbs)      Newtons      Force (Lbs)
+Minimum      103.87            23.35             87.19        19.60          84.15            18.92       79.64         17.90
+Maximum      125.54            28.22             96.61        21.72          110.34           24.81       90.72         20.40
+Average      114.84            25.82             92.02        20.69           97.56           21.93       85.99         19.33
+S t Dev        7.36            1.66               3.27         0.74           8.44            1.90         3.89          0.87
+Count            8              8                  8             8            8.00            8.00         8.00          8.00
+
+
+
+
+                                                             Page 24 of 54
+   Tracking Code: 112488_Report_Rev_1                         Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                              Part description: IDSD\TST
+
+
+                                             DATA SUMMARIES
+NORMAL FORCE
+                Initial                   Deflections in mm Forces in Grams
+                               0.1000       0.2000        0.3000     0.4000         0.4800      SET
+                Averages        74.12       153.32        238.33     324.13         388.78     0.0202
+                    Min         68.40       143.60        217.50     292.70         351.10     0.0150
+                    Max         79.30       161.40        250.30     339.20         413.00     0.0300
+                 St. Dev        3.365        5.873        10.127     13.200         16.509     0.0052
+                  Count           12           12           12         12             12         12
+
+              After Thermals               Deflections in mm Forces in Grams
+                                 0.1000      0.2000        0.3000     0.4000        0.4800      SET
+                   Averages      73.41       154.45        240.94     327.44        390.00     0.0273
+                        Min      65.70       142.20        222.90     300.90        354.20     0.0100
+                       Max       80.70       164.10        253.00     343.30        404.80     0.0400
+                    St. Dev      4.090        6.168         7.214     11.134        14.632     0.0095
+                     Count         12           12            12        12            12         12
+
+
+
+INSULATION RESISTANCE (IR):
+                                                                       Pin to Pin
+                                                    Mated              Unmated               Unmated
+                          Minimum                 IDSD/TST              IDSD                   TST
+              Initial                              10000                10000                 10000
+              Thermal                              10000                10000                 10000
+              Humidity                             10000                10000                 10000
+
+DIELECTRIC WITHSTANDING VOLTAGE (DWV):
+                                              Voltage Rating Summary
+                                          Minimum                            IDSD/TST
+                           Break Down Voltage                                  1700
+                           Test Voltage                                         1275
+                           Working Voltage                                       425
+
+
+
+                                                       Pin to Pin
+                           Initial Test Voltage                               Passed
+                           After Thermal Test Voltage                         Passed
+                           After Humidity Test Voltage                        Passed
+
+
+
+
+                                                       Page 25 of 54
+   Tracking Code: 112488_Report_Rev_1                         Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                              Part description: IDSD\TST
+
+
+                                           DATA SUMMARIES
+LLCR Durabiltiy:
+   1)   A total of 192 points were measured.
+   2)   EIA-364-23, Low Level Contact Resistance Test Procedure for Electrical Connectors and Sockets.
+   3)   A computer program, LLCR 221.exe, ensures repeatability for data acquisition.
+   4)   The following guidelines are used to categorize the changes in LLCR as a result from stressing.
+            a. <= +5.0 mOhms: --------------------------- Stable
+            b. +5.1 to +10.0 mOhms: --------------------- Minor
+            c. +10.1 to +15.0 mOhms: ------------------- Acceptable
+            d. +15.1 to +50.0 mOhms: ------------------- Marginal
+            e. +50.1 to +2000 mOhms ------------------- Unstable
+            f. >+2000 mOhms:---------------------------- Open Failure
+
+
+                           Date       2/26/2011         3/1/2011         3/6/2011     3/17/2011
+                    Room Temp C            21               22              20            22
+                            RH            42%             43%              40%           50%
+                          Name        Peter Chen       Peter Chen       Peter Chen    Peter Chen
+                    mOhm values         Actual            Delta            Delta        Delta
+                                         Initial       100 Cycles        Thermal       Humidity
+                           Average        37.8             -0.7             0.8           1.0
+                           St. Dev.        1.8             1.3              1.5           1.8
+                                Min       36.6             -4.8            -4.7          -5.4
+                               Max        44.8             6.3              4.2           5.8
+                             Count        192              192              192          192
+
+
+
+                              How many samples are being tested?                      8
+                            How many contacts are on each board?                     24
+                            Stable    Minor     Acceptable           Marginal     Unstable      Open
+              100 Cycles     191        1           0                   0            0           0
+                 Thermal     192        0           0                   0            0           0
+                Humidity     188        4           0                   0            0           0
+
+
+
+
+                                                     Page 26 of 54
+   Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                            Part description: IDSD\TST
+
+
+                                            DATA SUMMARIES
+LLCR thermal aging
+   5)   A total of 192 points were measured
+   6)   EIA-364-23, Low Level Contact Resistance Test Procedure for Electrical Connectors and Sockets.
+   7)   A computer program, LLCR 221.exe, ensures repeatability for data acquisition.
+   8)   The following guidelines are used to categorize the changes in LLCR as a result from stressing.
+            a. <= +5.0 mOhms: --------------------------- Stable
+            b. +5.1 to +10.0 mOhms: --------------------- Minor
+            c. +10.1 to +15.0 mOhms: ------------------- Acceptable
+            d. +15.1 to +50.0 mOhms: ------------------- Marginal
+            e. +50.1 to +2000 mOhms ------------------- Unstable
+            f. >+2000 mOhms:---------------------------- Open Failure
+
+                                        Date        3/3/2011          1/0/1900
+                                 Room Temp C            23                0
+                                         RH            45%               0%
+                                       Name        Peter Chen             0
+                                 mOhm values         Actual             Delta
+                                                      Initial       Thermal Age
+                                      Average          37.7              0.1
+                                      St. Dev.          1.8              1.8
+                                           Min         36.4             -8.1
+                                          Max          44.8              4.3
+                                        Count          192               192
+
+
+
+
+                            How many samples are being tested?                      8
+                           How many contacts are on each board?                     24
+                        Stable      Minor        Acceptable         Marginal      Unstable         Open
+        Thermal Age      188          4              0                 0             0              0
+
+
+
+
+                                                    Page 27 of 54
+  Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                           Part description: IDSD\TST
+
+
+                                          DATA SUMMARIES
+GAS TIGHT:
+  1)   A total of 192 points were measured
+  2)   EIA-364-23, Low Level Contact Resistance Test Procedure for Electrical Connectors and Sockets.
+  3)   A computer program, LLCR 221.exe, ensures repeatability for data acquisition.
+  4)   The following guidelines are used to categorize the changes in LLCR as a result from stressing.
+           a. <= +5.0 mOhms: --------------------------- Stable
+           b. +5.1 to +10.0 mOhms: --------------------- Minor
+           c. +10.1 to +15.0 mOhms: ------------------- Acceptable
+           d. +15.1 to +50.0 mOhms: ------------------- Marginal
+           e. +50.1 to +2000 mOhms: ------------------ Unstable
+           f. >+2000 mOhms:---------------------------- Open Failure
+
+
+                                     Date        2/26/2011            1/0/1900
+                              Room Temp C            23                   0
+                                      RH            45%                  0%
+                                    Name         Peter Chen               0
+                              mOhm values          Actual               Delta
+                                                   Initial            Gas Tight
+                                     Average        37.1                 1.0
+                                     St. Dev.        0.5                 0.9
+                                          Min       36.3                -1.5
+                                         Max        40.0                 4.2
+                                       Count        192                  192
+
+
+
+
+                   How many samples are being tested?                      8
+                 How many contacts are on each board?                      24
+               Stable     Minor        Acceptable          Marginal      Unstable        Open
+ Gas Tight      192         0              0                  0             0             192
+
+
+
+
+                                                    Page 28 of 54
+  Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                           Part description: IDSD\TST
+
+                                           DATA SUMMARIES
+S&V:
+  5)   A total of 192 points were measured
+  6)   EIA-364-23, Low Level Contact Resistance Test Procedure for Electrical Connectors and Sockets.
+  7)   A computer program, LLCR 221.exe, ensures repeatability for data acquisition.
+  8)   The following guidelines are used to categorize the changes in LLCR as a result from stressing.
+           a. <= +5.0 mOhms: --------------------------- Stable
+           b. +5.1 to +10.0 mOhms: --------------------- Minor
+           c. +10.1 to +15.0 mOhms: ------------------- Acceptable
+           d. +15.1 to +50.0 mOhms: ------------------- Marginal
+           e. +50.1 to +2000 mOhms: ------------------ Unstable
+           f. >+2000 mOhms:---------------------------- Open Failure
+
+
+                                        Date       5/5/2011         5/20/2011
+                                  Room Temp
+                                          C           23               22
+                                         RH          32%              44%
+                                                    Aaron
+                                        Name        McKim          Aaron Mckim
+                                       mOhm
+                                       values       Actual            Delta
+                                                    Initial        Shock / Vibe
+                                      Average        37.3              0.0
+                                      St. Dev.        0.6              0.8
+                                           Min       36.4             -4.5
+                                          Max        41.9              7.5
+                                        Count        192               192
+
+
+
+                           How many samples are being tested?                      8
+                          How many contacts are on each board?                     24
+                        Stable     Minor         Acceptable         Marginal      Unstable        Open
+       Shock / Vibe      191         1               0                 0             0             0
+
+
+
+
+                                                   Page 29 of 54
+   Tracking Code: 112488_Report_Rev_1                      Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                           Part description: IDSD\TST
+
+                                                   DATA
+CONTACT GAPS
+Mating&Unmating durability
+                     Initial
+                     Units: inches
+          Pos.# B1           B2         B3        B4        B5         B6         B7         B8
+              1    0.0188     0.0198     0.0172    0.0194    0.0185     0.0190     0.0211     0.0176
+              2    0.0181     0.0199     0.0135    0.0187    0.0202     0.0196     0.0202     0.0197
+              3    0.0195     0.0190     0.0136    0.0139    0.0211     0.0196     0.0197     0.0201
+              4    0.0189     0.0170     0.0202    0.0185    0.0184     0.0186     0.0201     0.0197
+              5    0.0187     0.0171     0.0143    0.0186    0.0197     0.0205     0.0186     0.0187
+              6    0.0196     0.0177     0.0204    0.0196    0.0197     0.0223     0.0197     0.0197
+              7    0.0185     0.0154     0.0166    0.0202    0.0186     0.0187     0.0187     0.0186
+              8    0.0185     0.0158     0.0153    0.0186    0.0197     0.0194     0.0179     0.0190
+              9    0.0180     0.0179     0.0188    0.0186    0.0197     0.0197     0.0197     0.0197
+             10    0.0186     0.0185     0.0147    0.0179    0.0200     0.0197     0.0190     0.0186
+             11    0.0184     0.0158     0.0186    0.0176    0.0202     0.0197     0.0197     0.0210
+             12    0.0192     0.0132     0.0147    0.0175    0.0213     0.0190     0.0187     0.0221
+             13    0.0191     0.0198     0.0195    0.0163    0.0197     0.0197     0.0197     0.0211
+             14    0.0173     0.0191     0.0142    0.0169    0.0190     0.0203     0.0202     0.0183
+             15    0.0189     0.0139     0.0131    0.0178    0.0197     0.0197     0.0179     0.0187
+               After 100 cycles
+                     Units: inches
+          Pos.# B1           B2         B3        B4        B5         B6         B7         B8
+              1    0.0193     0.0214     0.0191    0.0198    0.0206     0.0197     0.0213     0.0193
+              2    0.0199     0.0215     0.0185    0.0199    0.0224     0.0189     0.0212     0.0193
+              3    0.0210     0.0190     0.0192    0.0193    0.0199     0.0194     0.0216     0.0197
+              4    0.0204     0.0207     0.0199    0.0200    0.0195     0.0195     0.0193     0.0183
+              5    0.0201     0.0205     0.0212    0.0192    0.0199     0.0189     0.0192     0.0182
+              6    0.0196     0.0239     0.0220    0.0191    0.0185     0.0190     0.0182     0.0198
+              7    0.0193     0.0199     0.0223    0.0216    0.0198     0.0190     0.0199     0.0193
+              8    0.0189     0.0191     0.0192    0.0182    0.0206     0.0192     0.0199     0.0198
+              9    0.0197     0.0192     0.0206    0.0183    0.0189     0.0194     0.0210     0.0192
+             10    0.0195     0.0205     0.0209    0.0193    0.0193     0.0185     0.0194     0.0186
+             11    0.0194     0.0200     0.0224    0.0194    0.0184     0.0186     0.0198     0.0182
+             12    0.0188     0.0199     0.0214    0.0188    0.0196     0.0199     0.0200     0.0190
+             13    0.0201     0.0194     0.0199    0.0192    0.0209     0.0207     0.0196     0.0184
+             14    0.0190     0.0190     0.0195    0.0195    0.0214     0.0217     0.0217     0.0189
+             15    0.0201     0.0191     0.0195    0.0197    0.0185     0.0213     0.0183     0.0193
+
+
+
+
+                                                  Page 30 of 54
+   Tracking Code: 112488_Report_Rev_1                     Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                          Part description: IDSD\TST
+
+                                            DATA continued
+Thermal aging
+            Initial
+             Units: inches
+Pos.#    B1         B2         B3        B4         B5             B6         B7        B8        B9        B10
+      1     0.0194    0.0181    0.0174    0.0187     0.0135          0.0141    0.0173    0.0172    0.0194    0.0181
+      2     0.0192    0.0175    0.0189    0.0176     0.0131          0.0140    0.0180    0.0189    0.0192    0.0175
+      3     0.0196    0.0185    0.0176    0.0187     0.0116          0.0132    0.0181    0.0172    0.0196    0.0185
+      4     0.0199    0.0191    0.0197    0.0189     0.0150          0.0143    0.0188    0.0181    0.0199    0.0191
+      5     0.0205    0.0195    0.0188    0.0172     0.0130          0.0151    0.0174    0.0197    0.0205    0.0195
+      6     0.0195    0.0190    0.0193    0.0181     0.0106          0.0142    0.0186    0.0170    0.0195    0.0190
+      7     0.0202    0.0199    0.0197    0.0197     0.0206          0.0187    0.0202    0.0201    0.0202    0.0199
+      8     0.0199    0.0186    0.0202    0.0202     0.0214          0.0193    0.0197    0.0197    0.0199    0.0186
+      9     0.0186    0.0188    0.0206    0.0202     0.0197        .0.02015    0.0202    0.0186    0.0186    0.0188
+    10      0.0190    0.0206    0.0215    0.0197     0.0186          0.0197    0.0186    0.0205    0.0190    0.0206
+    11      0.0189    0.0212    0.0211    0.0187     0.0179          0.0179    0.0197    0.0215    0.0189    0.0212
+    12      0.0197    0.0199    0.0197    0.0170     0.0186          0.0201    0.0197    0.0202    0.0197    0.0199
+    13      0.0199    0.0197    0.0187    0.0187     0.0201          0.0197    0.0186    0.0216    0.0199    0.0197
+    14      0.0202    0.0197    0.0199    0.0190     0.0190          0.0186    0.0165    0.0190    0.0202    0.0197
+    15      0.0202    0.0197    0.0175    0.0201     0.0205          0.0178    0.0201    0.0199    0.0202    0.0197
+        After Thermal
+             Units: inches
+Pos.#    B1         B2         B3        B4         B5             B6         B7        B8        B9        B10
+      1     0.0198    0.0190    0.0195    0.0193     0.0182         0.0192     0.0182    0.0187    0.0198    0.0190
+      2     0.0194    0.0209    0.0196    0.0206     0.0195         0.0190     0.0174    0.0189    0.0194    0.0209
+      3     0.0200    0.0202    0.0192    0.0206     0.0185         0.0195     0.0189    0.0183    0.0200    0.0202
+      4     0.0200    0.0202    0.0196    0.0201     0.0194         0.0211     0.0196    0.0187    0.0200    0.0202
+      5     0.0196    0.0196    0.0186    0.0205     0.0181         0.0198     0.0178    0.0193    0.0196    0.0196
+      6     0.0199    0.0216    0.0194    0.0203     0.0188         0.0194     0.0212    0.0190    0.0199    0.0216
+      7     0.0195    0.0198    0.0191    0.0209     0.0188         0.0188     0.0198    0.0192    0.0195    0.0198
+      8     0.0190    0.0197    0.0198    0.0207     0.0212         0.0194     0.0195    0.0188    0.0190    0.0197
+      9     0.0195    0.0195    0.0196    0.0207     0.0197         0.0196     0.0189    0.0192    0.0195    0.0195
+    10      0.0186    0.0198    0.0196    0.0214     0.0195         0.0185     0.0185    0.0194    0.0186    0.0198
+    11      0.0200    0.0197    0.0192    0.0204     0.0198         0.0192     0.0200    0.0191    0.0200    0.0197
+    12      0.0214    0.0200    0.0184    0.0203     0.0191         0.0191     0.0193    0.0191    0.0214    0.0200
+    13      0.0186    0.0193    0.0183    0.0197     0.0198         0.0198     0.0181    0.0183    0.0186    0.0193
+    14      0.0199    0.0193    0.0191    0.0198     0.0185         0.0182     0.0185    0.0199    0.0199    0.0193
+    15      0.0186    0.0212    0.0225    0.0212     0.0184         0.0196     0.0191    0.0199    0.0186    0.0212
+
+
+
+
+                                                   Page 31 of 54
+    Tracking Code: 112488_Report_Rev_1                    Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                          Part description: IDSD\TST
+
+                                               DATA continued
+Normal force initial:
+                                                       Initial
+                                              Units:inches
+                                              Pos.#        B1
+                                                        1      0.0198
+                                                        2      0.0171
+                                                        3      0.0181
+                                                        4      0.0175
+                                                        5      0.0183
+                                                        6      0.0172
+                                                        7      0.0190
+                                                        8      0.0199
+                                                        9      0.0186
+                                                       10      0.0179
+                                                       11      0.0187
+                                                       12      0.0190
+                                                       13      0.0188
+                                                       14      0.0183
+                                                       15      0.0187
+
+Normal force after thermal aging:
+                                                  Initial       After Thermal
+                                               Unit: inches      Unit: inches
+                                          1      0.0198            0.0196
+                                          2      0.0181            0.0196
+                                          3      0.0184            0.0192
+                                          4      0.0183            0.0190
+                                          5      0.0183            0.0187
+                                          6      0.0180            0.0192
+                                          7      0.0190            0.0186
+                                          8      0.0186            0.0189
+                                          9      0.0199            0.0181
+                                         10     0.0201             0.0199
+                                         11     0.0186             0.0187
+                                         12     0.0179             0.0191
+                                         13     0.0178             0.0195
+                                         14     0.0190             0.0185
+                                         15     0.0180             0.0191
+
+
+
+
+                                                    Page 32 of 54
+    Tracking Code: 112488_Report_Rev_1                                Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                                      Part description: IDSD\TST
+
+                                                         DATA continued
+MATING\UNMATING FORCE
+Mating/Unmating durability:
+                     Initial              After 25 Cycles          After 50 Cycles         After 100 Cycles       After Humidity
+Sample#     Mating       Unmating         Mating     Unmating     Mating        Unmating   Mating    Unmating    Mating    Unmating
+  21        17.54         14.29           11.36       9.84        11.41          8.56      11.43      8.33       4.43        4.1
+  22        17.11         15.96           13.78       13.01       11.89          10.33     11.85      9.45       6.01        4.97
+  23        21.02         15.06           15.69       10.32       13.55          8.25      13.44      8.28       7.52        5.29
+  24        17.47         14.86           15.27       12.68       13.41          9.69      10.45      8.62       6.28        5.55
+  25        18.41         15.06           11.77       11.38       11.02          9.87      11.2       9.47       9.2         6.07
+  26        15.34         12.46           14.25       8.94        13.97          8.96      11.72      7.76       5.37        3.34
+  27        19.29         15.18           15.52       9.45        11.45          8.78      11.37      7.78        7.04       6.02
+  28        21.55         14.01           13.45       10.26       12.13          9.07       13        7.83       7.56        5.45
+ 21 B       18.25          14.8           12.49       10.68       10.83           8.18     11.29      8.29       5.97        5.09
+ 22 B       19.45         16.19           12.55        10         12.53          9.84      12.55      9.4        7.7         6.1
+ 23 B       19.36         14.6            14.39       10.45       11.09          8.94      11.1       8.64       9.02        5.4
+ 24 B       16.45         14.97           14.71       10.65        9.67           9.91     9.09       9.39       5.72        5.75
+ 25 B       15.81         14.29           10.22       7.71        10.57          7.63      10.56      7.57       9.22        7.07
+ 26 B       14.08         13.05            9.24       8.17        9.52           7.52      9.43       7.07       5.34        4.14
+ 27 B        17.2         13.82           11.83       9.83        10.78           8.2      10.46      8.71       6.91        5.87
+ 28 B       17.13         12.68           14.24       10.94       12.74          9.83      12.45      9.19       9.2         6.75
+
+Mating/Unmating basic (middle position submitted):
+                       Initial              After 25 Cycles         After 50 Cycles        After 75 Cycles      After 100 Cycles
+  Sample#      Mating          Unmating     Mating    Unmating      Mating      Unmating   Mating    Unmating   Mating    Unmating
+     1         11.42            11.36       11.14      11.25        9.90         10.10     9.59       9.97       9.26      9.86
+     2         10.78            10.96       10.36      10.58        9.81         10.19     9.53       9.77      9.48       9.64
+     3         10.72            10.78       10.36      10.58        10.56        10.17     10.05      9.99      10.03      9.99
+     4         11.05            10.83       10.78      10.58        10.63        10.36     10.36      10.08      9.92      9.77
+     5         11.07            10.67       10.78      10.56        10.58        10.08     10.28      9.99      10.01      9.92
+     6         12.26            10.74       11.91      10.34        11.07        10.67     10.74      10.28     10.36      10.10
+     7         11.64            10.30       11.47      10.08        10.43        10.43     10.03      10.19      9.77      9.92
+     8         12.50            11.29       11.95      10.98        10.96        10.28     10.76      10.01     10.43      9.92
+
+Mating/Unmating basic (smallest position submitted):
+                       Initial              After 25 Cycles         After 50 Cycles        After 75 Cycles      After 100 Cycles
+  Sample#      Mating          Unmating     Mating    Unmating      Mating      Unmating   Mati ng   Unmating   Mating    Unmating
+     1          2.76             2.38        2.51       2.27        2.32          2.23     2.23       2.14       2.09      2.09
+     2          2.45             2.14        2.49       1.96        2.49          1.98     2.43       2.03       2.32      2.05
+     3          2.89             2.56        2.89       2.58        2.82          2.54     2.76       2.36       2.58      2.23
+     4          3.37             2.82        2.95       2.73        2.82          2.65     2.76       2.67       2.54      2.45
+     5          3.35             3.46        2.29       2.38        2.43          2.23     2.29       2.21       2.21      2.09
+     6          2.84             2.56        2.12       1.74        2.09          1.76     1.98       1.85       1.87      1.94
+     7          2.71             2.18        2.65       1.92        2.65          1.87     2.54       1.76       2.36      1.81
+     8          2.95             2.51        2.40       2.16        2.32          2.09     2.21       2.09       2.23      1.98
+
+
+
+
+                                                                Page 33 of 54
+   Tracking Code: 112488_Report_Rev_1                        Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                             Part description: IDSD\TST
+
+                                                DATA continued
+Thermal aging:
+                                                      Initial          After Thermals
+                                Sample#          Mating    Unmating   Mating    Unmating
+                                  1              23.35      19.60     20.42      18.13
+                                    2            28.22      21.72     20.59      19.51
+                                    3            27.45      21.61     23.33      20.40
+                                    4            26.00      20.35     23.15      19.58
+                                    5            23.95      20.09     18.92      17.90
+                                    6            25.07      20.40     22.49      19.36
+                                    7            26.55      21.06     24.81      19.87
+                                    8            25.95      20.68     21.76      19.91
+
+NORMAL FORCE
+                  Initial                 Deflections in mm, Forces in Grams
+                  Sample #      0.1000       0.2000       0.3000      0.4000    0.4800      SET
+                    1            68.4        143.6         222.9       307.7    376.1      0.0230
+                    2            76.6        154.6         243.5       329.6    403.5      0.0250
+                    3            72.5        145.0         227.0       315.9    378.8      0.0300
+                    4            79.3        161.4         250.3       339.2    413.0      0.0240
+                    5            76.6        155.9         246.2       336.4    408.9      0.0200
+                    6            72.5        157.3         242.1       329.6    394.7      0.0250
+                    7            76.6        157.3         244.8       332.3    388.5      0.0200
+                    8            78.0        157.3         240.7       322.8    385.8      0.0150
+                    9            71.5        145.0         217.5       292.7    351.1      0.0150
+                    10           71.1        150.5         242.1       332.3    392.3      0.0150
+                    11           75.2        157.3         242.1       322.8    381.8      0.0150
+                    12           71.1        154.6         240.7       328.2    390.9      0.0150
+
+               After Thermals              Deflections in mm, Forces in Grams
+                     Sample #    0.1000      0.2000        0.3000      0.4000   0.4800      SET
+                      1           75.2        153.2         244.8       328.2   384.3      0.0400
+                      2           67.0        145.0         233.9       317.3   377.5      0.0400
+                      3           73.9        154.6         240.7       331.0   393.9      0.0300
+                      4           80.7        158.7         246.2       343.3   404.8      0.0300
+                      5           76.6        164.1         253.0       340.6   398.0      0.0300
+                      6           75.2        158.7         243.5       336.4   404.8      0.0200
+                      7           76.6        158.7         240.7       321.4   376.1      0.0100
+                      8           72.5        151.8         240.7       328.2   396.6      0.0240
+                      9           72.5        157.3         242.1       326.9   396.6      0.0200
+                     10           65.7        142.2         222.9       300.9   354.2      0.0400
+                     11           72.5        157.3         242.1       326.9   396.6      0.0200
+                     12           72.5        151.8         240.7       328.2   396.6      0.0240
+
+
+
+
+                                                     Page 34 of 54
+   Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                            Part description: IDSD\TST
+
+                                              DATA continued
+INSULATION RESISTANCE (IR):
+
+                                                Initial Insulation Resistance
+                                                  Measured In Meg Ohms
+
+                                                          Pin to Pin
+                                      Mated                    A Unmated B
+                                        X                     X            X
+                     Sample#        IDSD/TST                IDSD          TST
+                    112488-005        10000                 10000        10000
+                    112488-006        10000                 10000        10000
+
+                                               Thermal Insulation Resistance
+                                                   Measured In Meg Ohms
+
+                                                          Pin to Pin
+                                          Mated                A Unmated B
+                                            X                 X            X
+                     Sample#            IDSD/TST            IDSD          TST
+                    112488-005            10000             10000        10000
+                    112488-006            10000             10000        10000
+
+                                              Humidity Insulation Resistance
+                                                   Measured In Meg Ohms
+
+                                                          Pin to Pin
+                                          Mated                A Unmated B
+                                            X                 X            X
+                     Sample#            IDSD/TST            IDSD          TST
+                    112488-005            10000             10000        10000
+                    112488-006            10000             10000        10000
+
+
+
+
+                                                   Page 35 of 54
+  Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                           Part description: IDSD\TST
+
+                                             DATA continued
+
+DIELECTRIC WITHSTANDING VOLTAGE (DWV):
+                                                Initial Breakdown Voltage
+                                             Test Voltage Until Breakdown Occurs
+
+                                                          Pin to Pin
+                                         Mated                 A Unmated           B
+                                                              X
+                    Sample#            IDSD/TST             IDSD                TST
+                   112488-001            1750               2200                2000
+                   112488-002            1700               2000                2300
+
+                                                        Initial DWV
+                                                         Test Voltage= 1275
+
+                                                         Pin to Pin
+                                     Mated                    A Unmated        B
+                    Sample#        IDSD/TST                IDSD                TST
+                   112488-005        1275                  1275                1275
+                   112488-006        1275                  1275                1275
+
+                                                  Thermal Test Voltage
+                                                      Test Voltage= 1275
+
+                                                         Pin to Pin
+                                         Mated                A Unmated        B
+                    Sample#            IDSD/TST            IDSD                TST
+                   112488-005            1275              1275                1275
+                   112488-006            1275              1275                1275
+
+                                                  Humidity Test Voltage
+                                                       Test Voltage= 1275
+
+                                                         Pin to Pin
+                                         Mated                A Unmated        B
+                    Sample#            IDSD/TST            IDSD                TST
+                   112488-005            1275              1275                1275
+                   112488-006            1275              1275                1275
+
+
+
+
+                                                  Page 36 of 54
+Tracking Code: 112488_Report_Rev_1                    Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                      Part description: IDSD\TST
+
+                                        DATA Continued
+LLCR Durability:
+                           mOhm
+                           values    Actual          Delta       Delta         Delta
+              Board       Position   Initial      100 Cycles    Thermal       Humidity
+                      1   P1          37.5            -0.8        0.2            2.5
+                      1   P2          37.8            -1.1        -0.9          -1.2
+                      1   P3          37.4            -0.4        1.2            4.0
+                      1   P4          37.7            -0.5        -0.4          -0.8
+                      1   P5          38.7            -1.9        0.5            2.8
+                      1   P6          38.2            -0.6        0.4            2.3
+                      1   P7          38.3            -1.5        0.4            0.4
+                      1   P8          39.3            -1.9        0.5            1.9
+                      1   P9          39.1            -2.6        -1.4          -0.1
+                      1   P10         38.3            -1.4         1.4           0.8
+                      1   P11         37.9            -1.3        -0.6           0.0
+                      1   P12         37.6            -1.0        -0.2          -0.1
+                      1   P13         37.5            -0.9         0.5           2.7
+                      1   P14         38.0            -1.4         0.0           1.5
+                      1   P15         38.0            -1.4        -0.7          -0.8
+                      1   P16         38.1            -0.2         0.1           0.2
+                      1   P17         38.8            -2.1         0.0           1.3
+                      1   P18         37.6            -1.0        -0.3           1.0
+                      1   P19         38.4            -1.5         0.7           1.1
+                      1   P20         38.4            -1.2        -0.1           0.6
+                      1   P21         39.1            -1.9        -0.6           1.5
+                      1   P22         39.1            -2.2        -1.9          -2.2
+                      1   P23         38.7            -1.9        -1.7          -2.0
+                      1   P24         39.1            -2.1        -1.4          -1.7
+                      2   P1          44.8            -4.7        -4.7          -2.5
+                      2   P2          44.8            -4.8        -4.1          -3.1
+                      2   P3          44.5            -4.5        -4.4           3.4
+                      2   P4          44.6            -4.3        -4.4          -1.4
+                      2   P5          44.2            -4.3        -3.0          -4.5
+                      2   P6          44.5            -4.5        -1.7          -5.4
+                      2   P7          43.8            -4.1        -2.0          -5.1
+                      2   P8          44.3            -4.2        -3.9          -1.8
+                      2   P9          43.3            -4.1        -2.8          -3.7
+                      2   P10         43.6            -3.9        -2.5          -4.4
+                      2   P11         42.7            -3.9        -2.9          -0.4
+                      2   P12         42.3            -3.3         1.2          -1.5
+                      2   P13         41.5            -3.0        -2.2          -2.1
+                      2   P14         41.1            -2.6        -1.1          -2.5
+                      2   P15         40.4            -2.0         0.9          -0.3
+                      2   P16         40.5            -2.1        -0.1          -1.2
+                      2   P17         39.4            -1.2         1.2           1.1
+                      2   P18         39.4            -2.0        -0.2          -1.1
+                      2   P19         39.0            -1.4         1.8           2.7
+                      2   P20         38.6            -0.9         2.5           0.5
+                      2   P21         38.4            -1.0         0.6           1.7
+                                               Page 37 of 54
+Tracking Code: 112488_Report_Rev_1                   Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                     Part description: IDSD\TST
+
+                     2   P22         37.8          -0.5          -0.2           -0.5
+                     2   P23         38.4          -0.4          1.6             5.5
+                     2   P24         36.6           1.3          2.4             3.2
+                     3   P1          37.3          -0.6          1.2             1.8
+                     3   P2          37.3          -0.5          1.8             1.7
+                     3   P3          36.8           0.3          1.0             0.6
+                     3   P4          37.2          -0.1          0.8             0.7
+                     3   P5          37.2          -0.4          0.5             0.1
+                     3   P6          37.1           0.1          1.0             1.3
+                     3   P7          36.6           0.0          0.2            -0.2
+                     3   P8          37.5          -0.1          2.2             3.8
+                     3   P9          36.8          -0.4          1.2             1.7
+                     3   P10         37.2          -0.3          0.0            -0.3
+                     3   P11         36.9          -0.1          1.0             0.9
+                     3   P12         36.8          -0.2          1.9             1.7
+                     3   P13         36.9          -0.3          2.1             4.1
+                     3   P14         36.7          -0.2          -0.1           -0.5
+                     3   P15         37.1          -0.4          1.4             0.7
+                     3   P16         37.3          -0.3          3.2             2.6
+                     3   P17         37.1          -0.3          0.3            -0.1
+                     3   P18         37.1          -0.2          1.2             2.9
+                     3   P19         37.3           0.5          1.5             0.4
+                     3   P20         38.0          -0.6          0.8             1.8
+                     3   P21         37.8          -0.3          1.3             2.0
+                     3   P22         37.2           0.2          1.3             0.9
+                     3   P23         37.7          -0.8          -0.2           -0.5
+                     3   P24         37.4          -0.2          1.9             0.9
+                     4   P1          37.1          -0.2          0.2            -0.1
+                     4   P2          37.1           1.6          0.2            -0.1
+                     4   P3          36.7           6.3          0.7             1.2
+                     4   P4          37.1          -0.1          0.0            -0.3
+                     4   P5          37.2          -0.3          0.4             0.3
+                     4   P6          37.2           0.0          1.6             0.6
+                     4   P7          36.8           0.3          1.5             1.2
+                     4   P8          37.2           0.0          4.2             4.9
+                     4   P9          36.6          -0.2          1.8             1.3
+                     4   P10         37.1          -0.1          1.1             2.3
+                     4   P11         36.9           0.0          2.8             2.9
+                     4   P12         36.6          -0.2          1.4             1.2
+                     4   P13         37.0          -0.5          0.6            -0.1
+                     4   P14         36.8          -0.1          0.8             0.7
+                     4   P15         37.3          -0.8          -0.4           -0.7
+                     4   P16         37.2          -0.3          0.9             0.9
+                     4   P17         37.0          -0.2          -0.1           -0.3
+                     4   P18         36.9          -0.1          2.1             1.9
+                     4   P19         37.4          -0.4          0.7             0.7
+                     4   P20         37.3          -0.1          0.8             0.9
+                     4   P21         37.2          -0.2          0.9             2.5
+                     4   P22         37.2           0.3          2.3             2.6
+                     4   P23         37.1           0.3          1.0             0.6
+
+                                            Page 38 of 54
+Tracking Code: 112488_Report_Rev_1                   Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                     Part description: IDSD\TST
+
+                     4   P24         37.2           0.1          3.7             4.0
+                     5   P1          36.9          -0.3          0.3            -0.1
+                     5   P2          37.0          -0.5          1.2            0.7
+                     5   P3          36.7          -0.1          1.1            0.7
+                     5   P4          37.0          -0.2          3.1            3.5
+                     5   P5          36.7           0.0          1.2             1.8
+                     5   P6          37.1          -0.4          0.4            0.0
+                     5   P7          36.6          -0.2          1.6            1.8
+                     5   P8          37.0           0.3          4.1             5.8
+                     5   P9          36.7          -0.4          2.1            1.9
+                     5   P10         36.8           0.2          1.9             1.7
+                     5   P11         36.6           0.1          2.0             2.0
+                     5   P12         36.8          -0.2          1.5             1.0
+                     5   P13         36.7          -0.1          0.7             0.7
+                     5   P14         40.4          -4.0          0.3            -1.1
+                     5   P15         37.0          -0.5          3.0             3.1
+                     5   P16         37.0           0.0          3.5             3.8
+                     5   P17         37.1          -0.4          0.6             0.2
+                     5   P18         36.8          -0.2          1.8             1.0
+                     5   P19         36.9          -0.3          1.7             1.7
+                     5   P20         37.4          -0.1          1.2             2.8
+                     5   P21         37.6          -0.6          -0.4           -0.9
+                     5   P22         37.2           0.0          1.1             1.0
+                     5   P23         37.3          -0.5          0.7             0.3
+                     5   P24         36.9           0.9          3.4             3.3
+                     6   P1          36.9          -0.4          2.0             2.6
+                     6   P2          37.2          -0.5          1.1             1.9
+                     6   P3          36.8          -0.3          0.0            -0.4
+                     6   P4          37.1          -0.3          0.0            -0.4
+                     6   P5          37.3          -0.8          3.1             1.8
+                     6   P6          37.2          -0.4          4.0             3.1
+                     6   P7          37.1          -0.5          1.0             2.3
+                     6   P8          37.6          -0.3          3.1             3.7
+                     6   P9          36.9          -0.3          1.3             2.9
+                     6   P10         37.4          -0.6          0.9             1.4
+                     6   P11         37.1          -0.3          2.0             2.5
+                     6   P12         36.9          -0.4          0.7             0.3
+                     6   P13         36.8          -0.2          0.6             0.7
+                     6   P14         37.1          -0.5          0.2            -0.1
+                     6   P15         36.8          -0.5          -0.1           -0.6
+                     6   P16         37.5          -0.6          -0.1           -0.5
+                     6   P17         37.3          -0.6          1.0             0.6
+                     6   P18         37.0          -0.1          1.3             2.0
+                     6   P19         37.0          -0.4          -0.1           -0.5
+                     6   P20         37.4          -0.2          0.7             0.6
+                     6   P21         37.3           0.0          0.5             0.2
+                     6   P22         37.2          -0.5          0.4             0.9
+                     6   P23         37.4          -0.3          1.2             2.1
+                     6   P24         38.0          -0.6          -0.2           -0.4
+                     7   P1          37.2          -0.4          0.4            4.1
+
+                                            Page 39 of 54
+Tracking Code: 112488_Report_Rev_1                   Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                     Part description: IDSD\TST
+
+                     7   P2          36.8          -0.1          3.0            3.1
+                     7   P3          36.6           0.1          1.1             0.6
+                     7   P4          37.1          -0.5          1.4            1.1
+                     7   P5          37.1          -0.5          0.3            -0.2
+                     7   P6          37.5          -0.4          3.7            1.0
+                     7   P7          36.8          -0.1          1.2            0.9
+                     7   P8          37.8          -0.7          -0.4            2.3
+                     7   P9          36.7           1.4          4.2             3.4
+                     7   P10         37.2          -0.4          -0.1           -0.7
+                     7   P11         36.9          -0.1          -0.3            3.7
+                     7   P12         36.7           0.0          1.6             1.1
+                     7   P13         36.6           0.0          0.9             0.4
+                     7   P14         37.1          -0.5          1.7             1.9
+                     7   P15         37.0          -0.4          1.8             1.7
+                     7   P16         37.1          -0.3          3.7             3.5
+                     7   P17         37.0          -0.3          0.3            -0.2
+                     7   P18         37.3          -0.7          1.5             2.3
+                     7   P19         37.1          -0.4          0.8             0.5
+                     7   P20         37.1          -0.2          0.7             0.3
+                     7   P21         37.0          -0.2          1.1             0.9
+                     7   P22         37.3          -0.3          2.2             2.5
+                     7   P23         37.6          -0.3          1.6             1.1
+                     7   P24         37.2           0.8          2.1             2.9
+                     8   P1          37.0           0.2          0.9             0.5
+                     8   P2          37.1           1.3          0.9             0.5
+                     8   P3          37.3          -0.8          -0.5           -0.9
+                     8   P4          37.3          -0.4          2.1             2.0
+                     8   P5          37.0           0.4          0.8             0.6
+                     8   P6          37.3           0.1          1.9             3.7
+                     8   P7          36.9          -0.2          0.5             0.9
+                     8   P8          37.4          -0.3          0.0             2.2
+                     8   P9          36.8          -0.2          0.8             0.7
+                     8   P10         37.0           0.1          1.0             3.9
+                     8   P11         37.5          -0.7          1.5             2.7
+                     8   P12         37.1          -0.5          0.9             1.6
+                     8   P13         37.1          -0.7          0.5             2.3
+                     8   P14         36.8          -0.2          0.2            -0.4
+                     8   P15         37.3          -0.6          1.2             1.7
+                     8   P16         37.3          -0.2          0.9             2.0
+                     8   P17         37.0           0.0          2.4             0.2
+                     8   P18         37.2          -0.3          2.0             4.8
+                     8   P19         37.5          -0.3          2.7             3.8
+                     8   P20         37.6          -0.2          1.0             2.2
+                     8   P21         37.5          -0.4          0.8             0.9
+                     8   P22         37.4          -0.4          0.9             0.5
+                     8   P23         37.6          -0.4          1.3            -0.1
+                     8   P24         37.3           0.0          1.6             1.9
+
+
+
+
+                                            Page 40 of 54
+   Tracking Code: 112488_Report_Rev_1                      Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                           Part description: IDSD\TST
+
+                                             DATA Continued
+LLCR thermal aging
+                                          mOhm
+                                          values       Actual          Delta
+                             Board       Position       Initial     Thermal age
+                                     1   P1              37.4           0.7
+                                     1   P2              37.7           0.7
+                                     1   P3              37.3           1.1
+                                     1   P4              37.6           1.6
+                                     1   P5              38.8           4.0
+                                     1   P6              38.1           2.2
+                                     1   P7              38.3           -3.2
+                                     1   P8              39.3           -2.7
+                                     1   P9              39.1           -3.6
+                                     1   P10             38.2           2.8
+                                     1   P11             37.8           -1.5
+                                     1   P12             37.4           0.7
+                                     1   P13             37.4           -1.8
+                                     1   P14             37.9           -0.2
+                                     1   P15             37.9           1.8
+                                     1   P16             38.0           2.2
+                                     1   P17             38.8           -4.7
+                                     1   P18             37.4           1.4
+                                     1   P19             38.4           1.7
+                                     1   P20             38.3           -0.9
+                                     1   P21             39.2           -0.9
+                                     1   P22             39.0           -4.9
+                                     1   P23             38.6           4.1
+                                     1   P24             39.0           2.8
+                                     2   P1              44.8           -2.7
+                                     2   P2              44.8           -2.4
+                                     2   P3              44.4           -3.5
+                                     2   P4              44.6           -3.6
+                                     2   P5              44.2           -4.1
+                                     2   P6              44.5           -4.3
+                                     2   P7              43.8           -4.1
+                                     2   P8              44.2           -4.2
+                                     2   P9              43.3           -5.7
+                                     2   P10             43.5           -5.7
+                                     2   P11             42.6           -7.3
+                                     2   P12             42.3           -8.1
+                                     2   P13             41.4            0.6
+                                     2   P14             41.0           -0.3
+                                     2   P15             40.3           -2.1
+                                     2   P16             40.5           -2.8
+                                     2   P17             39.3            2.5
+                                     2   P18             39.3           -3.1
+                                     2   P19             38.9           -0.7
+                                     2   P20             38.5            2.4
+                                     2   P21             38.3            1.7
+
+                                                    Page 41 of 54
+Tracking Code: 112488_Report_Rev_1                    Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                      Part description: IDSD\TST
+
+                                 2   P22          37.6            1.8
+                                 2   P23          38.2            1.0
+                                 2   P24          37.3            -1.4
+                                 3   P1           37.2            -0.7
+                                 3   P2           37.2            0.4
+                                 3   P3           36.7            -1.1
+                                 3   P4           37.1            -0.9
+                                 3   P5           37.1            -1.8
+                                 3   P6           37.0            -0.4
+                                 3   P7           36.5            3.0
+                                 3   P8           37.3            -1.8
+                                 3   P9           36.7            -0.2
+                                 3   P10          37.1            0.5
+                                 3   P11          36.7            -0.2
+                                 3   P12          36.7            -0.2
+                                 3   P13          36.8            1.9
+                                 3   P14          36.6            3.6
+                                 3   P15          36.9            4.3
+                                 3   P16          37.2            -2.7
+                                 3   P17          37.0            -0.6
+                                 3   P18          36.9            1.6
+                                 3   P19          37.2            2.3
+                                 3   P20          37.9            -3.3
+                                 3   P21          37.7            0.9
+                                 3   P22          37.1            -0.5
+                                 3   P23          37.6            -0.3
+                                 3   P24          37.3            1.2
+                                 4   P1           37.0            0.6
+                                 4   P2           37.0            0.8
+                                 4   P3           36.6            0.3
+                                 4   P4           37.0            0.5
+                                 4   P5           37.1            0.7
+                                 4   P6           37.0            0.5
+                                 4   P7           36.6            0.4
+                                 4   P8           37.1            0.7
+                                 4   P9           36.5            0.5
+                                 4   P10          37.0            0.5
+                                 4   P11          36.7            0.4
+                                 4   P12          36.5            0.6
+                                 4   P13          36.9            0.3
+                                 4   P14          36.7            0.3
+                                 4   P15          37.2            0.7
+                                 4   P16          37.1            0.4
+                                 4   P17          36.8            0.4
+                                 4   P18          36.8            0.4
+                                 4   P19          37.2            0.4
+                                 4   P20          37.2            0.1
+                                 4   P21          37.1            0.3
+                                 4   P22          37.1            0.7
+                                 4   P23          36.9            0.3
+
+                                             Page 42 of 54
+Tracking Code: 112488_Report_Rev_1                    Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                      Part description: IDSD\TST
+
+                                 4   P24          37.1             0.4
+                                 5   P1           36.8            0.5
+                                 5   P2           36.8            0.8
+                                 5   P3           36.5            0.9
+                                 5   P4           36.8            0.6
+                                 5   P5           36.6            0.7
+                                 5   P6           36.9            0.7
+                                 5   P7           36.5            0.8
+                                 5   P8           36.9            0.4
+                                 5   P9           36.6            0.5
+                                 5   P10          36.7            0.7
+                                 5   P11          36.5            0.4
+                                 5   P12          36.7            1.2
+                                 5   P13          36.6            0.6
+                                 5   P14          40.5            -2.9
+                                 5   P15          36.9            0.3
+                                 5   P16          36.8            0.6
+                                 5   P17          37.0            0.4
+                                 5   P18          36.7            0.6
+                                 5   P19          36.8            0.6
+                                 5   P20          37.3            0.4
+                                 5   P21          37.5            0.5
+                                 5   P22          37.1            0.6
+                                 5   P23          37.2            0.6
+                                 5   P24          36.8            0.5
+                                 6   P1           36.8             0.8
+                                 6   P2           37.1             1.4
+                                 6   P3           36.7             0.5
+                                 6   P4           37.0             1.0
+                                 6   P5           37.2             0.8
+                                 6   P6           37.1             0.5
+                                 6   P7           36.9             1.1
+                                 6   P8           37.5             0.6
+                                 6   P9           36.8             0.6
+                                 6   P10          37.3             0.8
+                                 6   P11          37.0             0.4
+                                 6   P12          36.8             0.4
+                                 6   P13          36.7             0.5
+                                 6   P14          36.9             0.6
+                                 6   P15          36.7             0.3
+                                 6   P16          37.4             0.5
+                                 6   P17          37.1             0.7
+                                 6   P18          36.9             0.4
+                                 6   P19          36.9             0.4
+                                 6   P20          37.3             0.8
+                                 6   P21          37.2             0.6
+                                 6   P22          37.1             0.6
+                                 6   P23          37.3             0.8
+                                 6   P24          37.9             0.4
+                                 7   P1           37.1            0.5
+
+                                             Page 43 of 54
+Tracking Code: 112488_Report_Rev_1                    Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                      Part description: IDSD\TST
+
+                                 7   P2           36.7             0.6
+                                 7   P3           36.4             0.6
+                                 7   P4           37.0             0.3
+                                 7   P5           37.0             1.4
+                                 7   P6           37.4             1.2
+                                 7   P7           36.7             0.5
+                                 7   P8           37.7             1.7
+                                 7   P9           36.6             0.6
+                                 7   P10          37.1             0.9
+                                 7   P11          36.7             0.9
+                                 7   P12          36.6             0.9
+                                 7   P13          36.5             0.3
+                                 7   P14          37.0             0.6
+                                 7   P15          36.9             0.8
+                                 7   P16          37.0             0.2
+                                 7   P17          36.9             1.0
+                                 7   P18          37.2             0.6
+                                 7   P19          36.9             0.4
+                                 7   P20          37.0             0.3
+                                 7   P21          36.9             0.3
+                                 7   P22          37.1             0.9
+                                 7   P23          37.4             0.6
+                                 7   P24          37.0             0.9
+                                 8   P1           36.9             0.4
+                                 8   P2           37.0             0.8
+                                 8   P3           37.2             0.6
+                                 8   P4           37.2             0.7
+                                 8   P5           36.9             0.7
+                                 8   P6           37.2             0.5
+                                 8   P7           36.8             0.8
+                                 8   P8           37.3             0.8
+                                 8   P9           36.7             0.5
+                                 8   P10          36.9             0.8
+                                 8   P11          37.4             0.6
+                                 8   P12          37.0             0.8
+                                 8   P13          37.0             0.4
+                                 8   P14          36.7             0.6
+                                 8   P15          37.2             0.7
+                                 8   P16          37.2             0.7
+                                 8   P17          36.9             1.0
+                                 8   P18          37.1             0.9
+                                 8   P19          37.4             1.1
+                                 8   P20          37.5             0.8
+                                 8   P21          37.3             0.6
+                                 8   P22          37.3             0.7
+                                 8   P23          37.5             0.6
+                                 8   P24          37.2             0.7
+
+
+
+
+                                             Page 44 of 54
+   Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                            Part description: IDSD\TST
+
+                                              DATA Continued
+LLCR Gas Tight
+                                             mOhm
+                                             values      Actual        Delta
+                               Board        Position     Initial     Gas Tight
+                                        1   P1            37.5          0.6
+                                        1   P2            37.2          0.6
+                                        1   P3            37.3          0.4
+                                        1   P4            37.2          0.4
+                                        1   P5            37.1          0.8
+                                        1   P6            37.6          0.9
+                                        1   P7            37.1          0.8
+                                        1   P8            37.3          0.8
+                                        1   P9            36.7          1.0
+                                        1   P10           36.9          0.5
+                                        1   P11           36.9          0.5
+                                        1   P12           36.9          0.3
+                                        1   P13           36.7          0.5
+                                        1   P14           36.9          0.4
+                                        1   P15           37.4          0.4
+                                        1   P16           37.1          0.4
+                                        1   P17           37.3          0.6
+                                        1   P18           37.0          0.3
+                                        1   P19           37.2          0.8
+                                        1   P20           37.4          0.7
+                                        1   P21           37.5          1.2
+                                        1   P22           37.8          1.0
+                                        1   P23           37.6          0.7
+                                        1   P24           37.5          0.9
+                                        2   P1            37.0          4.2
+                                        2   P2            37.2          4.1
+                                        2   P3            36.6          3.6
+                                        2   P4            36.5          3.8
+                                        2   P5            36.9          3.8
+                                        2   P6            37.1          4.0
+                                        2   P7            36.7          4.1
+                                        2   P8            37.2          4.0
+                                        2   P9            36.6          3.2
+                                        2   P10           36.9          3.6
+                                        2   P11           36.8          3.3
+                                        2   P12           36.6          3.1
+                                        2   P13           36.5          2.0
+                                        2   P14           36.9          2.4
+                                        2   P15           36.8          2.0
+                                        2   P16           37.0          1.8
+                                        2   P17           36.9          1.4
+                                        2   P18           36.8          1.2
+                                        2   P19           37.0          1.3
+                                        2   P20           37.2          0.9
+                                        2   P21           36.7          0.9
+
+                                                   Page 45 of 54
+Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                                     2   P22           37.1           1.3
+                                     2   P23           37.0           0.8
+                                     2   P24           37.0           1.0
+                                     3   P1            36.8           0.7
+                                     3   P2            36.8           0.9
+                                     3   P3            36.9           1.2
+                                     3   P4            36.8           1.0
+                                     3   P5            36.6           1.1
+                                     3   P6            37.5           1.3
+                                     3   P7            36.7           2.1
+                                     3   P8            36.9           1.5
+                                     3   P9            36.7           0.6
+                                     3   P10           37.1           1.1
+                                     3   P11           36.8           0.3
+                                     3   P12           37.8           0.6
+                                     3   P13           36.8           0.4
+                                     3   P14           36.7           0.7
+                                     3   P15           37.0           0.4
+                                     3   P16           37.4           0.4
+                                     3   P17           37.1           0.6
+                                     3   P18           36.8           0.4
+                                     3   P19           36.9           0.8
+                                     3   P20           37.4           0.7
+                                     3   P21           37.7           0.6
+                                     3   P22           37.2           1.1
+                                     3   P23           37.3           1.2
+                                     3   P24           37.1           1.0
+                                     4   P1            36.7           0.4
+                                     4   P2            36.7           0.8
+                                     4   P3            36.7           1.0
+                                     4   P4            37.2           0.8
+                                     4   P5            36.7           0.9
+                                     4   P6            37.1           0.9
+                                     4   P7            36.6           0.7
+                                     4   P8            37.0           0.7
+                                     4   P9            36.6           0.7
+                                     4   P10           36.7           1.1
+                                     4   P11           36.6           0.5
+                                     4   P12           37.1           0.9
+                                     4   P13           37.0           1.1
+                                     4   P14           36.8           0.9
+                                     4   P15           36.8           0.4
+                                     4   P16           37.1           0.5
+                                     4   P17           36.7           0.4
+                                     4   P18           37.1           0.5
+                                     4   P19           37.1           0.4
+                                     4   P20           37.6           0.9
+                                     4   P21           37.9           1.3
+                                     4   P22           37.0           1.1
+                                     4   P23           37.2           1.6
+
+                                                Page 46 of 54
+Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                                     4   P24           37.0          1.0
+                                     5   P1            36.6          0.4
+                                     5   P2            36.7          0.2
+                                     5   P3            36.8          0.4
+                                     5   P4            36.8          0.4
+                                     5   P5            36.8          0.7
+                                     5   P6            36.9          0.9
+                                     5   P7            36.5          0.8
+                                     5   P8            37.0          0.4
+                                     5   P9            36.7          0.5
+                                     5   P10           36.8          0.3
+                                     5   P11           36.6          0.9
+                                     5   P12           36.6          0.6
+                                     5   P13           36.6          0.5
+                                     5   P14           36.3          0.3
+                                     5   P15           36.6          0.7
+                                     5   P16           37.0          1.0
+                                     5   P17           36.5          0.4
+                                     5   P18           36.4          0.4
+                                     5   P19           36.5          0.5
+                                     5   P20           37.1          0.7
+                                     5   P21           37.1          0.5
+                                     5   P22           37.3          0.4
+                                     5   P23           36.8          0.5
+                                     5   P24           37.2          0.8
+                                     6   P1            37.1          0.9
+                                     6   P2            36.8          0.4
+                                     6   P3            37.2          0.8
+                                     6   P4            37.2          0.8
+                                     6   P5            37.1          0.8
+                                     6   P6            37.3          1.5
+                                     6   P7            36.9          0.8
+                                     6   P8            37.3          0.3
+                                     6   P9            36.8          0.8
+                                     6   P10           37.4          1.3
+                                     6   P11           37.1          0.1
+                                     6   P12           37.0          0.9
+                                     6   P13           36.9          1.1
+                                     6   P14           37.0          0.5
+                                     6   P15           36.8          0.1
+                                     6   P16           37.3          0.4
+                                     6   P17           37.0          0.8
+                                     6   P18           36.7          0.3
+                                     6   P19           36.9          0.5
+                                     6   P20           37.3          0.7
+                                     6   P21           37.4          1.0
+                                     6   P22           37.4          1.1
+                                     6   P23           37.2          1.5
+                                     6   P24           37.2          1.4
+                                     7   P1            38.8          -1.1
+
+                                                Page 47 of 54
+Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                                     7   P2            37.9          0.2
+                                     7   P3            37.3          1.3
+                                     7   P4            37.5          1.3
+                                     7   P5            36.8          0.9
+                                     7   P6            38.5          2.3
+                                     7   P7            37.0          1.6
+                                     7   P8            40.0          1.8
+                                     7   P9            37.0          0.5
+                                     7   P10           37.7          1.5
+                                     7   P11           36.8          1.3
+                                     7   P12           37.0          1.1
+                                     7   P13           36.7          0.5
+                                     7   P14           37.8          -0.5
+                                     7   P15           36.9          0.7
+                                     7   P16           37.3          0.9
+                                     7   P17           37.1          0.7
+                                     7   P18           37.8          1.1
+                                     7   P19           37.4          0.5
+                                     7   P20           39.0          -1.5
+                                     7   P21           38.0          1.3
+                                     7   P22           39.0          0.4
+                                     7   P23           38.1          2.6
+                                     7   P24           37.8          2.2
+                                     8   P1            36.5          0.6
+                                     8   P2            36.7          0.4
+                                     8   P3            36.4          0.8
+                                     8   P4            36.8          0.7
+                                     8   P5            36.5          0.5
+                                     8   P6            37.1          0.7
+                                     8   P7            36.7          0.9
+                                     8   P8            37.1          0.7
+                                     8   P9            36.5          0.5
+                                     8   P10           36.9          0.4
+                                     8   P11           36.7          0.9
+                                     8   P12           36.5          0.7
+                                     8   P13           36.4          0.6
+                                     8   P14           36.5          0.4
+                                     8   P15           36.5          0.4
+                                     8   P16           37.1          0.7
+                                     8   P17           36.8          1.2
+                                     8   P18           36.7          0.5
+                                     8   P19           36.8          0.9
+                                     8   P20           37.2          0.5
+                                     8   P21           37.1          0.9
+                                     8   P22           37.0          1.5
+                                     8   P23           38.0          0.6
+                                     8   P24           37.1          0.8
+
+
+
+
+                                                Page 48 of 54
+  Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                           Part description: IDSD\TST
+
+                                              Data Continued
+LLCR S&V:
+                                                mOhm
+                                                values       Actual         Delta
+                                                                           Shock /
+                        Board              Position           Initial       Vibe
+                                       1   P1                  37.7          0.0
+                                       1   P2                  37.0          0.0
+                                       1   P3                  37.2          0.1
+                                       1   P4                  37.3          0.0
+                                       1   P5                  37.4          0.0
+                                       1   P6                  37.8          0.2
+                                       1   P7                  37.4          0.0
+                                       1   P8                  37.7          0.1
+                                       1   P9                  37.1          0.2
+                                       1   P10                 37.6          0.2
+                                       1   P11                 37.3          0.1
+                                       1   P12                 37.7          -0.1
+                                       1   P13                 37.2          0.0
+                                       1   P14                 37.0          -0.1
+                                       1   P15                 37.5          -0.1
+                                       1   P16                 37.8          -0.3
+                                       1   P17                 37.5          0.3
+                                       1   P18                 37.2          0.3
+                                       1   P19                 37.2          0.3
+                                       1   P20                 37.9          0.1
+                                       1   P21                 39.0          0.6
+                                       1   P22                 37.7          0.8
+                                       1   P23                 37.4          0.3
+                                       1   P24                 38.1          0.4
+                                       2   P1                  37.0          0.0
+                                       2   P2                  37.0          0.0
+                                       2   P3                  37.3          0.0
+                                       2   P4                  38.9          -1.2
+                                       2   P5                  37.0          0.0
+                                       2   P6                  37.8          -0.3
+                                       2   P7                  37.4          -0.2
+                                       2   P8                  38.5          -0.4
+                                       2   P9                  37.6          0.1
+                                       2   P10                 37.3          -0.1
+                                       2   P11                 37.3          0.2
+                                       2   P12                 37.5          0.0
+                                       2   P13                 37.2          -0.1
+                                       2   P14                 37.1          -0.2
+                                       2   P15                 37.5          0.0
+                                       2   P16                 36.9          -0.1
+                                       2   P17                 37.4          -0.3
+                                       2   P18                 37.4          -0.3
+                                       2   P19                 37.2          0.1
+                                       2   P20                 37.4          -0.2
+
+                                                  Page 49 of 54
+Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                                     2   P21                38.1            -0.4
+                                     2   P22                37.8            0.0
+                                     2   P23                37.0            0.0
+                                     2   P24                37.4            0.1
+                                     3   P1                 36.8            0.2
+                                     3   P2                 36.9            0.0
+                                     3   P3                 37.4            0.2
+                                     3   P4                 37.5            -0.2
+                                     3   P5                 37.3            -0.1
+                                     3   P6                 36.9            -0.1
+                                     3   P7                 36.9            0.2
+                                     3   P8                 37.4            0.0
+                                     3   P9                 36.6            0.1
+                                     3   P10                37.2            0.0
+                                     3   P11                37.4            0.0
+                                     3   P12                37.3            0.0
+                                     3   P13                38.1            -0.1
+                                     3   P14                36.8            0.0
+                                     3   P15                37.2            0.1
+                                     3   P16                37.1            0.1
+                                     3   P17                37.1            0.0
+                                     3   P18                37.0            0.1
+                                     3   P19                37.0            0.0
+                                     3   P20                37.1            0.0
+                                     3   P21                37.3            0.4
+                                     3   P22                37.1            0.2
+                                     3   P23                36.7            0.2
+                                     3   P24                37.2            0.0
+                                     4   P1                 37.1            0.0
+                                     4   P2                 37.5            -0.2
+                                     4   P3                 37.0            -0.1
+                                     4   P4                 37.4            -0.3
+                                     4   P5                 36.7            -0.1
+                                     4   P6                 37.7            -0.1
+                                     4   P7                 37.3            -0.1
+                                     4   P8                 37.7            -0.3
+                                     4   P9                 36.9            -0.1
+                                     4   P10                37.4            -0.2
+                                     4   P11                36.9            -0.1
+                                     4   P12                37.5            0.0
+                                     4   P13                38.7            -0.2
+                                     4   P14                36.7            0.1
+                                     4   P15                37.4            -0.2
+                                     4   P16                37.4            -0.3
+                                     4   P17                37.1            -0.2
+                                     4   P18                37.1            -0.2
+                                     4   P19                37.2            0.0
+                                     4   P20                37.8            0.0
+                                     4   P21                37.9            0.4
+                                     4   P22                37.4            0.2
+
+                                                Page 50 of 54
+Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                                     4   P23                37.5            0.0
+                                     4   P24                37.4            0.1
+                                     5   P1                 36.9            0.3
+                                     5   P2                 36.9            0.2
+                                     5   P3                 36.9            0.1
+                                     5   P4                 37.1            0.2
+                                     5   P5                 37.7            -0.4
+                                     5   P6                 37.1            0.6
+                                     5   P7                 37.7            -0.7
+                                     5   P8                 37.3            0.2
+                                     5   P9                 36.8            0.0
+                                     5   P10                37.2            0.1
+                                     5   P11                37.2            7.5
+                                     5   P12                37.5            -0.9
+                                     5   P13                37.1            -0.5
+                                     5   P14                37.1            -0.5
+                                     5   P15                37.2            0.1
+                                     5   P16                37.0            0.3
+                                     5   P17                37.1            -0.2
+                                     5   P18                37.0            -0.2
+                                     5   P19                37.4            -0.4
+                                     5   P20                37.4            0.1
+                                     5   P21                37.2            1.0
+                                     5   P22                37.4            0.2
+                                     5   P23                36.9            0.6
+                                     5   P24                37.3            0.3
+                                     6   P1                 37.2            -0.1
+                                     6   P2                 37.0            0.0
+                                     6   P3                 36.9            0.1
+                                     6   P4                 37.2            0.2
+                                     6   P5                 37.1            0.8
+                                     6   P6                 37.6            -0.3
+                                     6   P7                 36.8            1.1
+                                     6   P8                 37.3            0.0
+                                     6   P9                 36.7            0.1
+                                     6   P10                37.6            -0.4
+                                     6   P11                41.9            -4.5
+                                     6   P12                36.6            1.0
+                                     6   P13                36.4            0.6
+                                     6   P14                36.6            0.5
+                                     6   P15                37.2            0.0
+                                     6   P16                37.6            -0.6
+                                     6   P17                37.0            0.1
+                                     6   P18                36.8            0.2
+                                     6   P19                36.9            0.7
+                                     6   P20                37.3            0.6
+                                     6   P21                37.4            -0.1
+                                     6   P22                37.2            0.8
+                                     6   P23                37.3            -0.3
+                                     6   P24                37.4            -0.1
+
+                                                Page 51 of 54
+Tracking Code: 112488_Report_Rev_1                       Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                                     7   P1                 36.8            0.4
+                                     7   P2                 37.1            0.0
+                                     7   P3                 36.8            0.2
+                                     7   P4                 36.9            0.2
+                                     7   P5                 36.7            0.6
+                                     7   P6                 38.5            -0.7
+                                     7   P7                 37.1            -0.1
+                                     7   P8                 37.5            -0.2
+                                     7   P9                 36.8            0.8
+                                     7   P10                37.2            1.0
+                                     7   P11                36.9            0.6
+                                     7   P12                36.9            0.0
+                                     7   P13                37.0            -0.3
+                                     7   P14                36.8            0.2
+                                     7   P15                36.9            0.1
+                                     7   P16                37.1            0.2
+                                     7   P17                37.5            -0.2
+                                     7   P18                37.1            0.0
+                                     7   P19                37.0            0.3
+                                     7   P20                37.6            -0.1
+                                     7   P21                37.7            -0.2
+                                     7   P22                37.7            0.1
+                                     7   P23                37.3            0.2
+                                     7   P24                37.8            0.3
+                                     8   P1                 37.2            -0.3
+                                     8   P2                 37.2            -0.2
+                                     8   P3                 37.0            -0.2
+                                     8   P4                 37.3            -4.5
+                                     8   P5                 37.3            -0.6
+                                     8   P6                 38.3            -0.3
+                                     8   P7                 37.1            -0.4
+                                     8   P8                 37.5            0.0
+                                     8   P9                 38.0            -1.3
+                                     8   P10                39.7            -2.6
+                                     8   P11                37.6            -0.9
+                                     8   P12                37.0            -0.1
+                                     8   P13                36.9            0.0
+                                     8   P14                37.2            -0.5
+                                     8   P15                37.1            -0.3
+                                     8   P16                37.3            -0.3
+                                     8   P17                37.4            -0.5
+                                     8   P18                37.2            -0.4
+                                     8   P19                37.4            -0.6
+                                     8   P20                37.5            -0.2
+                                     8   P21                37.5            -0.2
+                                     8   P22                38.0            -0.4
+                                     8   P23                37.6            -0.4
+                                     8   P24                38.4            -0.8
+
+
+
+                                                Page 52 of 54
+    Tracking Code: 112488_Report_Rev_1                   Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                          EQUIPMENT AND CALIBRATION SCHEDULES
+Equipment #: HZ-MO-03
+Description: Micro-ohmmeter
+Manufacturer: Keithley
+Model: 580
+Serial #: 297288
+Accuracy: Last Cal: 2010-8-06, Next Cal: 2011-8-05
+
+Equipment #: HZ-TCT-01
+Description: Normal force analyzer
+Manufacturer: Mecmesin Multitester
+Model: Mecmesin Multitester 2.5-i
+Serial #: 08-1049-04
+Accuracy: Last Cal: 2010-4-28, Next Cal: 2011-4-27
+
+Equipment #: HZ-OV-01
+Description: Oven
+Manufacturer: Huida
+Model: CS101-1E
+Serial #: CS101-1E-B
+Accuracy: Last Cal: 2010-12-14, Next Cal: 2011-12-13
+Equipment #: HZ-THC-01
+Description: Humidity transmitter
+Manufacturer: Thermtron
+Model: HMM30C
+Serial #: D0240037
+Accuracy: Last Cal: 2010-3-3, Next Cal: 2011-3-2
+
+Equipment #: HZ-OGP-01
+Description: Video measurement system
+Manufacturer: OGP
+Model: SMARTSCOPE FLASH 200
+Serial #: SVW2003632
+Accuracy: Last Cal: 2010-6-10, Next Cal: 2011-6-9
+
+Equipment #: HZ-MO-01
+Description: Micro-ohmmeter
+Manufacturer: Keithley
+Model: 2700
+Serial #: 1199807
+Accuracy: Last Cal: 2010-4-28, Next Cal: 2011-4-27
+
+
+
+
+                                                Page 53 of 54
+    Tracking Code: 112488_Report_Rev_1                   Part #: IDSD-36-D-06.00-G\TST-136-01-G-D-01
+                                         Part description: IDSD\TST
+
+                        EQUIPMENT AND CALIBRATION SCHEDULES
+Equipment #: HZ-PS-01
+Description: Power Supply
+Manufacturer: Agilent
+Model: 6031A
+Serial #: MY41000982
+Accuracy: Last Cal: 2010-4-28, Next Cal: 2011-4-27
+Equipment #: HZ-TSC-01
+Description: Thermal Shock transmitter
+Manufacturer: Keithley
+Model: 10-VT14994
+Serial #: VTS-3-6-6-SC/AC
+Accuracy: Last Cal: 2010-11-1, Next Cal: 2011-11-1
+
+Equipment #: ACLM-01
+Description: Accelerometer
+Manufacturer: PCB Piezotronics
+Model: 352C03
+Serial #: 115819
+Accuracy: See Manual
+… Last Cal: 2011-07-9, Next Cal: 2012-7-9
+
+Equipment #: ED-03
+Description: Event Detector
+Manufacturer: Analysis Tech
+Model: 32EHD
+Serial #: 1100604
+Accuracy: See Manual
+… Last Cal: 2011-06-4, Next Cal: 2012-06-4
+
+
+
+
+                                                Page 54 of 54
+

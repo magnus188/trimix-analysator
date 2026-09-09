@@ -1,0 +1,11 @@
+scenario,quantity,nominal_uF,bias_retained,tolerance_retained,temperature_retained,aging_engineering_allowance,estimated_effective_uF,required_uF,estimated_margin_percent,qualification
+PMID proposed single,1,47,0.3,0.8,0.85,0.9,8.6292,8.2,5.234,engineering sensitivity only; bias/combined corners not guaranteed
+PMID sensitivity,1,47,0.25,0.8,0.85,0.9,7.191,8.2,-12.305,engineering sensitivity only; bias/combined corners not guaranteed
+PMID proposed parallel mitigation,2,47,0.25,0.8,0.85,0.9,14.382,8.2,75.39,engineering sensitivity only; bias/combined corners not guaranteed
+5V output proposed3,3,47,0.3,0.8,0.85,0.9,25.8876,22,17.671,engineering sensitivity only; bias/combined corners not guaranteed
+5V output sensitivity3,3,47,0.25,0.8,0.85,0.9,21.573,22,-1.941,engineering sensitivity only; bias/combined corners not guaranteed
+5V output proposed4 mitigation,4,47,0.25,0.8,0.85,0.9,28.764,22,30.745,engineering sensitivity only; bias/combined corners not guaranteed
+TPS7A20 input compared with0.47uF effective minimum confirmed by root,1,4.7,0.3,0.9,0.85,0.9,0.970785,0.47,106.55,engineering sensitivity only; bias/combined corners not guaranteed
+1210 KEMET alternative estimate,1,22,0.65,0.9,0.85,0.9,9.84555,8.2,20.068,engineering sensitivity only; bias/combined corners not guaranteed
+TDK1210 22u16V candidate forPMID only after voltage-corner acceptance,1,22,0.9,0.8,0.85,0.9,12.1176,8.2,47.776,engineering estimate from retained TDK typical curve; combined corners not guaranteed
+TDK1210 22u16V candidate for5V output bank,3,22,0.9,0.8,0.85,0.9,36.3528,22,65.24,engineering estimate from retained TDK typical curve; combined corners not guaranteed

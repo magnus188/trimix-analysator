@@ -1,0 +1,13 @@
+TI unchanged model probe RLIM=19200
+.include "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/power-simulation/manufacturer-model/TPS22950_TRANS.lib"
+VSUP vin 0 5
+VEN en 0 PULSE(0 5 1m 1u 1u 20m 40m)
+CIN vin 0 1u
+COUT out 0 22u
+RLOAD out 0 1
+RLIM ilim 0 19200
+RFAULT vin fault 10000
+XSW fault 0 ilim en vin out TPS22950_TRANS RLIM=19200
+.save v(out) v(vin) v(en) i(VSUP)
+.tran 2u 12m
+.end

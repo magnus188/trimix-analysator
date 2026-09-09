@@ -1,0 +1,52 @@
+{
+  "public_id": "ooyAv5jflZ5He3tNUOQC6w",
+  "name": "JC4880P443C_I_W.zip",
+  "path": "HMI display/JC4880P443C_I_W.zip",
+  "size": 309232242,
+  "mime": "application/x-zip-compressed",
+  "shard_count": 7,
+  "shards": [
+    {
+      "seq": 0,
+      "sha256": "22bea310a104bce67c485e60b8dc0dd04d2a11d071c39ff0566a6a5f58e50846",
+      "size": 50331648,
+      "url": "https://pan.jczn1688.com/s/22bea310a104bce67c485e60b8dc0dd04d2a11d071c39ff0566a6a5f58e50846"
+    },
+    {
+      "seq": 1,
+      "sha256": "2979f4e1db24abcb25b59680e5e6a4aedb148e6b071625082c18645cb6e38842",
+      "size": 50331648,
+      "url": "https://pan.jczn1688.com/s/2979f4e1db24abcb25b59680e5e6a4aedb148e6b071625082c18645cb6e38842"
+    },
+    {
+      "seq": 2,
+      "sha256": "1a3bf44ef2fd87499202dbaf530f1aa1784babcb08245def62e79047a96246e5",
+      "size": 50331648,
+      "url": "https://pan.jczn1688.com/s/1a3bf44ef2fd87499202dbaf530f1aa1784babcb08245def62e79047a96246e5"
+    },
+    {
+      "seq": 3,
+      "sha256": "92445e7004e8d63fd7c8a15df6fde8250ae053d2b0c48abaad214ce65f8cbf47",
+      "size": 50331648,
+      "url": "https://pan.jczn1688.com/s/92445e7004e8d63fd7c8a15df6fde8250ae053d2b0c48abaad214ce65f8cbf47"
+    },
+    {
+      "seq": 4,
+      "sha256": "c30ae66480b29518d514b548c8e49aaab5647e7cb333d686555943a06e9d6e87",
+      "size": 50331648,
+      "url": "https://pan.jczn1688.com/s/c30ae66480b29518d514b548c8e49aaab5647e7cb333d686555943a06e9d6e87"
+    },
+    {
+      "seq": 5,
+      "sha256": "68f4a6939ffbdd96dcfaf46058a7de9473acc927f0c4427606ff5982d728ee40",
+      "size": 50331648,
+      "url": "https://pan.jczn1688.com/s/68f4a6939ffbdd96dcfaf46058a7de9473acc927f0c4427606ff5982d728ee40"
+    },
+    {
+      "seq": 6,
+      "sha256": "d7d928910ef4517c2fd09b301168282fb87049b8064e21cf82d5d6256ddecf5b",
+      "size": 7242354,
+      "url": "https://pan.jczn1688.com/s/d7d928910ef4517c2fd09b301168282fb87049b8064e21cf82d5d6256ddecf5b"
+    }
+  ]
+}

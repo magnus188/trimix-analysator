@@ -1,0 +1,221 @@
+{
+  "status": "passed digitally",
+  "board_sha256": "0962ad86f9834ce71b6439d0f95db603753801153490e78f387a88521e582788",
+  "scope": "Receipt inspection and source-byte verification; no new ERC/DRC execution or physical qualification is claimed.",
+  "erc_counts": {
+    "raw_error_count": 1,
+    "reviewed_exception_count": 1,
+    "unexpected_violation_count": 0,
+    "warnings": 0
+  },
+  "native_drc": {
+    "violations": 0,
+    "unconnected_items": 0,
+    "schematic_parity": 0
+  },
+  "erc_negative_controls": 21,
+  "electrical_assertions": 217,
+  "identity_assertions": 205,
+  "identity_negative_controls": 4,
+  "electrical_negative_controls": 12,
+  "routing_assertions": 13,
+  "routing_negative_controls": 3,
+  "source_inputs_checked": [
+    {
+      "name": "erc",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/erc-raw.json",
+      "sha256": "e66c66ad9ffff93c7efb315ed54c4db1935f9a962d94cb6c9cb3cb415326abe8"
+    },
+    {
+      "name": "library-resolution-settings",
+      "path": "/Users/magnustrandokken/Library/Preferences/kicad/10.0/kicad_common.json",
+      "sha256": "6c8ef9ad23ed69c1db729901a8d96d578484a70617376f106769fa512251ba62"
+    },
+    {
+      "name": "netlist",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/analyzer-netlist.xml",
+      "sha256": "b04e4701898d62cb49b5adbc709e634b919f88fb2f1c1c36e5818ad94b2f4b08"
+    },
+    {
+      "name": "project",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Trimix_Analyzer.kicad_pro",
+      "sha256": "764a99bd2045ba162dab08818d38304e6dc06a3ee1f6eb48818d12a3a1fa8e8b"
+    },
+    {
+      "name": "schematic:Carbon_Monoxide.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Carbon_Monoxide.kicad_sch",
+      "sha256": "81b011d1618727a1c5f8ceb11a03475cb30742cc4969ec780e57a4103e8fdf88"
+    },
+    {
+      "name": "schematic:Charging.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Charging.kicad_sch",
+      "sha256": "4195daa52801f0473a02205cae7ebf27bddfef5730bfa8f58da8409180cb44c6"
+    },
+    {
+      "name": "schematic:Environment.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Environment.kicad_sch",
+      "sha256": "71ba8efbb88c90edd3724bfd29542b8e033c1a612a66822013374a7512d17509"
+    },
+    {
+      "name": "schematic:Gauge_Interface.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Gauge_Interface.kicad_sch",
+      "sha256": "f9fc9eccf21c45981e206b2c2b1b83cd4bb81a4e0fea0943ab2040aa16afde8f"
+    },
+    {
+      "name": "schematic:Helium.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Helium.kicad_sch",
+      "sha256": "97ab5164d6d0792bdac728ea79220a1cf7b99d4a3e01a4adbca2e2e9c20f5623"
+    },
+    {
+      "name": "schematic:Oxygen.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Oxygen.kicad_sch",
+      "sha256": "b7c3a34f9e7e463a559611719b777ee1a19bcf279603a8eaa76dbaf4a381c551"
+    },
+    {
+      "name": "schematic:Power_Control.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Power_Control.kicad_sch",
+      "sha256": "d3f7800177f4a0e49f1b61513fa4e6dee49e1cccd73eb2e62af8189b24336a0a"
+    },
+    {
+      "name": "schematic:Supply_5V.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Supply_5V.kicad_sch",
+      "sha256": "2e94bf4fe33869e7af8e2219cbc274d438e91f33fc8296da2050e3140e1e4bb8"
+    },
+    {
+      "name": "schematic:Testpoints.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Testpoints.kicad_sch",
+      "sha256": "128f194ce573d0db3c1079c74cc5d254f990d0abcf2407b1a7543f9c4f40620e"
+    },
+    {
+      "name": "schematic:Trimix_Analyzer.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Trimix_Analyzer.kicad_sch",
+      "sha256": "a8076151909744a653faa04f93db2fbebe1017ede8fec4e10a4051242f7e5c4f"
+    },
+    {
+      "name": "schematic:USB_Input.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/USB_Input.kicad_sch",
+      "sha256": "043a94b4fcc5869b9be83d7a4051bac1d301e2836036a7a5d8519d63f19cad4b"
+    },
+    {
+      "name": "schematic:USB_Input_Limiter.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/USB_Input_Limiter.kicad_sch",
+      "sha256": "e3d7a8a917c02ac57b742c7ab7bcca2f4cb31072868eb964a1c6a1d9484dabc5"
+    },
+    {
+      "name": "schematic:USB_Overvoltage.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/USB_Overvoltage.kicad_sch",
+      "sha256": "03235de064d0f5b3b9e78914c0f62e6d08e26b66fa08300da07d129fe9630c35"
+    },
+    {
+      "name": "schematic:USB_Source_Control.kicad_sch",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/USB_Source_Control.kicad_sch",
+      "sha256": "08add87e857ea98d94409a779ce6987d91e6101779568f82f36597da7827de09"
+    },
+    {
+      "name": "symbol-library:Battery_Management",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Battery_Management.kicad_sym",
+      "sha256": "94e20e3b995150210af1d2bb320fdc1e4e3b3b2cd1b8e3165f83be14a15d5650"
+    },
+    {
+      "name": "symbol-library:Connector",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Connector.kicad_sym",
+      "sha256": "50b42bf755009d3d459c310182dca1c37e1ff1a01fa6ae23846b416fafffc914"
+    },
+    {
+      "name": "symbol-library:Connector_Generic",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Connector_Generic.kicad_sym",
+      "sha256": "b40057d620867e58e8c3d1be9ab822bba6955e76ccfc566fd0945eedcf527fd3"
+    },
+    {
+      "name": "symbol-library:Device",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Device.kicad_sym",
+      "sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24"
+    },
+    {
+      "name": "symbol-library:Jumper",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Jumper.kicad_sym",
+      "sha256": "6548a7155352ede1997c88e2fc104cb22078437a08bc7779552a8326ebc13e6b"
+    },
+    {
+      "name": "symbol-library:Transistor_FET",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Transistor_FET.kicad_sym",
+      "sha256": "4fffc88e10091df229ea6ff032afa8ca8f1c2f3d72c8dabf25c6d31704ac6b50"
+    },
+    {
+      "name": "symbol-library:Trimix_Analyzer",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Trimix_Analyzer.kicad_sym",
+      "sha256": "2f7c9570a20472855c67d8a930efacc229bda5111b0692a2d50bd323a93813f8"
+    },
+    {
+      "name": "symbol-library:Trimix_Power",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/Trimix_Power.kicad_sym",
+      "sha256": "fc18afeaf562d56535089ecc558c5bb0c02856d92654535bd31f5125aa6a1aee"
+    },
+    {
+      "name": "symbol-library:Trimix_USB",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/usb-input/Trimix_USB.kicad_sym",
+      "sha256": "1e44adc2df8f3139d35e4dd194c75501cbfe6cebc5dd6fd9d4295bb6500ff872"
+    },
+    {
+      "name": "symbol-library:power",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/power.kicad_sym",
+      "sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0"
+    },
+    {
+      "name": "symbol-table:1:sym-lib-table",
+      "path": "/Users/magnustrandokken/Library/Preferences/kicad/10.0/sym-lib-table",
+      "sha256": "de613c95e311a9f7750f8cd1653a8ce345db7051ae2577239bae44b5d5febd6e"
+    },
+    {
+      "name": "symbol-table:2:sym-lib-table",
+      "path": "/Applications/KiCad/KiCad.app/Contents/SharedSupport/template/sym-lib-table",
+      "sha256": "70d7bba56bcfd2f59d98e2354a8979661f2c49f3686d13e989b20202514654c3"
+    },
+    {
+      "name": "symbol-table:3:sym-lib-table",
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/hardware/kicad/analyzer/sym-lib-table",
+      "sha256": "81d89a1e4f07dec3b7a3da4cc04e7f35b63b66f3bf191d3dd24083a3187a2282"
+    }
+  ],
+  "receipts": [
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/erc-exception-guard.json",
+      "sha256": "f63ef68ce67e22c85e662d60f60af155e98b4c733e5aeefe78ec2f8bbbc32335"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/erc-raw.json",
+      "sha256": "e66c66ad9ffff93c7efb315ed54c4db1935f9a962d94cb6c9cb3cb415326abe8"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/drc.json",
+      "sha256": "8aa85069b19d78edfe4ac7ceaaebc71f36f053e105add0c859fba7edd0b102a0"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/refinement-identity-audit.json",
+      "sha256": "f660cf01cd2fa4ddefce202381f226653f075763ca7921f3d3fa3a590da66e13"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/electrical-audit.json",
+      "sha256": "2d7d10b17ac7bf57a56e31f44fe6fdfb7949ccfa70561bcd332d50736b7ccc8e"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/audit-fault-tests.json",
+      "sha256": "ee76d903777e894a40c0778df8379f7e020c54a05705062da35544523f1dada3"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/routing-audit.json",
+      "sha256": "ee6e48e54b0feefd4a3b1167546b0768ee4a91c782ed2cfb910bfdcab0e5d6ea"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/routing-scope-negative-controls.json",
+      "sha256": "5b5c57e4545d88428535bd17c8a2f2f3d04cccd57db53932be390c5221ea5c42"
+    },
+    {
+      "path": "/Users/magnustrandokken/Documents/Projects/Trimix/trimix-analysator/hardware/system-review/electrical/routing-candidate/sensitive-layout-refinement/frozen-local-bundle/review/analyzer-netlist.xml",
+      "sha256": "b04e4701898d62cb49b5adbc709e634b919f88fb2f1c1c36e5818ad94b2f4b08"
+    }
+  ],
+  "checker_sha256": "b7c3f19af3d7731dd3f281c303cece1418098b3e3e60a1ed504e8f8246bdba8d",
+  "order_release": false,
+  "limits": "The single LM66100 unused status-pin ERC exception remains explicitly reviewed. Manufacturer current limits, transient survival, real mates, final CAD and supplier process acceptance remain separate gates."
+}

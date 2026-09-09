@@ -5,7 +5,7 @@ The separate project includes those same four parts for its own PCB.
 """
 from analyzer_sheet import *
 
-DAUGHTER = HW/'kicad/usb-input'
+DAUGHTER = HW/'pcb/usb-input'
 NAME = 'Trimix_USB_Input'
 FP = 'Trimix_Connectors:USB_C_GCT_USB4720-03-A'
 WIRE_FP = 'Connector_Wire:SolderWire-0.25sqmm_1x02_P4.2mm_D0.65mm_OD1.7mm'

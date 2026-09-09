@@ -1,0 +1,46 @@
+{
+  "status": "passed digitally",
+  "scope": "Independent archive/input/receipt consistency and two native source-bound Guition view inspections; not a complete fit or parameter-regeneration pass",
+  "checks": {
+    "native_matches_export_and_reopen": true,
+    "saved_state_matches_export": true,
+    "final_23_snapshots_match": true,
+    "original_10_snapshots_match": true,
+    "original_photo_receipt_unchanged": true,
+    "native_reopen_groups_pass": true,
+    "temporary_closed_source_preserved": true,
+    "approved_dimensions_retained": true,
+    "cloud_v3_complete": true
+  },
+  "native": {
+    "path": "hardware/system-review/mechanical/connector-review/interface-checkpoint/Trimix_Enclosure_A3_ConnectorReview_Interfaces.f3d",
+    "sha256": "a0500752f0875c7d9256fe17bc89b502b36bea4163c2bc10b4b3e8a689ad75f1"
+  },
+  "sources": [
+    {
+      "path": "hardware/system-review/mechanical/connector-review/interface-checkpoint/export.json",
+      "sha256": "63109ec989f971675521183ffc8309e3c15166a7d3fe2e44da3a9b65207f8554"
+    },
+    {
+      "path": "hardware/system-review/mechanical/connector-review/interface-checkpoint/saved-state.json",
+      "sha256": "18828c3a26f06260746dfd7b113a3d9e8574b17bb79ca10c1fecf2edd4e8167a"
+    },
+    {
+      "path": "hardware/system-review/mechanical/connector-review/interface-checkpoint/native-reopen.json",
+      "sha256": "ffd419b3329a33435abb5abf017021deaa29fbc5635eba23106d5aaf940f2c82"
+    },
+    {
+      "path": "hardware/system-review/mechanical/connector-review/photo-bound-inputs/map.json",
+      "sha256": "6d83a69d5af98c1d2b8de6b423dd53cd278910afe27fe0d043d327299178ce32"
+    },
+    {
+      "path": "hardware/system-review/mechanical/connector-review/guition-photo-rear.png",
+      "sha256": "523d54b82e95b174646ea9174a267f8c6fe5e14bed0b800f5adb88b0c4368686"
+    },
+    {
+      "path": "hardware/system-review/mechanical/connector-review/guition-photo-oblique.png",
+      "sha256": "63520d71474fee2e387be3aa258eec3feed7ab7da5936b4df4ff56c196164072"
+    }
+  ],
+  "visual_review": "26 pins in two rows at top; two rear-facing USB mouths below; SD at left; portrait retained casing. Heights/PCB/other details remain explicitly reference. Full cable routes are not present or qualified."
+}

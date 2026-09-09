@@ -1,0 +1,1102 @@
+{
+  "pose": [
+    13.75,
+    79.0,
+    0
+  ],
+  "pack_paths": [
+    {
+      "points": [
+        [
+          10.64,
+          79.9091
+        ],
+        [
+          11.1,
+          79.95
+        ],
+        [
+          11.1,
+          77.69
+        ],
+        [
+          14.15,
+          77.69
+        ],
+        [
+          16.1271,
+          74.422
+        ]
+      ],
+      "blocks": [
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "points": [
+        [
+          10.64,
+          79.9091
+        ],
+        [
+          10.6,
+          77.4
+        ],
+        [
+          13.4,
+          77.4
+        ],
+        [
+          16.1271,
+          74.422
+        ]
+      ],
+      "blocks": [
+        [
+          {
+            "uuid": "280914e6-f1ac-4418-b79e-f3a451bab4c8",
+            "net": "USB_5V",
+            "ref": null,
+            "at": [
+              10.3093,
+              77.5484
+            ]
+          },
+          {
+            "uuid": "d4df1768-dcd5-45fd-bed7-6dbe34c3e2f1",
+            "net": "USB_5V",
+            "ref": null,
+            "at": [
+              10.3093,
+              78.8659
+            ]
+          },
+          {
+            "uuid": "ef1c0253-98cc-46e4-8f3e-d1538305c6f9",
+            "net": "USB_5V",
+            "ref": null,
+            "at": [
+              15.8714,
+              71.9863
+            ]
+          }
+        ],
+        [
+          {
+            "uuid": "280914e6-f1ac-4418-b79e-f3a451bab4c8",
+            "net": "USB_5V",
+            "ref": null,
+            "at": [
+              10.3093,
+              77.5484
+            ]
+          },
+          {
+            "uuid": "ef1c0253-98cc-46e4-8f3e-d1538305c6f9",
+            "net": "USB_5V",
+            "ref": null,
+            "at": [
+              15.8714,
+              71.9863
+            ]
+          }
+        ],
+        []
+      ]
+    },
+    {
+      "points": [
+        [
+          10.64,
+          79.9091
+        ],
+        [
+          10.65,
+          79.95
+        ],
+        [
+          13.25,
+          79.95
+        ],
+        [
+          13.65,
+          77.25
+        ],
+        [
+          16.1271,
+          74.422
+        ]
+      ],
+      "blocks": [
+        [],
+        [
+          {
+            "uuid": "cd6172e0-6a2c-4498-ad13-0aa259df7c1d",
+            "net": "/01  CHARGING + BATTERY/BQ_REGN",
+            "ref": "C107",
+            "at": [
+              12.275,
+              79.0
+            ]
+          }
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "points": [
+        [
+          10.64,
+          79.9091
+        ],
+        [
+          10.8,
+          80
+        ],
+        [
+          13.2,
+          80
+        ],
+        [
+          13.2,
+          77.0
+        ],
+        [
+          16.1271,
+          74.422
+        ]
+      ],
+      "blocks": [
+        [],
+        [
+          {
+            "uuid": "cd6172e0-6a2c-4498-ad13-0aa259df7c1d",
+            "net": "/01  CHARGING + BATTERY/BQ_REGN",
+            "ref": "C107",
+            "at": [
+              12.275,
+              79.0
+            ]
+          }
+        ],
+        [
+          {
+            "uuid": "cd6172e0-6a2c-4498-ad13-0aa259df7c1d",
+            "net": "/01  CHARGING + BATTERY/BQ_REGN",
+            "ref": "C107",
+            "at": [
+              12.275,
+              79.0
+            ]
+          }
+        ],
+        []
+      ]
+    }
+  ],
+  "gnd_to_existing": [
+    {
+      "at": [
+        19.0625,
+        78.7
+      ],
+      "blocks": [
+        {
+          "uuid": "9edc8e68-e448-435e-a564-7c59db38b28c",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.25
+          ]
+        },
+        {
+          "uuid": "a53c5e5e-304b-483c-ab91-d9274fea01b5",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            17.3,
+            77.35
+          ]
+        },
+        {
+          "uuid": "68de827c-bc5b-4a84-b920-4f5c17a4b528",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            17.8,
+            78.5193
+          ]
+        },
+        {
+          "uuid": "37c399fc-281a-4825-922f-554d2fd75bcd",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            18.45,
+            78.55
+          ]
+        },
+        {
+          "uuid": "588d0ec4-a0cd-45fb-90c4-0296757f0b63",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            18.5,
+            78.4
+          ]
+        },
+        {
+          "uuid": "a6de0c72-e8e5-4a3a-98c9-2ba0e9b2aba2",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            18.45,
+            78.75
+          ]
+        },
+        {
+          "uuid": "e2c2cc92-d5f8-4275-bf6d-81a9c15487b6",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            18.5,
+            78.5
+          ]
+        },
+        {
+          "uuid": "ea19084f-afaa-4b9f-bf1d-c1f78b88ea51",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            18.6,
+            78.3
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        15.925,
+        83.575
+      ],
+      "blocks": [
+        {
+          "uuid": "7f0a5108-f713-4cff-a934-c5f8c827ea8b",
+          "net": "PACK_P",
+          "ref": null,
+          "at": [
+            12.7684,
+            82.0375
+          ]
+        },
+        {
+          "uuid": "8344c046-022d-41a3-b350-86170eea371a",
+          "net": "PACK_P",
+          "ref": null,
+          "at": [
+            16.154,
+            82.0375
+          ]
+        },
+        {
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "uuid": "19f8e504-d2d1-4fbf-af7c-165b5333b0ef",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.55
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        11.9,
+        82.9
+      ],
+      "blocks": [
+        {
+          "uuid": "7f0a5108-f713-4cff-a934-c5f8c827ea8b",
+          "net": "PACK_P",
+          "ref": null,
+          "at": [
+            12.7684,
+            82.0375
+          ]
+        },
+        {
+          "uuid": "f934d879-73a0-4371-bce1-28afef4fbe4e",
+          "net": "PACK_P",
+          "ref": null,
+          "at": [
+            10.64,
+            79.9091
+          ]
+        },
+        {
+          "uuid": "43ec2ae2-29c3-4fe5-80fc-68d85eefa639",
+          "net": "/01  CHARGING + BATTERY/BQ_REGN",
+          "ref": null,
+          "at": [
+            12.79,
+            81.15
+          ]
+        },
+        {
+          "uuid": "011e3a7d-71d6-4bbb-a3b6-b0b3c0349550",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            13.5,
+            81.2
+          ]
+        },
+        {
+          "uuid": "2056601b-984f-4627-b5f0-6a3f5a4b7342",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            13.5,
+            81.2
+          ]
+        },
+        {
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        6.2,
+        79.525
+      ],
+      "blocks": [
+        {
+          "uuid": "b8499b91-8491-49c1-9632-0003e9e73cf9",
+          "net": "CHARGE_ARM",
+          "ref": null,
+          "at": [
+            6.7978,
+            75.1093
+          ]
+        },
+        {
+          "uuid": "280914e6-f1ac-4418-b79e-f3a451bab4c8",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            10.3093,
+            77.5484
+          ]
+        },
+        {
+          "uuid": "d4df1768-dcd5-45fd-bed7-6dbe34c3e2f1",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            10.3093,
+            78.8659
+          ]
+        },
+        {
+          "uuid": "e05b3a61-ceec-4aaf-9ced-7e41dd89cd18",
+          "net": "USB_D_P",
+          "ref": null,
+          "at": [
+            9.8,
+            78.15
+          ]
+        },
+        {
+          "uuid": "cd6172e0-6a2c-4498-ad13-0aa259df7c1d",
+          "net": "/01  CHARGING + BATTERY/BQ_REGN",
+          "ref": "C107",
+          "at": [
+            12.275,
+            79.0
+          ]
+        }
+      ]
+    }
+  ],
+  "vias": [],
+  "regn": [],
+  "specific_vias": [
+    {
+      "at": [
+        16.3,
+        80.3
+      ],
+      "via_blocks": [
+        {
+          "layer": "F.Cu",
+          "uuid": "208eeaf7-99fd-47c9-89db-2b73643cb8f2",
+          "net": "/01  CHARGING + BATTERY/BQ_SW",
+          "ref": null,
+          "at": [
+            15.71,
+            80.1
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "75c42f07-a0df-4290-a2e7-c5980bd7c828",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            13.946,
+            82.3733
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e01c4b75-91d2-41aa-be47-4452010592c5",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            17.6,
+            79.6
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "In1.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "5b1890d9-bf65-4daa-8eb5-d7a1b6856817",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        }
+      ],
+      "line_blocks": [
+        {
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "uuid": "19f8e504-d2d1-4fbf-af7c-165b5333b0ef",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.55
+          ]
+        },
+        {
+          "uuid": "9edc8e68-e448-435e-a564-7c59db38b28c",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.25
+          ]
+        },
+        {
+          "uuid": "a53c5e5e-304b-483c-ab91-d9274fea01b5",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            17.3,
+            77.35
+          ]
+        },
+        {
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        16.4,
+        80.25
+      ],
+      "via_blocks": [
+        {
+          "layer": "B.Cu",
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "75c42f07-a0df-4290-a2e7-c5980bd7c828",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            13.946,
+            82.3733
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e01c4b75-91d2-41aa-be47-4452010592c5",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            17.6,
+            79.6
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "In1.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "5b1890d9-bf65-4daa-8eb5-d7a1b6856817",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        }
+      ],
+      "line_blocks": [
+        {
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "uuid": "19f8e504-d2d1-4fbf-af7c-165b5333b0ef",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.55
+          ]
+        },
+        {
+          "uuid": "9edc8e68-e448-435e-a564-7c59db38b28c",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.25
+          ]
+        },
+        {
+          "uuid": "a53c5e5e-304b-483c-ab91-d9274fea01b5",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            17.3,
+            77.35
+          ]
+        },
+        {
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        16.5,
+        80.25
+      ],
+      "via_blocks": [
+        {
+          "layer": "B.Cu",
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "75c42f07-a0df-4290-a2e7-c5980bd7c828",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            13.946,
+            82.3733
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e01c4b75-91d2-41aa-be47-4452010592c5",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            17.6,
+            79.6
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "In1.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "5b1890d9-bf65-4daa-8eb5-d7a1b6856817",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        }
+      ],
+      "line_blocks": [
+        {
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "uuid": "19f8e504-d2d1-4fbf-af7c-165b5333b0ef",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.55
+          ]
+        },
+        {
+          "uuid": "9edc8e68-e448-435e-a564-7c59db38b28c",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.25
+          ]
+        },
+        {
+          "uuid": "a53c5e5e-304b-483c-ab91-d9274fea01b5",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            17.3,
+            77.35
+          ]
+        },
+        {
+          "uuid": "e803b2f2-64f9-4df4-a072-7d455e4046b7",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            16.399999,
+            80.8
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        16.6,
+        80.0
+      ],
+      "via_blocks": [
+        {
+          "layer": "B.Cu",
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "d6225d70-5187-40fa-9681-31a474621413",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "In1.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "75c42f07-a0df-4290-a2e7-c5980bd7c828",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            13.946,
+            82.3733
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "e01c4b75-91d2-41aa-be47-4452010592c5",
+          "net": "USB_5V",
+          "ref": null,
+          "at": [
+            17.6,
+            79.6
+          ]
+        }
+      ],
+      "line_blocks": [
+        {
+          "uuid": "984ab25b-6a6a-4f77-826d-87bb74200256",
+          "net": "/01  CHARGING + BATTERY/BQ_BTST",
+          "ref": null,
+          "at": [
+            14.5,
+            80.2
+          ]
+        },
+        {
+          "uuid": "19f8e504-d2d1-4fbf-af7c-165b5333b0ef",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.55
+          ]
+        },
+        {
+          "uuid": "9edc8e68-e448-435e-a564-7c59db38b28c",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.25
+          ]
+        },
+        {
+          "uuid": "a53c5e5e-304b-483c-ab91-d9274fea01b5",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            17.3,
+            77.35
+          ]
+        },
+        {
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        }
+      ]
+    },
+    {
+      "at": [
+        16.6,
+        79.5
+      ],
+      "via_blocks": [
+        {
+          "layer": "F.Cu",
+          "uuid": "d6225d70-5187-40fa-9681-31a474621413",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "F.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "In1.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "B.Cu",
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        },
+        {
+          "layer": "In2.Cu",
+          "uuid": "75c42f07-a0df-4290-a2e7-c5980bd7c828",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            13.946,
+            82.3733
+          ]
+        }
+      ],
+      "line_blocks": [
+        {
+          "uuid": "19f8e504-d2d1-4fbf-af7c-165b5333b0ef",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.55
+          ]
+        },
+        {
+          "uuid": "9edc8e68-e448-435e-a564-7c59db38b28c",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            15.75,
+            79.25
+          ]
+        },
+        {
+          "uuid": "a53c5e5e-304b-483c-ab91-d9274fea01b5",
+          "net": "I2C_SCL",
+          "ref": null,
+          "at": [
+            17.3,
+            77.35
+          ]
+        },
+        {
+          "uuid": "c139e72e-8cec-410a-a637-116b49f42c97",
+          "net": "I2C_SDA",
+          "ref": null,
+          "at": [
+            16.8,
+            79.5193
+          ]
+        }
+      ]
+    }
+  ]
+}

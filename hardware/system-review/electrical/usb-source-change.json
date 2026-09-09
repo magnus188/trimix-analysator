@@ -1,0 +1,24 @@
+{
+  "status": "schematic integrated; PCB, placement and export checks pending",
+  "new_I2C": {
+    "U110": "0x47",
+    "U111": "0x5F"
+  },
+  "J301_11": "USB_ILIM_AUTH / GPIO50",
+  "GPIO52": "unused",
+  "BQ_D_plus_D_minus": "NC; no HV negotiation",
+  "J101_J902_pins": {
+    "1": "USB_5V",
+    "2": "GND",
+    "3": "USB_CC1",
+    "4": "USB_CC2",
+    "5": "USB_D_P",
+    "6": "USB_D_M"
+  },
+  "DNP": [
+    "R901",
+    "R902"
+  ],
+  "reset": "TPS3808 VBUS/POR/CC MR -> AUP74 CLR",
+  "physical_tests_performed": false
+}

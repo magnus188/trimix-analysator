@@ -1,0 +1,25 @@
+{
+  "images": [
+    {
+      "family": "pre3",
+      "application_bytes": 2051056,
+      "minimum_ota_slot_bytes": 4194304,
+      "application_slot_margin_bytes": 2143248,
+      "static_diram_sections_bytes": 202962,
+      "static_data_plus_bss_bytes": 109180,
+      "source": "size-pre3.json",
+      "limits": "Static section allocations only; task stacks, filesystem/controller buffers, DMA heap capability and radio/display runtime allocations require physical measurement."
+    },
+    {
+      "family": "v3",
+      "application_bytes": 2056432,
+      "minimum_ota_slot_bytes": 6291456,
+      "application_slot_margin_bytes": 4235024,
+      "static_diram_sections_bytes": 203432,
+      "static_data_plus_bss_bytes": 109196,
+      "source": "size-v3.json",
+      "limits": "Static section allocations only; task stacks, filesystem/controller buffers, DMA heap capability and radio/display runtime allocations require physical measurement."
+    }
+  ],
+  "tool_warning": "Classic and ng esp_idf_size tables do not fully model v3 memory regions; raw warning outputs retained; no free/total-region guarantee derived from those tables. Native linker fit and actual application/partition bytes independently verified."
+}

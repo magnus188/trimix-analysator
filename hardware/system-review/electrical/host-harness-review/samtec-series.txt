@@ -1,0 +1,235 @@
+REVISION AE                                              C                                                                            IDSX-XX-X-XX.XX-XXX-XXX
+                                                                                                        ROW SPECIFICATION                                                                                   OPTION SPECIFICATION
+                                              XX.XX   1/8 3.18                                           -S: SINGLE ROW                                                                                -DXX: DAISY CHAIN -DOUBLE (SEE FIG 2, STH 2)
+   DO NOT                               "A"                                                              -D: DOUBLE ROW                                                                                      (NOT AVAILABLE WITH -IDSS)
+ SCALE FROM                                                                                                                                                                                            -PXX: POLARIZED MATING (SEE FIG 3, STH 2)
+                                                                                      NO. OF CONDUCTORS                                                                                                -ST"X": STRIPPED & TINNED (SEE FIG 4, STH 2)
+  THIS PRINT               "A"                                                        (-02 THRU -36 PER ROW)                                                                                           -R: REVERSED CONECTOR (SEE FIG 5, STH 2)
+                                                                                      USE CABLE: CB-XX-28-7/36-050-C (IDSD)                                                                               (NOT AVAILABLE WITH -M & -O)
+                                                                                      USE CABLE: CB-XX-28-7/36-100-C (IDSS)                                                                            -M: MIDDLE REVERSED (SEE FIG 7, STH 3)
+                                                                                      IDSD FULL STRIP:    "A"=3.650 .005[92.71 0.13] REF
+                                                                                                     +.015 [0.38]
+                                                                                                                                                                                                          (NOT AVAILABLE WITH -R & -O)
+                                                                                      CUT STRIP: "A" -.005 [0.13] = ("XX" x .100[2.54])+.059[1.50]                                                        (REQUIRES -SXX, -WXX OR -DXX)
+                    "A"                                                               IDSS FULL STRIP:   "A"=3.610      .005[91.69 0.13] REF                                                           -O: OUTSIDE REVERSED (SEE FIG 8, STH 3)
+                                                                                                     +.015 [0.38]
+                                                                                      CUT STRIP: "A" -.005 [0.13] = ("XX" x .100[2.54])+.019[0.48]                                                        (NOT AVAILABLE WITH -R & -M)
+                                                                                      *NOTE: STANDARD COLOR-CODED CABLE N/A                                                                               (REQUIRES -SXX, -WXX OR -DXX)
+                                                                                       FOR DOUBLE ROW 31 THRU 36 POSITION -                                                                            -RW: REVERSED WIRING (SEE FIG 9, STH 3)
+                                                                                       SEE -G OPTION.                                                                                                  -BXX: BREAKOUT (SEE FIG 6, STH 2)
+                                                                                                                                                                                                       -SXX: DAISY CHAIN -SINGLE (SEE FIG 10, STH 3)
+                                                                                                                                                                                                       -WXX: WIRING REVERSED (SEE FIG 11, STH 3)
+                                                  BROWN WIRE INDICATES PIN #1                      END ASSEMBLY SPECIFICATION
+                                                                                                  -S: (SINGLE) ONE IDC ASSEMBLY                                                                     OPTION SPECIFICATION
+                                                                                                  -D: (DOUBLE) TWO IDC ASSEMBLYS                                                                   -T: TIN BOTH ENDS (USE C-10-T)
+                                                FLUSH TO .010 0.25 MAX                                                                                                                             LEAVE BLANK FOR GOLD PLATING.
+                                                OVERHANG (SEE NOTE 10)                                             LENGTH OF CABLE                                                                 -G: GRAY CABLE (SEE FIG 1)
+                          C                                                                                       ALL OPTIONS THAT USE -D"XX",-B"XX",-S"XX":
+                                                                                                                                                                                                       SUBSTITUTE GRAY CABLE FOR STANDARD
+                                                                                                                                                                                                      COLOR CODED CABLE. USE:
+                                                                                                                  4.00 [101.6] MINIMUM                                                                IDSD: CB-XX-28-7/36-050-G
+                                                                                                                  ALL OTHER OPTIONS: 1.00 [25.4] MINIMUM                                              IDSS: CB-XX-28-7/36-100-G
+                                                                                                                  MEASURED IN INCHES                                                                  (NOTE: USE GRAY CABLE FOR DOUBLE
+                          "D"                                                                                                                                                                          ROW -31 THRU -36 POSITION)
+
+
+                                                                                                                                                                                                            C
+                                                                                      ISC-36-D                                                                                                XX.XX        1/8 3.18
+                                                                                                                                                                          "B"                                           "C"
+                   RIBS OF GRAY CABLE
+                   GO TO CAP SIDE                                        .093 2.36
+                                                                                                                                                 "B"                                                                                       "C"
+                                                                                                                                           "A"
+                                                                      ISB-36-D                    C-10-X(G OR T)
+                                                 FIG 1
+                                    IDSD-05-D-XX.XX-XXX-XXX SHOWN
+                                              (SEE NOTE 9)                       SECTION "A"-"A"
+                                                                                                                                                                                                                BROWN WIRE INDICATES PIN #1
+                                                                                                                                                                                                  FIG 2
+                                                                                                                                                                 IDSS-05-S-XX.XX-XXX-XXX SHOWN
+                                                                                                                                                         (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)
+
+                                                                                                                                  ISC-36-S                                                                 CONTACT IS ALWAYS ASSEMBLIED TO
+                                                                                                                                                                                                           INSIDE OF SINGLE ROW CONNECTORS
+      NOTES:
+                                                                                                                                  .093 2.36
+      1. C REPRESENTS A CRITICAL DIMENSION.
+      2. OPTION -SXX WHEN MATING DOUBLE ROW CONNECTOR WITH 2 SINGLE
+         ROW CONNECTORS, THE OUTER MOST SINGLE WILL BE CONNECTED TO
+         CONDUCTOR #1 AND THE INSIDE SINGLE TO CONDUCTOR #2.                                                                                                               C-10-X(G OR T)
+      3. USING A #32 MICRO FINISHED .025 .0005 [.64 .013] SQ POST,                                                               ISB-36-S
+         INSERTION / WITHDRAWAL FORCES TO BE:
+         INSERTION: 4.0 OZ [114 GRAMS] AVG / 6.0 OZ [170 GRAMS] MAX                                                                         SECTION "B"-"B"                                 SECTION "C"-"C"
+         WITHDRAWAL: 2.75 OZ [78.0 GRAMS] AVG / 2.0 OZ [57 GRAMS] MIN.                                                                 *           PROPRIETARY NOTE                    *
+      4. MAX ALLOWABLE BOW AFTER ASSEMBLY TO BE .006 INCH/INCH [MM/MM].                            UNLESS OTHERWISE SPECIFIED,        THIS DOCUMENT CONTAINS CONFIDENTIAL AND
+      5. A CHAMFER ON THE END OF THE CAP IS GUARANTEED ON FINAL ASSEMBLIES                         DIMENSIONS ARE IN INCHES.          PROPRIETARY INFORMATION AND ALL DESIGN,
+
+         THAT ARE AT LEAST 18 POSITIONS FOR MALE AND FEMALE TERMINATION.                           TOLERANCES ARE:                    MANUFACTURING, REPRODUCTION, USE, PATENT RIGHTS
+                                                                                                                                      AND SALES RIGHTS ARE EXPRESSLY RESERVED BY SAMTEC,
+      6. ALL ASSEMBLIES TO BE 100% ELECTRICALLY TESTED FOR SHORTS AND OPENS.                       DECIMALS           ANGLES          INC. THIS DOCUMENT SHALL NOT BE DISCLOSED, IN WHOLE
+
+      7. ALL ASSEMBLIES TO BE 100% HI-POT TESTED AT 1000V.                                         .XX: .01 [0.3]       2             OR PART, TO ANY UNAUTHORIZED PERSON OR ENTITY NOR
+                                                                                                                                      REPRODUCED, TRANSFERRED OR INCORPORATED IN ANY
+                                                                                                                                                                                                     520 PARK EAST BLVD, NEW ALBANY, IN 47150
+                                                                                                   .XXX: .005 [0.13]                                                                                 PHONE: 812-944-6733    FAX: 812-948-5047
+      8. WIRE: 28 AWG, 7/36, TINNED, STRANDED WITH PVC INSULATOR                                   .XXXX: .0020 [0.051]
+                                                                                                                                      OTHER PROJECT IN ANY MANNER WITHOUT THE EXPRESS
+                                                                                                                                                                                                     e-Mail info@SAMTEC.com       code 55322
+      9. FOR IDSX WITH R OR RW OPTION, CABLE RIB ORIENTATION CAN                                                                      WRITTEN CONSENT OF SAMTEC, INC.
+
+         BE EITHER TOWARDS OR AWAY FROM THE CAP.                                                   MATERIAL:           DO NOT SCALE DRAWING                       SHEET SCALE: 2:1          DESCRIPTION:
+      10. WHEN CUTTING CABLE TO LENGTH, CONDUCTORS SHOULD NOT EXTEND                                INSULATOR: PBT UL94V-0, COLOR: BLACK                                                    ASSEMBLY INSULATION DISPLACEMENT SOCKET CONNECTOR
+          PAST THE CABLE INSULATION, EXTENDING LESS THAN 25% OF CABLE                               CONTACT: BeCu
+                                                                                                                                                                                            DWG. NO.
+                                                                                                    WIRE: 28 AWG, 7/28, TINNED, STRANDED WITH
+          THICKNESS ON CONSECUTIVE AND LESS THAN 50% OF CABLE THICKNESS
+          ON NON-CONSECUTIVE STRANDS IS CONSIDERED A PROCESS INDICATOR.                             COLOR-CODED OR GRAY PVC INSULATOR                                                          IDSX-XX-X-XX.XX-XXX-XXX
+      11. -STX TO BE SKIN PACKAGED PER THE PACKAGING MANUAL.                                                                                                                                BY: DEAN P            11/02/1988        SHEET 1 OF 3
+                                                                                                  c:\enterprisevault\DWG\MISC\MKTG\IDSX-XX-X-XX.XX-XXX-XXX-MKT.SLDDRW
+                                                                                          1 3                                                                                                   1
+REVISION AE                                                                                                                        71                                                                                                   36
+                                                                                      2                                            72
+   IDSD: DOUBLE
+                                                                                      4
+
+
+
+                                                                         IDSD                                                                                             IDSS
+
+                                                                                                                                                          BROWN WIRE
+                                                                    BROWN WIRE
+                                               XX 1/8 3.18
+       BROWN WIRE                               (2[51] MIN)
+                         FIRST PRESS END                                              1
+                                                                                      3                                            71
+                          FIG 2                                                                                                    72                           FIG 3
+                        -DXX SHOWN                                                        24                                        -PXX: POLARIZED MATING SHOWN
+                  (NOT AVAILABLE WITH -DSS)                                                                                                 (XX = POSION NO.)
+       (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)                                                                                (INSERT POLARIZING KEY PART NO.
+                                                                                                                                   PK-06 INTO SPECIFIED POSITION -XX)
+NOTES:                                                                                                                      (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)
+1. 2" MINIMUM LENGTH                                             NOTE:
+2. 1" INCREMENTS ONLY                                            1. POLARIZED POSITION WILL HAVE SAME ELECTRICAL
+                                                                    POSITION FROM BROWN WIRE.
+
+                                                                                                                                                                                                                                   3+-21 76+-51
+                                                                                                                                                                                                                                             25
+                                                                                                                                                            IDSS: SINGLE
+                                                                                                                                                            IDSD: DOUBLE
+
+
+
+
+                                                                    IDSS
+
+
+
+
+                                      SEE NOTE 2
+
+                                           .030 0.76 MAX                                                                                                                                                                                                     XX
+                                                                                                                                                                           BROWN WIRE
+                                     (AFTER STRIPPED & TINNED)
+                                                                                                                                                                                                               FIG 6
+                                                                  IDSD                                                                                                        -BXX: BREAKOUT SHOWN
+                                                                                                                                                                  (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)
+                                                                                                                                                                    FOR IDSD -BXX OPTION, NO. OF CONDUCTORS
+                                                                                                                                                                              MUST BE AN EVEN NUMBER
+                                    "L"    1/16 1.59                                                                                                        IDSD-XX-D-XX-BXX
+                                                                                                                                                            XX INDICATES NO. OF CONDUCTORS, OR POSITIONS X 2
+                                    1/16 1.59 MAX                                                                                                           IDSD-XX-S-XX-BXX
+                                                                                                                                                            XX INDICATES NO. OF CONDUCTORS, OR POSITIONS X 2
+                                  FLAT WIRE ALLOWED                                                                                                         IDSS-XX-D-XX-BXX:
+                                                                                                                                                            XX INDICATES NO. OF POSITIONS
+                        FIG 4                                                                                                                               IDSS-XX-S-XX-BXX:
+                      -ST"X" SHOWN                                                                                                                          XX INDICATES NO. OF POSITIONS
+     (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)                                                                                                *           PROPRIETARY NOTE                    *
+                      (SEE NOTE 11)                                                                                                              THIS DOCUMENT CONTAINS CONFIDENTIAL AND
+                                                                                                                                                 PROPRIETARY INFORMATION AND ALL DESIGN,
+                                                                                                                                                 MANUFACTURING, REPRODUCTION, USE, PATENT RIGHTS
+                                                                                                                                                 AND SALES RIGHTS ARE EXPRESSLY RESERVED BY SAMTEC,
+                                                                                                                                                 INC. THIS DOCUMENT SHALL NOT BE DISCLOSED, IN WHOLE
+
+                                                                      BOTH SOCKETS REV.                                                          OR PART, TO ANY UNAUTHORIZED PERSON OR ENTITY NOR
+                                                                                                                                                                                                                  520 PARK EAST BLVD, NEW ALBANY, IN 47150
+NOTES:                                                                                                                                           REPRODUCED, TRANSFERRED OR INCORPORATED IN ANY
+                                                                                                                                                                                                                  PHONE: 812-944-6733    FAX: 812-948-5047
+                                                                      WHEN DAISY CHAINED                                                         OTHER PROJECT IN ANY MANNER WITHOUT THE EXPRESS
+1. CONDUCTORS SHALL BE CONSISTENT IN APPEARANCE.                                                                                                 WRITTEN CONSENT OF SAMTEC, INC.                                  e-Mail info@SAMTEC.com       code 55322
+   SOLDER MUST MAINTAIN CABLE STRAINS WITHIN THE                                                                                                                                                       DESCRIPTION:
+   MAX DIA. TOLERANCE.                                                                              FIG 5                                                DO NOT SCALE DRAWING                          ASSEMBLY INSULATION DISPLACEMENT SOCKET CONNECTOR
+2. USE LEAD FREE SOLDER ONLY.                                                 -R: REVERSED CONNECTOR SHOWN
+                                                                                                                                                                                                       DWG. NO.
+3. NOT AVAILABLE IN 28 POSITION AND UP IN DOUBLE ROW ONLY.                      (NOT AVAILABLE WITH -M & -O)
+                                                                                                                                                                                                          IDSX-XX-X-XX.XX-XXX-XXX
+                                                                                                                                                                SHEET SCALE: 2:1
+                                                                       (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)
+                                                                           c:\enterprisevault\DWG\MISC\MKTG\IDSX-XX-X-XX.XX-XXX-XXX-MKT.SLDDRW                                                         BY: DEAN P             11/02/1988          SHEET 2 OF 3
+REVISION AE
+
+
+
+
+                                                                                                                                                                                                              BROWN WIRE INDICATES PIN #1
+                                                                                                                                                                                         STANDARD WIRING
+                                                                                                                                                                                                                                       BROWN WIRE
+                                                                                                                                                                                                                                       (BROWN WIRE TO
+                                                                                                                                                                                                                                       OPPOSITE SIDE OF
+                                                                                                                                                                                                                                       FIRST POSITION)
+
+
+                         FIG 7                                                        FIG 8
+             -M: MIDDLE REVERSED SHOWN                                 -O: OUTSIDE REVERSED SHOWN
+             (NOT AVAILABLE WITH -R & -O)                               (NOT AVAILABLE WITH -R & -M)
+            (REQUIRES -SXX, -WXX OR -DXX)                              (REQUIRES -SXX, -WXX OR -DXX)                                     FIRST POSITION
+   (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)              (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)                                                                              REVERSED WIRING
+                                                                                                                                                                                                     FIG 9
+                                                                                                                                                                    -RW: REVERSED WIRING SHOWN
+                                                                                                                                                           (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)
+
+       IDSD: DOUBLE                                                  SINGLE
+                                                                                                                                                                                                                                          SINGLE
+                                                                                                                            IDSD: DOUBLE
+                                                                        OUTER MOST                                          IDSS: SINGLE
+
+                                                                                                                                                                                                                                           OUTER MOST
+
+
+
+
+                      BROWN WIRE               XX 1/8 3.18
+                                                (2[51] MIN)
+                                                                                                                                               BROWN WIRE                                          XX 1/8 3.18
+                                    FIRST PRESS END
+                                                                                                                                                                                                     (2[51] MIN)
+          IDSS: SINGLE                                                                                                                                                                    FIRST PRESS END
+
+                                                                                                                                                                                          FIG 11
+                                                                                                                                                     -WXX: WIRING REVERSED SHOWN
+                                                                                                                                             (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)
+                                                                                                   NOTE:
+                                                                                                   1. OPTION -SXX WHEN MATING DOUBLE ROW CONNECTOR WITH 2 SINGLE ROW CONNECTORS,
+                                                                                                      THE OUTER MOST SINGLE WILL BE CONNECTED TO CONDUCTOR #2 AND THE INSIDE SINGLE
+                                                                                                      TO CONDUCTOR #1.
+                                                                                                                                              *           PROPRIETARY NOTE                    *
+                                                                                                                                             THIS DOCUMENT CONTAINS CONFIDENTIAL AND
+                                                                                                                                             PROPRIETARY INFORMATION AND ALL DESIGN,
+                                                                                                                                             MANUFACTURING, REPRODUCTION, USE, PATENT RIGHTS
+                                                                                                                                             AND SALES RIGHTS ARE EXPRESSLY RESERVED BY SAMTEC,
+                                                                                                                                             INC. THIS DOCUMENT SHALL NOT BE DISCLOSED, IN WHOLE
+                                                                                                                                             OR PART, TO ANY UNAUTHORIZED PERSON OR ENTITY NOR
+                                                                                                                                                                                                              520 PARK EAST BLVD, NEW ALBANY, IN 47150
+                                             FIG 10                                                                                          REPRODUCED, TRANSFERRED OR INCORPORATED IN ANY
+                                                                                                                                             OTHER PROJECT IN ANY MANNER WITHOUT THE EXPRESS                  PHONE: 812-944-6733    FAX: 812-948-5047
+                                 SXX: DAISY CHAIN - SINGLE SHOWN                                                                             WRITTEN CONSENT OF SAMTEC, INC.                                  e-Mail info@SAMTEC.com       code 55322
+                          (DIFFERENT AS SHOWN, OTHERWISE SAME AS FIG 1)                                                                                                                            DESCRIPTION:
+NOTE:                                                                                                                                                DO NOT SCALE DRAWING
+                                                                                                                                                                                                   ASSEMBLY INSULATION DISPLACEMENT SOCKET CONNECTOR
+1. OPTION -SXX WHEN MATING DOUBLE ROW CONNECTOR WITH 2 SINGLE ROW CONNECTORS,                                                                                                                      DWG. NO.
+
+                                                                                                                                                                                                     IDSX-XX-X-XX.XX-XXX-XXX
+                                                                                                                                                            SHEET SCALE: 2:1
+  THE OUTER MOST SINGLE WILL BE CONNECTED TO CONDUCTOR #1 AND THE INSIDE SINGLE
+  TO CONDUCTOR #2.
+                                                                       c:\enterprisevault\DWG\MISC\MKTG\IDSX-XX-X-XX.XX-XXX-XXX-MKT.SLDDRW                                                         BY: DEAN P             11/02/1988          SHEET 3 OF 3
+
